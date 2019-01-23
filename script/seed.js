@@ -120,11 +120,39 @@ async function seed() {
     })
   ])
 
+  // make options for both books
+  const options = await Promise.all([
+    Option.create({
+      type: 'book',
+      bookId: 1
+    }),
+    Option.create({
+      type: 'book',
+      bookId: 2
+    })
+  ])
+
+  // add votes for both users
+  const votes = await Promise.all([
+    Vote.create({
+      userId: 1,
+      pollId: 1,
+      optionId: 1
+    }),
+    Vote.create({
+      userId: 2,
+      pollId: 1,
+      optionId: 2
+    })
+  ])
+
   console.log(`seeded ${users.length} users`)
   console.log(`seeded ${books.length} books`)
   console.log(`seeded ${clubs.length} club`)
   console.log(`seeded ${authors.length} authors`)
   console.log(`seeded ${polls.length} poll`)
+  console.log(`seeded ${options.length} authors`)
+  console.log(`seeded ${votes.length} votes`)
   console.log(`seeded successfully`)
 }
 
