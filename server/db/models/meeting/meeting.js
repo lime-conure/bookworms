@@ -15,7 +15,7 @@ const Meeting = db.define('meeting', {
   },
   date: {
     type: Sequelize.DATE,
-    allowNull: true,
+    allowNull: false,
     validate: {
       notEmpty: true
     }
