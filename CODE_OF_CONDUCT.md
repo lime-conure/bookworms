@@ -1,3 +1,6 @@
+Norms for Team Lime Conure
+_____
+
 ##### What does this group do when two or more members disagree (ex. on a technical approach, a technology choice, etc)? Do you vote? Does the whole group get involved? Do you get someone else to decide?
 
 
