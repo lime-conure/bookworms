@@ -1,15 +1,43 @@
 'use strict'
 
 const db = require('../server/db')
-const {User, Author, Book, Club, Poll, Option} = require('../server/db/models')
+const {
+  User,
+  Author,
+  Book,
+  Club,
+  UserBook,
+  UserClub,
+  BookAuthor,
+  Poll,
+  Option,
+  Vote
+} = require('../server/db/models')
 
 async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
 
   const users = await Promise.all([
-    User.create({email: 'sabira.davletshina@gmail.com', password: '123'}),
-    User.create({email: 'brynn.shepherd@email.com', password: '123'})
+    User.create({
+      firstName: 'Brynn',
+      lastName: 'Shepherd',
+      email: 'brynn.shepherd@email.com',
+      password: '123'
+    }),
+    User.create({
+      firstName: 'Sabira',
+      lastName: 'Davletshina',
+      email: 'sabira.davletshina@gmail.com',
+      password: '123'
+    })
+  ])
+
+  const clubs = await Promise.all([
+    Club.create({
+      name: 'Lime Conure',
+      inviteLink: 'https://github.com/lime-conure/bookworms'
+    })
   ])
 
   const authors = await Promise.all([
@@ -33,8 +61,7 @@ async function seed() {
       pubDate: 'June 9 2016',
       pageNum: 502,
       amazonUrl: 'https://www.amazon.com/gp/product/B01COJUEZ0',
-      rating: 436,
-      authorId: 1
+      rating: 436
     }),
     Book.create({
       title: 'Station Eleven',
@@ -43,13 +70,61 @@ async function seed() {
       pubDate: 'September 9 2014',
       pageNum: 336,
       amazonUrl: 'https://www.amazon.com/gp/product/0385353308',
-      authorId: 2
+      rating: 403
+    })
+  ])
+
+  // associate both users with our one club
+  await Promise.all([
+    UserClub.create({
+      userId: 1,
+      clubId: 1
+    }),
+    UserClub.create({
+      userId: 2,
+      clubId: 1
+    })
+  ])
+
+  // associate book 1 with author 1 and book 2 with author 2
+  await Promise.all([
+    BookAuthor.create({
+      authorId: 1,
+      bookId: 1
+    }),
+    BookAuthor.create({
+      authorId: 2,
+      bookId: 2
+    })
+  ])
+
+  // associate user 1 with both books
+  await Promise.all([
+    UserBook.create({
+      userId: 1,
+      bookId: 1
+    }),
+    UserBook.create({
+      userId: 1,
+      bookId: 2
+    })
+  ])
+
+  // make a poll for our club
+  const polls = await Promise.all([
+    Poll.create({
+      title: 'What should we read next?',
+      notes: 'A poll to decide our next book',
+      dueDate: new Date(),
+      clubId: 1
     })
   ])
 
   console.log(`seeded ${users.length} users`)
   console.log(`seeded ${books.length} books`)
+  console.log(`seeded ${clubs.length} club`)
   console.log(`seeded ${authors.length} authors`)
+  console.log(`seeded ${polls.length} poll`)
   console.log(`seeded successfully`)
 }
 
