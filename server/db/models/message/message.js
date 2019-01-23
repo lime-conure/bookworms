@@ -7,3 +7,5 @@ const Message = db.define('message', {
 		allowNull: false
 	}
 })
+
+module.exports = Message

@@ -11,3 +11,5 @@ const Author = db.define('author', {
 		allowNull: true
 	}
 })
+
+module.exports = Author
