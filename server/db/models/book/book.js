@@ -1,10 +1,10 @@
-const Sequelize = require('sequelize');
-const db = require('../db');
+const Sequelize = require('sequelize')
+const db = require('../../db')
 
 const Book = db.define('book', {
   title: {
     type: Sequelize.STRING,
-    allowNull: false,
+    allowNull: false
   },
   description: {
     type: Sequelize.TEXT,
@@ -12,7 +12,7 @@ const Book = db.define('book', {
   },
   pubDate: {
     type: Sequelize.STRING,
-    allowNull: false,
+    allowNull: false
   },
   pageNum: {
     type: Sequelize.INTEGER,

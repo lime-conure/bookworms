@@ -1,12 +1,12 @@
-const Author = require('./user/author.js')
-const Book = require('./user/book.js')
-const Club = require('./user/club.js')
-const Media = require('./user/media.js')
-const Media = require('./user/media.js')
-const Message = require('./user/message.js')
-const Option = require('./user/option.js')
-const Poll = require('./user/poll.js')
-const Thread = require('./user/thread.js')
+const Author = require('./author/author.js')
+const Book = require('./book/book.js')
+const Club = require('./club/club.js')
+const Media = require('./media/media.js')
+const Meeting = require('./meeting/meeting.js')
+const Message = require('./message/message.js')
+const Option = require('./option/option.js')
+const Poll = require('./poll/poll.js')
+const Thread = require('./thread/thread.js')
 const User = require('./user/user.js')
 
 /**
@@ -49,7 +49,7 @@ Thread.belongsTo(Club)
 Book.hasMany(Option)
 Option.belongsTo(Book)
 
- /**
+/**
  * Many-to-Many Associations
  */
 
@@ -71,7 +71,6 @@ Poll.belongsToMany(Option, {through: 'votes'})
 Option.belongsToMany(Poll, {through: 'votes'})
 Option.belongsToMany(User, {through: 'votes'})
 User.belongsToMany(Option, {through: 'votes'})
-
 
 /**
  * We'll export all of our models here, so that any time a module needs a model,
