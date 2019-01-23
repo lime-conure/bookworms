@@ -11,3 +11,5 @@ const Club = db.define('club', {
 		allowNull: false
 	}
 })
+
+module.exports = Club
