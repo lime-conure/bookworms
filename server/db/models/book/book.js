@@ -24,10 +24,10 @@ const Book = db.define('book', {
   },
   //allowNull -? if the book just came up and does not have a rating yet.
   rating: {
-    type: Sequelize.FLOAT,
+    type: Sequelize.INTEGER,
     validate: {
-      min: 0.0,
-      max: 5.0
+      min: 0,
+      max: 500
     }
   }
 })
