@@ -37,6 +37,10 @@ async function seed() {
     Club.create({
       name: 'Lime Conure',
       inviteLink: 'https://github.com/lime-conure/bookworms'
+    }),
+    Club.create({
+      name: 'Another Club',
+      inviteLink: 'https://github.com/lime-conure/bookworms'
     })
   ])
 
@@ -136,6 +140,12 @@ async function seed() {
       notes: 'A poll to decide our next book',
       dueDate: new Date(),
       clubId: 1
+    }),
+    Poll.create({
+      title: 'What time should we meet?',
+      notes: 'A poll to decide our next meeting time',
+      dueDate: new Date(),
+      clubId: 2
     })
   ])
 
