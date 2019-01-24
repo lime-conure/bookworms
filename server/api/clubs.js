@@ -29,17 +29,20 @@ router.post('/:clubId/polls', async (req, res, next) => {
       dueDate,
       notes
     } = req.body
-    if (selectedBooks.length) {
-      const books = await Promise.all(
-        selectedBooks.map(
-          book =>
-            Book.findOrCreate({where: {title: book.title}, defaults: {book}})[0]
-        )
-      )
-      await Promise.all(
-        books.map(book => Option.create({type: 'book', bookId: book.id}))
-      )
+    const books = []
+    for (let i = 0; i < selectedBooks.length; i++) {
+      const book = selectedBooks[i]
+      let existingBook = await Book.findOne({where: {title: book.title}})
+      if (!existingBook) {
+        existingBook = await Book.create(book)
+      }
+      books.push(existingBook)
     }
+    console.log(books, 'books')
+
+    await Promise.all(
+      books.map(book => Option.create({type: 'book', bookId: book.id}))
+    )
 
     await Promise.all(
       selectedDates.map(date => Option.create({type: 'time', dayTime: date}))
