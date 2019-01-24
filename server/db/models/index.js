@@ -8,6 +8,7 @@ const Option = require('./option/option.js')
 const Poll = require('./poll/poll.js')
 const Thread = require('./thread/thread.js')
 const User = require('./user/user.js')
+const Vote = require('./vote/vote.js')
 const db = require('../db')
 
 /**
@@ -72,9 +73,10 @@ Club.belongsToMany(User, {through: UserClub})
 // votes association table columns: userId, pollId, optionId
 // each row in this table represents a vote
 
-const Vote = db.define('vote')
 Vote.belongsTo(User)
 User.hasMany(Vote)
+Option.belongsTo(Poll)
+Poll.hasMany(Option)
 Poll.belongsToMany(Option, {through: Vote})
 Option.belongsToMany(Poll, {through: Vote})
 
