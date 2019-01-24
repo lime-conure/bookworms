@@ -4,13 +4,14 @@ import {fetchPolls} from '../store'
 import {NavLink, Link} from 'react-router-dom'
 
 class Polls extends Component {
-  constructor() {
-    super()
-  }
+  // constructor() {
+  //   super()
+  // }
 
   componentDidMount() {
     console.log('Polls did mount')
-    this.props.fetchPolls()
+    this.props.fetchPolls(this.props.match.params.clubId)
+    //this.props.fetchPolls(1)
   }
 
   render() {
@@ -26,7 +27,7 @@ class Polls extends Component {
           {polls.map(poll => (
             <div key={poll.id}>
               <li>
-                <Link to={`/polls/${poll.id}`}>
+                <Link to={`/clubs/polls/${poll.id}`}>
                   <p>Title: {poll.title}</p>
                   <p>Due date: {new Date(poll.dueDate).toString()}</p>
                 </Link>

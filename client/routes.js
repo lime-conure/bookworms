@@ -19,14 +19,17 @@ class Routes extends Component {
     return (
       <Switch>
         {/* Routes placed here are available to all visitors */}
+        <Route exact path="/clubs/:clubId/polls" component={Polls} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/signup" component={Signup} />
+
         <Route exact path="/clubs/:clubId/polls" component={Polls} />
         <Route
           exact
           path="/clubs/:clubId/polls/:pollId"
           component={SinglePoll}
         />
+
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
