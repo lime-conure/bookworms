@@ -154,16 +154,19 @@ async function seed() {
   const options = await Promise.all([
     Option.create({
       type: 'book',
+      bookName: 'A Gentleman in Moscow',
       bookId: 1,
       pollId: 2
     }),
     Option.create({
       type: 'book',
+      bookName: 'Station Eleven',
       bookId: 2,
       pollId: 2
     }),
     Option.create({
       type: 'book',
+      bookName: 'Sapiens',
       bookId: 3,
       pollId: 2
     }),
