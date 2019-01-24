@@ -2,7 +2,14 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {withRouter, Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
-import {Login, Signup, UserHome, Polls, SinglePoll} from './components'
+import {
+  Login,
+  Signup,
+  UserHome,
+  Polls,
+  SinglePoll,
+  CreatePoll
+} from './components'
 import {me} from './store'
 
 /**
@@ -24,6 +31,11 @@ class Routes extends Component {
         <Route exact path="/signup" component={Signup} />
 
         <Route exact path="/clubs/:clubId/polls" component={Polls} />
+        <Route
+          exact
+          path="/clubs/:clubId/polls/create"
+          component={CreatePoll}
+        />
         <Route
           exact
           path="/clubs/:clubId/polls/:pollId"

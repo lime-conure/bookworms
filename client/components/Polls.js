@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {fetchPolls} from '../store'
 import {NavLink, Link} from 'react-router-dom'
-
 class Polls extends Component {
   // constructor() {
   //   super()
