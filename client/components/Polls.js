@@ -29,7 +29,11 @@ class Polls extends Component {
           {polls.map(poll => (
             <div key={poll.id}>
               <li>
-                <Link to={`/clubs/polls/${poll.id}`}>
+                <Link
+                  to={`/clubs/${this.props.match.params.clubId}/polls/${
+                    poll.id
+                  }`}
+                >
                   <p>Title: {poll.title}</p>
                   <p>Due date: {new Date(poll.dueDate).toString()}</p>
                 </Link>
