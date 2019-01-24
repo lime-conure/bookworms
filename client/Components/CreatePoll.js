@@ -108,7 +108,7 @@ class CreatePoll extends Component {
             />
             <button type="submit">Search</button>
           </form>
-          {this.state.search && this.state.search.length ? (
+          {this.state.searchResults.length ? (
             <BooksView books={this.state.search} addBook={this.addBook} />
           ) : null}
           {/* form to select dates */}
