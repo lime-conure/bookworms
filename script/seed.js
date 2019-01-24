@@ -152,6 +152,15 @@ async function seed() {
     Option.create({
       type: 'book',
       bookId: 3
+    }),
+    Option.create({
+      type: 'time'
+    }),
+    Option.create({
+      type: 'time'
+    }),
+    Option.create({
+      type: 'time'
     })
   ])
 
