@@ -4,27 +4,18 @@ import axios from 'axios'
  * ACTION TYPES
  */
 const GET_POLLS = 'GET_POLLS'
-const GET_SINGLE_POLL = 'GET_SINGLE_POLL'
 
 /**
  * INITIAL STATE
  */
-const initialState = {
-  allPolls: [],
-  singlePoll: {}
-}
+const defaultPolls = []
 
 /**
  * ACTION CREATORS
  */
-const getPolls = allPolls => ({
+const getPolls = polls => ({
   type: GET_POLLS,
-  allPolls
-})
-
-const getSinglePoll = singlePoll => ({
-  type: GET_SINGLE_POLL,
-  singlePoll
+  polls
 })
 
 /**
@@ -33,16 +24,7 @@ const getSinglePoll = singlePoll => ({
 export const fetchPolls = clubId => async dispatch => {
   try {
     const {data} = await axios.get(`/api/clubs/${clubId}/polls`)
-    dispatch(getPolls(data || initialState.allPolls))
-  } catch (err) {
-    console.error(err)
-  }
-}
-
-export const fetchSinglePoll = (clubId, pollId) => async dispatch => {
-  try {
-    const {data} = await axios.get(`/api/clubs/${clubId}/polls/${pollId}`)
-    dispatch(getSinglePoll(data || initialState.singlePoll))
+    dispatch(getPolls(data || defaultPolls))
   } catch (err) {
     console.error(err)
   }
@@ -51,12 +33,10 @@ export const fetchSinglePoll = (clubId, pollId) => async dispatch => {
 /**
  * REDUCER
  */
-export default function(state = initialState, action) {
+export default function(state = defaultPolls, action) {
   switch (action.type) {
     case GET_POLLS:
-      return {...state, allPolls: action.allPolls}
-    case GET_SINGLE_POLL:
-      return {...state, singlePoll: action.singlePoll}
+      return action.polls
     default:
       return state
   }
