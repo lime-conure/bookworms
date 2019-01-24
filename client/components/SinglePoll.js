@@ -2,18 +2,15 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {fetchSinglePoll} from '../store'
 
-const FAKE_CLUB_ID = 1
-
 export class SinglePoll extends Component {
   constructor(props) {
     super(props)
   }
 
   componentDidMount() {
-    console.log(this.props, 'this.props *******')
     const singlePollId = Number(this.props.match.params.pollId)
-    console.log(singlePollId, 'singlePollId')
-    this.props.fetchSinglePoll(FAKE_CLUB_ID, singlePollId)
+    const clubId = Number(this.props.match.params.clubId)
+    this.props.fetchSinglePoll(clubId, singlePollId)
   }
 
   render() {
@@ -31,7 +28,7 @@ export class SinglePoll extends Component {
 }
 
 const mapState = state => ({
-  singlePoll: state.polls.singlePoll
+  singlePoll: state.singlePoll
 })
 
 const mapDispatch = dispatch => ({
