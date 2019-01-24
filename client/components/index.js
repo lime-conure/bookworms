@@ -6,5 +6,6 @@
 export {default as Navbar} from './Navbar'
 export {default as UserHome} from './UserHome'
 export {default as Polls} from './Polls'
+export {default as SinglePoll} from './SinglePoll'
 export {default as NewPoll} from './NewPoll'
 export {Login, Signup} from './AuthForm'
