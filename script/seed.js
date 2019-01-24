@@ -150,39 +150,50 @@ async function seed() {
     })
   ])
 
-  // make options for both books
+  // make poll options
   const options = await Promise.all([
     Option.create({
       type: 'book',
-      bookId: 1
+      bookId: 1,
+      pollId: 2
     }),
     Option.create({
       type: 'book',
-      bookId: 2
+      bookId: 2,
+      pollId: 2
     }),
     Option.create({
       type: 'book',
-      bookId: 3
+      bookId: 3,
+      pollId: 2
     }),
     Option.create({
-      type: 'time'
+      type: 'location',
+      location: 'Sweetgreen',
+      pollId: 2
     }),
     Option.create({
-      type: 'time'
+      type: 'location',
+      location: 'Killarney Rose',
+      pollId: 2
     }),
     Option.create({
-      type: 'time'
+      type: 'location',
+      location: 'Grace Hopper Campus',
+      pollId: 2
     })
   ])
 
   // add votes for both users
   const votes = await Promise.all([
     Vote.create({
+      id: 1,
       userId: 1,
       pollId: 1,
       optionId: 1
     }),
     Vote.create({
+      id: 2,
       userId: 2,
       pollId: 1,
       optionId: 2
