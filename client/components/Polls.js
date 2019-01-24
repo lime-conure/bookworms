@@ -43,7 +43,7 @@ class Polls extends Component {
 }
 
 const mapState = state => ({
-  polls: state.polls.allPolls
+  polls: state.polls
 })
 
 const mapDispatch = dispatch => ({
