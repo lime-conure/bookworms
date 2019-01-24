@@ -5,4 +5,6 @@
  */
 export {default as Navbar} from './navbar'
 export {default as UserHome} from './user-home'
+export {default as Polls} from './Polls'
+export {default as NewPoll} from './NewPoll'
 export {Login, Signup} from './auth-form'
