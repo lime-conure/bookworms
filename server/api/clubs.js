@@ -12,7 +12,7 @@ router.get('/:clubId/polls', async (req, res, next) => {
 })
 
 // GET /api/clubs/:clubId/polls/:pollId
-router.get('/:clubId/polls', async (req, res, next) => {
+router.get('/:clubId/polls/:pollId', async (req, res, next) => {
   try {
     // Poll.findByPk(... )
   } catch (err) {
