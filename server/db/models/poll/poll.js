@@ -22,4 +22,8 @@ const Poll = db.define('poll', {
   }
 })
 
+Poll.prototype.getClubId = function() {
+  return Number(this.clubId)
+}
+
 module.exports = Poll
