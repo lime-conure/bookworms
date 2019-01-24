@@ -10,11 +10,13 @@ const Option = db.define('option', {
     }
   },
   dateTime: {
-    type: Sequelize.DATE,
+		type: Sequelize.DATE,
+		defaultValue: null,
     allowNull: true
   },
   location: {
-    type: Sequelize.TEXT,
+		type: Sequelize.TEXT,
+		defaultValue: null,
     allowNull: true
   }
 })
