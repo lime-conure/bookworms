@@ -50,6 +50,11 @@ async function seed() {
       name: 'Emily St. John Mandel',
       bio:
         'Emily St. John Mandel was born and raised on the west coast of British Columbia, Canada. She studied contemporary dance at the School of Toronto Dance Theatre and lived briefly in Montreal before relocating to New York.'
+    }),
+    Author.create({
+      name: 'Yuval Noah Harari',
+      bio:
+        'Professor Harari was born in Haifa, Israel, to Lebanese parents in 1976. He received his Ph.D. from the University of Oxford in 2002, and is now a lecturer at the Department of History, the Hebrew University of Jerusalem.'
     })
   ])
 
@@ -71,6 +76,16 @@ async function seed() {
       pageNum: 336,
       amazonUrl: 'https://www.amazon.com/gp/product/0385353308',
       rating: 403
+    }),
+    Book.create({
+      title: 'Sapiens: A Brief History of Humankind',
+      description:
+        '100,000 years ago, at least six human species inhabited the earth. Today there is just one. Us. Homo sapiens. How did our species succeed in the battle for dominance? Why did our foraging ancestors come together to create cities and kingdoms? How did we come to believe in gods, nations and human rights; to trust money, books and laws; and to be enslaved by bureaucracy, timetables and consumerism? And what will our world be like in the millennia to come?',
+      pubDate: '2011',
+      pageNum: 443,
+      amazonUrl:
+        'https://www.amazon.com/Sapiens-Humankind-Yuval-Noah-Harari/dp/0062316117',
+      rating: 445
     })
   ])
 
@@ -95,6 +110,10 @@ async function seed() {
     BookAuthor.create({
       authorId: 2,
       bookId: 2
+    }),
+    BookAuthor.create({
+      authorId: 3,
+      bookId: 3
     })
   ])
 
@@ -129,6 +148,10 @@ async function seed() {
     Option.create({
       type: 'book',
       bookId: 2
+    }),
+    Option.create({
+      type: 'book',
+      bookId: 3
     })
   ])
 
@@ -151,7 +174,7 @@ async function seed() {
   console.log(`seeded ${clubs.length} club`)
   console.log(`seeded ${authors.length} authors`)
   console.log(`seeded ${polls.length} poll`)
-  console.log(`seeded ${options.length} authors`)
+  console.log(`seeded ${options.length} options`)
   console.log(`seeded ${votes.length} votes`)
   console.log(`seeded successfully`)
 }
