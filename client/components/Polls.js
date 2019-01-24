@@ -3,14 +3,16 @@ import {connect} from 'react-redux'
 import {fetchPolls} from '../store'
 import {NavLink, Link} from 'react-router-dom'
 
+const FAKE_CLUB_ID = 1
+
 class Polls extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
   }
 
   componentDidMount() {
     console.log('Polls did mount')
-    this.props.fetchPolls()
+    this.props.fetchPolls(FAKE_CLUB_ID)
   }
 
   render() {
@@ -40,11 +42,10 @@ class Polls extends Component {
 }
 
 const mapState = state => ({
-  polls: state.polls
+  polls: state.polls.allPolls
 })
 
-const mapDispatch = {
-  fetchPolls
-}
-
+const mapDispatch = dispatch => ({
+  fetchPolls: clubId => dispatch(fetchPolls(clubId))
+})
 export default connect(mapState, mapDispatch)(Polls)
