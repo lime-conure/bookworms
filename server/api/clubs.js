@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {Club, Poll, Option, Vote} = require('../db/models')
+const {Club, Poll, Option, Vote, Book} = require('../db/models')
 module.exports = router
 
 const FAKE_USER = {
@@ -7,6 +7,58 @@ const FAKE_USER = {
   email: 'brynn.shepherd@gmail.com',
   name: 'Brynn Shepherd'
 }
+//GET /api/clubs/:clubId/polls
+router.get('/:clubId/polls', async (req, res, next) => {
+  try {
+    const clubId = req.params.clubId
+    const polls = await Poll.findAll({where: {clubId: clubId}})
+    res.send(polls)
+  } catch (err) {
+    next(err)
+  }
+})
+
+//POST /api/clubs/:clubId/polls
+router.post('/:clubId/polls', async (req, res, next) => {
+  try {
+    const {
+      selectedBooks,
+      selectedDates,
+      selectedPlaces,
+      title,
+      dueDate,
+      notes
+    } = req.body
+    if (selectedBooks.length) {
+      const books = await Promise.all(
+        selectedBooks.map(
+          book =>
+            Book.findOrCreate({where: {title: book.title}, defaults: {book}})[0]
+        )
+      )
+      await Promise.all(
+        books.map(book => Option.create({type: 'book', bookId: book.id}))
+      )
+    }
+
+    await Promise.all(
+      selectedDates.map(date => Option.create({type: 'time', dayTime: date}))
+    )
+
+    await Promise.all(
+      selectedPlaces.map(place =>
+        Option.create({type: 'location', location: place})
+      )
+    )
+
+    const newPoll = await Poll.create({title, dueDate, notes})
+    const club = await Club.findById(req.params.clubId)
+    newPoll.setClub(club)
+    res.send(newPoll)
+  } catch (err) {
+    next(err)
+  }
+})
 
 // GET /api/clubs/:clubId/polls/:pollId
 router.get('/:clubId/polls/:pollId', async (req, res, next) => {
