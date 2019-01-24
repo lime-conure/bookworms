@@ -10,7 +10,7 @@ const Poll = db.define('poll', {
     }
   },
   dueDate: {
-    type: Sequelize.DATE,
+    type: Sequelize.STRING,
     allowNull: false,
     validate: {
       notEmpty: true
