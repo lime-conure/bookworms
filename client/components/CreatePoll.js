@@ -127,55 +127,78 @@ class CreatePoll extends Component {
     return (
       <div>
         <form onSubmit={this.createPoll}>
-          <h3>Create a new poll</h3>
-          <label htmlFor="title"> Title</label>
-          <input name="title" onChange={this.handleChange} required />
-          <label htmlFor="notes">Notes</label>
-          <input name="notes" onChange={this.handleChange} />
-
+          <h3>Create a New Poll</h3>
+          <div>
+            <label htmlFor="title"> Title</label>
+            <input name="title" onChange={this.handleChange} required />
+          </div>
+          <br />
+          <div>
+            <label htmlFor="notes">Notes</label>
+            <input name="notes" onChange={this.handleChange} />
+          </div>
+          <br />
           {/* select dueDate */}
-          <Calendar
-            format="DD/MM/YYYY"
-            date={this.state.dueDate}
-            onChange={this.onCalendarChange}
-          />
-
+          <div>
+            <label htmlFor="dueDate">Due Date</label>
+            <Calendar
+              format="DD/MM/YYYY"
+              date={this.state.dueDate}
+              name="dueDate"
+              onChange={this.onCalendarChange}
+            />
+          </div>
+          <br />
           {/* select books */}
-          <input
-            name="searchValue"
-            placeholder="fetch books from db"
-            onChange={this.handleChange}
-          />
-          <button onClick={this.fetchBooks} type="submit">
-            Search
-          </button>
+          <div>
+            <label htmlFor="searchValue">Add Book Options</label>
+            <input
+              name="searchValue"
+              placeholder="Search for a book..."
+              onChange={this.handleChange}
+            />
+            <button onClick={this.fetchBooks} type="submit">
+              Search
+            </button>
 
-          {this.state.searchResults.length ? (
-            <BooksView books={this.state.search} addBook={this.addBook} />
-          ) : null}
-
+            {this.state.searchResults.length ? (
+              <BooksView books={this.state.search} addBook={this.addBook} />
+            ) : null}
+          </div>
+          <br />
           {/* select dates */}
-          <input
-            name="date"
-            placeholder="yyyy/mm/dd"
-            onChange={this.handleChange}
-          />
-          <input name="time" placeholder="hh:mm" onChange={this.handleChange} />
-          <button onClick={this.addDateTime} type="submit">
-            Add
-          </button>
-
+          <div>
+            <label htmlFor="date">Add Date/Time Options</label>
+            <input
+              name="date"
+              placeholder="yyyy/mm/dd"
+              onChange={this.handleChange}
+            />
+            <input
+              name="time"
+              placeholder="hh:mm"
+              onChange={this.handleChange}
+            />
+            <button onClick={this.addDateTime} type="submit">
+              Add Date/Time
+            </button>
+          </div>
+          <br />
           {/* select location */}
-          <input
-            name="place"
-            placeholder="Please enter a place"
-            onChange={this.handleChange}
-          />
-          <button onClick={this.addPlaces} type="submit">
-            Add
-          </button>
-
-          <button type="submit">Create</button>
+          <div>
+            <label htmlFor="place">Add Location Options</label>
+            <input
+              name="place"
+              placeholder="Type a location..."
+              onChange={this.handleChange}
+            />
+            <button onClick={this.addPlaces} type="submit">
+              Add Location
+            </button>
+          </div>
+          <br />
+          <br />
+          <button type="submit">Create Poll</button>
         </form>
       </div>
     )
