@@ -37,10 +37,6 @@ async function seed() {
     Club.create({
       name: 'Lime Conure',
       inviteLink: 'https://github.com/lime-conure/bookworms'
-    }),
-    Club.create({
-      name: 'Another Club',
-      inviteLink: 'https://github.com/lime-conure/bookworms'
     })
   ])
 
@@ -96,7 +92,7 @@ async function seed() {
     })
   ])
 
-  // associate both users with our one club
+  // associate both users with club 2
   await Promise.all([
     UserClub.create({
       userId: 1,
@@ -141,15 +137,9 @@ async function seed() {
     Poll.create({
       title: 'February 2019 Meeting',
       notes:
-        'A poll to decide our next book and meeting time for Club Lime Conure',
+        'A poll to decide our next book and meeting time for club Lime Conure',
       dueDate: new Date(),
       clubId: 1
-    }),
-    Poll.create({
-      title: 'March 2019 Meeting',
-      notes: 'A poll for Another Club',
-      dueDate: new Date(),
-      clubId: 2
     })
   ])
 
@@ -159,49 +149,45 @@ async function seed() {
       type: 'book',
       bookName: 'A Gentleman in Moscow',
       bookId: 1,
-      pollId: 2
+      pollId: 1
     }),
     Option.create({
       type: 'book',
       bookName: 'Station Eleven',
       bookId: 2,
-      pollId: 2
+      pollId: 1
     }),
     Option.create({
       type: 'book',
       bookName: 'Sapiens',
       bookId: 3,
-      pollId: 2
+      pollId: 1
     }),
     Option.create({
       type: 'location',
       location: 'Sweetgreen',
-      pollId: 2
+      pollId: 1
     }),
     Option.create({
       type: 'location',
       location: 'Killarney Rose',
-      pollId: 2
+      pollId: 1
     }),
     Option.create({
       type: 'location',
       location: 'Grace Hopper Campus',
-      pollId: 2
+      pollId: 1
     })
   ])
 
   // add votes for both users
   const votes = await Promise.all([
     Vote.create({
-      id: 1,
       userId: 1,
-      pollId: 1,
       optionId: 1
     }),
     Vote.create({
-      id: 2,
       userId: 2,
-      pollId: 1,
       optionId: 2
     })
   ])
