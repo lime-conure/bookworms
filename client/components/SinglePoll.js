@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import {Link} from 'react-router-dom'
 import {fetchSinglePoll, sendVotes} from '../store'
 
 export class SinglePoll extends Component {
@@ -54,6 +55,9 @@ export class SinglePoll extends Component {
     if (singlePoll) {
       return (
         <div>
+          <Link to={`/clubs/${this.props.match.params.clubId}/polls/`}>
+            ← Back to all polls
+          </Link>
           <h2>{singlePoll.poll.title}</h2>
           <h3>{singlePoll.poll.notes}</h3>
           <form onSubmit={this.handleSubmit}>
