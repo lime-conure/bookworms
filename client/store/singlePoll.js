@@ -45,21 +45,19 @@ export const sendVotes = (clubId, pollId, votes) => async dispatch => {
       votes
     })
     dispatch(updateOptionVotes(data))
-    console.log('option ids of votes from server: ', data)
   } catch (err) {
     console.log(err)
   }
 }
 
+// optionIds = [3, 6]
 const voteForOptions = (state, optionIds) => {
-  const updatedOptions = optionIds.map(optionId => {
-    const updatedOption = state.allOptions.filter(
-      optionObj => optionObj.option.id === optionId
-    )[0]
-    updatedOption.votes++
-    return updatedOption
+  return state.allOptions.map(optionObj => {
+    if (optionIds.includes(optionObj.option.id)) {
+      optionObj.votes++
+    }
+    return optionObj
   })
-  return updatedOptions
 }
 
 /**
@@ -73,8 +71,7 @@ export default function(state = defaultPoll, action) {
     case INCREMENT_VOTES: {
       // action.optionIds is an array of optionIds that you voted for
       // e.g. [3, 6]
-      const updatedOptions = voteForOptions(...state, action.optionIds)
-      console.log('UPDATED OPTIONS: ', updatedOptions)
+      const updatedOptions = voteForOptions({...state}, action.optionIds)
       return {...state, allOptions: updatedOptions}
     }
     default:

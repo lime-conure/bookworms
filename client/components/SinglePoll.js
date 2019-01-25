@@ -41,17 +41,27 @@ export class SinglePoll extends Component {
 
   render() {
     const singlePoll = this.props.singlePoll
+    const bookOptions = singlePoll.allOptions.filter(
+      optionObj => optionObj.option.type === 'book'
+    )
+    const timeOptions = singlePoll.allOptions.filter(
+      optionObj => optionObj.option.type === 'time'
+    )
+    const locationOptions = singlePoll.allOptions.filter(
+      optionObj => optionObj.option.type === 'location'
+    )
+
     if (singlePoll) {
       return (
         <div>
           <h2>{singlePoll.title}</h2>
           <h3>{singlePoll.notes}</h3>
           <form onSubmit={this.handleSubmit}>
-            {singlePoll.bookOptions && singlePoll.bookOptions.length ? (
+            {bookOptions && bookOptions.length ? (
               <div>
                 <h4>Book Options:</h4>
                 <div className="options">
-                  {singlePoll.bookOptions.map(optionObj => (
+                  {bookOptions.map(optionObj => (
                     <div key={optionObj.option.id}>
                       <p>Votes: {optionObj.votes}</p>
                       <input
@@ -67,11 +77,11 @@ export class SinglePoll extends Component {
             ) : (
               ''
             )}
-            {singlePoll.timeOptions && singlePoll.timeOptions.length ? (
+            {timeOptions && timeOptions.length ? (
               <div>
                 <h4>Date/Time Options:</h4>
                 <div className="options">
-                  {singlePoll.timeOptions.map(optionObj => (
+                  {timeOptions.map(optionObj => (
                     <div key={optionObj.option.id}>
                       <p>Votes: {optionObj.votes}</p>
                       <input
@@ -87,11 +97,11 @@ export class SinglePoll extends Component {
             ) : (
               ''
             )}
-            {singlePoll.locationOptions && singlePoll.locationOptions.length ? (
+            {locationOptions && locationOptions.length ? (
               <div>
                 <h4>Location Options:</h4>
                 <div className="options">
-                  {singlePoll.locationOptions.map(optionObj => (
+                  {locationOptions.map(optionObj => (
                     <div key={optionObj.option.id}>
                       <p>Votes: {optionObj.votes}</p>
                       <input

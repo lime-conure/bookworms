@@ -80,18 +80,6 @@ router.get('/:clubId/polls/:pollId', async (req, res, next) => {
         return {option, votes: votes.length}
       })
     )
-
-    // group options by type
-    // const bookOptions = optionsWithVotes.filter(
-    //   optionObj => optionObj.option.type === 'book'
-    // )
-    // const timeOptions = optionsWithVotes.filter(
-    //   optionObj => optionObj.option.type === 'time'
-    // )
-    // const locationOptions = optionsWithVotes.filter(
-    //   optionObj => optionObj.option.type === 'location'
-    // )
-    // const allOptions = bookOptions.concat(timeOptions).concat(locationOptions)
     res.json({poll, allOptions})
   } catch (err) {
     next(err)
