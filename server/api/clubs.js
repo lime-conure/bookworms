@@ -32,7 +32,9 @@ router.post('/:clubId/polls', async (req, res, next) => {
     const books = []
     for (let i = 0; i < selectedBooks.length; i++) {
       const book = selectedBooks[i]
-      let existingBook = await Book.findOne({where: {title: book.title}})
+      let existingBook = await Book.findOne({
+        where: {goodReadsId: book.goodReadsId}
+      })
       if (!existingBook) {
         existingBook = await Book.create(book)
       }
