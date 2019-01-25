@@ -112,12 +112,13 @@ router.put('/:clubId/polls/:pollId', async (req, res, next) => {
           where: {optionId: vote, userId: FAKE_USER.id, pollId}
         })
         if (existingVote) {
-          res.json('You already voted')
+          console.log('you already voted on ', vote)
+          //TO DO UPDATE USERS VOTE IF ALREADY VOTED
         } else {
           await Vote.create({optionId: vote, userId: FAKE_USER.id, pollId})
-          res.json('You voted!')
         }
       })
+      res.status(200).send('Voted!')
     } else {
       res
         .status(403)
