@@ -40,26 +40,37 @@ export class SinglePoll extends Component {
     this.props.sendVotes(clubId, singlePollId, votes)
   }
 
+  // eslint-disable-next-line complexity
   render() {
-    const singlePoll = this.props.singlePoll
-    const bookOptions = singlePoll.allOptions.filter(
+    const poll = this.props.singlePoll.poll
+    const allOptions = this.props.singlePoll.allOptions
+    const bookOptions = allOptions.filter(
       optionObj => optionObj.option.type === 'book'
     )
-    const timeOptions = singlePoll.allOptions.filter(
+    const timeOptions = allOptions.filter(
       optionObj => optionObj.option.type === 'time'
     )
-    const locationOptions = singlePoll.allOptions.filter(
+    const locationOptions = allOptions.filter(
       optionObj => optionObj.option.type === 'location'
     )
 
-    if (singlePoll) {
+    if (poll) {
       return (
         <div>
           <Link to={`/clubs/${this.props.match.params.clubId}/polls/`}>
             ← Back to all polls
           </Link>
-          <h2>{singlePoll.poll.title}</h2>
-          <h3>{singlePoll.poll.notes}</h3>
+          <h2>{poll.title}: </h2>
+          <h3>{poll.notes}</h3>
+          <p>
+            <em>
+              {poll.dueDate ? (
+                <span>Poll ends on {poll.dueDate.slice(0, 10)}</span>
+              ) : (
+                ''
+              )}
+            </em>
+          </p>
           <form onSubmit={this.handleSubmit}>
             {bookOptions && bookOptions.length ? (
               <div>
