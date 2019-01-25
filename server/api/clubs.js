@@ -74,7 +74,7 @@ router.get('/:clubId/polls/:pollId', async (req, res, next) => {
     const options = await poll.getOptions()
 
     // count votes for each option
-    const optionsWithVotes = await Promise.all(
+    const allOptions = await Promise.all(
       options.map(async option => {
         const votes = await Vote.findAll({where: {optionId: option.id}})
         return {option, votes: votes.length}
@@ -82,17 +82,17 @@ router.get('/:clubId/polls/:pollId', async (req, res, next) => {
     )
 
     // group options by type
-    const bookOptions = optionsWithVotes.filter(
-      optionObj => optionObj.option.type === 'book'
-    )
-    const timeOptions = optionsWithVotes.filter(
-      optionObj => optionObj.option.type === 'time'
-    )
-    const locationOptions = optionsWithVotes.filter(
-      optionObj => optionObj.option.type === 'location'
-    )
-
-    res.json({poll, bookOptions, timeOptions, locationOptions})
+    // const bookOptions = optionsWithVotes.filter(
+    //   optionObj => optionObj.option.type === 'book'
+    // )
+    // const timeOptions = optionsWithVotes.filter(
+    //   optionObj => optionObj.option.type === 'time'
+    // )
+    // const locationOptions = optionsWithVotes.filter(
+    //   optionObj => optionObj.option.type === 'location'
+    // )
+    // const allOptions = bookOptions.concat(timeOptions).concat(locationOptions)
+    res.json({poll, allOptions})
   } catch (err) {
     next(err)
   }
@@ -120,7 +120,7 @@ router.put('/:clubId/polls/:pollId', async (req, res, next) => {
           await Vote.create({optionId: vote, userId: FAKE_USER.id})
         }
       })
-      res.status(200).send('Voted!')
+      res.json(votes)
     } else {
       res
         .status(403)
