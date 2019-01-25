@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+const FAKE_USER_ID = 1
+
 /**
  * ACTION TYPES
  */
@@ -11,6 +13,8 @@ const INCREMENT_VOTES = 'INCREMENT_VOTES'
  */
 const defaultPoll = {
   poll: {},
+  // allOptions is an array of option objects:
+  // { option: { id: 1,... }, numVotes: 1, votes: [{ userId: 1 }] }
   allOptions: []
 }
 
@@ -54,7 +58,12 @@ export const sendVotes = (clubId, pollId, votes) => async dispatch => {
 const voteForOptions = (state, optionIds) => {
   return state.allOptions.map(optionObj => {
     if (optionIds.includes(optionObj.option.id)) {
-      optionObj.votes++
+      const voteUserIds = optionObj.votes.map(vote => vote.userId)
+      // prevent users from voting multiple times for the same option
+      if (!voteUserIds.includes(FAKE_USER_ID)) {
+        optionObj.numVotes++
+        optionObj.votes.push({userId: FAKE_USER_ID})
+      }
     }
     return optionObj
   })

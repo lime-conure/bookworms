@@ -69,18 +69,34 @@ router.post('/:clubId/polls', async (req, res, next) => {
 router.get('/:clubId/polls/:pollId', async (req, res, next) => {
   try {
     const pollId = Number(req.params.pollId)
-    const poll = await Poll.findById(pollId)
-    // load poll options
-    const options = await poll.getOptions()
+    const clubId = Number(req.params.clubId)
 
-    // count votes for each option
-    const allOptions = await Promise.all(
-      options.map(async option => {
-        const votes = await Vote.findAll({where: {optionId: option.id}})
-        return {option, votes: votes.length}
-      })
-    )
-    res.json({poll, allOptions})
+    const poll = await Poll.findById(pollId)
+    if (!poll) {
+      res.status(404).send(`Poll does not exist`)
+    } else {
+      const clubIdOfPoll = poll.getClubId()
+      if (clubId === clubIdOfPoll) {
+        // load poll options
+        const options = await poll.getOptions()
+
+        // count votes for each option
+        const allOptions = await Promise.all(
+          options.map(async option => {
+            const votes = await Vote.findAll({
+              where: {optionId: option.id},
+              attributes: ['userId']
+            })
+            return {option, votes, numVotes: votes.length}
+          })
+        )
+        res.json({poll, allOptions})
+      } else {
+        res
+          .status(403)
+          .send(`Not authorized: you can't vote for polls not in your club`)
+      }
+    }
   } catch (err) {
     next(err)
   }
@@ -95,24 +111,29 @@ router.put('/:clubId/polls/:pollId', async (req, res, next) => {
 
     // security: check if the clubId in route is equal to clubId of poll
     const poll = await Poll.findById(pollId)
-    const clubIdOfPoll = poll.getClubId()
-    if (clubId === clubIdOfPoll) {
-      votes.forEach(async vote => {
-        const existingVote = await Vote.findOne({
-          where: {optionId: vote, userId: FAKE_USER.id}
-        })
-        if (existingVote) {
-          console.log('you already voted on ', vote)
-          //TO DO UPDATE USERS VOTE IF ALREADY VOTED
-        } else {
-          await Vote.create({optionId: vote, userId: FAKE_USER.id})
-        }
-      })
-      res.json(votes)
+    if (!poll) {
+      res.status(404).send(`Poll does not exist`)
     } else {
-      res
-        .status(403)
-        .send(`Not authorized: you can't vote for polls not in your club`)
+      const clubIdOfPoll = poll.getClubId()
+
+      if (clubId === clubIdOfPoll) {
+        votes.forEach(async vote => {
+          const existingVote = await Vote.findOne({
+            where: {optionId: vote, userId: FAKE_USER.id}
+          })
+          if (existingVote) {
+            console.log('you already voted on ', vote)
+            //TO DO UPDATE USERS VOTE IF ALREADY VOTED
+          } else {
+            await Vote.create({optionId: vote, userId: FAKE_USER.id})
+          }
+        })
+        res.json(votes)
+      } else {
+        res
+          .status(403)
+          .send(`Not authorized: you can't vote for polls not in your club`)
+      }
     }
   } catch (err) {
     console.log(err, 'ERROR ERROR')

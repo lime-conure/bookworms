@@ -54,8 +54,8 @@ export class SinglePoll extends Component {
     if (singlePoll) {
       return (
         <div>
-          <h2>{singlePoll.title}</h2>
-          <h3>{singlePoll.notes}</h3>
+          <h2>{singlePoll.poll.title}</h2>
+          <h3>{singlePoll.poll.notes}</h3>
           <form onSubmit={this.handleSubmit}>
             {bookOptions && bookOptions.length ? (
               <div>
@@ -63,7 +63,7 @@ export class SinglePoll extends Component {
                 <div className="options">
                   {bookOptions.map(optionObj => (
                     <div key={optionObj.option.id}>
-                      <p>Votes: {optionObj.votes}</p>
+                      <p>Votes: {optionObj.numVotes}</p>
                       <input
                         value={optionObj.option.id}
                         type="radio"
@@ -83,7 +83,7 @@ export class SinglePoll extends Component {
                 <div className="options">
                   {timeOptions.map(optionObj => (
                     <div key={optionObj.option.id}>
-                      <p>Votes: {optionObj.votes}</p>
+                      <p>Votes: {optionObj.numVotes}</p>
                       <input
                         value={optionObj.option.id}
                         type="radio"
@@ -103,7 +103,7 @@ export class SinglePoll extends Component {
                 <div className="options">
                   {locationOptions.map(optionObj => (
                     <div key={optionObj.option.id}>
-                      <p>Votes: {optionObj.votes}</p>
+                      <p>Votes: {optionObj.numVotes}</p>
                       <input
                         value={optionObj.option.id}
                         type="radio"
