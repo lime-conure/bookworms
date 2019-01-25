@@ -57,7 +57,7 @@ Option.belongsTo(Book)
 const BookAuthor = db.define('books_authors')
 const UserBook = db.define('users_books')
 const UserClub = db.define('users_clubs')
-const Vote = db.define('users_options')
+const Vote = db.define('vote')
 
 // books_authors association table columns: bookId, authorId
 Book.belongsToMany(Author, {through: BookAuthor})
