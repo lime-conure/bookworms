@@ -15,7 +15,7 @@ class CreatePoll extends Component {
       selectedPlaces: [],
       title: '',
       notes: '',
-      dueDate: {},
+      dueDate: '',
       searchValue: '',
       date: '',
       time: '',
@@ -91,7 +91,7 @@ class CreatePoll extends Component {
     console.log('Create poll rendered')
     return (
       <div>
-        <form onSubmit={() => this.createPoll(this.state)}>
+        <form onSubmit={this.createPoll}>
           <h3>Create a new poll</h3>
           <label htmlFor="title"> Title</label>
           <input name="title" onChange={this.handleChange} required />

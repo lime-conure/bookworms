@@ -51,6 +51,10 @@ Thread.belongsTo(Club)
 Book.hasMany(Option)
 Option.belongsTo(Book)
 
+// Options have a pollId
+Poll.hasMany(Option)
+Option.belongsTo(Poll)
+
 /**
  * Many-to-Many Associations
  */
