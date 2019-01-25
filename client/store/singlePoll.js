@@ -4,6 +4,7 @@ import axios from 'axios'
  * ACTION TYPES
  */
 const GET_SINGLE_POLL = 'GET_SINGLE_POLL'
+const VOTE = 'VOTE'
 
 /**
  * INITIAL STATE
@@ -18,6 +19,11 @@ const getSinglePoll = poll => ({
   poll
 })
 
+const putVotes = votes => ({
+  type: VOTE,
+  votes
+})
+
 /**
  * THUNK CREATORS
  */
@@ -30,6 +36,15 @@ export const fetchSinglePoll = (clubId, pollId) => async dispatch => {
   }
 }
 
+export const sendVotes = (clubId, pollId, votes) => async dispatch => {
+  try {
+    const {data} = await axios.put(`/api/clubs/${clubId}/polls/${pollId}`, {
+      votes
+    })
+  } catch (err) {
+    console.log(err)
+  }
+}
 /**
  * REDUCER
  */
