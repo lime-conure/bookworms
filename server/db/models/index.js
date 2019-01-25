@@ -8,7 +8,7 @@ const Option = require('./option/option.js')
 const Poll = require('./poll/poll.js')
 const Thread = require('./thread/thread.js')
 const User = require('./user/user.js')
-const Vote = require('./vote/vote.js')
+//const Vote = require('./vote/vote.js')
 const db = require('../db')
 
 /**
@@ -57,6 +57,7 @@ Option.belongsTo(Book)
 const BookAuthor = db.define('books_authors')
 const UserBook = db.define('users_books')
 const UserClub = db.define('users_clubs')
+const Vote = db.define('vote')
 
 // books_authors association table columns: bookId, authorId
 Book.belongsToMany(Author, {through: BookAuthor})
@@ -70,15 +71,11 @@ Book.belongsToMany(User, {through: UserBook})
 User.belongsToMany(Club, {through: UserClub})
 Club.belongsToMany(User, {through: UserClub})
 
-// votes association table columns: userId, pollId, optionId
+// votes association table columns: userId, optionId
 // each row in this table represents a vote
 
-Vote.belongsTo(User)
-User.hasMany(Vote)
-Option.belongsTo(Poll)
-Poll.hasMany(Option)
-Poll.belongsToMany(Option, {through: Vote})
-Option.belongsToMany(Poll, {through: Vote})
+User.belongsToMany(Option, {through: Vote})
+Option.belongsToMany(User, {through: Vote})
 
 /**
  * We'll export all of our models here, so that any time a module needs a model,

@@ -64,6 +64,7 @@ async function seed() {
 
   const books = await Promise.all([
     Book.create({
+      goodReadsId: 29430012,
       title: 'A Gentleman in Moscow',
       description:
         'When, in 1922, he is deemed an unrepentant aristocrat by a Bolshevik tribunal, the count is sentenced to house arrest in the Metropol, a grand hotel across the street from the Kremlin. Rostov, an indomitable man of erudition and wit, has never worked a day in his life, and must now live in an attic room while some of the most tumultuous decades in Russian history are unfolding outside the hotel’s doors. Unexpectedly, his reduced circumstances provide him a doorway into a much larger world of emotional discovery.',
@@ -73,6 +74,7 @@ async function seed() {
       rating: 436
     }),
     Book.create({
+      goodReadsId: 20170404,
       title: 'Station Eleven',
       description:
         "An audacious, darkly glittering novel set in the eerie days of civilization's collapse, Station Eleven tells the spellbinding story of a Hollywood star, his would-be savior, and a nomadic group of actors roaming the scattered outposts of the Great Lakes region, risking everything for art and humanity.",
@@ -82,6 +84,7 @@ async function seed() {
       rating: 403
     }),
     Book.create({
+      goodReadsId: 23692271,
       title: 'Sapiens: A Brief History of Humankind',
       description:
         '100,000 years ago, at least six human species inhabited the earth. Today there is just one. Us. Homo sapiens. How did our species succeed in the battle for dominance? Why did our foraging ancestors come together to create cities and kingdoms? How did we come to believe in gods, nations and human rights; to trust money, books and laws; and to be enslaved by bureaucracy, timetables and consumerism? And what will our world be like in the millennia to come?',
