@@ -3,6 +3,8 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {fetchSinglePoll, sendVotes} from '../store'
 
+const FAKE_USER_ID = 1
+
 export class SinglePoll extends Component {
   constructor(props) {
     super(props)
@@ -38,6 +40,12 @@ export class SinglePoll extends Component {
       votes.push(Number(locationVote))
     }
     this.props.sendVotes(clubId, singlePollId, votes)
+  }
+
+  optionIsChecked(optionObj) {
+    if (optionObj.votes.map(vote => vote.userId).includes(FAKE_USER_ID)) {
+      return true
+    }
   }
 
   // eslint-disable-next-line complexity
@@ -81,6 +89,9 @@ export class SinglePoll extends Component {
                       <p>Votes: {optionObj.numVotes}</p>
                       <input
                         value={optionObj.option.id}
+                        defaultChecked={
+                          this.optionIsChecked(optionObj) ? 'checked' : ''
+                        }
                         type="radio"
                         name="bookOptions"
                       />
