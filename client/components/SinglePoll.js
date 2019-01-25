@@ -23,17 +23,54 @@ export class SinglePoll extends Component {
         <div>
           <h2>{singlePoll.title}</h2>
           <h3>{singlePoll.notes}</h3>
-          <div className="options">
-            <p>Votes: 2</p>
-            <input type="radio" name="options" />
-            <label>Friday</label>
-            <p>Votes: 8</p>
-            <input type="radio" name="options" />
-            <label>Saturday</label>
-            <p>Votes: 3</p>
-            <input type="radio" name="options" />
-            <label>Sunday</label>
-          </div>
+          {singlePoll.bookOptions && singlePoll.bookOptions.length ? (
+            <div>
+              <h4>Book Options:</h4>
+              <div className="options">
+                {singlePoll.bookOptions.map((option, i) => (
+                  <div key={option.id}>
+                    <p>Votes: {option.votes}</p>
+                    <input type="radio" name="options" />
+                    <label>{option.option.bookName}</label>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            ''
+          )}
+          {singlePoll.timeOptions && singlePoll.timeOptions.length ? (
+            <div>
+              <h4>Date/Time Options:</h4>
+              <div className="options">
+                {singlePoll.timeOptions.map(option => (
+                  <div key={option.id}>
+                    <p>Votes: {option.votes}</p>
+                    <input type="radio" name="options" />
+                    <label>{option.option.dateTime}</label>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            ''
+          )}
+          {singlePoll.locationOptions && singlePoll.locationOptions.length ? (
+            <div>
+              <h4>Location Options:</h4>
+              <div className="options">
+                {singlePoll.locationOptions.map(option => (
+                  <div key={option.id}>
+                    <p>Votes: {option.votes}</p>
+                    <input type="radio" name="options" />
+                    <label>{option.option.location}</label>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            ''
+          )}
           <button type="submit" onClick={this.handleClick}>
             Submit vote
           </button>

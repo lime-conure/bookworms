@@ -9,14 +9,19 @@ const Option = db.define('option', {
       notEmpty: true
     }
   },
+  bookName: {
+    type: Sequelize.STRING,
+    defaultValue: null,
+    allowNull: true
+  },
   dateTime: {
-		type: Sequelize.DATE,
-		defaultValue: null,
+    type: Sequelize.DATE,
+    defaultValue: null,
     allowNull: true
   },
   location: {
-		type: Sequelize.TEXT,
-		defaultValue: null,
+    type: Sequelize.STRING,
+    defaultValue: null,
     allowNull: true
   }
 })
