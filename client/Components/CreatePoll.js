@@ -4,6 +4,7 @@ import {fetchPolls} from '../store'
 import {NavLink, Link} from 'react-router-dom'
 import BooksView from './BooksView'
 import axios from 'axios'
+import Calendar from 'react-input-calendar'
 
 class CreatePoll extends Component {
   constructor() {
@@ -15,7 +16,7 @@ class CreatePoll extends Component {
       selectedPlaces: [],
       title: '',
       notes: '',
-      dueDate: '',
+      dueDate: null,
       searchValue: '',
       date: '',
       time: '',
@@ -25,6 +26,21 @@ class CreatePoll extends Component {
     this.handleChange = this.handleChange.bind(this)
     this.fetchBooks = this.fetchBooks.bind(this)
     this.addBook = this.addBook.bind(this)
+    this.addDateTime = this.addDateTime.bind(this)
+    this.addPlaces = this.addPlaces.bind(this)
+    this.onCalendarChange = this.onCalendarChange.bind(this)
+  }
+  onCalendarChange(date) {
+    const dueDate = new Date(
+      Number(date.slice(6, 10)),
+      Number(date.slice(0, 2)) - 1,
+      Number(date.slice(3, 5))
+    )
+    console.log(dueDate)
+    this.setState({
+      dueDate: dueDate
+    })
+    console.log('state:', this.state.dueDate)
   }
   handleChange(e) {
     this.setState({
@@ -47,8 +63,27 @@ class CreatePoll extends Component {
   async createPoll(e) {
     e.preventDefault()
     try {
-      await axios.post(`/api/clubs/${this.props.match.params.clubId}/pools`)
-      this.props.history.push(`/clubs/${this.props.match.params.clubId}/pools`)
+      const {
+        selectedBooks,
+        selectedDates,
+        selectedPlaces,
+        title,
+        dueDate,
+        notes
+      } = this.state
+      const newPoll = {
+        selectedBooks,
+        selectedDates,
+        selectedPlaces,
+        title,
+        dueDate,
+        notes
+      }
+      await axios.post(
+        `/api/clubs/${this.props.match.params.clubId}/polls`,
+        newPoll
+      )
+      this.props.history.push(`/clubs/${this.props.match.params.clubId}/polls`)
     } catch (err) {
       console.err()
     }
@@ -61,7 +96,6 @@ class CreatePoll extends Component {
       Number(date.slice(0, 4)),
       Number(date.slice(5, 7)),
       Number(date.slice(8, 10)),
-      Number(date.slice(5, 7)),
       Number(time.slice(0, 2)),
       Number(time.slice(3, 5))
     )
@@ -89,6 +123,7 @@ class CreatePoll extends Component {
 
   render() {
     console.log('Create poll rendered')
+    console.log('state in render:', this.state)
     return (
       <div>
         <form onSubmit={this.createPoll}>
@@ -97,43 +132,48 @@ class CreatePoll extends Component {
           <input name="title" onChange={this.handleChange} required />
           <label htmlFor="notes">Notes</label>
           <input name="notes" onChange={this.handleChange} />
-          <label htmlFor="dueDate"> Poll Due Date</label>
-          <input name="dueDate" onChange={this.handleChange} required />
-          {/* form to select books */}
-          <form onSubmit={this.fetchBooks}>
-            <input
-              name="searchValue"
-              placeholder="fetch books from db"
-              onChange={this.handleChange}
-            />
-            <button type="submit">Search</button>
-          </form>
+
+          {/* select dueDate */}
+          <Calendar
+            format="DD/MM/YYYY"
+            date={this.state.dueDate}
+            onChange={this.onCalendarChange}
+          />
+
+          {/* select books */}
+          <input
+            name="searchValue"
+            placeholder="fetch books from db"
+            onChange={this.handleChange}
+          />
+          <button onClick={this.fetchBooks} type="submit">
+            Search
+          </button>
+
           {this.state.searchResults.length ? (
             <BooksView books={this.state.search} addBook={this.addBook} />
           ) : null}
-          {/* form to select dates */}
-          <form onSubmit={this.addDateTime}>
-            <input
-              name="date"
-              placeholder="yyyy/mm/dd"
-              onChange={this.handleChange}
-            />
-            <input
-              name="time"
-              placeholder="hh:mm"
-              onChange={this.handleChange}
-            />
-            <button type="submit">Add</button>
-          </form>
-          {/* form to select location */}
-          <form onSubmit={this.addPlace}>
-            <input
-              name="place"
-              placeholder="Please enter a place"
-              onChange={this.handleChange}
-            />
-            <button type="submit">Add</button>
-          </form>
+
+          {/* select dates */}
+          <input
+            name="date"
+            placeholder="yyyy/mm/dd"
+            onChange={this.handleChange}
+          />
+          <input name="time" placeholder="hh:mm" onChange={this.handleChange} />
+          <button onClick={this.addDateTime} type="submit">
+            Add
+          </button>
+
+          {/* select location */}
+          <input
+            name="place"
+            placeholder="Please enter a place"
+            onChange={this.handleChange}
+          />
+          <button onClick={this.addPlaces} type="submit">
+            Add
+          </button>
 
           <button type="submit">Create</button>
         </form>

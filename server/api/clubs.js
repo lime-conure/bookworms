@@ -29,6 +29,11 @@ router.post('/:clubId/polls', async (req, res, next) => {
       dueDate,
       notes
     } = req.body
+
+    console.log(req.body.selectedDates)
+
+    const newPoll = await Poll.create({title, dueDate, notes})
+
     const books = []
     for (let i = 0; i < selectedBooks.length; i++) {
       const book = selectedBooks[i]
@@ -43,20 +48,31 @@ router.post('/:clubId/polls', async (req, res, next) => {
     console.log(books, 'books')
 
     await Promise.all(
-      books.map(book => Option.create({type: 'book', bookId: book.id}))
+      books.map(book =>
+        Option.create({type: 'book', bookId: book.id, pollId: newPoll.id})
+      )
     )
 
     await Promise.all(
-      selectedDates.map(date => Option.create({type: 'time', dayTime: date}))
+      selectedDates.map(date => {
+        console.log('date:', date)
+        const dateTime = new Date(date)
+        console.log('dateTime:', dateTime)
+        return Option.create({
+          type: 'time',
+          dateTime: dateTime,
+          pollId: newPoll.id
+        })
+      })
     )
 
     await Promise.all(
       selectedPlaces.map(place =>
-        Option.create({type: 'location', location: place})
+        Option.create({type: 'location', location: place, pollId: newPoll.id})
       )
     )
 
-    const newPoll = await Poll.create({title, dueDate, notes})
+    //const newPoll = await Poll.create({title, dueDate, notes})
     const club = await Club.findById(req.params.clubId)
     newPoll.setClub(club)
     res.send(newPoll)
