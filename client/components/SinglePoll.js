@@ -1,10 +1,11 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {fetchSinglePoll} from '../store'
+import {fetchSinglePoll, sendVotes} from '../store'
 
 export class SinglePoll extends Component {
   constructor(props) {
     super(props)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   componentDidMount() {
@@ -12,8 +13,30 @@ export class SinglePoll extends Component {
     const clubId = Number(this.props.match.params.clubId)
     this.props.fetchSinglePoll(clubId, singlePollId)
   }
-  handleClick() {
-    console.log('you clicked')
+  handleSubmit(event) {
+    event.preventDefault()
+    const singlePollId = Number(this.props.match.params.pollId)
+    const clubId = Number(this.props.match.params.clubId)
+    const bookVote = event.target.bookOptions
+      ? event.target.bookOptions.value
+      : null
+    const timeVote = event.target.timeOptions
+      ? event.target.timeOptions.value
+      : null
+    const locationVote = event.target.locationOptions
+      ? event.target.locationOptions.value
+      : null
+    const votes = []
+    if (bookVote) {
+      votes.push(Number(bookVote))
+    }
+    if (timeVote) {
+      votes.push(Number(timeVote))
+    }
+    if (locationVote) {
+      votes.push(Number(locationVote))
+    }
+    this.props.sendVotes(clubId, singlePollId, votes)
   }
 
   render() {
@@ -23,57 +46,69 @@ export class SinglePoll extends Component {
         <div>
           <h2>{singlePoll.title}</h2>
           <h3>{singlePoll.notes}</h3>
-          {singlePoll.bookOptions && singlePoll.bookOptions.length ? (
-            <div>
-              <h4>Book Options:</h4>
-              <div className="options">
-                {singlePoll.bookOptions.map((option, i) => (
-                  <div key={option.id}>
-                    <p>Votes: {option.votes}</p>
-                    <input type="radio" name="options" />
-                    <label>{option.option.bookName}</label>
-                  </div>
-                ))}
+          <form onSubmit={this.handleSubmit}>
+            {singlePoll.bookOptions && singlePoll.bookOptions.length ? (
+              <div>
+                <h4>Book Options:</h4>
+                <div className="options">
+                  {singlePoll.bookOptions.map(optionObj => (
+                    <div key={optionObj.option.id}>
+                      <p>Votes: {optionObj.votes}</p>
+                      <input
+                        value={optionObj.option.id}
+                        type="radio"
+                        name="bookOptions"
+                      />
+                      <label>{optionObj.option.bookName}</label>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          ) : (
-            ''
-          )}
-          {singlePoll.timeOptions && singlePoll.timeOptions.length ? (
-            <div>
-              <h4>Date/Time Options:</h4>
-              <div className="options">
-                {singlePoll.timeOptions.map(option => (
-                  <div key={option.id}>
-                    <p>Votes: {option.votes}</p>
-                    <input type="radio" name="options" />
-                    <label>{option.option.dateTime}</label>
-                  </div>
-                ))}
+            ) : (
+              ''
+            )}
+            {singlePoll.timeOptions && singlePoll.timeOptions.length ? (
+              <div>
+                <h4>Date/Time Options:</h4>
+                <div className="options">
+                  {singlePoll.timeOptions.map(optionObj => (
+                    <div key={optionObj.option.id}>
+                      <p>Votes: {optionObj.votes}</p>
+                      <input
+                        value={optionObj.option.id}
+                        type="radio"
+                        name="timeOptions"
+                      />
+                      <label>{optionObj.option.dateTime}</label>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          ) : (
-            ''
-          )}
-          {singlePoll.locationOptions && singlePoll.locationOptions.length ? (
-            <div>
-              <h4>Location Options:</h4>
-              <div className="options">
-                {singlePoll.locationOptions.map(option => (
-                  <div key={option.id}>
-                    <p>Votes: {option.votes}</p>
-                    <input type="radio" name="options" />
-                    <label>{option.option.location}</label>
-                  </div>
-                ))}
+            ) : (
+              ''
+            )}
+            {singlePoll.locationOptions && singlePoll.locationOptions.length ? (
+              <div>
+                <h4>Location Options:</h4>
+                <div className="options">
+                  {singlePoll.locationOptions.map(optionObj => (
+                    <div key={optionObj.option.id}>
+                      <p>Votes: {optionObj.votes}</p>
+                      <input
+                        value={optionObj.option.id}
+                        type="radio"
+                        name="locationOptions"
+                      />
+                      <label>{optionObj.option.location}</label>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          ) : (
-            ''
-          )}
-          <button type="submit" onClick={this.handleClick}>
-            Submit vote
-          </button>
+            ) : (
+              ''
+            )}
+            <button type="submit">Submit vote</button>
+          </form>
         </div>
       )
     } else {
@@ -87,7 +122,10 @@ const mapState = state => ({
 })
 
 const mapDispatch = dispatch => ({
-  fetchSinglePoll: (clubId, pollId) => dispatch(fetchSinglePoll(clubId, pollId))
+  fetchSinglePoll: (clubId, pollId) =>
+    dispatch(fetchSinglePoll(clubId, pollId)),
+  sendVotes: (clubId, pollId, votes) =>
+    dispatch(sendVotes(clubId, pollId, votes))
 })
 
 export default connect(mapState, mapDispatch)(SinglePoll)
