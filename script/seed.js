@@ -193,15 +193,11 @@ async function seed() {
   // add votes for both users
   const votes = await Promise.all([
     Vote.create({
-      id: 1,
       userId: 1,
-      pollId: 1,
       optionId: 1
     }),
     Vote.create({
-      id: 2,
       userId: 2,
-      pollId: 1,
       optionId: 2
     })
   ])

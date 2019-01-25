@@ -111,13 +111,13 @@ router.put('/:clubId/polls/:pollId', async (req, res, next) => {
     if (clubId === clubIdOfPoll) {
       votes.forEach(async vote => {
         const existingVote = await Vote.findOne({
-          where: {optionId: vote, userId: FAKE_USER.id, pollId}
+          where: {optionId: vote, userId: FAKE_USER.id}
         })
         if (existingVote) {
           console.log('you already voted on ', vote)
           //TO DO UPDATE USERS VOTE IF ALREADY VOTED
         } else {
-          await Vote.create({optionId: vote, userId: FAKE_USER.id, pollId})
+          await Vote.create({optionId: vote, userId: FAKE_USER.id})
         }
       })
       res.status(200).send('Voted!')
