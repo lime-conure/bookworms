@@ -7,6 +7,21 @@ const FAKE_USER = {
   email: 'brynn.shepherd@gmail.com',
   name: 'Brynn Shepherd'
 }
+
+//POST /api/clubs/:clubId/deleteMember
+router.post('/:clubId/deletemember', async (req, res, next) => {
+  try {
+    const {clubId} = req.params
+    console.log(clubId, 'club')
+    const club = await Club.findById(clubId)
+    Club.deleteUser(req.userId)
+
+    res.send(club)
+  } catch (err) {
+    next(err)
+  }
+})
+
 //GET /api/clubs/:clubId/polls
 router.get('/:clubId/polls', async (req, res, next) => {
   try {
