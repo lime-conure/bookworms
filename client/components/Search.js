@@ -101,7 +101,7 @@ class Search extends Component {
          * if fetching data, display "loading...", if error, display error message, else display search results
          */}
         {this.state.fetchingData ? (
-          <p className="lead text-center">{'loading... '}</p>
+          <p className="lead text-center">loading... </p>
         ) : (
           (this.state.error && (
             <p className="text-danger">{this.state.error}</p>
