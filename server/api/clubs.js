@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {Club, Poll, Option, Vote, Book} = require('../db/models')
+const {Club, Poll, Option, Vote, Book, User} = require('../db/models')
 module.exports = router
 
 const FAKE_USER = {
@@ -11,11 +11,12 @@ const FAKE_USER = {
 //POST /api/clubs/:clubId/deleteMember
 router.post('/:clubId/deletemember', async (req, res, next) => {
   try {
-    const {clubId} = req.params
+    const clubId = req.params.clubId
     console.log(clubId, 'club')
     const club = await Club.findById(clubId)
-    Club.deleteUser(req.userId)
-
+    console.log(club, 'club')
+    const user = await User.findById(1)
+    Club.removeUser(user)
     res.send(club)
   } catch (err) {
     next(err)
