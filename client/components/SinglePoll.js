@@ -21,9 +21,9 @@ export class SinglePoll extends Component {
     const clubId = Number(this.props.match.params.clubId)
     this.props.fetchSinglePoll(clubId, singlePollId)
   }
-  handleCheck(id) {
+  handleCheck(optionId) {
     this.setState(prevState => ({
-      votes: [...prevState.votes, Number(id)]
+      votes: [...prevState.votes, Number(optionId)]
     }))
   }
   handleSubmit(event) {
@@ -112,7 +112,7 @@ export class SinglePoll extends Component {
             {this.renderPoll(timeOptions, 'Date/Time')}
             {this.renderPoll(locationOptions, 'Location')}
             <button type="submit" disabled={!this.state.votes.length}>
-              Submit vote
+              Vote
             </button>
           </form>
         </div>

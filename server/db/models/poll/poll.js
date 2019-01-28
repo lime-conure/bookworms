@@ -14,6 +14,9 @@ const Poll = db.define('poll', {
     allowNull: false,
     validate: {
       notEmpty: true
+    },
+    get() {
+      return new Date(this.getDataValue('dueDate')).toLocaleDateString()
     }
   },
   notes: {

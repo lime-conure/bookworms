@@ -33,8 +33,9 @@ class Polls extends Component {
                     poll.id
                   }`}
                 >
-                  <p>Title: {poll.title}</p>
-                  <p>Due date: {new Date(poll.dueDate).toString()}</p>
+                  <p>
+                    {poll.title} &ndash; <em>Ends on {poll.dueDate}</em>
+                  </p>
                 </Link>
               </li>
             </div>
