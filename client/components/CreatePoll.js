@@ -105,13 +105,13 @@ class CreatePoll extends Component {
       Number(time.slice(0, 2)),
       Number(time.slice(3, 5))
     )
-
     this.setState({
       selectedDates: [...this.state.selectedDates, dateTime],
       date: '',
       time: ''
     })
   }
+
   addPlaces(e) {
     e.preventDefault()
     this.setState({
@@ -268,7 +268,11 @@ class CreatePoll extends Component {
               value={this.state.time}
               onChange={this.handleChange}
             />
-            <button onClick={this.addDateTime} type="submit">
+            <button
+              disabled={!this.state.date || !this.state.time}
+              onClick={this.addDateTime}
+              type="submit"
+            >
               Add Date/Time
             </button>
 
@@ -300,7 +304,11 @@ class CreatePoll extends Component {
               value={this.state.place}
               onChange={this.handleChange}
             />
-            <button onClick={this.addPlaces} type="submit">
+            <button
+              disabled={!this.state.place}
+              onClick={this.addPlaces}
+              type="submit"
+            >
               Add Location
             </button>
             <br />
