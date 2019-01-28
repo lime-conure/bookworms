@@ -2,11 +2,6 @@ const router = require('express').Router()
 const {Club, Poll, Option, Vote, Book} = require('../db/models')
 module.exports = router
 
-const FAKE_USER = {
-  id: 1,
-  email: 'brynn.shepherd@gmail.com',
-  name: 'Brynn Shepherd'
-}
 //GET /api/clubs/:clubId/polls
 router.get('/:clubId/polls', async (req, res, next) => {
   try {
@@ -147,6 +142,7 @@ router.put('/:clubId/polls/:pollId', async (req, res, next) => {
             await Vote.create({optionId: vote, userId})
           }
         })
+
         res.json(votes)
       } else {
         res

@@ -28,16 +28,20 @@ export class SinglePoll extends Component {
     event.preventDefault()
     const singlePollId = Number(this.props.match.params.pollId)
     const clubId = Number(this.props.match.params.clubId)
-    this.props.sendVotes(
+    const payload = {
+      userId: Number(this.props.userId),
       clubId,
-      singlePollId,
-      this.state.votes,
-      this.props.userId
-    )
+      pollId: singlePollId,
+      votes: this.state.votes
+    }
+    this.props.sendVotes(payload)
   }
 
   optionIsChecked(optionObj) {
-    if (optionObj.votes.map(vote => vote.userId).includes(this.props.userId)) {
+    if (
+      this.props.userId &&
+      optionObj.votes.map(vote => vote.userId).includes(this.props.userId)
+    ) {
       return true
     } else return false
   }
@@ -92,7 +96,6 @@ export class SinglePoll extends Component {
     const locationOptions = allOptions.filter(
       optionObj => optionObj.option.type === 'location'
     )
-
     if (poll) {
       return (
         <div>

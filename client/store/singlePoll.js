@@ -1,7 +1,5 @@
 import axios from 'axios'
 
-const FAKE_USER_ID = 1
-
 /**
  * ACTION TYPES
  */
@@ -43,14 +41,19 @@ export const fetchSinglePoll = (clubId, pollId) => async dispatch => {
   }
 }
 
-export const sendVotes = (clubId, pollId, votes, userId) => async dispatch => {
+export const sendVotes = ({
+  userId,
+  clubId,
+  pollId,
+  votes
+}) => async dispatch => {
   try {
     const {data} = await axios.put(`/api/clubs/${clubId}/polls/${pollId}`, {
       votes
     })
     dispatch(updateOptionVotes({userId, optionIds: data}))
   } catch (err) {
-    console.log(err)
+    console.error(err)
   }
 }
 
@@ -62,7 +65,7 @@ const voteForOptions = (state, optionIds, userId) => {
       // prevent users from voting multiple times for the same option
       if (!voteUserIds.includes(userId)) {
         optionObj.numVotes++
-        optionObj.votes.push(userId)
+        optionObj.votes.push({userId})
       }
     }
     return optionObj
@@ -78,7 +81,7 @@ export default function(state = defaultPoll, action) {
       return action.poll
     }
     case INCREMENT_VOTES: {
-      // action.optionIds is an array of optionIds that you voted for
+      // action.payload.optionIds is an array of optionIds that you voted for
       // e.g. [3, 6]
       const updatedOptions = voteForOptions(
         {...state},
