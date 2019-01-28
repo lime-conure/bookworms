@@ -17,7 +17,7 @@ class CreatePoll extends Component {
     super()
     this.state = {
       open: false,
-      description: '',
+      description: 'loading...',
       searchResults: [],
       selectedBooks: [],
       selectedDates: [],
@@ -105,7 +105,7 @@ class CreatePoll extends Component {
   }
 
   closeModal() {
-    this.setState({open: false})
+    this.setState({open: false, description: 'loading...'})
   }
 
   async createPoll(e) {
