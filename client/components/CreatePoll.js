@@ -5,6 +5,7 @@ import {NavLink, Link} from 'react-router-dom'
 import BooksView from './BooksView'
 import axios from 'axios'
 import Calendar from 'react-input-calendar'
+import Popup from 'reactjs-popup'
 import Search from './Search'
 
 class CreatePoll extends Component {
@@ -220,14 +221,48 @@ class CreatePoll extends Component {
               // <BooksView books={this.state.search} addBook={this.addBook} />
               <div>
                 {this.state.searchResults.map(bookResult => (
-                  <div key={bookResult.best_book.id}>
-                    <img src={bookResult.best_book.small_image_url} />
-                    <p>{bookResult.best_book.title}</p>
-                    <p>{bookResult.best_book.author.name}</p>
-                    <button onClick={e => this.addBook(e, bookResult)}>
-                      Add a book
-                    </button>
-                    <br />
+                  <div key={bookResult.id}>
+                    <div key={bookResult.best_book.id}>
+                      <Popup
+                        trigger={
+                          <img src={bookResult.best_book.small_image_url} />
+                        }
+                        position="right center"
+                        modal
+                      >
+                        {close => (
+                          <div className="modal">
+                            <a className="close" onClick={close}>
+                              &times;
+                            </a>
+                            <div className="header">
+                              {' '}
+                              {bookResult.best_book.title}
+                            </div>
+                            <img src={bookResult.best_book.small_image_url} />
+                            <div className="actions">
+                              <button className="button">
+                                <a
+                                  href={`https://www.goodreads.com/book/show/${
+                                    bookResult.best_book.id
+                                  }`}
+                                  target="_blank"
+                                >
+                                  View more in goodreads.com
+                                </a>
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                      </Popup>
+                      {/* <p>{bookResult.title}</p> */}
+                      <p>{bookResult.best_book.title}</p>
+                      <p>{bookResult.best_book.author.name}</p>
+                      <button onClick={e => this.addBook(e, bookResult)}>
+                        Add a book
+                      </button>
+                      <br />
+                    </div>
                   </div>
                 ))}
                 <br />
