@@ -8,6 +8,7 @@ const FAKE_USER_ID = 1
 export class SinglePoll extends Component {
   constructor(props) {
     super(props)
+    // local state for keeping track of which checkbox options are selected
     this.state = {
       votes: []
     }
@@ -20,37 +21,16 @@ export class SinglePoll extends Component {
     const clubId = Number(this.props.match.params.clubId)
     this.props.fetchSinglePoll(clubId, singlePollId)
   }
-  handleCheck(event) {
+  handleCheck(id) {
     this.setState(prevState => ({
-      votes: [...prevState.votes, Number(event.target.value)]
+      votes: [...prevState.votes, Number(id)]
     }))
-    console.log('votes: ', this.state.votes)
   }
   handleSubmit(event) {
     event.preventDefault()
     const singlePollId = Number(this.props.match.params.pollId)
     const clubId = Number(this.props.match.params.clubId)
-    const bookVote = event.target.bookOptions
-      ? event.target.bookOptions.value
-      : null
-    const timeVote = event.target.timeOptions
-      ? event.target.timeOptions.value
-      : null
-    const locationVote = event.target.locationOptions
-      ? event.target.locationOptions.value
-      : null
-    const votes = []
-    if (bookVote) {
-      votes.push(Number(bookVote))
-    }
-    if (timeVote) {
-      votes.push(Number(timeVote))
-    }
-    if (locationVote) {
-      votes.push(Number(locationVote))
-    }
-    console.log(event.target.locationOptions.checked)
-    this.props.sendVotes(clubId, singlePollId, votes)
+    this.props.sendVotes(clubId, singlePollId, this.state.votes)
   }
 
   optionIsChecked(optionObj) {
@@ -59,6 +39,10 @@ export class SinglePoll extends Component {
     } else return false
   }
   renderPoll(options, type) {
+    const columnName =
+      type === 'Book'
+        ? 'bookName'
+        : type === 'Date/Time' ? 'dateTime' : 'location'
     if (options && options.length) {
       return (
         <div>
@@ -72,14 +56,14 @@ export class SinglePoll extends Component {
                   defaultChecked={
                     this.optionIsChecked(optionObj) ? 'checked' : ''
                   }
-                  onChange={this.handleCheck}
+                  onChange={() => this.handleCheck(optionObj.option.id)}
                   type="checkbox"
-                  // name="bookOptions"
+                  name="options"
                 />
-                <label>{optionObj.option.bookName}</label>
+                <label>{optionObj.option[columnName]}</label>
                 {this.optionIsChecked(optionObj) ? (
                   <small>
-                    <em>You already voted for this</em>
+                    <em>You voted for this</em>
                   </small>
                 ) : (
                   ''
@@ -127,7 +111,9 @@ export class SinglePoll extends Component {
             {this.renderPoll(bookOptions, 'Book')}
             {this.renderPoll(timeOptions, 'Date/Time')}
             {this.renderPoll(locationOptions, 'Location')}
-            <button type="submit">Submit vote</button>
+            <button type="submit" disabled={!this.state.votes.length}>
+              Submit vote
+            </button>
           </form>
         </div>
       )
