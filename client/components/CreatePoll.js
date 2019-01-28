@@ -25,7 +25,6 @@ class CreatePoll extends Component {
     }
     this.createPoll = this.createPoll.bind(this)
     this.handleChange = this.handleChange.bind(this)
-    this.fetchBooks = this.fetchBooks.bind(this)
     this.addBook = this.addBook.bind(this)
     this.addDateTime = this.addDateTime.bind(this)
     this.addPlaces = this.addPlaces.bind(this)
@@ -55,17 +54,17 @@ class CreatePoll extends Component {
     this.setState({searchResults: results})
   }
 
-  async fetchBooks(e) {
-    e.preventDefault()
-    try {
-      const {data} = await axios.get('/api/books')
-      this.setState({
-        searchResults: data
-      })
-    } catch (err) {
-      console.error(err)
-    }
-  }
+  // async fetchBooks(e) {
+  //   e.preventDefault()
+  //   try {
+  //     const {data} = await axios.get('/api/books')
+  //     this.setState({
+  //       searchResults: data
+  //     })
+  //   } catch (err) {
+  //     console.error(err)
+  //   }
+  // }
 
   async createPoll(e) {
     e.preventDefault()
@@ -123,8 +122,23 @@ class CreatePoll extends Component {
 
   addBook(e, book) {
     e.preventDefault()
+
+    const newBook = {
+      author: book.best_book.author,
+      goodReadsId: book.best_book.id,
+      title: book.best_book.title,
+      imageUrl: book.best_book.image_url,
+      smallImageUrl: book.best_book.small_image_url,
+      pubDate:
+        book.original_publication_month +
+        '-' +
+        book.original_publication_day +
+        '-' +
+        book.original_publication_year,
+      rating: Math.round(book.average_rating * 100)
+    }
     this.setState({
-      selectedBooks: [...this.state.selectedBooks, book]
+      selectedBooks: [...this.state.selectedBooks, newBook]
     })
   }
 
@@ -210,9 +224,7 @@ class CreatePoll extends Component {
                     <img src={bookResult.best_book.small_image_url} />
                     <p>{bookResult.best_book.title}</p>
                     <p>{bookResult.best_book.author.name}</p>
-                    <button
-                      onClick={e => this.addBook(e, bookResult.best_book)}
-                    >
+                    <button onClick={e => this.addBook(e, bookResult)}>
                       Add a book
                     </button>
                     <br />
