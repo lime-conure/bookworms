@@ -1,7 +1,7 @@
 const Author = require('./author/author.js')
 const Book = require('./book/book.js')
 const Club = require('./club/club.js')
-const Media = require('./media/media.js')
+// const Media = require('./media/media.js')
 const Meeting = require('./meeting/meeting.js')
 const Message = require('./message/message.js')
 const Option = require('./option/option.js')
@@ -16,14 +16,14 @@ const db = require('../db')
  */
 
 // Users, Books, Clubs, & Authors have a mediaId
-User.hasMany(Media)
-Media.belongsTo(User)
-Book.hasMany(Media)
-Media.belongsTo(Book)
-Club.hasMany(Media)
-Media.belongsTo(Club)
-Author.hasMany(Media)
-Media.belongsTo(Author)
+// User.hasMany(Media)
+// Media.belongsTo(User)
+// Book.hasMany(Media)
+// Media.belongsTo(Book)
+// Club.hasMany(Media)
+// Media.belongsTo(Club)
+// Author.hasMany(Media)
+// Media.belongsTo(Author)
 
 // Messages have a userId, clubId, & threadId
 User.hasMany(Message)
@@ -91,7 +91,7 @@ module.exports = {
   Author,
   Book,
   Club,
-  Media,
+  // Media,
   Meeting,
   Message,
   Option,

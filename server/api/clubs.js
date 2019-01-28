@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {Club, Poll, Option, Vote, Book} = require('../db/models')
+const {Club, Poll, Option, Vote, Book, Author} = require('../db/models')
 module.exports = router
 
 //GET /api/clubs/:clubId/polls
@@ -37,6 +37,16 @@ router.post('/:clubId/polls', async (req, res, next) => {
       })
       if (!existingBook) {
         existingBook = await Book.create(book)
+        let existingAuthor = await Author.findOne({
+          where: {goodReadsId: book.author.id}
+        })
+        if (!existingAuthor) {
+          existingAuthor = await Author.create({
+            name: book.author.name,
+            goodReadsId: book.author.id
+          })
+        }
+        existingBook.setAuthor(existingAuthor)
       }
       books.push(existingBook)
     }

@@ -5,6 +5,8 @@ import {NavLink, Link} from 'react-router-dom'
 import BooksView from './BooksView'
 import axios from 'axios'
 import Calendar from 'react-input-calendar'
+import Popup from 'reactjs-popup'
+import Search from './Search'
 
 class CreatePoll extends Component {
   constructor() {
@@ -24,11 +26,11 @@ class CreatePoll extends Component {
     }
     this.createPoll = this.createPoll.bind(this)
     this.handleChange = this.handleChange.bind(this)
-    this.fetchBooks = this.fetchBooks.bind(this)
     this.addBook = this.addBook.bind(this)
     this.addDateTime = this.addDateTime.bind(this)
     this.addPlaces = this.addPlaces.bind(this)
     this.onCalendarChange = this.onCalendarChange.bind(this)
+    this.setResults = this.setResults.bind(this)
     // this.deleteOption = this.deleteOption.bind(this)
   }
   onCalendarChange(date) {
@@ -49,17 +51,21 @@ class CreatePoll extends Component {
     })
   }
 
-  async fetchBooks(e) {
-    e.preventDefault()
-    try {
-      const {data} = await axios.get('/api/books')
-      this.setState({
-        searchResults: data
-      })
-    } catch (err) {
-      console.error(err)
-    }
+  setResults = results => {
+    this.setState({searchResults: results})
   }
+
+  // async fetchBooks(e) {
+  //   e.preventDefault()
+  //   try {
+  //     const {data} = await axios.get('/api/books')
+  //     this.setState({
+  //       searchResults: data
+  //     })
+  //   } catch (err) {
+  //     console.error(err)
+  //   }
+  // }
 
   async createPoll(e) {
     e.preventDefault()
@@ -117,8 +123,23 @@ class CreatePoll extends Component {
 
   addBook(e, book) {
     e.preventDefault()
+
+    const newBook = {
+      author: book.best_book.author,
+      goodReadsId: book.best_book.id,
+      title: book.best_book.title,
+      imageUrl: book.best_book.image_url,
+      smallImageUrl: book.best_book.small_image_url,
+      pubDate:
+        book.original_publication_month +
+        '-' +
+        book.original_publication_day +
+        '-' +
+        book.original_publication_year,
+      rating: Math.round(book.average_rating * 100)
+    }
     this.setState({
-      selectedBooks: [...this.state.selectedBooks, book]
+      selectedBooks: [...this.state.selectedBooks, newBook]
     })
   }
 
@@ -156,7 +177,7 @@ class CreatePoll extends Component {
     console.log('state in render:', this.state)
     return (
       <div>
-        <form onSubmit={this.createPoll}>
+        <form>
           <h3>Create a New Poll</h3>
           <div>
             <label htmlFor="title"> Title</label>
@@ -172,7 +193,7 @@ class CreatePoll extends Component {
           <div>
             <label htmlFor="dueDate">Due Date</label>
             <Calendar
-              format="DD/MM/YYYY"
+              format="MM-DD-YYYY"
               date={this.state.dueDate}
               name="dueDate"
               onChange={this.onCalendarChange}
@@ -180,8 +201,9 @@ class CreatePoll extends Component {
           </div>
           <br />
           {/* select books */}
+
           <div>
-            <label htmlFor="searchValue">Add Book Options</label>
+            {/*<label htmlFor="searchValue">Add Book Options</label>
             <input
               name="searchValue"
               placeholder="Search for a book..."
@@ -189,7 +211,10 @@ class CreatePoll extends Component {
             />
             <button onClick={this.fetchBooks} type="submit">
               Search
-            </button>
+						</button>
+						*/}
+            <label>Add Book Options</label>
+            <Search setResults={this.setResults} />
             <br />
 
             {this.state.searchResults.length ? (
@@ -197,18 +222,57 @@ class CreatePoll extends Component {
               <div>
                 {this.state.searchResults.map(bookResult => (
                   <div key={bookResult.id}>
-                    <p>{bookResult.title}</p>
-                    <button onClick={e => this.addBook(e, bookResult)}>
-                      Add a book
-                    </button>
-                    <br />
+                    <div key={bookResult.best_book.id}>
+                      <Popup
+                        trigger={
+                          <img src={bookResult.best_book.small_image_url} />
+                        }
+                        position="right center"
+                        modal
+                      >
+                        {close => (
+                          <div className="modal">
+                            <a className="close" onClick={close}>
+                              &times;
+                            </a>
+                            <div className="header">
+                              {' '}
+                              {bookResult.best_book.title}
+                            </div>
+                            <img src={bookResult.best_book.small_image_url} />
+                            <div className="actions">
+                              <button className="button">
+                                <a
+                                  href={`https://www.goodreads.com/book/show/${
+                                    bookResult.best_book.id
+                                  }`}
+                                  target="_blank"
+                                >
+                                  View more in goodreads.com
+                                </a>
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                      </Popup>
+                      {/* <p>{bookResult.title}</p> */}
+                      <p>{bookResult.best_book.title}</p>
+                      <p>{bookResult.best_book.author.name}</p>
+                      <button onClick={e => this.addBook(e, bookResult)}>
+                        Add a book
+                      </button>
+                      <br />
+                    </div>
                   </div>
                 ))}
                 <br />
                 <div>
-                  {this.state.selectedBooks.length
-                    ? this.state.selectedBooks.map((book, idx) => (
+                  {this.state.selectedBooks.length ? (
+                    <div>
+                      <h4>Added books:</h4>
+                      {this.state.selectedBooks.map((book, idx) => (
                         <div key={book.id}>
+                          <img src={book.small_image_url} />
                           <p>{book.title}</p>
                           <button
                             onClick={e => this.deleteOption(idx, 'book', e)}
@@ -216,8 +280,9 @@ class CreatePoll extends Component {
                             X
                           </button>
                         </div>
-                      ))
-                    : null}
+                      ))}
+                    </div>
+                  ) : null}
                 </div>
               </div>
             ) : null}
@@ -289,7 +354,9 @@ class CreatePoll extends Component {
           </div>
 
           <br />
-          <button type="submit">Create Poll</button>
+          <button type="submit" onClick={this.createPoll}>
+            Create Poll
+          </button>
         </form>
       </div>
     )
