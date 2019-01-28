@@ -5,6 +5,7 @@ import {NavLink, Link} from 'react-router-dom'
 import BooksView from './BooksView'
 import axios from 'axios'
 import Calendar from 'react-input-calendar'
+import Popup from 'reactjs-popup'
 
 class CreatePoll extends Component {
   constructor() {
@@ -197,7 +198,34 @@ class CreatePoll extends Component {
               <div>
                 {this.state.searchResults.map(bookResult => (
                   <div key={bookResult.id}>
-                    <p>{bookResult.title}</p>
+                    <Popup
+                      trigger={<p>{bookResult.title}</p>}
+                      position="right center"
+                      modal
+                    >
+                      {close => (
+                        <div className="modal">
+                          <a className="close" onClick={close}>
+                            &times;
+                          </a>
+                          <div className="header"> {bookResult.title}</div>
+                          <div className="content">
+                            {bookResult.description}
+                          </div>
+                          <div className="actions">
+                            <button className="button">
+                              <a
+                                href="https://www.goodreads.com/api/documentation"
+                                target="_blank"
+                              >
+                                More info
+                              </a>
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </Popup>
+                    {/* <p>{bookResult.title}</p> */}
                     <button onClick={e => this.addBook(e, bookResult)}>
                       Add a book
                     </button>

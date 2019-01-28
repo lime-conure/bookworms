@@ -2,6 +2,10 @@ const Sequelize = require('sequelize')
 const db = require('../../db')
 
 const Author = db.define('author', {
+  goodReadsId: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
   name: {
     type: Sequelize.STRING,
     allowNull: false
