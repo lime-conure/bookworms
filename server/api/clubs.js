@@ -1,19 +1,13 @@
 const router = require('express').Router()
-const {Club, Poll, Option, Vote, Book, User} = require('../db/models')
+const {Club, Poll, Option, Vote, Book, User, Author} = require('../db/models')
 module.exports = router
-
-const FAKE_USER = {
-  id: 1,
-  email: 'brynn.shepherd@gmail.com',
-  name: 'Brynn Shepherd'
-}
 
 //****** ROUTES FOR CLUBS ******//
 
 //GET /api/clubs - to get all clubs by user
 router.get('/', async (req, res, next) => {
   try {
-    const user = await User.findById(FAKE_USER.id)
+    const user = await User.findById(req.param.userId)
     const clubs = await user.getClubs()
     res.send(clubs)
   } catch (err) {
@@ -79,6 +73,16 @@ router.post('/:clubId/polls', async (req, res, next) => {
       })
       if (!existingBook) {
         existingBook = await Book.create(book)
+        let existingAuthor = await Author.findOne({
+          where: {goodReadsId: book.author.id}
+        })
+        if (!existingAuthor) {
+          existingAuthor = await Author.create({
+            name: book.author.name,
+            goodReadsId: book.author.id
+          })
+        }
+        existingBook.setAuthor(existingAuthor)
       }
       books.push(existingBook)
     }
@@ -127,6 +131,10 @@ router.get('/:clubId/polls/:pollId', async (req, res, next) => {
     const poll = await Poll.findById(pollId)
     if (!poll) {
       res.status(404).send(`Poll does not exist`)
+    } else if (!req.user) {
+      res
+        .status(403)
+        .send(`Not authorized: you can't vote if you're not logged in`)
     } else {
       const clubIdOfPoll = poll.getClubId()
       if (clubId === clubIdOfPoll) {
@@ -157,7 +165,6 @@ router.get('/:clubId/polls/:pollId', async (req, res, next) => {
 
 router.put('/:clubId/polls/:pollId', async (req, res, next) => {
   try {
-    // TODO: replace FAKE_USER with req.user
     const clubId = Number(req.params.clubId)
     const pollId = Number(req.params.pollId)
     const votes = req.body.votes
@@ -166,21 +173,26 @@ router.put('/:clubId/polls/:pollId', async (req, res, next) => {
     const poll = await Poll.findById(pollId)
     if (!poll) {
       res.status(404).send(`Poll does not exist`)
+    } else if (!req.user) {
+      res
+        .status(403)
+        .send(`Not authorized: you can't vote if you're not logged in`)
     } else {
+      const userId = req.user.id
       const clubIdOfPoll = poll.getClubId()
 
       if (clubId === clubIdOfPoll) {
         votes.forEach(async vote => {
           const existingVote = await Vote.findOne({
-            where: {optionId: vote, userId: FAKE_USER.id}
+            where: {optionId: vote, userId}
           })
           if (existingVote) {
             console.log('you already voted on ', vote)
-            //TO DO UPDATE USERS VOTE IF ALREADY VOTED
           } else {
-            await Vote.create({optionId: vote, userId: FAKE_USER.id})
+            await Vote.create({optionId: vote, userId})
           }
         })
+
         res.json(votes)
       } else {
         res
