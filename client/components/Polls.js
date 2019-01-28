@@ -3,8 +3,6 @@ import {connect} from 'react-redux'
 import {fetchPolls} from '../store'
 import {NavLink, Link} from 'react-router-dom'
 
-const FAKE_CLUB_ID = 1
-
 class Polls extends Component {
   // constructor() {
   //   super()
