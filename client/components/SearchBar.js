@@ -25,9 +25,9 @@ class SearchBar extends Component {
   render() {
     return (
       <div className="container">
-        <div className="header clearfix mt-5">
-          <h3 className="text-muted">Goodreads Book Search</h3>
-        </div>
+        {/* <div className="header clearfix mt-5">
+          <h3 className="text-muted">Add book options</h3>
+        </div> */}
         <div className="jumbotron">
           {this.state.expandedBook ? (
             <BookInfo

@@ -5,7 +5,7 @@ import {NavLink, Link} from 'react-router-dom'
 import BooksView from './BooksView'
 import axios from 'axios'
 import Calendar from 'react-input-calendar'
-import SearchBar from './SearchBar'
+import Search from './Search'
 
 class CreatePoll extends Component {
   constructor() {
@@ -30,6 +30,7 @@ class CreatePoll extends Component {
     this.addDateTime = this.addDateTime.bind(this)
     this.addPlaces = this.addPlaces.bind(this)
     this.onCalendarChange = this.onCalendarChange.bind(this)
+    this.setResults = this.setResults.bind(this)
     // this.deleteOption = this.deleteOption.bind(this)
   }
   onCalendarChange(date) {
@@ -48,6 +49,10 @@ class CreatePoll extends Component {
     this.setState({
       [e.target.name]: e.target.value
     })
+  }
+
+  setResults = results => {
+    this.setState({searchResults: results})
   }
 
   async fetchBooks(e) {
@@ -181,9 +186,9 @@ class CreatePoll extends Component {
           </div>
           <br />
           {/* select books */}
-          <SearchBar />
-          {/* <div>
-            <label htmlFor="searchValue">Add Book Options</label>
+
+          <div>
+            {/*<label htmlFor="searchValue">Add Book Options</label>
             <input
               name="searchValue"
               placeholder="Search for a book..."
@@ -191,16 +196,23 @@ class CreatePoll extends Component {
             />
             <button onClick={this.fetchBooks} type="submit">
               Search
-            </button>
+						</button>
+						*/}
+            <label>Add Book Options</label>
+            <Search setResults={this.setResults} />
             <br />
 
             {this.state.searchResults.length ? (
               // <BooksView books={this.state.search} addBook={this.addBook} />
               <div>
                 {this.state.searchResults.map(bookResult => (
-                  <div key={bookResult.id}>
-                    <p>{bookResult.title}</p>
-                    <button onClick={e => this.addBook(e, bookResult)}>
+                  <div key={bookResult.best_book.id}>
+                    <img src={bookResult.best_book.small_image_url} />
+                    <p>{bookResult.best_book.title}</p>
+                    <p>{bookResult.best_book.author.name}</p>
+                    <button
+                      onClick={e => this.addBook(e, bookResult.best_book)}
+                    >
                       Add a book
                     </button>
                     <br />
@@ -208,9 +220,12 @@ class CreatePoll extends Component {
                 ))}
                 <br />
                 <div>
-                  {this.state.selectedBooks.length
-                    ? this.state.selectedBooks.map((book, idx) => (
+                  {this.state.selectedBooks.length ? (
+                    <div>
+                      <h4>Added books:</h4>
+                      {this.state.selectedBooks.map((book, idx) => (
                         <div key={book.id}>
+                          <img src={book.small_image_url} />
                           <p>{book.title}</p>
                           <button
                             onClick={e => this.deleteOption(idx, 'book', e)}
@@ -218,12 +233,13 @@ class CreatePoll extends Component {
                             X
                           </button>
                         </div>
-                      ))
-                    : null}
+                      ))}
+                    </div>
+                  ) : null}
                 </div>
               </div>
             ) : null}
-          </div> */}
+          </div>
           <br />
           {/* select dates */}
           <div>

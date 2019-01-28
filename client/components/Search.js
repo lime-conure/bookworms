@@ -33,6 +33,7 @@ class Search extends Component {
         this.parseXMLResponse(res.data)
       })
       .catch(error => {
+        //console.log(error)
         this.setState({
           error: error.toString(),
           fetchingData: false
@@ -100,7 +101,7 @@ class Search extends Component {
         {/**
          * if fetching data, display "loading...", if error, display error message, else display search results
          */}
-        {this.state.fetchingData ? (
+        {/* {this.state.fetchingData ? (
           <p className="lead text-center">loading... </p>
         ) : (
           (this.state.error && (
@@ -111,16 +112,16 @@ class Search extends Component {
               expandBook={this.props.expandBook}
             />
           )
-        )}
+        )} */}
       </div>
     )
   }
 }
 
 Search.propTypes = {
-  results: PropTypes.array,
-  setResults: PropTypes.func,
-  expandBook: PropTypes.func
+  //results: PropTypes.array,
+  setResults: PropTypes.func
+  //expandBook: PropTypes.func
 }
 
 export default Search
