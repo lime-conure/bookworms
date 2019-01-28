@@ -5,6 +5,7 @@ import {NavLink, Link} from 'react-router-dom'
 import BooksView from './BooksView'
 import axios from 'axios'
 import Calendar from 'react-input-calendar'
+import SearchBar from './SearchBar'
 
 class CreatePoll extends Component {
   constructor() {
@@ -126,7 +127,7 @@ class CreatePoll extends Component {
     console.log('state in render:', this.state)
     return (
       <div>
-        <form onSubmit={this.createPoll}>
+        <form>
           <h3>Create a New Poll</h3>
           <div>
             <label htmlFor="title"> Title</label>
@@ -142,7 +143,7 @@ class CreatePoll extends Component {
           <div>
             <label htmlFor="dueDate">Due Date</label>
             <Calendar
-              format="DD/MM/YYYY"
+              format="MM-DD-YYYY"
               date={this.state.dueDate}
               name="dueDate"
               onChange={this.onCalendarChange}
@@ -150,7 +151,8 @@ class CreatePoll extends Component {
           </div>
           <br />
           {/* select books */}
-          <div>
+          <SearchBar />
+          {/* <div>
             <label htmlFor="searchValue">Add Book Options</label>
             <input
               name="searchValue"
@@ -164,7 +166,7 @@ class CreatePoll extends Component {
             {this.state.searchResults.length ? (
               <BooksView books={this.state.search} addBook={this.addBook} />
             ) : null}
-          </div>
+          </div> */}
           <br />
           {/* select dates */}
           <div>
@@ -198,7 +200,9 @@ class CreatePoll extends Component {
           </div>
           <br />
           <br />
-          <button type="submit">Create Poll</button>
+          <button type="submit" onClick={this.createPoll}>
+            Create Poll
+          </button>
         </form>
       </div>
     )
