@@ -22,7 +22,7 @@ async function seed() {
     User.create({
       firstName: 'Brynn',
       lastName: 'Shepherd',
-      email: 'brynn.shepherd@email.com',
+      email: 'brynn.shepherd@gmail.com',
       password: '123'
     }),
     User.create({
@@ -37,22 +37,29 @@ async function seed() {
     Club.create({
       name: 'Lime Conure',
       inviteLink: 'https://github.com/lime-conure/bookworms'
+    }),
+    Club.create({
+      name: 'Harry Potter fans',
+      inviteLink: 'https://harrypotterfans.com'
     })
   ])
 
   const authors = await Promise.all([
     Author.create({
       name: 'Amor Towles',
+      goodReadsId: 4536964,
       bio:
         'Born and raised in the Boston area, Amor Towles graduated from Yale College and received an MA in English from Stanford University. Having worked as an investment professional in Manhattan for over twenty years, he now devotes himself fulltime to writing. His first novel, Rules of Civility, published in 2011, was a New York Times bestseller in both hardcover and paperback and was ranked by the Wall Street Journal as one of the best books of 2011. The book was optioned by Lionsgate to be made into a feature film and its French translation received the 2012 Prix Fitzgerald. His second novel, A Gentleman in Moscow, published in 2016, was also a New York Times bestseller and was ranked as one of the best books of 2016 by the Chicago Tribune, the Miami Herald, the Philadelphia Inquirer, the St. Louis Dispatch, and NPR. Both novels have been translated into over fifteen languages.'
     }),
     Author.create({
       name: 'Emily St. John Mandel',
+      goodReadsId: 2786093,
       bio:
         'Emily St. John Mandel was born and raised on the west coast of British Columbia, Canada. She studied contemporary dance at the School of Toronto Dance Theatre and lived briefly in Montreal before relocating to New York.'
     }),
     Author.create({
       name: 'Yuval Noah Harari',
+      goodReadsId: 395812,
       bio:
         'Professor Harari was born in Haifa, Israel, to Lebanese parents in 1976. He received his Ph.D. from the University of Oxford in 2002, and is now a lecturer at the Department of History, the Hebrew University of Jerusalem.'
     })
@@ -101,6 +108,10 @@ async function seed() {
     UserClub.create({
       userId: 2,
       clubId: 1
+    }),
+    UserClub.create({
+      userId: 1,
+      clubId: 2
     })
   ])
 
