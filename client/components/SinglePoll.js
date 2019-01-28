@@ -8,13 +8,23 @@ const FAKE_USER_ID = 1
 export class SinglePoll extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      votes: []
+    }
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleCheck = this.handleCheck.bind(this)
   }
 
   componentDidMount() {
     const singlePollId = Number(this.props.match.params.pollId)
     const clubId = Number(this.props.match.params.clubId)
     this.props.fetchSinglePoll(clubId, singlePollId)
+  }
+  handleCheck(event) {
+    this.setState(prevState => ({
+      votes: [...prevState.votes, Number(event.target.value)]
+    }))
+    console.log('votes: ', this.state.votes)
   }
   handleSubmit(event) {
     event.preventDefault()
@@ -39,12 +49,46 @@ export class SinglePoll extends Component {
     if (locationVote) {
       votes.push(Number(locationVote))
     }
+    console.log(event.target.locationOptions.checked)
     this.props.sendVotes(clubId, singlePollId, votes)
   }
 
   optionIsChecked(optionObj) {
     if (optionObj.votes.map(vote => vote.userId).includes(FAKE_USER_ID)) {
       return true
+    } else return false
+  }
+  renderPoll(options, type) {
+    if (options && options.length) {
+      return (
+        <div>
+          <h4>{type} Options:</h4>
+          <div className="options">
+            {options.map(optionObj => (
+              <div key={optionObj.option.id}>
+                <p>Votes: {optionObj.numVotes}</p>
+                <input
+                  value={optionObj.option.id}
+                  defaultChecked={
+                    this.optionIsChecked(optionObj) ? 'checked' : ''
+                  }
+                  onChange={this.handleCheck}
+                  type="checkbox"
+                  // name="bookOptions"
+                />
+                <label>{optionObj.option.bookName}</label>
+                {this.optionIsChecked(optionObj) ? (
+                  <small>
+                    <em>You already voted for this</em>
+                  </small>
+                ) : (
+                  ''
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )
     }
   }
 
@@ -80,69 +124,9 @@ export class SinglePoll extends Component {
             </em>
           </p>
           <form onSubmit={this.handleSubmit}>
-            {bookOptions && bookOptions.length ? (
-              <div>
-                <h4>Book Options:</h4>
-                <div className="options">
-                  {bookOptions.map(optionObj => (
-                    <div key={optionObj.option.id}>
-                      <p>Votes: {optionObj.numVotes}</p>
-                      <input
-                        value={optionObj.option.id}
-                        defaultChecked={
-                          this.optionIsChecked(optionObj) ? 'checked' : ''
-                        }
-                        type="radio"
-                        name="bookOptions"
-                      />
-                      <label>{optionObj.option.bookName}</label>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              ''
-            )}
-            {timeOptions && timeOptions.length ? (
-              <div>
-                <h4>Date/Time Options:</h4>
-                <div className="options">
-                  {timeOptions.map(optionObj => (
-                    <div key={optionObj.option.id}>
-                      <p>Votes: {optionObj.numVotes}</p>
-                      <input
-                        value={optionObj.option.id}
-                        type="radio"
-                        name="timeOptions"
-                      />
-                      <label>{optionObj.option.dateTime}</label>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              ''
-            )}
-            {locationOptions && locationOptions.length ? (
-              <div>
-                <h4>Location Options:</h4>
-                <div className="options">
-                  {locationOptions.map(optionObj => (
-                    <div key={optionObj.option.id}>
-                      <p>Votes: {optionObj.numVotes}</p>
-                      <input
-                        value={optionObj.option.id}
-                        type="radio"
-                        name="locationOptions"
-                      />
-                      <label>{optionObj.option.location}</label>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              ''
-            )}
+            {this.renderPoll(bookOptions, 'Book')}
+            {this.renderPoll(timeOptions, 'Date/Time')}
+            {this.renderPoll(locationOptions, 'Location')}
             <button type="submit">Submit vote</button>
           </form>
         </div>
