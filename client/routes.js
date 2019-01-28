@@ -36,16 +36,15 @@ class Routes extends Component {
           path="/clubs/:clubId/polls/create"
           component={CreatePoll}
         />
-        <Route
-          exact
-          path="/clubs/:clubId/polls/:pollId"
-          component={SinglePoll}
-        />
 
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
-            <Route path="/home" component={UserHome} />
+            <Route
+              exact
+              path="/clubs/:clubId/polls/:pollId"
+              component={SinglePoll}
+            />
           </Switch>
         )}
         {/* Displays our Login component as a fallback */}

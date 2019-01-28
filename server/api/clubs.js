@@ -95,6 +95,10 @@ router.get('/:clubId/polls/:pollId', async (req, res, next) => {
     const poll = await Poll.findById(pollId)
     if (!poll) {
       res.status(404).send(`Poll does not exist`)
+    } else if (!req.user) {
+      res
+        .status(403)
+        .send(`Not authorized: you can't vote if you're not logged in`)
     } else {
       const clubIdOfPoll = poll.getClubId()
       if (clubId === clubIdOfPoll) {
