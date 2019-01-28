@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {Club, Poll, Option, Vote, Book} = require('../db/models')
+const {Club, Poll, Option, Vote, Book, User} = require('../db/models')
 module.exports = router
 
 const FAKE_USER = {
@@ -7,6 +7,43 @@ const FAKE_USER = {
   email: 'brynn.shepherd@gmail.com',
   name: 'Brynn Shepherd'
 }
+
+//****** ROUTES FOR CLUBS ******//
+
+//GET /api/clubs - to get all clubs by user
+router.get('/', async (req, res, next) => {
+  try {
+    const user = await User.findById(FAKE_USER.id)
+    const clubs = await user.getClubs()
+    res.send(clubs)
+  } catch (err) {
+    next(err)
+  }
+})
+
+//GET /api/clubs/clubid - to get a club by id
+router.get('/:clubId', async (req, res, next) => {
+  try {
+    const clubId = Number(req.params.clubId)
+    const club = await Club.findById(clubId)
+    res.json(club)
+  } catch (err) {
+    next(err)
+  }
+})
+
+// //POST /api/clubs/ - to create a club
+// router.post('/clubs', async (req, res, next) => {
+//   try {
+//     let newClub = await Club.create({where: {
+//       name: req.params.name }});
+//     res.json(newClub);
+//   } catch(err){
+//     next(err)
+//   }
+// })
+
+//****** ROUTES FOR POLLS ******
 //GET /api/clubs/:clubId/polls
 router.get('/:clubId/polls', async (req, res, next) => {
   try {

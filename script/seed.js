@@ -37,6 +37,10 @@ async function seed() {
     Club.create({
       name: 'Lime Conure',
       inviteLink: 'https://github.com/lime-conure/bookworms'
+    }),
+    Club.create({
+      name: 'Harry Potter fans',
+      inviteLink: 'https://harrypotterfans.com'
     })
   ])
 
@@ -101,6 +105,10 @@ async function seed() {
     UserClub.create({
       userId: 2,
       clubId: 1
+    }),
+    UserClub.create({
+      userId: 1,
+      clubId: 2
     })
   ])
 
