@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {Club, Poll, Option, Vote, Book, User} = require('../db/models')
+const {Club, Poll, Option, Vote, Book, User, Author} = require('../db/models')
 module.exports = router
 
 const FAKE_USER = {
@@ -7,6 +7,7 @@ const FAKE_USER = {
   email: 'brynn.shepherd@gmail.com',
   name: 'Brynn Shepherd'
 }
+module.exports = router
 
 //POST /api/clubs/:clubId/deleteMember
 // router.post('/:clubId/deletemember', async (req, res, next) => {
@@ -19,7 +20,6 @@ const FAKE_USER = {
 //     Club.removeUser(user)
 //     res.send(club)
 // const {Club, Poll, Option, Vote, Book, User, Author} = require('../db/models')
-module.exports = router
 
 //****** ROUTES FOR CLUBS ******//
 
@@ -95,13 +95,15 @@ router.post('/:clubId/polls', async (req, res, next) => {
         let existingAuthor = await Author.findOne({
           where: {goodReadsId: book.author.id}
         })
+        console.log('book', book)
+        console.log(existingBook, 'existing book')
         if (!existingAuthor) {
           existingAuthor = await Author.create({
             name: book.author.name,
             goodReadsId: book.author.id
           })
         }
-        existingBook.setAuthor(existingAuthor)
+        existingBook.setAuthors([existingAuthor])
       }
       books.push(existingBook)
     }
@@ -109,7 +111,12 @@ router.post('/:clubId/polls', async (req, res, next) => {
 
     await Promise.all(
       books.map(book =>
-        Option.create({type: 'book', bookId: book.id, pollId: newPoll.id})
+        Option.create({
+          type: 'book',
+          bookId: book.id,
+          bookName: book.title,
+          pollId: newPoll.id
+        })
       )
     )
 
