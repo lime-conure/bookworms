@@ -9,8 +9,7 @@ import Popup from 'reactjs-popup'
 import Search from './Search'
 import {timingSafeEqual} from 'crypto'
 
-//const apiKey = process.env.REACT_APP_API_KEY;
-const apiKey = 'V75ciCUj9cKAOR0Yeoxwug'
+const apiKey = process.env.REACT_APP_API_KEY
 
 class CreatePoll extends Component {
   constructor() {
