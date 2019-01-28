@@ -3,8 +3,6 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {fetchSinglePoll, sendVotes} from '../store'
 
-const FAKE_USER_ID = 1
-
 export class SinglePoll extends Component {
   constructor(props) {
     super(props)
@@ -34,7 +32,7 @@ export class SinglePoll extends Component {
   }
 
   optionIsChecked(optionObj) {
-    if (optionObj.votes.map(vote => vote.userId).includes(FAKE_USER_ID)) {
+    if (optionObj.votes.map(vote => vote.userId).includes(this.props.userId)) {
       return true
     } else return false
   }
@@ -124,7 +122,8 @@ export class SinglePoll extends Component {
 }
 
 const mapState = state => ({
-  singlePoll: state.singlePoll
+  singlePoll: state.singlePoll,
+  userId: state.user.id
 })
 
 const mapDispatch = dispatch => ({
