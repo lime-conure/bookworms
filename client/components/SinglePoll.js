@@ -3,8 +3,6 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {fetchSinglePoll, sendVotes} from '../store'
 
-const FAKE_USER_ID = 1
-
 export class SinglePoll extends Component {
   constructor(props) {
     super(props)
@@ -30,11 +28,20 @@ export class SinglePoll extends Component {
     event.preventDefault()
     const singlePollId = Number(this.props.match.params.pollId)
     const clubId = Number(this.props.match.params.clubId)
-    this.props.sendVotes(clubId, singlePollId, this.state.votes)
+    const payload = {
+      userId: Number(this.props.userId),
+      clubId,
+      pollId: singlePollId,
+      votes: this.state.votes
+    }
+    this.props.sendVotes(payload)
   }
 
   optionIsChecked(optionObj) {
-    if (optionObj.votes.map(vote => vote.userId).includes(FAKE_USER_ID)) {
+    if (
+      this.props.userId &&
+      optionObj.votes.map(vote => vote.userId).includes(this.props.userId)
+    ) {
       return true
     } else return false
   }
@@ -89,7 +96,6 @@ export class SinglePoll extends Component {
     const locationOptions = allOptions.filter(
       optionObj => optionObj.option.type === 'location'
     )
-
     if (poll) {
       return (
         <div>
@@ -124,7 +130,8 @@ export class SinglePoll extends Component {
 }
 
 const mapState = state => ({
-  singlePoll: state.singlePoll
+  singlePoll: state.singlePoll,
+  userId: state.user.id
 })
 
 const mapDispatch = dispatch => ({
