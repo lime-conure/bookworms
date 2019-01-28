@@ -14,14 +14,14 @@ notifications:
 install:
   - npm ci # faster, goes only from package-lock
 before_script:
-  - psql -c 'create database "boilermaker-test";' -U postgres # remember to change this name if you change it elsewhere (e.g. package.json)
+  - psql -c 'create database "bookworms-test";' -U postgres # remember to change this name if you change it elsewhere (e.g. package.json)
 
-# before_deploy:
-#   - npm run build-client # make the bundle
-#   - rm -rf node_modules # omit from the tarball, since we skip cleanup
-# deploy:
-#   skip_cleanup: true # prevents travis from deleting the build
-#   provider: heroku
-#   app: YOUR-HEROKU-APP-NAME-HERE # see README
-#   api_key:
-#     secure: YOUR-***ENCRYPTED***-API-KEY-HERE # see README
+  # before_deploy:
+  - npm run build-client # make the bundle
+  - rm -rf node_modules # omit from the tarball, since we skip cleanup
+deploy:
+  skip_cleanup: true # prevents travis from deleting the build
+  provider: heroku
+  app: bookworms-capstone # see README
+  api_key:
+    secure: NW8V+G6F9QqnketGHRng6Atf4wrkP5/Y3N0HlFh/D8JaMIgEE8iDWA7ORaqjHWrjNGG2+s8H4e+QyT+FAc+1tt+gZ1S/0PNs3ZF1D6VGYcb2kz/MU1kBG1dF+4do641uHFGPcgvjq3xd2Gsr7IbwE6T2TpZmZIMN+pgRu5GhDvVcWJC+0og8YvWXdjxXotw27dqbz06/n3/8oO7QJXwifa+ay7/Wn/x88AoCjkfK+f4oE+36oYUYDDLKVcNXac5osLi1BkGVubl9/dZmkTD/jlj2lqOjH1mwaa5bf6/+2DdOyzHfN3zZ1s1jhzN80Z79qpT+2f1qVQ/GG/r1yHtYh/yXt9qAwTvYLYndL81oNXBxpghhRYwHF550UkpjdeIK2Cq9QOL10fYaqelZ5LCLUUjgo0yx79LpGUb+hTREqW4q9VqmMhaLR8w6TAx0/S6v177BtMaARCRYh69HzumwgSUpeJuGQVX9pMWipnHvRBtwV6palTP06DW76s30PYtPrkG4F8tT8cIQaaHznAtRZe+lUutoVEYmVbeohvtSZS+Apyl0radkDveZzus73lG0nccLeRAD/9bv5tagihgPwKO+/MgAQNgZ+a+OBmYz0bu7Z3l6TwwFmNhdu2K0gaDbmbQrbDPEB2x1Xu8dsCUQySHNKAtOTXG0PLE7Noj8gIY= # see README

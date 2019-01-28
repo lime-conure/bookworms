@@ -9,20 +9,54 @@ const FAKE_USER = {
 }
 
 //POST /api/clubs/:clubId/deleteMember
-router.post('/:clubId/deletemember', async (req, res, next) => {
+// router.post('/:clubId/deletemember', async (req, res, next) => {
+//   try {
+//     const clubId = req.params.clubId
+//     console.log(clubId, 'club')
+//     const club = await Club.findById(clubId)
+//     console.log(club, 'club')
+//     const user = await User.findById(1)
+//     Club.removeUser(user)
+//     res.send(club)
+// const {Club, Poll, Option, Vote, Book, User, Author} = require('../db/models')
+module.exports = router
+
+//****** ROUTES FOR CLUBS ******//
+
+//GET /api/clubs - to get all clubs by user
+router.get('/', async (req, res, next) => {
   try {
-    const clubId = req.params.clubId
-    console.log(clubId, 'club')
-    const club = await Club.findById(clubId)
-    console.log(club, 'club')
-    const user = await User.findById(1)
-    Club.removeUser(user)
-    res.send(club)
+    const user = await User.findById(req.user.id)
+    const clubs = await user.getClubs()
+    res.send(clubs)
   } catch (err) {
     next(err)
   }
 })
 
+//GET /api/clubs/clubid - to get a club by id
+router.get('/:clubId', async (req, res, next) => {
+  try {
+    const clubId = Number(req.params.clubId)
+    const club = await Club.findById(clubId)
+    res.json(club)
+  } catch (err) {
+    next(err)
+  }
+})
+
+// //POST /api/clubs/ - to create a club
+// router.post('/clubs', async (req, res, next) => {
+//   try {
+//     let newClub = await Club.create({where: {
+//       name: req.params.name }});
+//     res.json(newClub);
+//   } catch(err){
+//     next(err)
+//   }
+// })
+
+//****** ROUTES FOR POLLS ******
 //GET /api/clubs/:clubId/polls
 router.get('/:clubId/polls', async (req, res, next) => {
   try {
@@ -58,6 +92,16 @@ router.post('/:clubId/polls', async (req, res, next) => {
       })
       if (!existingBook) {
         existingBook = await Book.create(book)
+        let existingAuthor = await Author.findOne({
+          where: {goodReadsId: book.author.id}
+        })
+        if (!existingAuthor) {
+          existingAuthor = await Author.create({
+            name: book.author.name,
+            goodReadsId: book.author.id
+          })
+        }
+        existingBook.setAuthor(existingAuthor)
       }
       books.push(existingBook)
     }
@@ -106,6 +150,10 @@ router.get('/:clubId/polls/:pollId', async (req, res, next) => {
     const poll = await Poll.findById(pollId)
     if (!poll) {
       res.status(404).send(`Poll does not exist`)
+    } else if (!req.user) {
+      res
+        .status(403)
+        .send(`Not authorized: you can't vote if you're not logged in`)
     } else {
       const clubIdOfPoll = poll.getClubId()
       if (clubId === clubIdOfPoll) {
@@ -136,7 +184,6 @@ router.get('/:clubId/polls/:pollId', async (req, res, next) => {
 
 router.put('/:clubId/polls/:pollId', async (req, res, next) => {
   try {
-    // TODO: replace FAKE_USER with req.user
     const clubId = Number(req.params.clubId)
     const pollId = Number(req.params.pollId)
     const votes = req.body.votes
@@ -145,21 +192,26 @@ router.put('/:clubId/polls/:pollId', async (req, res, next) => {
     const poll = await Poll.findById(pollId)
     if (!poll) {
       res.status(404).send(`Poll does not exist`)
+    } else if (!req.user) {
+      res
+        .status(403)
+        .send(`Not authorized: you can't vote if you're not logged in`)
     } else {
+      const userId = req.user.id
       const clubIdOfPoll = poll.getClubId()
 
       if (clubId === clubIdOfPoll) {
         votes.forEach(async vote => {
           const existingVote = await Vote.findOne({
-            where: {optionId: vote, userId: FAKE_USER.id}
+            where: {optionId: vote, userId}
           })
           if (existingVote) {
             console.log('you already voted on ', vote)
-            //TO DO UPDATE USERS VOTE IF ALREADY VOTED
           } else {
-            await Vote.create({optionId: vote, userId: FAKE_USER.id})
+            await Vote.create({optionId: vote, userId})
           }
         })
+
         res.json(votes)
       } else {
         res

@@ -5,12 +5,19 @@ import {NavLink, Link} from 'react-router-dom'
 import BooksView from './BooksView'
 import axios from 'axios'
 import Calendar from 'react-input-calendar'
+import Popup from 'reactjs-popup'
 import Search from './Search'
+import {timingSafeEqual} from 'crypto'
+
+//const apiKey = process.env.REACT_APP_API_KEY;
+const apiKey = 'V75ciCUj9cKAOR0Yeoxwug'
 
 class CreatePoll extends Component {
   constructor() {
     super()
     this.state = {
+      open: false,
+      description: 'loading...',
       searchResults: [],
       selectedBooks: [],
       selectedDates: [],
@@ -30,6 +37,8 @@ class CreatePoll extends Component {
     this.addPlaces = this.addPlaces.bind(this)
     this.onCalendarChange = this.onCalendarChange.bind(this)
     this.setResults = this.setResults.bind(this)
+    this.handleClick = this.handleClick.bind(this)
+    this.closeModal = this.closeModal.bind(this)
     // this.deleteOption = this.deleteOption.bind(this)
   }
   onCalendarChange(date) {
@@ -54,17 +63,50 @@ class CreatePoll extends Component {
     this.setState({searchResults: results})
   }
 
-  // async fetchBooks(e) {
-  //   e.preventDefault()
-  //   try {
-  //     const {data} = await axios.get('/api/books')
-  //     this.setState({
-  //       searchResults: data
-  //     })
-  //   } catch (err) {
-  //     console.error(err)
-  //   }
-  // }
+  getDescription = bookId => {
+    const requestUri =
+      `https://cors-anywhere.herokuapp.com/` +
+      `https://www.goodreads.com/book/show/${bookId}?key=${apiKey}`
+    axios
+      .get(requestUri)
+      .then(res => {
+        const parser = new DOMParser()
+        const XMLResponse = parser.parseFromString(res.data, 'application/xml')
+
+        const parseError = XMLResponse.getElementsByTagName('parsererror')
+
+        if (parseError.length) {
+          this.setState({
+            error: 'There was an error fetching results.'
+          })
+        } else {
+          let description = XMLResponse.getElementsByTagName('description')[0]
+            .innerHTML
+
+          description = description.replace('<![CDATA[', '').replace(']]>', '')
+
+          if (!description) {
+            description = 'No description found.'
+          }
+          this.setState({description})
+        }
+      })
+      .catch(error => {
+        this.setState({
+          error: error.toString()
+        })
+      })
+  }
+
+  handleClick(e, bookId) {
+    e.preventDefault()
+    this.getDescription(bookId)
+    this.setState({open: true})
+  }
+
+  closeModal() {
+    this.setState({open: false, description: 'loading...'})
+  }
 
   async createPoll(e) {
     e.preventDefault()
@@ -200,34 +242,59 @@ class CreatePoll extends Component {
           </div>
           <br />
           {/* select books */}
-
           <div>
-            {/*<label htmlFor="searchValue">Add Book Options</label>
-            <input
-              name="searchValue"
-              placeholder="Search for a book..."
-              onChange={this.handleChange}
-            />
-            <button onClick={this.fetchBooks} type="submit">
-              Search
-						</button>
-						*/}
             <label>Add Book Options</label>
             <Search setResults={this.setResults} />
             <br />
 
             {this.state.searchResults.length ? (
-              // <BooksView books={this.state.search} addBook={this.addBook} />
               <div>
                 {this.state.searchResults.map(bookResult => (
-                  <div key={bookResult.best_book.id}>
-                    <img src={bookResult.best_book.small_image_url} />
-                    <p>{bookResult.best_book.title}</p>
-                    <p>{bookResult.best_book.author.name}</p>
-                    <button onClick={e => this.addBook(e, bookResult)}>
-                      Add a book
-                    </button>
-                    <br />
+                  <div key={bookResult.id}>
+                    <div key={bookResult.best_book.id}>
+                      <Popup
+                        open={this.state.open}
+                        closeOnDocumentClick
+                        onClose={this.closeModal}
+                        position="right center"
+                      >
+                        <div className="modal">
+                          <a className="close" onClick={this.closeModal}>
+                            &times;
+                          </a>
+                          <div className="header">
+                            {' '}
+                            {bookResult.best_book.title}
+                          </div>
+                          <p>{this.state.description}</p>
+                          <img src={bookResult.best_book.small_image_url} />
+                          <div className="actions">
+                            <button className="button">
+                              <a
+                                href={`https://www.goodreads.com/book/show/${
+                                  bookResult.best_book.id
+                                }`}
+                                target="_blank"
+                              >
+                                View more in goodreads.com
+                              </a>
+                            </button>
+                          </div>
+                        </div>
+                      </Popup>
+                      <img
+                        onClick={e =>
+                          this.handleClick(e, bookResult.best_book.id)
+                        }
+                        src={bookResult.best_book.small_image_url}
+                      />
+                      <p>{bookResult.best_book.title}</p>
+                      <p>{bookResult.best_book.author.name}</p>
+                      <button onClick={e => this.addBook(e, bookResult)}>
+                        Add a book
+                      </button>
+                      <br />
+                    </div>
                   </div>
                 ))}
                 <br />
