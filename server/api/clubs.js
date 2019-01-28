@@ -7,7 +7,7 @@ module.exports = router
 //GET /api/clubs - to get all clubs by user
 router.get('/', async (req, res, next) => {
   try {
-    const user = await User.findById(req.param.userId)
+    const user = await User.findById(req.user.id)
     const clubs = await user.getClubs()
     res.send(clubs)
   } catch (err) {
