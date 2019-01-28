@@ -28,7 +28,12 @@ export class SinglePoll extends Component {
     event.preventDefault()
     const singlePollId = Number(this.props.match.params.pollId)
     const clubId = Number(this.props.match.params.clubId)
-    this.props.sendVotes(clubId, singlePollId, this.state.votes)
+    this.props.sendVotes(
+      clubId,
+      singlePollId,
+      this.state.votes,
+      this.props.userId
+    )
   }
 
   optionIsChecked(optionObj) {

@@ -26,9 +26,9 @@ const getSinglePoll = poll => ({
   poll
 })
 
-const updateOptionVotes = optionIds => ({
+const updateOptionVotes = payload => ({
   type: INCREMENT_VOTES,
-  optionIds
+  payload
 })
 
 /**
@@ -43,26 +43,26 @@ export const fetchSinglePoll = (clubId, pollId) => async dispatch => {
   }
 }
 
-export const sendVotes = (clubId, pollId, votes) => async dispatch => {
+export const sendVotes = (clubId, pollId, votes, userId) => async dispatch => {
   try {
     const {data} = await axios.put(`/api/clubs/${clubId}/polls/${pollId}`, {
       votes
     })
-    dispatch(updateOptionVotes(data))
+    dispatch(updateOptionVotes({userId, optionIds: data}))
   } catch (err) {
     console.log(err)
   }
 }
 
 // optionIds = [3, 6]
-const voteForOptions = (state, optionIds) => {
+const voteForOptions = (state, optionIds, userId) => {
   return state.allOptions.map(optionObj => {
     if (optionIds.includes(optionObj.option.id)) {
       const voteUserIds = optionObj.votes.map(vote => vote.userId)
       // prevent users from voting multiple times for the same option
-      if (!voteUserIds.includes(FAKE_USER_ID)) {
+      if (!voteUserIds.includes(userId)) {
         optionObj.numVotes++
-        optionObj.votes.push({userId: FAKE_USER_ID})
+        optionObj.votes.push(userId)
       }
     }
     return optionObj
@@ -80,7 +80,11 @@ export default function(state = defaultPoll, action) {
     case INCREMENT_VOTES: {
       // action.optionIds is an array of optionIds that you voted for
       // e.g. [3, 6]
-      const updatedOptions = voteForOptions({...state}, action.optionIds)
+      const updatedOptions = voteForOptions(
+        {...state},
+        action.payload.optionIds,
+        action.payload.userId
+      )
       return {...state, allOptions: updatedOptions}
     }
     default:
