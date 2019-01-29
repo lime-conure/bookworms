@@ -213,7 +213,7 @@ class CreatePoll extends Component {
           <br />
           <div>
             <label htmlFor="notes">Notes</label>
-            <input name="notes" onChange={this.handleChange} />
+            <textarea name="notes" onChange={this.handleChange} />
           </div>
           <br />
           {/* select dueDate */}
