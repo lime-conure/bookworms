@@ -13,6 +13,7 @@ import {
   SingleClub
 } from './components'
 import {me} from './store'
+import JoinClub from './components/JoinClub'
 
 /**
  * COMPONENT
@@ -37,6 +38,7 @@ class Routes extends Component {
           path="/clubs/:clubId/polls/create"
           component={CreatePoll}
         />
+        <Route exact path="/clubs/:clubId/join/:hash" component={JoinClub} />
 
         {isLoggedIn && (
           <Switch>

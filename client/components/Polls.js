@@ -11,6 +11,7 @@ class Polls extends Component {
   componentDidMount() {
     console.log('Polls did mount')
     this.props.fetchPolls(this.props.match.params.clubId)
+    console.log(newEl)
   }
 
   render() {

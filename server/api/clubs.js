@@ -225,3 +225,34 @@ router.put('/:clubId/polls/:pollId', async (req, res, next) => {
     next(err)
   }
 })
+//GET /api/clubs/:clubId/join - join request
+router.get('/:clubId/join/:hash', async (req, res, next) => {
+  try {
+    const club = await Club.findOne({
+      where: {
+        inviteLink: `http://localhost:8080/clubs/${req.params.clubId}/join/${
+          req.params.hash
+        }`
+      }
+    })
+    if (!club) res.json('Invalid link')
+    res.send(club.name)
+  } catch (err) {
+    next(err)
+  }
+})
+
+//POST /api/clubs/:clubId/join - join confirmation
+router.post('/:clubId/join', async (req, res, next) => {
+  try {
+    if (req.user && req.user.id) {
+      const club = await Club.findOne({where: {id: req.params.clubId}})
+      const clubUser = await club.getUser(req.user.id)
+      if (!clubUser) await club.setUser(req.user.id)
+      res.send(club)
+    }
+    res.sendStatus(404)
+  } catch (err) {
+    next(err)
+  }
+})
