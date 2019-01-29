@@ -12,6 +12,10 @@ export class SingleClub extends Component {
     return (
       <div>
         <h2>{club.name}</h2>
+        <button className="leaveClub" type="button">
+          {' '}
+          Leave Club
+        </button>
       </div>
     )
   }

@@ -17,7 +17,11 @@ class Clubs extends Component {
           {clubs.map(club => (
             <div key={club.id}>
               <li>
-                <Link to={`/clubs/${club.id}`}> {club.name} </Link>
+                <Link to={`/clubs/${club.id}`}> {club.name} </Link>{' '}
+                <button className="leaveClub" type="button">
+                  {' '}
+                  Leave Club
+                </button>
               </li>
             </div>
           ))}
