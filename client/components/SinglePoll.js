@@ -19,10 +19,23 @@ export class SinglePoll extends Component {
     const clubId = Number(this.props.match.params.clubId)
     this.props.fetchSinglePoll(clubId, singlePollId)
   }
-  handleCheck(optionId) {
-    this.setState(prevState => ({
-      votes: [...prevState.votes, Number(optionId)]
-    }))
+  handleCheck(event) {
+    // const alreadyVoted = this.optionIsChecked(optionObj)
+    console.log('checked? ', event.target.checked)
+    console.log('option id? ', event.target.value)
+    const checked = event.target.checked
+    const optionId = Number(event.target.value)
+    if (checked) {
+      // add vote
+      this.setState(prevState => ({
+        votes: [...prevState.votes, optionId]
+      }))
+    } else {
+      // undo vote
+      this.setState(prevState => ({
+        votes: prevState.votes.filter(id => id !== optionId)
+      }))
+    }
   }
   handleSubmit(event) {
     event.preventDefault()
@@ -63,7 +76,7 @@ export class SinglePoll extends Component {
                   defaultChecked={
                     this.optionIsChecked(optionObj) ? 'checked' : ''
                   }
-                  onChange={() => this.handleCheck(optionObj.option.id)}
+                  onChange={this.handleCheck}
                   type="checkbox"
                   name="options"
                 />
