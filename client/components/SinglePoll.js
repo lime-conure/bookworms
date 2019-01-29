@@ -117,7 +117,7 @@ export class SinglePoll extends Component {
                   </TableCell>
                 ))}
               </TableRow>
-              <TableRow>
+              <TableRow selected>
                 {options.map(optionObj => (
                   <TableCell key={optionObj.option.id} padding="checkbox">
                     <Checkbox
