@@ -13,13 +13,11 @@ class Clubs extends Component {
   componentDidMount() {
     this.props.fetchClubs()
   }
-  leaveClub() {
-    this.props.leaveClub(1)
-    console.log('LEFT CLUB')
+  leaveClub(id) {
+    this.props.leaveClub(id)
   }
   render() {
     const clubs = this.props.clubs
-
     return (
       <div>
         <h2>YOUR CLUBS</h2>
@@ -29,9 +27,9 @@ class Clubs extends Component {
               <li>
                 <Link to={`/clubs/${club.id}`}> {club.name} </Link>{' '}
                 <button
-                  onClick={this.leaveClub}
-                  className="leaveClub"
                   type="submit"
+                  onClick={() => this.leaveClub(club.id)}
+                  className="leaveClub"
                 >
                   {' '}
                   Leave Club
