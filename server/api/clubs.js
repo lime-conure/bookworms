@@ -2,11 +2,6 @@ const router = require('express').Router()
 const {Club, Poll, Option, Vote, Book, User, Author} = require('../db/models')
 module.exports = router
 
-const FAKE_USER = {
-  id: 1,
-  email: 'brynn.shepherd@gmail.com',
-  name: 'Brynn Shepherd'
-}
 module.exports = router
 
 //****** ROUTES FOR CLUBS ******//
@@ -30,6 +25,7 @@ router.post('/:clubId/deletemember', async (req, res, next) => {
     const user = await User.findById(req.user.id)
     await club.removeUser(user)
     const updatedClub = await Club.findById(clubId)
+    console.log(updatedClub, 'UPDATED CLUB')
     res.send(updatedClub)
   } catch (err) {
     next(err)

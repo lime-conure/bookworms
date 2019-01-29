@@ -5,6 +5,7 @@ import axios from 'axios'
  */
 
 const GET_CLUBS = 'GET_CLUBS'
+const LEAVE_CLUBS = 'LEAVE_CLUBS'
 
 /**
  * INITIAL STATE
@@ -19,6 +20,10 @@ const getClubs = allClubs => ({
   allClubs
 })
 
+const leavingClub = clubId => ({
+  type: LEAVE_CLUBS,
+  clubId
+})
 /**
  * THUNK CREATORS
  */
@@ -32,6 +37,15 @@ export const fetchClubs = () => async dispatch => {
   }
 }
 
+export const leaveClub = clubId => async dispatch => {
+  try {
+    const {data} = await axios.post(`/api/clubs/${clubId}/deletemember`)
+    dispatch(leavingClub(clubId))
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 /**
  * REDUCER
  */
@@ -40,6 +54,12 @@ export default function(state = allClubs, action) {
   switch (action.type) {
     case GET_CLUBS:
       return action.allClubs
+    case LEAVE_CLUBS:
+      return state.filter(club => {
+        if (club.id !== action.clubId) {
+          return club
+        }
+      })
     default:
       return state
   }

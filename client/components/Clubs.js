@@ -1,11 +1,21 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {fetchClubs} from '../store'
+import {leaveClub} from '../store/clubs'
 import {Link} from 'react-router-dom'
 
 class Clubs extends Component {
+  constructor(props) {
+    super(props)
+    this.leaveClub = this.leaveClub.bind(this)
+  }
+
   componentDidMount() {
     this.props.fetchClubs()
+  }
+  leaveClub() {
+    this.props.leaveClub(1)
+    console.log('LEFT CLUB')
   }
   render() {
     const clubs = this.props.clubs
@@ -18,7 +28,11 @@ class Clubs extends Component {
             <div key={club.id}>
               <li>
                 <Link to={`/clubs/${club.id}`}> {club.name} </Link>{' '}
-                <button className="leaveClub" type="button">
+                <button
+                  onClick={this.leaveClub}
+                  className="leaveClub"
+                  type="submit"
+                >
                   {' '}
                   Leave Club
                 </button>
@@ -37,7 +51,8 @@ const mapState = state => ({
 })
 
 const mapDispatch = dispatch => ({
-  fetchClubs: () => dispatch(fetchClubs())
+  fetchClubs: () => dispatch(fetchClubs()),
+  leaveClub: id => dispatch(leaveClub(id))
 })
 
 export default connect(mapState, mapDispatch)(Clubs)
