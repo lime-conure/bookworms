@@ -2,9 +2,8 @@ import React, {Component} from 'react'
 import Axios from 'axios'
 import AllResults from './AllResults'
 import PropTypes from 'prop-types'
-
-//const apiKey = process.env.REACT_APP_API_KEY;
-const apiKey = 'V75ciCUj9cKAOR0Yeoxwug'
+import apiKey from '../secrets.js'
+// const apiKey = process.env.REACT_APP_API_KEY;
 
 class Search extends Component {
   state = {
@@ -19,7 +18,8 @@ class Search extends Component {
     })
   }
 
-  onButtonClick = () => {
+  onButtonClick = e => {
+    e.preventDefault()
     this.setState({
       fetchingData: true
     })
@@ -91,8 +91,9 @@ class Search extends Component {
             value={this.state.searchText}
           />
           <button
+            disabled={!this.state.searchText}
             className="col-sm-2 btn btn-primary"
-            onClick={this.onButtonClick}
+            onClick={e => this.onButtonClick(e)}
           >
             Search
           </button>
