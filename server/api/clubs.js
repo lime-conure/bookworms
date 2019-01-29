@@ -2,6 +2,13 @@ const router = require('express').Router()
 const {Club, Poll, Option, Vote, Book, User, Author} = require('../db/models')
 module.exports = router
 
+const FAKE_USER = {
+  id: 1,
+  email: 'brynn.shepherd@gmail.com',
+  name: 'Brynn Shepherd'
+}
+module.exports = router
+
 //****** ROUTES FOR CLUBS ******//
 
 //GET /api/clubs - to get all clubs by user
@@ -10,6 +17,20 @@ router.get('/', async (req, res, next) => {
     const user = await User.findById(req.user.id)
     const clubs = await user.getClubs()
     res.send(clubs)
+  } catch (err) {
+    next(err)
+  }
+})
+
+//POST /api/clubs/:clubId/deleteMember
+router.post('/:clubId/deletemember', async (req, res, next) => {
+  try {
+    const clubId = req.params.clubId
+    const club = await Club.findById(clubId)
+    const user = await User.findById(req.user.id)
+    await club.removeUser(user)
+    const updatedClub = await Club.findById(clubId)
+    res.send(updatedClub)
   } catch (err) {
     next(err)
   }
@@ -25,17 +46,6 @@ router.get('/:clubId', async (req, res, next) => {
     next(err)
   }
 })
-
-// //POST /api/clubs/ - to create a club
-// router.post('/clubs', async (req, res, next) => {
-//   try {
-//     let newClub = await Club.create({where: {
-//       name: req.params.name }});
-//     res.json(newClub);
-//   } catch(err){
-//     next(err)
-//   }
-// })
 
 //****** ROUTES FOR POLLS ******
 //GET /api/clubs/:clubId/polls
@@ -76,13 +86,15 @@ router.post('/:clubId/polls', async (req, res, next) => {
         let existingAuthor = await Author.findOne({
           where: {goodReadsId: book.author.id}
         })
+        console.log('book', book)
+        console.log(existingBook, 'existing book')
         if (!existingAuthor) {
           existingAuthor = await Author.create({
             name: book.author.name,
             goodReadsId: book.author.id
           })
         }
-        existingBook.setAuthor(existingAuthor)
+        existingBook.setAuthors([existingAuthor])
       }
       books.push(existingBook)
     }
@@ -90,7 +102,12 @@ router.post('/:clubId/polls', async (req, res, next) => {
 
     await Promise.all(
       books.map(book =>
-        Option.create({type: 'book', bookId: book.id, pollId: newPoll.id})
+        Option.create({
+          type: 'book',
+          bookId: book.id,
+          bookName: book.title,
+          pollId: newPoll.id
+        })
       )
     )
 
@@ -182,17 +199,20 @@ router.put('/:clubId/polls/:pollId', async (req, res, next) => {
       const clubIdOfPoll = poll.getClubId()
 
       if (clubId === clubIdOfPoll) {
-        votes.forEach(async vote => {
+        const optionsInPoll = await poll.getOptions()
+        optionsInPoll.forEach(async option => {
           const existingVote = await Vote.findOne({
-            where: {optionId: vote, userId}
+            where: {optionId: option.id, userId}
           })
-          if (existingVote) {
-            console.log('you already voted on ', vote)
-          } else {
-            await Vote.create({optionId: vote, userId})
+          const voting = votes.includes(option.id)
+          if (!existingVote && voting) {
+            // adding a new vote
+            await Vote.create({optionId: option.id, userId})
+          } else if (existingVote && !voting) {
+            // undoing a vote
+            await Vote.destroy({where: {optionId: option.id, userId}})
           }
         })
-
         res.json(votes)
       } else {
         res

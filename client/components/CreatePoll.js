@@ -1,6 +1,4 @@
 import React, {Component} from 'react'
-import {connect} from 'react-redux'
-import {fetchPolls} from '../store'
 import {NavLink, Link} from 'react-router-dom'
 import BooksView from './BooksView'
 import axios from 'axios'
@@ -8,10 +6,16 @@ import Calendar from 'react-input-calendar'
 import Popup from 'reactjs-popup'
 import Search from './Search'
 
+if (!process.env.REACT_APP_API_KEY) require('../secrets.js')
+
+const apiKey = process.env.REACT_APP_API_KEY
+
 class CreatePoll extends Component {
   constructor() {
     super()
     this.state = {
+      open: false,
+      description: 'loading...',
       searchResults: [],
       selectedBooks: [],
       selectedDates: [],
@@ -31,7 +35,8 @@ class CreatePoll extends Component {
     this.addPlaces = this.addPlaces.bind(this)
     this.onCalendarChange = this.onCalendarChange.bind(this)
     this.setResults = this.setResults.bind(this)
-    // this.deleteOption = this.deleteOption.bind(this)
+    this.handleClick = this.handleClick.bind(this)
+    this.closeModal = this.closeModal.bind(this)
   }
   onCalendarChange(date) {
     const dueDate = new Date(
@@ -39,11 +44,9 @@ class CreatePoll extends Component {
       Number(date.slice(0, 2)),
       Number(date.slice(3, 5))
     )
-    console.log(dueDate)
     this.setState({
       dueDate: dueDate
     })
-    console.log('state:', this.state.dueDate)
   }
   handleChange(e) {
     this.setState({
@@ -55,17 +58,50 @@ class CreatePoll extends Component {
     this.setState({searchResults: results})
   }
 
-  // async fetchBooks(e) {
-  //   e.preventDefault()
-  //   try {
-  //     const {data} = await axios.get('/api/books')
-  //     this.setState({
-  //       searchResults: data
-  //     })
-  //   } catch (err) {
-  //     console.error(err)
-  //   }
-  // }
+  getDescription = bookId => {
+    const requestUri =
+      `https://cors-anywhere.herokuapp.com/` +
+      `https://www.goodreads.com/book/show/${bookId}?key=${apiKey}`
+    axios
+      .get(requestUri)
+      .then(res => {
+        const parser = new DOMParser()
+        const XMLResponse = parser.parseFromString(res.data, 'application/xml')
+
+        const parseError = XMLResponse.getElementsByTagName('parsererror')
+
+        if (parseError.length) {
+          this.setState({
+            error: 'There was an error fetching results.'
+          })
+        } else {
+          let description = XMLResponse.getElementsByTagName('description')[0]
+            .innerHTML
+
+          description = description.replace('<![CDATA[', '').replace(']]>', '')
+
+          if (!description) {
+            description = 'No description found.'
+          }
+          this.setState({description})
+        }
+      })
+      .catch(error => {
+        this.setState({
+          error: error.toString()
+        })
+      })
+  }
+
+  handleClick(e, bookId) {
+    e.preventDefault()
+    this.getDescription(bookId)
+    this.setState({open: true})
+  }
+
+  closeModal() {
+    this.setState({open: false, description: 'loading...'})
+  }
 
   async createPoll(e) {
     e.preventDefault()
@@ -106,13 +142,13 @@ class CreatePoll extends Component {
       Number(time.slice(0, 2)),
       Number(time.slice(3, 5))
     )
-
     this.setState({
       selectedDates: [...this.state.selectedDates, dateTime],
       date: '',
       time: ''
     })
   }
+
   addPlaces(e) {
     e.preventDefault()
     this.setState({
@@ -168,25 +204,19 @@ class CreatePoll extends Component {
     }
   }
 
-  componentDidMount() {
-    console.log('CreatePoll did mount')
-  }
-
   render() {
-    console.log('Create poll rendered')
-    console.log('state in render:', this.state)
     return (
       <div>
         <form>
           <h3>Create a New Poll</h3>
           <div>
-            <label htmlFor="title"> Title</label>
+            <label htmlFor="title">Title</label>
             <input name="title" onChange={this.handleChange} required />
           </div>
           <br />
           <div>
             <label htmlFor="notes">Notes</label>
-            <input name="notes" onChange={this.handleChange} />
+            <textarea name="notes" onChange={this.handleChange} />
           </div>
           <br />
           {/* select dueDate */}
@@ -201,68 +231,60 @@ class CreatePoll extends Component {
           </div>
           <br />
           {/* select books */}
-
           <div>
-            {/*<label htmlFor="searchValue">Add Book Options</label>
-            <input
-              name="searchValue"
-              placeholder="Search for a book..."
-              onChange={this.handleChange}
-            />
-            <button onClick={this.fetchBooks} type="submit">
-              Search
-						</button>
-						*/}
             <label>Add Book Options</label>
             <Search setResults={this.setResults} />
             <br />
 
             {this.state.searchResults.length ? (
-              // <BooksView books={this.state.search} addBook={this.addBook} />
               <div>
                 {this.state.searchResults.map(bookResult => (
-                  <div key={bookResult.id}>
-                    <div key={bookResult.best_book.id}>
-                      <Popup
-                        trigger={
-                          <img src={bookResult.best_book.small_image_url} />
-                        }
-                        position="right center"
-                        modal
-                      >
-                        {close => (
-                          <div className="modal">
-                            <a className="close" onClick={close}>
-                              &times;
+                  <div key={bookResult.best_book.id}>
+                    <Popup
+                      open={this.state.open}
+                      closeOnDocumentClick
+                      onClose={this.closeModal}
+                      position="right center"
+                    >
+                      <div className="modal">
+                        <a className="close" onClick={this.closeModal}>
+                          &times;
+                        </a>
+                        <div className="header">
+                          {' '}
+                          {bookResult.best_book.title}
+                        </div>
+                        <p>{this.state.description}</p>
+                        <img src={bookResult.best_book.small_image_url} />
+                        <div className="actions">
+                          <button className="button" type="button">
+                            <a
+                              href={`https://www.goodreads.com/book/show/${
+                                bookResult.best_book.id
+                              }`}
+                              target="_blank"
+                            >
+                              View more in goodreads.com
                             </a>
-                            <div className="header">
-                              {' '}
-                              {bookResult.best_book.title}
-                            </div>
-                            <img src={bookResult.best_book.small_image_url} />
-                            <div className="actions">
-                              <button className="button">
-                                <a
-                                  href={`https://www.goodreads.com/book/show/${
-                                    bookResult.best_book.id
-                                  }`}
-                                  target="_blank"
-                                >
-                                  View more in goodreads.com
-                                </a>
-                              </button>
-                            </div>
-                          </div>
-                        )}
-                      </Popup>
-                      {/* <p>{bookResult.title}</p> */}
-                      <p>{bookResult.best_book.title}</p>
-                      <p>{bookResult.best_book.author.name}</p>
-                      <button onClick={e => this.addBook(e, bookResult)}>
-                        Add a book
-                      </button>
-                      <br />
-                    </div>
+                          </button>
+                        </div>
+                      </div>
+                    </Popup>
+                    <img
+                      onClick={e =>
+                        this.handleClick(e, bookResult.best_book.id)
+                      }
+                      src={bookResult.best_book.small_image_url}
+                    />
+                    <p>{bookResult.best_book.title}</p>
+                    <p>{bookResult.best_book.author.name}</p>
+                    <button
+                      onClick={e => this.addBook(e, bookResult)}
+                      type="button"
+                    >
+                      Add a book
+                    </button>
+                    <br />
                   </div>
                 ))}
                 <br />
@@ -271,11 +293,12 @@ class CreatePoll extends Component {
                     <div>
                       <h4>Added books:</h4>
                       {this.state.selectedBooks.map((book, idx) => (
-                        <div key={book.id}>
-                          <img src={book.small_image_url} />
+                        <div key={book.idx}>
+                          <img src={book.smallImageUrl} />
                           <p>{book.title}</p>
                           <button
                             onClick={e => this.deleteOption(idx, 'book', e)}
+                            type="button"
                           >
                             X
                           </button>
@@ -303,7 +326,11 @@ class CreatePoll extends Component {
               value={this.state.time}
               onChange={this.handleChange}
             />
-            <button onClick={this.addDateTime} type="submit">
+            <button
+              disabled={!this.state.date || !this.state.time}
+              onClick={this.addDateTime}
+              type="submit"
+            >
               Add Date/Time
             </button>
 
@@ -335,7 +362,11 @@ class CreatePoll extends Component {
               value={this.state.place}
               onChange={this.handleChange}
             />
-            <button onClick={this.addPlaces} type="submit">
+            <button
+              disabled={!this.state.place}
+              onClick={this.addPlaces}
+              type="submit"
+            >
               Add Location
             </button>
             <br />
@@ -344,7 +375,10 @@ class CreatePoll extends Component {
                 ? this.state.selectedPlaces.map((place, idx) => (
                     <div key={idx}>
                       <p>{place}</p>
-                      <button onClick={e => this.deleteOption(idx, 'place', e)}>
+                      <button
+                        type="button"
+                        onClick={e => this.deleteOption(idx, 'place', e)}
+                      >
                         X
                       </button>
                     </div>
@@ -354,7 +388,11 @@ class CreatePoll extends Component {
           </div>
 
           <br />
-          <button type="submit" onClick={this.createPoll}>
+          <button
+            type="submit"
+            onClick={this.createPoll}
+            disabled={!this.state.title}
+          >
             Create Poll
           </button>
         </form>

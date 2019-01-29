@@ -2,9 +2,8 @@ import React, {Component} from 'react'
 import Axios from 'axios'
 import AllResults from './AllResults'
 import PropTypes from 'prop-types'
-
-//const apiKey = process.env.REACT_APP_API_KEY;
-const apiKey = 'V75ciCUj9cKAOR0Yeoxwug'
+if (!process.env.REACT_APP_API_KEY) require('../secrets.js')
+const apiKey = process.env.REACT_APP_API_KEY
 
 class Search extends Component {
   state = {
@@ -19,7 +18,8 @@ class Search extends Component {
     })
   }
 
-  onButtonClick = () => {
+  onButtonClick = e => {
+    e.preventDefault()
     this.setState({
       fetchingData: true
     })
@@ -33,7 +33,6 @@ class Search extends Component {
         this.parseXMLResponse(res.data)
       })
       .catch(error => {
-        //console.log(error)
         this.setState({
           error: error.toString(),
           fetchingData: false
@@ -43,7 +42,6 @@ class Search extends Component {
 
   // parse string xml received from goodreads api
   parseXMLResponse = response => {
-    console.log(response)
     const parser = new DOMParser()
     const XMLResponse = parser.parseFromString(response, 'application/xml')
     const parseError = XMLResponse.getElementsByTagName('parsererror')
@@ -91,8 +89,9 @@ class Search extends Component {
             value={this.state.searchText}
           />
           <button
+            disabled={!this.state.searchText}
             className="col-sm-2 btn btn-primary"
-            onClick={this.onButtonClick}
+            onClick={e => this.onButtonClick(e)}
           >
             Search
           </button>

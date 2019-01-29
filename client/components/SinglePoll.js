@@ -14,15 +14,32 @@ export class SinglePoll extends Component {
     this.handleCheck = this.handleCheck.bind(this)
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    // load poll
     const singlePollId = Number(this.props.match.params.pollId)
     const clubId = Number(this.props.match.params.clubId)
-    this.props.fetchSinglePoll(clubId, singlePollId)
+    await this.props.fetchSinglePoll(clubId, singlePollId)
+
+    // set local checkbox state
+    const existingVotes = this.props.singlePoll.allOptions
+      .filter(optionObj => this.optionIsChecked(optionObj))
+      .map(optionObj => optionObj.option.id)
+    this.setState({votes: existingVotes})
   }
-  handleCheck(optionId) {
-    this.setState(prevState => ({
-      votes: [...prevState.votes, Number(optionId)]
-    }))
+  handleCheck(event) {
+    const checked = event.target.checked
+    const optionId = Number(event.target.value)
+    if (checked) {
+      // add vote
+      this.setState(prevState => ({
+        votes: [...prevState.votes, optionId]
+      }))
+    } else {
+      // undo vote
+      this.setState(prevState => ({
+        votes: prevState.votes.filter(id => id !== optionId)
+      }))
+    }
   }
   handleSubmit(event) {
     event.preventDefault()
@@ -63,7 +80,7 @@ export class SinglePoll extends Component {
                   defaultChecked={
                     this.optionIsChecked(optionObj) ? 'checked' : ''
                   }
-                  onChange={() => this.handleCheck(optionObj.option.id)}
+                  onChange={this.handleCheck}
                   type="checkbox"
                   name="options"
                 />
@@ -102,7 +119,7 @@ export class SinglePoll extends Component {
           <Link to={`/clubs/${this.props.match.params.clubId}/polls/`}>
             ← Back to all polls
           </Link>
-          <h2>{poll.title}: </h2>
+          <h2>{poll.title}</h2>
           <h3>{poll.notes}</h3>
           <p>
             <em>
@@ -117,9 +134,7 @@ export class SinglePoll extends Component {
             {this.renderPoll(bookOptions, 'Book')}
             {this.renderPoll(timeOptions, 'Date/Time')}
             {this.renderPoll(locationOptions, 'Location')}
-            <button type="submit" disabled={!this.state.votes.length}>
-              Vote
-            </button>
+            {allOptions.length ? <button type="submit">Vote</button> : ''}
           </form>
         </div>
       )
