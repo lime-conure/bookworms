@@ -9,14 +9,14 @@ const GET_CLUBS = 'GET_CLUBS'
 /**
  * INITIAL STATE
  */
-const clubs = []
+const allClubs = []
 
 /**
  * ACTION CREATORS
  */
-const getClubs = clubs => ({
+const getClubs = allClubs => ({
   type: GET_CLUBS,
-  clubs
+  allClubs
 })
 
 /**
@@ -36,10 +36,10 @@ export const fetchClubs = () => async dispatch => {
  * REDUCER
  */
 
-export default function(state = clubs, action) {
+export default function(state = allClubs, action) {
   switch (action.type) {
     case GET_CLUBS:
-      return action.clubs
+      return action.allClubs
     default:
       return state
   }

@@ -7,8 +7,16 @@ import polls from './polls'
 import search from './search'
 import singlePoll from './singlePoll'
 import clubs from './clubs'
+import singleClub from './singleClub'
 
-const reducer = combineReducers({user, polls, search, singlePoll, clubs})
+const reducer = combineReducers({
+  user,
+  polls,
+  search,
+  singlePoll,
+  clubs,
+  singleClub
+})
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
 )
@@ -19,4 +27,5 @@ export * from './user'
 export * from './polls'
 export * from './search'
 export * from './singlePoll'
-export * from './Clubs'
+export * from './clubs'
+export * from './singleClub'
