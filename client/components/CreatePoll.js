@@ -207,13 +207,13 @@ class CreatePoll extends Component {
         <form>
           <h3>Create a New Poll</h3>
           <div>
-            <label htmlFor="title"> Title</label>
+            <label htmlFor="title">Title</label>
             <input name="title" onChange={this.handleChange} required />
           </div>
           <br />
           <div>
             <label htmlFor="notes">Notes</label>
-            <input name="notes" onChange={this.handleChange} />
+            <textarea name="notes" onChange={this.handleChange} />
           </div>
           <br />
           {/* select dueDate */}
@@ -254,7 +254,7 @@ class CreatePoll extends Component {
                         <p>{this.state.description}</p>
                         <img src={bookResult.best_book.small_image_url} />
                         <div className="actions">
-                          <button className="button">
+                          <button className="button" type="button">
                             <a
                               href={`https://www.goodreads.com/book/show/${
                                 bookResult.best_book.id
@@ -275,7 +275,10 @@ class CreatePoll extends Component {
                     />
                     <p>{bookResult.best_book.title}</p>
                     <p>{bookResult.best_book.author.name}</p>
-                    <button onClick={e => this.addBook(e, bookResult)}>
+                    <button
+                      onClick={e => this.addBook(e, bookResult)}
+                      type="button"
+                    >
                       Add a book
                     </button>
                     <br />
@@ -292,6 +295,7 @@ class CreatePoll extends Component {
                           <p>{book.title}</p>
                           <button
                             onClick={e => this.deleteOption(idx, 'book', e)}
+                            type="button"
                           >
                             X
                           </button>
@@ -368,7 +372,10 @@ class CreatePoll extends Component {
                 ? this.state.selectedPlaces.map((place, idx) => (
                     <div key={idx}>
                       <p>{place}</p>
-                      <button onClick={e => this.deleteOption(idx, 'place', e)}>
+                      <button
+                        type="button"
+                        onClick={e => this.deleteOption(idx, 'place', e)}
+                      >
                         X
                       </button>
                     </div>
@@ -378,7 +385,11 @@ class CreatePoll extends Component {
           </div>
 
           <br />
-          <button type="submit" onClick={this.createPoll}>
+          <button
+            type="submit"
+            onClick={this.createPoll}
+            disabled={!this.state.title}
+          >
             Create Poll
           </button>
         </form>
