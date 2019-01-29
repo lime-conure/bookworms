@@ -14,15 +14,19 @@ export class SinglePoll extends Component {
     this.handleCheck = this.handleCheck.bind(this)
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    // load poll
     const singlePollId = Number(this.props.match.params.pollId)
     const clubId = Number(this.props.match.params.clubId)
-    this.props.fetchSinglePoll(clubId, singlePollId)
+    await this.props.fetchSinglePoll(clubId, singlePollId)
+
+    // set local checkbox state
+    const existingVotes = this.props.singlePoll.allOptions
+      .filter(optionObj => this.optionIsChecked(optionObj))
+      .map(optionObj => optionObj.option.id)
+    this.setState({votes: existingVotes})
   }
   handleCheck(event) {
-    // const alreadyVoted = this.optionIsChecked(optionObj)
-    console.log('checked? ', event.target.checked)
-    console.log('option id? ', event.target.value)
     const checked = event.target.checked
     const optionId = Number(event.target.value)
     if (checked) {
@@ -130,9 +134,7 @@ export class SinglePoll extends Component {
             {this.renderPoll(bookOptions, 'Book')}
             {this.renderPoll(timeOptions, 'Date/Time')}
             {this.renderPoll(locationOptions, 'Location')}
-            <button type="submit" disabled={!this.state.votes.length}>
-              Vote
-            </button>
+            <button type="submit">Vote</button>
           </form>
         </div>
       )
