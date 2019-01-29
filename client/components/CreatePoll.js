@@ -368,7 +368,10 @@ class CreatePoll extends Component {
                 ? this.state.selectedPlaces.map((place, idx) => (
                     <div key={idx}>
                       <p>{place}</p>
-                      <button onClick={e => this.deleteOption(idx, 'place', e)}>
+                      <button
+                        type="button"
+                        onClick={e => this.deleteOption(idx, 'place', e)}
+                      >
                         X
                       </button>
                     </div>
@@ -378,7 +381,11 @@ class CreatePoll extends Component {
           </div>
 
           <br />
-          <button type="submit" onClick={this.createPoll}>
+          <button
+            type="submit"
+            onClick={this.createPoll}
+            disabled={!this.state.title}
+          >
             Create Poll
           </button>
         </form>
