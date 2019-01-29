@@ -4,7 +4,7 @@ import axios from 'axios'
  * ACTION TYPES
  */
 const GET_SINGLE_POLL = 'GET_SINGLE_POLL'
-const INCREMENT_VOTES = 'INCREMENT_VOTES'
+const UPDATE_VOTES = 'UPDATE_VOTES'
 
 /**
  * INITIAL STATE
@@ -25,7 +25,7 @@ const getSinglePoll = poll => ({
 })
 
 const updateOptionVotes = payload => ({
-  type: INCREMENT_VOTES,
+  type: UPDATE_VOTES,
   payload
 })
 
@@ -60,13 +60,19 @@ export const sendVotes = ({
 // optionIds = [3, 6]
 const voteForOptions = (state, optionIds, userId) => {
   return state.allOptions.map(optionObj => {
-    if (optionIds.includes(optionObj.option.id)) {
-      const voteUserIds = optionObj.votes.map(vote => vote.userId)
+    const voteUserIds = optionObj.votes.map(vote => vote.userId)
+    const voting = optionIds.includes(optionObj.option.id)
+    const alreadyVoted = voteUserIds.includes(userId)
+    if (voting && !alreadyVoted) {
+      // add the new vote
       // prevent users from voting multiple times for the same option
-      if (!voteUserIds.includes(userId)) {
-        optionObj.numVotes++
-        optionObj.votes.push({userId})
-      }
+      optionObj.numVotes++
+      optionObj.votes.push({userId})
+    } else if (!voting && alreadyVoted) {
+      // remove the vote
+      optionObj.numVotes--
+      const voteIndex = voteUserIds.indexOf(userId)
+      optionObj.votes.splice(voteIndex, 1)
     }
     return optionObj
   })
@@ -80,7 +86,7 @@ export default function(state = defaultPoll, action) {
     case GET_SINGLE_POLL: {
       return action.poll
     }
-    case INCREMENT_VOTES: {
+    case UPDATE_VOTES: {
       // action.payload.optionIds is an array of optionIds that you voted for
       // e.g. [3, 6]
       const updatedOptions = voteForOptions(
