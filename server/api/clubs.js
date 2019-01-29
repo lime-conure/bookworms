@@ -185,17 +185,20 @@ router.put('/:clubId/polls/:pollId', async (req, res, next) => {
       const clubIdOfPoll = poll.getClubId()
 
       if (clubId === clubIdOfPoll) {
-        votes.forEach(async vote => {
+        const optionsInPoll = await poll.getOptions()
+        optionsInPoll.forEach(async option => {
           const existingVote = await Vote.findOne({
-            where: {optionId: vote, userId}
+            where: {optionId: option.id, userId}
           })
-          if (existingVote) {
-            console.log('you already voted on ', vote)
-          } else {
-            await Vote.create({optionId: vote, userId})
+          const voting = votes.includes(option.id)
+          if (!existingVote && voting) {
+            // adding a new vote
+            await Vote.create({optionId: option.id, userId})
+          } else if (existingVote && !voting) {
+            // undoing a vote
+            await Vote.destroy({where: {optionId: option.id, userId}})
           }
         })
-
         res.json(votes)
       } else {
         res
