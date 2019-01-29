@@ -14,7 +14,6 @@ export class SingleClub extends Component {
   }
   leaveClub() {
     this.props.leaveClub(this.props.singleClub.id)
-    console.log('click on leaveclub')
   }
   render() {
     const club = this.props.singleClub
