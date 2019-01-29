@@ -27,7 +27,7 @@ router.post('/:clubId/deletemember', async (req, res, next) => {
   try {
     const clubId = req.params.clubId
     const club = await Club.findById(clubId)
-    const user = await User.findById(1)
+    const user = await User.findById(req.user.id)
     await club.removeUser(user)
     const updatedClub = await Club.findById(clubId)
     res.send(updatedClub)
