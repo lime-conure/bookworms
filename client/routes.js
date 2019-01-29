@@ -8,7 +8,9 @@ import {
   UserHome,
   Polls,
   SinglePoll,
-  CreatePoll
+  CreatePoll,
+  Clubs,
+  SingleClub
 } from './components'
 import {me} from './store'
 
@@ -29,7 +31,6 @@ class Routes extends Component {
         <Route exact path="/clubs/:clubId/polls" component={Polls} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/signup" component={Signup} />
-
         <Route exact path="/clubs/:clubId/polls" component={Polls} />
         <Route
           exact
@@ -40,6 +41,8 @@ class Routes extends Component {
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
+            <Route exact path="/clubs" component={Clubs} />
+            <Route path="/clubs/:clubsId" component={SingleClub} />
             <Route
               exact
               path="/clubs/:clubId/polls/:pollId"
