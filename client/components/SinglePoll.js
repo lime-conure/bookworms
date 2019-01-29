@@ -2,6 +2,32 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {fetchSinglePoll, sendVotes} from '../store'
+import {withStyles} from '@material-ui/core/styles'
+import {
+  Paper,
+  Typography,
+  Table,
+  TableHead,
+  TableCell,
+  TableBody,
+  TableRow,
+  Checkbox,
+  Button
+} from '@material-ui/core'
+
+const styles = theme => ({
+  root: {
+    ...theme.mixins.gutters(),
+    paddingTop: theme.spacing.unit * 2,
+    paddingBottom: theme.spacing.unit * 2
+  },
+  poll: {
+    padding: theme.spacing.unit * 3,
+    marginTop: theme.spacing.unit * 3,
+    marginBottom: theme.spacing.unit * 3,
+    marginRight: theme.spacing.unit * 3
+  }
+})
 
 export class SinglePoll extends Component {
   constructor(props) {
@@ -62,46 +88,59 @@ export class SinglePoll extends Component {
       return true
     } else return false
   }
-  renderPoll(options, type) {
+  renderPoll(options, type, classes) {
     const columnName =
       type === 'Book'
         ? 'bookName'
         : type === 'Date/Time' ? 'dateTime' : 'location'
     if (options && options.length) {
       return (
-        <div>
-          <h4>{type} Options:</h4>
-          <div className="options">
-            {options.map(optionObj => (
-              <div key={optionObj.option.id}>
-                <p>Votes: {optionObj.numVotes}</p>
-                <input
-                  value={optionObj.option.id}
-                  defaultChecked={
-                    this.optionIsChecked(optionObj) ? 'checked' : ''
-                  }
-                  onChange={this.handleCheck}
-                  type="checkbox"
-                  name="options"
-                />
-                <label>{optionObj.option[columnName]}</label>
-                {this.optionIsChecked(optionObj) ? (
-                  <small>
-                    <em>You voted for this</em>
-                  </small>
-                ) : (
-                  ''
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
+        <Paper elevation={2} className={classes.poll}>
+          <Typography variant="h6" id="tableTitle">
+            {type} Options
+          </Typography>
+          <Table>
+            <TableHead />
+            <TableBody>
+              <TableRow>
+                {options.map(optionObj => (
+                  <TableCell key={optionObj.option.id}>
+                    <strong>{optionObj.option[columnName]}</strong>
+                  </TableCell>
+                ))}
+              </TableRow>
+              <TableRow>
+                {options.map(optionObj => (
+                  <TableCell key={optionObj.option.id}>
+                    {optionObj.numVotes}{' '}
+                    {optionObj.numVotes === 1 ? 'vote' : 'votes'}
+                  </TableCell>
+                ))}
+              </TableRow>
+              <TableRow>
+                {options.map(optionObj => (
+                  <TableCell key={optionObj.option.id} padding="checkbox">
+                    <Checkbox
+                      value={optionObj.option.id}
+                      defaultChecked={
+                        this.optionIsChecked(optionObj) ? 'checked' : ''
+                      }
+                      onChange={this.handleCheck}
+                    />
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableBody>
+          </Table>
+        </Paper>
       )
     }
   }
 
   // eslint-disable-next-line complexity
   render() {
+    const {classes} = this.props
+
     const poll = this.props.singlePoll.poll
     const allOptions = this.props.singlePoll.allOptions
     const bookOptions = allOptions.filter(
@@ -113,36 +152,58 @@ export class SinglePoll extends Component {
     const locationOptions = allOptions.filter(
       optionObj => optionObj.option.type === 'location'
     )
+
     if (poll) {
       return (
-        <div>
-          <Link to={`/clubs/${this.props.match.params.clubId}/polls/`}>
+        <main className={classes.root}>
+          <Button
+            component={Link}
+            to={`/clubs/${this.props.match.params.clubId}/polls/`}
+          >
             ← Back to all polls
-          </Link>
-          <h2>{poll.title}</h2>
-          <h3>{poll.notes}</h3>
-          <p>
-            <em>
-              {poll.dueDate ? (
-                <span>Poll ends on {poll.dueDate.slice(0, 10)}</span>
-              ) : (
-                ''
-              )}
-            </em>
-          </p>
+          </Button>
+          <Typography variant="h3" gutterBottom color="primary">
+            {poll.title}
+          </Typography>
+          <Typography variant="subtitle1" gutterBottom>
+            {poll.notes}
+          </Typography>
+
+          {poll.dueDate ? (
+            <Typography variant="subtitle2" gutterBottom>
+              Voting ends on {poll.dueDate.slice(0, 10)}
+            </Typography>
+          ) : (
+            ''
+          )}
+
           <form onSubmit={this.handleSubmit}>
-            {this.renderPoll(bookOptions, 'Book')}
-            {this.renderPoll(timeOptions, 'Date/Time')}
-            {this.renderPoll(locationOptions, 'Location')}
-            {allOptions.length ? <button type="submit">Vote</button> : ''}
+            {this.renderPoll(bookOptions, 'Book', classes)}
+            {this.renderPoll(timeOptions, 'Date/Time', classes)}
+            {this.renderPoll(locationOptions, 'Location', classes)}
+            <br />
+            {allOptions.length ? (
+              <Button
+                size="large"
+                color="primary"
+                variant="outlined"
+                type="submit"
+              >
+                Vote
+              </Button>
+            ) : (
+              ''
+            )}
           </form>
-        </div>
+        </main>
       )
     } else {
-      return <div>Loading...</div>
+      return <main className={classes.root}>Loading...</main>
     }
   }
 }
+
+const StyledSinglePoll = withStyles(styles)(SinglePoll)
 
 const mapState = state => ({
   singlePoll: state.singlePoll,
@@ -156,4 +217,4 @@ const mapDispatch = dispatch => ({
     dispatch(sendVotes(clubId, pollId, votes))
 })
 
-export default connect(mapState, mapDispatch)(SinglePoll)
+export default connect(mapState, mapDispatch)(StyledSinglePoll)

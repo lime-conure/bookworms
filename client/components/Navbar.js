@@ -36,6 +36,9 @@ function Navbar({handleClick, isLoggedIn, classes}) {
               <Button component={Link} to="/clubs">
                 Clubs
               </Button>
+              <Button component={Link} to="/profile">
+                Profile
+              </Button>
               <Button onClick={handleClick}>Logout</Button>
             </div>
           ) : (
