@@ -2,8 +2,8 @@ import React, {Component} from 'react'
 import Axios from 'axios'
 import AllResults from './AllResults'
 import PropTypes from 'prop-types'
-import apiKey from '../secrets.js'
-// const apiKey = process.env.REACT_APP_API_KEY;
+if (!process.env.REACT_APP_API_KEY) require('../secrets.js')
+const apiKey = process.env.REACT_APP_API_KEY
 
 class Search extends Component {
   state = {
@@ -33,7 +33,6 @@ class Search extends Component {
         this.parseXMLResponse(res.data)
       })
       .catch(error => {
-        //console.log(error)
         this.setState({
           error: error.toString(),
           fetchingData: false
@@ -43,7 +42,6 @@ class Search extends Component {
 
   // parse string xml received from goodreads api
   parseXMLResponse = response => {
-    console.log(response)
     const parser = new DOMParser()
     const XMLResponse = parser.parseFromString(response, 'application/xml')
     const parseError = XMLResponse.getElementsByTagName('parsererror')
