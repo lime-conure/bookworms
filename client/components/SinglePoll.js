@@ -119,7 +119,7 @@ export class SinglePoll extends Component {
           <Link to={`/clubs/${this.props.match.params.clubId}/polls/`}>
             ← Back to all polls
           </Link>
-          <h2>{poll.title}: </h2>
+          <h2>{poll.title}</h2>
           <h3>{poll.notes}</h3>
           <p>
             <em>
@@ -134,7 +134,7 @@ export class SinglePoll extends Component {
             {this.renderPoll(bookOptions, 'Book')}
             {this.renderPoll(timeOptions, 'Date/Time')}
             {this.renderPoll(locationOptions, 'Location')}
-            <button type="submit">Vote</button>
+            {allOptions.length ? <button type="submit">Vote</button> : ''}
           </form>
         </div>
       )

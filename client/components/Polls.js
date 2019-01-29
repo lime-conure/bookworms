@@ -21,8 +21,8 @@ class Polls extends Component {
     return (
       <div>
         <h2> All Polls:</h2>
-        <Link to={`/clubs/${this.props.match.params.clubId}/Polls/create`}>
-          <button> Create a new poll</button>
+        <Link to={`/clubs/${this.props.match.params.clubId}/polls/create`}>
+          <button type="button"> Create a New Poll</button>
         </Link>
         <ul>
           {polls.map(poll => (
@@ -34,7 +34,14 @@ class Polls extends Component {
                   }`}
                 >
                   <p>
-                    {poll.title} &ndash; <em>Ends on {poll.dueDate}</em>
+                    {poll.title}{' '}
+                    {poll.dueDate ? (
+                      <span>
+                        &ndash; <em>Ends on {poll.dueDate}</em>
+                      </span>
+                    ) : (
+                      ''
+                    )}
                   </p>
                 </Link>
               </li>
