@@ -9,18 +9,6 @@ const FAKE_USER = {
 }
 module.exports = router
 
-//POST /api/clubs/:clubId/deleteMember
-// router.post('/:clubId/deletemember', async (req, res, next) => {
-//   try {
-//     const clubId = req.params.clubId
-//     console.log(clubId, 'club')
-//     const club = await Club.findById(clubId)
-//     console.log(club, 'club')
-//     const user = await User.findById(1)
-//     Club.removeUser(user)
-//     res.send(club)
-// const {Club, Poll, Option, Vote, Book, User, Author} = require('../db/models')
-
 //****** ROUTES FOR CLUBS ******//
 
 //GET /api/clubs - to get all clubs by user
@@ -44,17 +32,6 @@ router.get('/:clubId', async (req, res, next) => {
     next(err)
   }
 })
-
-// //POST /api/clubs/ - to create a club
-// router.post('/clubs', async (req, res, next) => {
-//   try {
-//     let newClub = await Club.create({where: {
-//       name: req.params.name }});
-//     res.json(newClub);
-//   } catch(err){
-//     next(err)
-//   }
-// })
 
 //****** ROUTES FOR POLLS ******
 //GET /api/clubs/:clubId/polls

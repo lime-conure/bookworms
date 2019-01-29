@@ -2,9 +2,8 @@ import React, {Component} from 'react'
 import Axios from 'axios'
 import AllResults from './AllResults'
 import PropTypes from 'prop-types'
-
-//const apiKey = process.env.REACT_APP_API_KEY;
-const apiKey = 'jrAzhFY1JP1FdDk1vp7Zg'
+import apiKey from '../secrets.js'
+// const apiKey = process.env.REACT_APP_API_KEY;
 
 class Search extends Component {
   state = {

@@ -1,16 +1,11 @@
 import React, {Component} from 'react'
-import {connect} from 'react-redux'
-import {fetchPolls} from '../store'
 import {NavLink, Link} from 'react-router-dom'
 import BooksView from './BooksView'
 import axios from 'axios'
 import Calendar from 'react-input-calendar'
 import Popup from 'reactjs-popup'
 import Search from './Search'
-import {timingSafeEqual} from 'crypto'
-
-//const apiKey = process.env.REACT_APP_API_KEY;
-const apiKey = 'jrAzhFY1JP1FdDk1vp7Zg'
+import apiKey from '../secrets.js'
 
 class CreatePoll extends Component {
   constructor() {
@@ -39,7 +34,6 @@ class CreatePoll extends Component {
     this.setResults = this.setResults.bind(this)
     this.handleClick = this.handleClick.bind(this)
     this.closeModal = this.closeModal.bind(this)
-    // this.deleteOption = this.deleteOption.bind(this)
   }
   onCalendarChange(date) {
     const dueDate = new Date(
@@ -47,11 +41,9 @@ class CreatePoll extends Component {
       Number(date.slice(0, 2)),
       Number(date.slice(3, 5))
     )
-    console.log(dueDate)
     this.setState({
       dueDate: dueDate
     })
-    console.log('state:', this.state.dueDate)
   }
   handleChange(e) {
     this.setState({
@@ -209,13 +201,7 @@ class CreatePoll extends Component {
     }
   }
 
-  componentDidMount() {
-    console.log('CreatePoll did mount')
-  }
-
   render() {
-    console.log('Create poll rendered')
-    console.log('state in render:', this.state)
     return (
       <div>
         <form>
