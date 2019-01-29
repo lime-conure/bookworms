@@ -5,7 +5,9 @@ import axios from 'axios'
 import Calendar from 'react-input-calendar'
 import Popup from 'reactjs-popup'
 import Search from './Search'
-import apiKey from '../secrets.js'
+require('../secrets.js')
+
+const apiKey = process.env.REACT_APP_API_KEY
 
 class CreatePoll extends Component {
   constructor() {
