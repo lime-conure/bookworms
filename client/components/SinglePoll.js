@@ -15,6 +15,7 @@ export class SinglePoll extends Component {
   }
 
   componentDidMount() {
+    console.log('singlePoll component did mount')
     const singlePollId = Number(this.props.match.params.pollId)
     const clubId = Number(this.props.match.params.clubId)
     this.props.fetchSinglePoll(clubId, singlePollId)
