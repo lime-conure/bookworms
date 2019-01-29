@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import Axios from 'axios'
 import AllResults from './AllResults'
 import PropTypes from 'prop-types'
-require('../secrets.js')
+if (!process.env.REACT_APP_API_KEY) require('../secrets.js')
 const apiKey = process.env.REACT_APP_API_KEY
 
 class Search extends Component {

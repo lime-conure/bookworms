@@ -5,7 +5,8 @@ import axios from 'axios'
 import Calendar from 'react-input-calendar'
 import Popup from 'reactjs-popup'
 import Search from './Search'
-require('../secrets.js')
+
+if (!process.env.REACT_APP_API_KEY) require('../secrets.js')
 
 const apiKey = process.env.REACT_APP_API_KEY
 
