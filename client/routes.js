@@ -5,7 +5,6 @@ import PropTypes from 'prop-types'
 import {
   Login,
   Signup,
-  UserHome,
   Polls,
   SinglePoll,
   CreatePoll,
@@ -18,7 +17,7 @@ import {withStyles} from '@material-ui/core/styles'
 const styles = theme => ({
   root: {
     ...theme.mixins.gutters(),
-    paddingTop: theme.spacing.unit * 2,
+    paddingTop: theme.spacing.unit * 4,
     paddingBottom: theme.spacing.unit * 2
   }
 })
@@ -38,21 +37,22 @@ class Routes extends Component {
       <main className={classes.root}>
         <Switch>
           {/* Routes placed here are available to all visitors */}
-          <Route exact path="/clubs/:clubId/polls" component={Polls} />
+
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={Signup} />
-          <Route exact path="/clubs/:clubId/polls" component={Polls} />
-          <Route
-            exact
-            path="/clubs/:clubId/polls/create"
-            component={CreatePoll}
-          />
 
           {isLoggedIn && (
             <Switch>
               {/* Routes placed here are only available after logging in */}
               <Route exact path="/clubs" component={Clubs} />
-              <Route exact path="/clubs/:clubsId" component={SingleClub} />
+              <Route exact path="/clubs/:clubId" component={SingleClub} />
+
+              <Route exact path="/clubs/:clubId/polls" component={Polls} />
+              <Route
+                exact
+                path="/clubs/:clubId/polls/create"
+                component={CreatePoll}
+              />
               <Route
                 exact
                 path="/clubs/:clubId/polls/:pollId"

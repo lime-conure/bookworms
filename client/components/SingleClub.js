@@ -11,7 +11,7 @@ export class SingleClub extends Component {
     this.leaveClub = this.leaveClub.bind(this)
   }
   componentDidMount() {
-    const singleClubId = Number(this.props.match.params.clubsId)
+    const singleClubId = Number(this.props.match.params.clubId)
     this.props.fetchSingleClub(singleClubId)
   }
   leaveClub() {
