@@ -2,13 +2,22 @@ import React, {Component} from 'react'
 import {NavLink, Link} from 'react-router-dom'
 import BooksView from './BooksView'
 import axios from 'axios'
-import Calendar from 'react-input-calendar'
 import Popup from 'reactjs-popup'
 import Search from './Search'
+import {withStyles} from '@material-ui/core/styles'
+import {TextField, Typography, Button, Grid} from '@material-ui/core'
 
-if (!process.env.REACT_APP_API_KEY) require('../secrets.js')
+const apiKey = 'jrAzhFY1JP1FdDk1vp7Zg'
 
-const apiKey = process.env.REACT_APP_API_KEY
+const styles = theme => ({
+  form: {
+    maxWidth: 660
+  },
+  optionsSection: {
+    marginTop: theme.spacing.unit * 3,
+    marginBottom: theme.spacing.unit * 3
+  }
+})
 
 class CreatePoll extends Component {
   constructor() {
@@ -22,7 +31,7 @@ class CreatePoll extends Component {
       selectedPlaces: [],
       title: '',
       notes: '',
-      dueDate: null,
+      dueDate: '',
       searchValue: '',
       date: '',
       time: '',
@@ -33,21 +42,11 @@ class CreatePoll extends Component {
     this.addBook = this.addBook.bind(this)
     this.addDateTime = this.addDateTime.bind(this)
     this.addPlaces = this.addPlaces.bind(this)
-    this.onCalendarChange = this.onCalendarChange.bind(this)
     this.setResults = this.setResults.bind(this)
     this.handleClick = this.handleClick.bind(this)
     this.closeModal = this.closeModal.bind(this)
   }
-  onCalendarChange(date) {
-    const dueDate = new Date(
-      Number(date.slice(6, 10)),
-      Number(date.slice(0, 2)),
-      Number(date.slice(3, 5))
-    )
-    this.setState({
-      dueDate: dueDate
-    })
-  }
+
   handleChange(e) {
     this.setState({
       [e.target.name]: e.target.value
@@ -205,37 +204,57 @@ class CreatePoll extends Component {
   }
 
   render() {
+    const {classes} = this.props
     return (
       <div>
-        <form>
-          <h3>Create a New Poll</h3>
-          <div>
-            <label htmlFor="title">Title</label>
-            <input name="title" onChange={this.handleChange} required />
-          </div>
+        <form className={classes.form}>
+          <Typography variant="h2" gutterBottom color="primary">
+            Create a New Poll
+          </Typography>
+
+          <TextField
+            label="Title"
+            name="title"
+            value={this.state.title}
+            onChange={this.handleChange}
+            margin="normal"
+            variant="filled"
+            fullWidth
+          />
           <br />
-          <div>
-            <label htmlFor="notes">Notes</label>
-            <textarea name="notes" onChange={this.handleChange} />
-          </div>
+          <TextField
+            label="Notes"
+            name="notes"
+            value={this.state.notes}
+            onChange={this.handleChange}
+            margin="normal"
+            multiline
+            rows="3"
+            variant="filled"
+            fullWidth
+          />
           <br />
           {/* select dueDate */}
-          <div>
-            <label htmlFor="dueDate">Due Date</label>
-            <Calendar
-              format="MM-DD-YYYY"
-              date={this.state.dueDate}
-              name="dueDate"
-              onChange={this.onCalendarChange}
-            />
-          </div>
-          <br />
+          <TextField
+            label="When should voting end for this poll?"
+            type="date"
+            name="dueDate"
+            value={this.state.dueDate}
+            onChange={this.handleChange}
+            margin="normal"
+            InputLabelProps={{
+              shrink: true
+            }}
+            variant="filled"
+            fullWidth
+          />
           {/* select books */}
-          <div>
-            <label>Add Book Options</label>
+          <div className={classes.optionsSection}>
+            <Typography variant="h5" color="secondary" gutterBottom>
+              Add Book Options
+            </Typography>
             <Search setResults={this.setResults} />
             <br />
-
             {this.state.searchResults.length ? (
               <div>
                 {this.state.searchResults.map(bookResult => (
@@ -278,12 +297,13 @@ class CreatePoll extends Component {
                     />
                     <p>{bookResult.best_book.title}</p>
                     <p>{bookResult.best_book.author.name}</p>
-                    <button
+                    <Button
                       onClick={e => this.addBook(e, bookResult)}
                       type="button"
+                      variant="contained"
                     >
-                      Add a book
-                    </button>
+                      Add
+                    </Button>
                     <br />
                   </div>
                 ))}
@@ -296,12 +316,12 @@ class CreatePoll extends Component {
                         <div key={book.idx}>
                           <img src={book.smallImageUrl} />
                           <p>{book.title}</p>
-                          <button
+                          <Button
                             onClick={e => this.deleteOption(idx, 'book', e)}
                             type="button"
                           >
-                            X
-                          </button>
+                            x
+                          </Button>
                         </div>
                       ))}
                     </div>
@@ -310,95 +330,140 @@ class CreatePoll extends Component {
               </div>
             ) : null}
           </div>
-          <br />
           {/* select dates */}
-          <div>
-            <label htmlFor="date">Add Date/Time Options</label>
-            <input
-              name="date"
-              placeholder="yyyy/mm/dd"
-              value={this.state.date}
-              onChange={this.handleChange}
-            />
-            <input
-              name="time"
-              placeholder="hh:mm"
-              value={this.state.time}
-              onChange={this.handleChange}
-            />
-            <button
-              disabled={!this.state.date || !this.state.time}
-              onClick={this.addDateTime}
-              type="submit"
+          <div className={classes.optionsSection}>
+            <Typography variant="h5" color="secondary" gutterBottom>
+              Add Date/Time Options
+            </Typography>
+            <Grid
+              container
+              spacing={24}
+              justify="space-between"
+              alignItems="center"
             >
-              Add Date/Time
-            </button>
+              <Grid item xs={4}>
+                <TextField
+                  name="date"
+                  type="date"
+                  label="yyyy/mm/dd"
+                  value={this.state.date}
+                  onChange={this.handleChange}
+                  variant="filled"
+                  fullWidth
+                  InputLabelProps={{
+                    shrink: true
+                  }}
+                />
+              </Grid>
+              <Grid item xs={4}>
+                <TextField
+                  name="time"
+                  type="time"
+                  label="hh:mm"
+                  value={this.state.time}
+                  onChange={this.handleChange}
+                  variant="filled"
+                  fullWidth
+                  InputLabelProps={{
+                    shrink: true
+                  }}
+                />
+              </Grid>
+              <Grid item xs={4}>
+                <Button
+                  disabled={!this.state.date || !this.state.time}
+                  onClick={this.addDateTime}
+                  type="submit"
+                  variant="contained"
+                  color="secondary"
+                >
+                  Add Date/Time
+                </Button>
+              </Grid>
+            </Grid>
 
             <br />
             <div>
               {this.state.selectedDates.length
                 ? this.state.selectedDates.map((date, idx) => (
                     <div key={idx}>
-                      <p>{date.toString()}</p>
-                      <button
+                      {date.toString()}
+                      <Button
                         onClick={e => this.deleteOption(idx, 'date', e)}
-                        type="submit"
+                        type="button"
                       >
-                        X
-                      </button>
+                        x
+                      </Button>
                     </div>
                   ))
                 : null}
             </div>
           </div>
-
-          <br />
           {/* select location */}
-          <div>
-            <label htmlFor="place">Add Location Options</label>
-            <input
-              name="place"
-              placeholder="Type a location..."
-              value={this.state.place}
-              onChange={this.handleChange}
-            />
-            <button
-              disabled={!this.state.place}
-              onClick={this.addPlaces}
-              type="submit"
+          <div className={classes.optionsSection}>
+            <Typography variant="h5" color="secondary" gutterBottom>
+              Add Location Options
+            </Typography>
+            <Grid
+              container
+              spacing={24}
+              justify="space-between"
+              alignItems="center"
             >
-              Add Location
-            </button>
+              <Grid item xs={8}>
+                <TextField
+                  name="place"
+                  label="Type a location..."
+                  value={this.state.place}
+                  onChange={this.handleChange}
+                  variant="filled"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={4}>
+                <Button
+                  disabled={!this.state.place}
+                  onClick={this.addPlaces}
+                  type="submit"
+                  variant="contained"
+                  color="secondary"
+                >
+                  Add Location
+                </Button>
+              </Grid>
+            </Grid>
             <br />
             <div>
               {this.state.selectedPlaces.length
                 ? this.state.selectedPlaces.map((place, idx) => (
                     <div key={idx}>
-                      <p>{place}</p>
-                      <button
-                        type="button"
+                      {place}
+                      <Button
                         onClick={e => this.deleteOption(idx, 'place', e)}
+                        type="button"
                       >
-                        X
-                      </button>
+                        x
+                      </Button>
                     </div>
                   ))
                 : null}
             </div>
           </div>
-
           <br />
-          <button
+          <Button
             type="submit"
             onClick={this.createPoll}
             disabled={!this.state.title}
+            variant="raised"
+            color="primary"
+            size="large"
           >
             Create Poll
-          </button>
+          </Button>
         </form>
       </div>
     )
   }
 }
 
-export default CreatePoll
+export default withStyles(styles)(CreatePoll)

@@ -2,11 +2,6 @@ const router = require('express').Router()
 const {Club, Poll, Option, Vote, Book, User, Author} = require('../db/models')
 module.exports = router
 
-const FAKE_USER = {
-  id: 1,
-  email: 'brynn.shepherd@gmail.com',
-  name: 'Brynn Shepherd'
-}
 module.exports = router
 
 //****** ROUTES FOR CLUBS ******//

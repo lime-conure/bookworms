@@ -3,31 +3,61 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {logout} from '../store'
+import {withStyles} from '@material-ui/core/styles'
+import {AppBar, Toolbar, Typography, Button} from '@material-ui/core'
+import {white} from '@material-ui/core/colors'
 
-const Navbar = ({handleClick, isLoggedIn}) => (
-  <div>
-    <h1>📖 🐛 Bookworms 🐛 📖</h1>
-    <nav>
-      {isLoggedIn ? (
-        <div>
-          {/* The navbar will show these links after you log in */}
-          <Link to="/home">Home</Link>
-          <a href="#" onClick={handleClick}>
-            Logout
-          </a>
-          <Link to="/clubs">My Clubs</Link>
-        </div>
-      ) : (
-        <div>
-          {/* The navbar will show these links before you log in */}
-          <Link to="/login">Login</Link>
-          <Link to="/signup">Sign Up</Link>
-        </div>
-      )}
-    </nav>
-    <hr />
-  </div>
-)
+const styles = {
+  root: {
+    flexGrow: 1
+  },
+  grow: {
+    flexGrow: 1,
+    color: white
+  },
+  menuButton: {
+    marginLeft: -12,
+    marginRight: 20
+  }
+}
+
+function Navbar({handleClick, isLoggedIn, classes}) {
+  return (
+    <div className={classes.root}>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" className={classes.grow}>
+            Bookworms 📖 🐛
+          </Typography>
+          {isLoggedIn ? (
+            <div>
+              {/* The navbar will show these links after you log in */}
+              <Button component={Link} to="/clubs">
+                Clubs
+              </Button>
+              <Button component={Link} to="/profile">
+                Profile
+              </Button>
+              <Button onClick={handleClick}>Logout</Button>
+            </div>
+          ) : (
+            <div>
+              {/* The navbar will show these links before you log in */}
+              <Button component={Link} to="/login">
+                Log In
+              </Button>
+              <Button component={Link} to="/signup">
+                Sign Up
+              </Button>
+            </div>
+          )}
+        </Toolbar>
+      </AppBar>
+    </div>
+  )
+}
+
+const materialNavbar = withStyles(styles)(Navbar)
 
 /**
  * CONTAINER
@@ -46,7 +76,7 @@ const mapDispatch = dispatch => {
   }
 }
 
-export default connect(mapState, mapDispatch)(Navbar)
+export default connect(mapState, mapDispatch)(materialNavbar)
 
 /**
  * PROP TYPES

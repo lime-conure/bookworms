@@ -68,7 +68,7 @@ const mapDispatch = dispatch => {
       const password = evt.target.password.value
       dispatch(auth(email, password, formName))
       if (props.inviteLink) props.history.push(props.inviteLink)
-      else props.history.push('/home')
+      else props.history.push('/clubs')
     }
   }
 }
