@@ -117,9 +117,7 @@ export class SinglePoll extends Component {
                   <TableCell key={optionObj.option.id} padding="checkbox">
                     <Checkbox
                       value={optionObj.option.id}
-                      defaultChecked={
-                        this.optionIsChecked(optionObj) ? 'checked' : ''
-                      }
+                      defaultChecked={this.optionIsChecked(optionObj)}
                       onChange={this.handleCheck}
                     />
                   </TableCell>
@@ -135,7 +133,6 @@ export class SinglePoll extends Component {
   // eslint-disable-next-line complexity
   render() {
     const {classes} = this.props
-    console.log(classes)
 
     const poll = this.props.singlePoll.poll
     const allOptions = this.props.singlePoll.allOptions
@@ -151,7 +148,7 @@ export class SinglePoll extends Component {
 
     if (poll) {
       return (
-        <main className={classes.root}>
+        <div>
           <Button
             component={Link}
             to={`/clubs/${this.props.match.params.clubId}/polls/`}
@@ -191,10 +188,10 @@ export class SinglePoll extends Component {
               ''
             )}
           </form>
-        </main>
+        </div>
       )
     } else {
-      return <main className={classes.root}>Loading...</main>
+      return <div className={classes.root}>Loading...</div>
     }
   }
 }
