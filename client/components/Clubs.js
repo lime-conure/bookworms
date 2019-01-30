@@ -3,6 +3,13 @@ import {connect} from 'react-redux'
 import {fetchClubs} from '../store'
 import {leaveClub} from '../store/clubs'
 import {Link} from 'react-router-dom'
+import {
+  Button,
+  Typography,
+  List,
+  ListItem,
+  ListItemText
+} from '@material-ui/core'
 
 class Clubs extends Component {
   constructor(props) {
@@ -20,28 +27,36 @@ class Clubs extends Component {
     const clubs = this.props.clubs
     return (
       <div>
-        <h2>YOUR CLUBS</h2>
-        <ul>
+        <Typography variant="h3" gutterBottom color="primary">
+          Your Clubs
+        </Typography>
+
+        <List>
           {clubs.map(club => (
-            <div key={club.id}>
-              <li>
-                <Link to={`/clubs/${club.id}`}> {club.name} </Link>{' '}
-                <button
-                  type="submit"
-                  onClick={() => this.leaveClub(club.id)}
-                  className="leaveClub"
-                >
-                  {' '}
-                  Leave Club
-                </button>
-              </li>
-            </div>
+            <ListItem
+              button
+              component={Link}
+              key={club.id}
+              to={`/clubs/${club.id}`}
+            >
+              <ListItemText>
+                <Typography variant="h5">{club.name}</Typography>
+              </ListItemText>
+              <Button
+                type="submit"
+                onClick={() => this.leaveClub(club.id)}
+                className="leaveClub"
+                color="primary"
+                variant="contained"
+              >
+                Leave Club
+              </Button>
+            </ListItem>
           ))}
-        </ul>
+        </List>
       </div>
     )
   }
-  z
 }
 
 const mapState = state => ({
