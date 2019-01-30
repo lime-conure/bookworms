@@ -241,11 +241,9 @@ router.get('/:clubId/join/:hash', async (req, res, next) => {
 router.post('/:clubId/join/:hash', async (req, res, next) => {
   try {
     if (req.user && req.user.id) {
-      console.log(req.user.id)
       const inviteLink = `http://localhost:8080/clubs/${
         req.params.clubId
       }/join/${req.params.hash}`
-      console.log(inviteLink)
       const club = await Club.findOne({
         where: {
           inviteLink

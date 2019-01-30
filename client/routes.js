@@ -36,9 +36,6 @@ class Routes extends Component {
   render() {
     const {isLoggedIn, invitePending, classes} = this.props
 
-    console.log('isLoggedIn: ', isLoggedIn)
-    console.log('invitePending: ', invitePending)
-
     return (
       <div>
         {isLoggedIn && !invitePending ? (
