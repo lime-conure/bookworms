@@ -21,7 +21,6 @@ Club.hasMany(Message)
 Message.belongsTo(Club)
 Thread.hasMany(Message)
 Message.belongsTo(Thread)
-
 // Meetings have a bookId and clubId
 Book.hasMany(Meeting)
 Meeting.belongsTo(Book)
