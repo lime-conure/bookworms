@@ -221,7 +221,7 @@ class CreatePoll extends Component {
     return (
       <main className={classes.root}>
         <form className={classes.form}>
-          <Typography variant="h2" gutterBottom color="primary">
+          <Typography variant="h3" gutterBottom color="primary">
             Create a New Poll
           </Typography>
 
