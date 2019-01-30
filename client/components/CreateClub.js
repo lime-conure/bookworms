@@ -43,22 +43,45 @@ export class CreateClub extends Component {
       <div>
         <h3>New Club</h3>
         <form>
-          <label>Club Name </label>
-          <Grid item xs={4}>
+          <Typography variant="h5" color="secondary" gutterBottom>
+            Club Name{' '}
+          </Typography>
+          <Grid
+            item
+            xs={6}
+            container
+            spacing={24}
+            justify="space-between"
+            alignItems="center"
+          >
             <Textfield
+              name="name"
+              label="type a club name"
               value={this.state.name}
               onChange={this.handleChange}
-              name="name"
+              variant="filled"
               type="text"
             />
           </Grid>
           <br />
-          <label>Invite Link</label>
-          <Grid item xs={4}>
+          <Typography variant="h5" color="secondary" gutterBottom>
+            {' '}
+            Invite Link{' '}
+          </Typography>
+          <Grid
+            item
+            xs={6}
+            container
+            spacing={24}
+            justify="space-between"
+            alignItems="center"
+          >
             <Textfield
+              name="inviteLink"
+              label="type a inviteLink"
               value={this.state.inviteLink}
               onChange={this.handleChange}
-              name="inviteLink"
+              variant="filled"
               type="text"
             />
           </Grid>
