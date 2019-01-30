@@ -19,14 +19,6 @@ const theme = createMuiTheme({
       fontWeight: 500
     }
   }
-  // props: {
-  //   MuiButton: {
-  //     text: {
-  //       fontFamily: 'Roboto',
-  //       fontWeight: 700
-  //     }
-  //   }
-  // }
 })
 
 // establishes socket connection
