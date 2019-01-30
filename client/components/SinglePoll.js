@@ -162,7 +162,7 @@ export class SinglePoll extends Component {
           >
             ← Back to all polls
           </Button>
-          <Typography variant="h3" gutterBottom color="primary">
+          <Typography variant="h3" gutterBottom color="secondary">
             {poll.title}
           </Typography>
           <Typography variant="subtitle1" gutterBottom>
@@ -185,7 +185,7 @@ export class SinglePoll extends Component {
             {allOptions.length ? (
               <Button
                 size="large"
-                color="primary"
+                color="secondary"
                 variant="contained"
                 type="submit"
               >
