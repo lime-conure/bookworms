@@ -42,12 +42,14 @@ class Polls extends Component {
               to={`/clubs/${this.props.match.params.clubId}/polls/${poll.id}`}
             >
               <ListItemText>
-                {poll.title}
-                {poll.dueDate ? (
-                  <em>&mdash;voting ends on {poll.dueDate}</em>
-                ) : (
-                  ''
-                )}
+                <Typography variant="h5">
+                  {poll.title}
+                  {poll.dueDate ? (
+                    <em>&mdash;voting ends on {poll.dueDate}</em>
+                  ) : (
+                    ''
+                  )}
+                </Typography>
               </ListItemText>
             </ListItem>
           ))}

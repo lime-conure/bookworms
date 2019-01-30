@@ -59,7 +59,6 @@ class Clubs extends Component {
                 color="primary"
                 variant="contained"
               >
-                {' '}
                 Leave Club
               </Button>
             </ListItem>

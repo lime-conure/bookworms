@@ -6,11 +6,11 @@ import history from './history'
 import store from './store'
 import App from './app'
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles'
-import {green, lime} from '@material-ui/core/colors'
+import {lightGreen, lime} from '@material-ui/core/colors'
 const theme = createMuiTheme({
   palette: {
     type: 'dark',
-    primary: green,
+    primary: lightGreen,
     secondary: lime
   }
 })
