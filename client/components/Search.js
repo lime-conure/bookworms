@@ -92,7 +92,6 @@ class Search extends Component {
             className={classes.search}
             onChange={this.onTextChange}
             value={this.state.searchText}
-            margin="normal"
             variant="filled"
             fullWidth
           />

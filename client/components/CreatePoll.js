@@ -5,7 +5,15 @@ import axios from 'axios'
 import Popup from 'reactjs-popup'
 import Search from './Search'
 import {withStyles} from '@material-ui/core/styles'
-import {TextField, Typography, Grid, Divider} from '@material-ui/core'
+import {
+  TextField,
+  Typography,
+  Button,
+  IconButton,
+  Grid,
+  Divider
+} from '@material-ui/core'
+import {DeleteIcon} from '@material-ui/icons'
 
 const apiKey = 'jrAzhFY1JP1FdDk1vp7Zg'
 
@@ -253,16 +261,13 @@ class CreatePoll extends Component {
             variant="filled"
             fullWidth
           />
-
           {/* select books */}
           <div className={classes.optionsSection}>
-            <Typography variant="h5" color="secondary">
+            <Typography variant="h5" color="secondary" gutterBottom>
               Add Book Options
             </Typography>
-
             <Search setResults={this.setResults} />
             <br />
-
             {this.state.searchResults.length ? (
               <div>
                 {this.state.searchResults.map(bookResult => (
@@ -305,12 +310,13 @@ class CreatePoll extends Component {
                     />
                     <p>{bookResult.best_book.title}</p>
                     <p>{bookResult.best_book.author.name}</p>
-                    <button
+                    <Button
                       onClick={e => this.addBook(e, bookResult)}
                       type="button"
+                      variant="contained"
                     >
-                      Add a book
-                    </button>
+                      Add
+                    </Button>
                     <br />
                   </div>
                 ))}
@@ -323,12 +329,12 @@ class CreatePoll extends Component {
                         <div key={book.idx}>
                           <img src={book.smallImageUrl} />
                           <p>{book.title}</p>
-                          <button
+                          <Button
                             onClick={e => this.deleteOption(idx, 'book', e)}
                             type="button"
                           >
-                            X
-                          </button>
+                            x
+                          </Button>
                         </div>
                       ))}
                     </div>
@@ -337,89 +343,136 @@ class CreatePoll extends Component {
               </div>
             ) : null}
           </div>
-          <br />
           {/* select dates */}
-          <div>
-            <label htmlFor="date">Add Date/Time Options</label>
-            <input
-              name="date"
-              placeholder="yyyy/mm/dd"
-              value={this.state.date}
-              onChange={this.handleChange}
-            />
-            <input
-              name="time"
-              placeholder="hh:mm"
-              value={this.state.time}
-              onChange={this.handleChange}
-            />
-            <button
-              disabled={!this.state.date || !this.state.time}
-              onClick={this.addDateTime}
-              type="submit"
+          <div className={classes.optionsSection}>
+            <Typography variant="h5" color="secondary" gutterBottom>
+              Add Date/Time Options
+            </Typography>
+            <Grid
+              container
+              spacing={24}
+              justify="space-between"
+              alignItems="center"
             >
-              Add Date/Time
-            </button>
+              <Grid item xs={4}>
+                <TextField
+                  name="date"
+                  type="date"
+                  label="yyyy/mm/dd"
+                  value={this.state.date}
+                  onChange={this.handleChange}
+                  variant="filled"
+                  fullWidth
+                  InputLabelProps={{
+                    shrink: true
+                  }}
+                />
+              </Grid>
+              <Grid item xs={4}>
+                <TextField
+                  name="time"
+                  type="time"
+                  label="hh:mm"
+                  value={this.state.time}
+                  onChange={this.handleChange}
+                  variant="filled"
+                  fullWidth
+                  InputLabelProps={{
+                    shrink: true
+                  }}
+                />
+              </Grid>
+              <Grid item xs={4}>
+                <Button
+                  disabled={!this.state.date || !this.state.time}
+                  onClick={this.addDateTime}
+                  type="submit"
+                  variant="contained"
+                  color="secondary"
+                >
+                  Add Date/Time
+                </Button>
+              </Grid>
+            </Grid>
 
             <br />
             <div>
               {this.state.selectedDates.length
                 ? this.state.selectedDates.map((date, idx) => (
                     <div key={idx}>
-                      <p>{date.toString()}</p>
-                      <button
+                      {date.toString()}
+                      <Button
                         onClick={e => this.deleteOption(idx, 'date', e)}
-                        type="submit"
+                        type="button"
                       >
-                        X
-                      </button>
+                        x
+                      </Button>
                     </div>
                   ))
                 : null}
             </div>
           </div>
-          <br />
           {/* select location */}
-          <div>
-            <label htmlFor="place">Add Location Options</label>
-            <input
-              name="place"
-              placeholder="Type a location..."
-              value={this.state.place}
-              onChange={this.handleChange}
-            />
-            <button
-              disabled={!this.state.place}
-              onClick={this.addPlaces}
-              type="submit"
+          <div className={classes.optionsSection}>
+            <Typography variant="h5" color="secondary" gutterBottom>
+              Add Location Options
+            </Typography>
+            <Grid
+              container
+              spacing={24}
+              justify="space-between"
+              alignItems="center"
             >
-              Add Location
-            </button>
+              <Grid item xs={8}>
+                <TextField
+                  name="place"
+                  label="Type a location..."
+                  value={this.state.place}
+                  onChange={this.handleChange}
+                  variant="filled"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={4}>
+                <Button
+                  disabled={!this.state.place}
+                  onClick={this.addPlaces}
+                  type="submit"
+                  variant="contained"
+                  color="secondary"
+                >
+                  Add Location
+                </Button>
+              </Grid>
+            </Grid>
             <br />
             <div>
               {this.state.selectedPlaces.length
                 ? this.state.selectedPlaces.map((place, idx) => (
                     <div key={idx}>
-                      <p>{place}</p>
-                      <button
-                        type="button"
+                      {place}
+                      <Button
                         onClick={e => this.deleteOption(idx, 'place', e)}
+                        type="button"
                       >
-                        X
-                      </button>
+                        x
+                      </Button>
                     </div>
                   ))
                 : null}
             </div>
           </div>
           <br />
-          <button
+          <Button
             type="submit"
             onClick={this.createPoll}
             disabled={!this.state.title}
+            variant="contained"
+            color="primary"
+            size="large"
           >
             Create Poll
-          </button>
+          </Button>
         </form>
       </main>
     )
