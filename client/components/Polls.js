@@ -13,6 +13,7 @@ import {
 class Polls extends Component {
   componentDidMount() {
     this.props.fetchPolls(this.props.match.params.clubId)
+    console.log(newEl)
   }
 
   render() {
