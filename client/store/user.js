@@ -6,17 +6,21 @@ import history from '../history'
  */
 const GET_USER = 'GET_USER'
 const REMOVE_USER = 'REMOVE_USER'
+const INVITE_USER = 'INVITE_USER'
 
 /**
  * INITIAL STATE
  */
-const defaultUser = {}
+const defaultUser = {
+  inviteLink: ''
+}
 
 /**
  * ACTION CREATORS
  */
 const getUser = user => ({type: GET_USER, user})
 const removeUser = () => ({type: REMOVE_USER})
+export const inviteUser = inviteLink => ({type: INVITE_USER, inviteLink})
 
 /**
  * THUNK CREATORS
@@ -40,7 +44,6 @@ export const auth = (email, password, method) => async dispatch => {
 
   try {
     dispatch(getUser(res.data))
-    history.push('/clubs')
   } catch (dispatchOrHistoryErr) {
     console.error(dispatchOrHistoryErr)
   }
@@ -62,9 +65,11 @@ export const logout = () => async dispatch => {
 export default function(state = defaultUser, action) {
   switch (action.type) {
     case GET_USER:
-      return action.user
+      return {...state, ...action.user}
     case REMOVE_USER:
       return defaultUser
+    case INVITE_USER:
+      return {...state, ...{inviteLink: action.inviteLink}}
     default:
       return state
   }
