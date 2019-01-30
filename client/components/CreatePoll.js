@@ -5,7 +5,22 @@ import axios from 'axios'
 import Popup from 'reactjs-popup'
 import Search from './Search'
 import {withStyles} from '@material-ui/core/styles'
-import {TextField, Typography, Button, Grid} from '@material-ui/core'
+import TextField from '@material-ui/core/TextField'
+import Typography from '@material-ui/core/Typography'
+import Button from '@material-ui/core/Button'
+import Grid from '@material-ui/core/Grid'
+import GridList from '@material-ui/core/GridList'
+import GridListTile from '@material-ui/core/GridListTile'
+import GridListTileBar from '@material-ui/core/GridListTileBar'
+import IconButton from '@material-ui/core/IconButton'
+import Icon from '@material-ui/core/Icon'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
+import Dialog from '@material-ui/core/Dialog'
+import DialogTitle from '@material-ui/core/DialogTitle'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogContentText from '@material-ui/core/DialogContentText'
 
 const apiKey = 'jrAzhFY1JP1FdDk1vp7Zg'
 
@@ -14,6 +29,24 @@ const styles = theme => ({
     maxWidth: 660
   },
   optionsSection: {
+    marginTop: theme.spacing.unit * 3,
+    marginBottom: theme.spacing.unit * 3
+  },
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    overflow: 'hidden',
+    backgroundColor: theme.palette.background.paper
+  },
+  gridList: {
+    width: 660,
+    height: 450
+  },
+  icon: {
+    color: 'rgba(255, 255, 255, 0.54)'
+  },
+  description: {
     marginTop: theme.spacing.unit * 3,
     marginBottom: theme.spacing.unit * 3
   }
@@ -31,7 +64,7 @@ class CreatePoll extends Component {
       selectedPlaces: [],
       title: '',
       notes: '',
-      dueDate: '',
+      dueDate: null,
       searchValue: '',
       date: '',
       time: '',
@@ -43,8 +76,9 @@ class CreatePoll extends Component {
     this.addDateTime = this.addDateTime.bind(this)
     this.addPlaces = this.addPlaces.bind(this)
     this.setResults = this.setResults.bind(this)
-    this.handleClick = this.handleClick.bind(this)
-    this.closeModal = this.closeModal.bind(this)
+
+    this.handleClickOpen = this.handleClickOpen.bind(this)
+    this.handleClose = this.handleClose.bind(this)
   }
 
   handleChange(e) {
@@ -57,49 +91,28 @@ class CreatePoll extends Component {
     this.setState({searchResults: results})
   }
 
-  getDescription = bookId => {
+  getDescription = async bookId => {
     const requestUri =
       `https://cors-anywhere.herokuapp.com/` +
       `https://www.goodreads.com/book/show/${bookId}?key=${apiKey}`
-    axios
-      .get(requestUri)
-      .then(res => {
-        const parser = new DOMParser()
-        const XMLResponse = parser.parseFromString(res.data, 'application/xml')
-
-        const parseError = XMLResponse.getElementsByTagName('parsererror')
-
-        if (parseError.length) {
-          this.setState({
-            error: 'There was an error fetching results.'
-          })
-        } else {
-          let description = XMLResponse.getElementsByTagName('description')[0]
-            .innerHTML
-
-          description = description.replace('<![CDATA[', '').replace(']]>', '')
-
-          if (!description) {
-            description = 'No description found.'
-          }
-          this.setState({description})
-        }
-      })
-      .catch(error => {
-        this.setState({
-          error: error.toString()
-        })
-      })
-  }
-
-  handleClick(e, bookId) {
-    e.preventDefault()
-    this.getDescription(bookId)
-    this.setState({open: true})
-  }
-
-  closeModal() {
-    this.setState({open: false, description: 'loading...'})
+    let description = 'loading...'
+    try {
+      const {data} = await axios.get(requestUri)
+      const parser = new DOMParser()
+      const XMLResponse = parser.parseFromString(data, 'application/xml')
+      description = XMLResponse.getElementsByTagName('description')[0]
+        .textContent
+      if (!description) {
+        return 'No description found.'
+      }
+      // remove html tags
+      const shorterDescWithoutHTML = description
+        .replace(/<\/?[^>]+(>|$)/g, '')
+        .substr(0, 500)
+      return `${shorterDescWithoutHTML}...`
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   async createPoll(e) {
@@ -134,6 +147,7 @@ class CreatePoll extends Component {
   addDateTime(e) {
     e.preventDefault()
     const {time, date} = this.state
+
     const dateTime = new Date(
       Number(date.slice(0, 4)),
       Number(date.slice(5, 7)) - 1,
@@ -203,6 +217,19 @@ class CreatePoll extends Component {
     }
   }
 
+  handleClickOpen = async (e, bookId) => {
+    e.preventDefault()
+    const description = await this.getDescription(bookId)
+    this.setState({
+      open: true,
+      description
+    })
+  }
+
+  handleClose = () => {
+    this.setState({open: false, description: 'loading...'})
+  }
+
   render() {
     const {classes} = this.props
     return (
@@ -255,82 +282,89 @@ class CreatePoll extends Component {
             </Typography>
             <Search setResults={this.setResults} />
             <br />
-            {this.state.searchResults.length ? (
-              <div>
-                {this.state.searchResults.map(bookResult => (
-                  <div key={bookResult.best_book.id}>
-                    <Popup
+            {this.state.selectedBooks.length ? (
+              <List>
+                {this.state.selectedBooks.map((book, idx) => (
+                  <div key={idx}>
+                    <ListItem
+                      button
+                      onClick={e => this.handleClickOpen(e, book.goodReadsId)}
+                    >
+                      <ListItemText>{book.title}</ListItemText>
+
+                      <IconButton
+                        onClick={e => this.deleteOption(idx, 'book', e)}
+                      >
+                        <Icon>cancel</Icon>
+                      </IconButton>
+                    </ListItem>
+                    <Dialog
+                      aria-labelledby="book-modal"
+                      onClose={this.handleClose}
                       open={this.state.open}
-                      closeOnDocumentClick
-                      onClose={this.closeModal}
-                      position="right center"
                     >
-                      <div className="modal">
-                        <a className="close" onClick={this.closeModal}>
-                          &times;
-                        </a>
-                        <div className="header">
-                          {' '}
-                          {bookResult.best_book.title}
-                        </div>
-                        <p>{this.state.description}</p>
-                        <img src={bookResult.best_book.small_image_url} />
-                        <div className="actions">
-                          <button className="button" type="button">
-                            <a
-                              href={`https://www.goodreads.com/book/show/${
-                                bookResult.best_book.id
-                              }`}
-                              target="_blank"
-                            >
-                              View more in goodreads.com
-                            </a>
-                          </button>
-                        </div>
-                      </div>
-                    </Popup>
-                    <img
-                      onClick={e =>
-                        this.handleClick(e, bookResult.best_book.id)
-                      }
-                      src={bookResult.best_book.small_image_url}
-                    />
-                    <p>{bookResult.best_book.title}</p>
-                    <p>{bookResult.best_book.author.name}</p>
-                    <Button
-                      onClick={e => this.addBook(e, bookResult)}
-                      type="button"
-                      variant="contained"
-                    >
-                      Add
-                    </Button>
-                    <br />
+                      <DialogTitle id="book-modal">{book.title}</DialogTitle>
+                      <DialogContent>
+                        <img src={book.imageUrl} alt={book.title} />
+                        <DialogContentText>
+                          <Typography
+                            variant="body1"
+                            className={classes.description}
+                          >
+                            {this.state.description}
+                          </Typography>
+                        </DialogContentText>
+                        <Button
+                          target="_blank"
+                          href={`https://www.goodreads.com/book/show/${
+                            book.goodReadsId
+                          }`}
+                          variant="contained"
+                          color="primary"
+                        >
+                          View On Goodreads
+                        </Button>
+                      </DialogContent>
+                    </Dialog>
                   </div>
                 ))}
-                <br />
-                <div>
-                  {this.state.selectedBooks.length ? (
-                    <div>
-                      <h4>Added books:</h4>
-                      {this.state.selectedBooks.map((book, idx) => (
-                        <div key={book.idx}>
-                          <img src={book.smallImageUrl} />
-                          <p>{book.title}</p>
-                          <Button
-                            onClick={e => this.deleteOption(idx, 'book', e)}
-                            type="button"
+              </List>
+            ) : null}
+            <br />
+            {this.state.searchResults.length ? (
+              <div className={classes.root}>
+                <GridList
+                  cellHeight={240}
+                  cols={4}
+                  className={classes.gridList}
+                >
+                  {this.state.searchResults.map(bookResult => (
+                    <GridListTile cols={1} key={bookResult.best_book.id}>
+                      <img
+                        src={bookResult.best_book.image_url}
+                        alt={bookResult.best_book.title}
+                      />
+                      <GridListTileBar
+                        title={bookResult.best_book.title}
+                        subtitle={
+                          <span>by: {bookResult.best_book.author.name}</span>
+                        }
+                        actionIcon={
+                          <IconButton
+                            onClick={e => this.addBook(e, bookResult)}
                           >
-                            x
-                          </Button>
-                        </div>
-                      ))}
-                    </div>
-                  ) : null}
-                </div>
+                            <Icon>add_circle</Icon>
+                          </IconButton>
+                        }
+                      />
+                    </GridListTile>
+                  ))}
+                </GridList>
               </div>
             ) : null}
           </div>
           {/* select dates */}
+
           <div className={classes.optionsSection}>
             <Typography variant="h5" color="secondary" gutterBottom>
               Add Date/Time Options
@@ -383,21 +417,20 @@ class CreatePoll extends Component {
             </Grid>
 
             <br />
-            <div>
+            <List>
               {this.state.selectedDates.length
                 ? this.state.selectedDates.map((date, idx) => (
-                    <div key={idx}>
-                      {date.toString()}
-                      <Button
+                    <ListItem button key={idx}>
+                      <ListItemText> {date.toString()}</ListItemText>
+                      <IconButton
                         onClick={e => this.deleteOption(idx, 'date', e)}
-                        type="button"
                       >
-                        x
-                      </Button>
-                    </div>
+                        <Icon>cancel</Icon>
+                      </IconButton>
+                    </ListItem>
                   ))
                 : null}
-            </div>
+            </List>
           </div>
           {/* select location */}
           <div className={classes.optionsSection}>
@@ -433,28 +466,27 @@ class CreatePoll extends Component {
               </Grid>
             </Grid>
             <br />
-            <div>
+            <List>
               {this.state.selectedPlaces.length
                 ? this.state.selectedPlaces.map((place, idx) => (
-                    <div key={idx}>
-                      {place}
-                      <Button
+                    <ListItem button key={idx}>
+                      <ListItemText> {place}</ListItemText>
+                      <IconButton
                         onClick={e => this.deleteOption(idx, 'place', e)}
-                        type="button"
                       >
-                        x
-                      </Button>
-                    </div>
+                        <Icon>cancel</Icon>
+                      </IconButton>
+                    </ListItem>
                   ))
                 : null}
-            </div>
+            </List>
           </div>
           <br />
           <Button
             type="submit"
             onClick={this.createPoll}
             disabled={!this.state.title}
-            variant="raised"
+            variant="contained"
             color="primary"
             size="large"
           >

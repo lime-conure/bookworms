@@ -10,6 +10,7 @@ import {
   CreatePoll,
   Clubs,
   SingleClub,
+  JoinClub,
   Sidebar,
   CreateClub
 } from './components'
@@ -34,11 +35,11 @@ class Routes extends Component {
   }
 
   render() {
-    const {isLoggedIn, classes} = this.props
+    const {isLoggedIn, invitePending, classes} = this.props
 
     return (
       <div>
-        {isLoggedIn ? (
+        {isLoggedIn && !invitePending ? (
           <Switch>
             <Route exact path="/clubs" component={Clubs} />
             <Route exact path="/clubs/create" component={CreateClub} />
@@ -54,11 +55,15 @@ class Routes extends Component {
 
             <Route exact path="/login" component={Login} />
             <Route exact path="/signup" component={Signup} />
+            <Route
+              exact
+              path="/clubs/:clubId/join/:hash"
+              component={JoinClub}
+            />
 
             {isLoggedIn && (
               <Switch>
                 {/* Routes placed here are only available after logging in */}
-
                 <Route exact path="/clubs/:clubId" component={SingleClub} />
                 <Route exact path="/clubs/:clubId/polls" component={Polls} />
                 <Route
@@ -91,7 +96,8 @@ const mapState = state => {
   return {
     // Being 'logged in' for our purposes will be defined has having a state.user that has a truthy id.
     // Otherwise, state.user will be an empty object, and state.user.id will be falsey
-    isLoggedIn: !!state.user.id
+    isLoggedIn: !!state.user.id,
+    invitePending: !!state.user.inviteLink
   }
 }
 
