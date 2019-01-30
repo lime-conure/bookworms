@@ -5,10 +5,21 @@ import axios from 'axios'
 import Calendar from 'react-input-calendar'
 import Popup from 'reactjs-popup'
 import Search from './Search'
+import {withStyles} from '@material-ui/core/styles'
+import {TextField, Typography} from '@material-ui/core'
 
-if (!process.env.REACT_APP_API_KEY) require('../secrets.js')
+const apiKey = 'jrAzhFY1JP1FdDk1vp7Zg'
 
-const apiKey = process.env.REACT_APP_API_KEY
+const styles = theme => ({
+  root: {
+    ...theme.mixins.gutters(),
+    paddingTop: theme.spacing.unit * 4,
+    paddingBottom: theme.spacing.unit * 2
+  },
+  form: {
+    maxWidth: 660
+  }
+})
 
 class CreatePoll extends Component {
   constructor() {
@@ -22,7 +33,7 @@ class CreatePoll extends Component {
       selectedPlaces: [],
       title: '',
       notes: '',
-      dueDate: null,
+      dueDate: '',
       searchValue: '',
       date: '',
       time: '',
@@ -33,21 +44,11 @@ class CreatePoll extends Component {
     this.addBook = this.addBook.bind(this)
     this.addDateTime = this.addDateTime.bind(this)
     this.addPlaces = this.addPlaces.bind(this)
-    this.onCalendarChange = this.onCalendarChange.bind(this)
     this.setResults = this.setResults.bind(this)
     this.handleClick = this.handleClick.bind(this)
     this.closeModal = this.closeModal.bind(this)
   }
-  onCalendarChange(date) {
-    const dueDate = new Date(
-      Number(date.slice(6, 10)),
-      Number(date.slice(0, 2)),
-      Number(date.slice(3, 5))
-    )
-    this.setState({
-      dueDate: dueDate
-    })
-  }
+
   handleChange(e) {
     this.setState({
       [e.target.name]: e.target.value
@@ -205,30 +206,52 @@ class CreatePoll extends Component {
   }
 
   render() {
+    const {classes} = this.props
     return (
-      <div>
-        <form>
-          <h3>Create a New Poll</h3>
-          <div>
-            <label htmlFor="title">Title</label>
-            <input name="title" onChange={this.handleChange} required />
-          </div>
+      <main className={classes.root}>
+        <form className={classes.form}>
+          <Typography variant="h2" gutterBottom color="primary">
+            Create a New Poll
+          </Typography>
+          {/* <label htmlFor="title">Title</label>
+            <input name="title" onChange={this.handleChange} required /> */}
+          <TextField
+            label="Title"
+            name="title"
+            value={this.state.title}
+            onChange={this.handleChange}
+            margin="normal"
+            variant="filled"
+            fullWidth
+          />
           <br />
-          <div>
-            <label htmlFor="notes">Notes</label>
-            <textarea name="notes" onChange={this.handleChange} />
-          </div>
+          <TextField
+            label="Notes"
+            name="notes"
+            value={this.state.notes}
+            onChange={this.handleChange}
+            margin="normal"
+            multiline
+            rows="3"
+            variant="filled"
+            fullWidth
+          />
           <br />
           {/* select dueDate */}
-          <div>
-            <label htmlFor="dueDate">Due Date</label>
-            <Calendar
-              format="MM-DD-YYYY"
-              date={this.state.dueDate}
-              name="dueDate"
-              onChange={this.onCalendarChange}
-            />
-          </div>
+          <TextField
+            label="When should voting end for this poll?"
+            type="date"
+            name="dueDate"
+            value={this.state.dueDate}
+            onChange={this.handleChange}
+            margin="normal"
+            InputLabelProps={{
+              shrink: true
+            }}
+            variant="filled"
+            fullWidth
+          />
+
           <br />
           {/* select books */}
           <div>
@@ -351,7 +374,6 @@ class CreatePoll extends Component {
                 : null}
             </div>
           </div>
-
           <br />
           {/* select location */}
           <div>
@@ -386,7 +408,6 @@ class CreatePoll extends Component {
                 : null}
             </div>
           </div>
-
           <br />
           <button
             type="submit"
@@ -396,9 +417,9 @@ class CreatePoll extends Component {
             Create Poll
           </button>
         </form>
-      </div>
+      </main>
     )
   }
 }
 
-export default CreatePoll
+export default withStyles(styles)(CreatePoll)
