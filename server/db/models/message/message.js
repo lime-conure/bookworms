@@ -4,6 +4,10 @@ const Message = db.define('message', {
   text: {
     type: Sequelize.TEXT,
     allowNull: false
+  },
+  main: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false
   }
 })
 
