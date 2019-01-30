@@ -10,7 +10,8 @@ import {
   CreatePoll,
   Clubs,
   SingleClub,
-  Sidebar
+  Sidebar,
+  CreateClub
 } from './components'
 import {me} from './store'
 import {withStyles} from '@material-ui/core/styles'
@@ -57,6 +58,7 @@ class Routes extends Component {
               <Switch>
                 {/* Routes placed here are only available after logging in */}
 
+                <Route exact path="/clubs/create" component={CreateClub} />
                 <Route exact path="/clubs/:clubId" component={SingleClub} />
                 <Route exact path="/clubs/:clubId/polls" component={Polls} />
                 <Route
