@@ -15,7 +15,12 @@ import {
   GridListTileBar,
   ListSubheader,
   IconButton,
-  Icon
+  Icon,
+  List,
+  ListItem,
+  ListItemText,
+  Dialog,
+  DialogTitle
 } from '@material-ui/core'
 import {InfoIcon} from '@material-ui/icons'
 
@@ -277,14 +282,29 @@ class CreatePoll extends Component {
           {/* select books */}
           <div className={classes.optionsSection}>
             <Typography variant="h5" color="secondary" gutterBottom>
-              Add Book Options <Icon>star</Icon>
+              Add Book Options
             </Typography>
             <Search setResults={this.setResults} />
+            <br />
+            {this.state.selectedBooks.length ? (
+              <List>
+                {this.state.selectedBooks.map((book, idx) => (
+                  <ListItem button key={idx}>
+                    <ListItemText>{book.title}</ListItemText>
+                    <IconButton
+                      onClick={e => this.deleteOption(idx, 'book', e)}
+                    >
+                      <Icon>cancel</Icon>
+                    </IconButton>
+                  </ListItem>
+                ))}
+              </List>
+            ) : null}
             <br />
             {this.state.searchResults.length ? (
               <div className={classes.root}>
                 <GridList
-                  cellHeight={280}
+                  cellHeight={240}
                   cols={4}
                   className={classes.gridList}
                 >
@@ -293,93 +313,33 @@ class CreatePoll extends Component {
                       <img
                         src={bookResult.best_book.image_url}
                         alt={bookResult.best_book.title}
+                        // onClick={e =>
+                        //   this.handleClick(e, bookResult.best_book.id)
+                        // }
                       />
                       <GridListTileBar
                         title={bookResult.best_book.title}
                         subtitle={
                           <span>by: {bookResult.best_book.author.name}</span>
                         }
-                        actionIcon={<Icon>star</Icon>}
+                        actionIcon={
+                          <IconButton
+                            onClick={e => this.addBook(e, bookResult)}
+                          >
+                            <Icon>add_circle</Icon>
+                          </IconButton>
+                        }
                       />
                     </GridListTile>
                   ))}
                 </GridList>
               </div>
-            ) : // <div>
-            //   {this.state.searchResults.map(bookResult => (
-            //     <div key={bookResult.best_book.id}>
-            //       <Popup
-            //         open={this.state.open}
-            //         closeOnDocumentClick
-            //         onClose={this.closeModal}
-            //         position="right center"
-            //       >
-            //         <div className="modal">
-            //           <a className="close" onClick={this.closeModal}>
-            //             &times;
-            //           </a>
-            //           <div className="header">
-            //             {' '}
-            //             {bookResult.best_book.title}
-            //           </div>
-            //           <p>{this.state.description}</p>
-            //           <img src={bookResult.best_book.small_image_url} />
-            //           <div className="actions">
-            //             <button className="button" type="button">
-            //               <a
-            //                 href={`https://www.goodreads.com/book/show/${
-            //                   bookResult.best_book.id
-            //                 }`}
-            //                 target="_blank"
-            //               >
-            //                 View more in goodreads.com
-            //               </a>
-            //             </button>
-            //           </div>
-            //         </div>
-            //       </Popup>
-            //       <img
-            //         onClick={e =>
-            //           this.handleClick(e, bookResult.best_book.id)
-            //         }
-            //         src={bookResult.best_book.small_image_url}
-            //       />
-            //       <p>{bookResult.best_book.title}</p>
-            //       <p>{bookResult.best_book.author.name}</p>
-            //       <Button
-            //         onClick={e => this.addBook(e, bookResult)}
-            //         type="button"
-            //         variant="contained"
-            //       >
-            //         Add
-            //       </Button>
-            //       <br />
-            //     </div>
-            //   ))}
-            //   <br />
-            //   <div>
-            //     {this.state.selectedBooks.length ? (
-            //       <div>
-            //         <h4>Added books:</h4>
-            //         {this.state.selectedBooks.map((book, idx) => (
-            //           <div key={book.idx}>
-            //             <img src={book.smallImageUrl} />
-            //             <p>{book.title}</p>
-            //             <Button
-            //               onClick={e => this.deleteOption(idx, 'book', e)}
-            //               type="button"
-            //             >
-            //               x
-            //             </Button>
-            //           </div>
-            //         ))}
-            //       </div>
-            //     ) : null}
-            //   </div>
-            // </div>
-            null}
+            ) : null}
           </div>
           {/* select dates */}
+          {/* <Dialog onClose={this.closeModal} open={this.state.open}>
+                        <DialogTitle>{bookResult.best_book.title}</DialogTitle>
+                      </Dialog> */}
           <div className={classes.optionsSection}>
             <Typography variant="h5" color="secondary" gutterBottom>
               Add Date/Time Options
