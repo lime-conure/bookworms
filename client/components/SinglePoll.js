@@ -16,11 +16,6 @@ import {
 } from '@material-ui/core'
 
 const styles = theme => ({
-  root: {
-    ...theme.mixins.gutters(),
-    paddingTop: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 2
-  },
   poll: {
     padding: theme.spacing.unit * 3,
     marginTop: theme.spacing.unit * 3,
@@ -140,6 +135,7 @@ export class SinglePoll extends Component {
   // eslint-disable-next-line complexity
   render() {
     const {classes} = this.props
+    console.log(classes)
 
     const poll = this.props.singlePoll.poll
     const allOptions = this.props.singlePoll.allOptions

@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {fetchPolls} from '../store'
 import {NavLink, Link} from 'react-router-dom'
-import {withStyles} from '@material-ui/core/styles'
 import {
   Button,
   Typography,
@@ -11,14 +10,6 @@ import {
   ListItemText
 } from '@material-ui/core'
 
-const styles = theme => ({
-  root: {
-    ...theme.mixins.gutters(),
-    paddingTop: theme.spacing.unit * 4,
-    paddingBottom: theme.spacing.unit * 2
-  }
-})
-
 class Polls extends Component {
   componentDidMount() {
     this.props.fetchPolls(this.props.match.params.clubId)
@@ -26,9 +17,8 @@ class Polls extends Component {
 
   render() {
     const polls = this.props.polls
-    const {classes} = this.props
     return (
-      <main className={classes.root}>
+      <div>
         <Typography variant="h3" gutterBottom color="primary">
           All Polls
         </Typography>
@@ -64,12 +54,10 @@ class Polls extends Component {
             Create a New Poll
           </Button>
         </Link>
-      </main>
+      </div>
     )
   }
 }
-
-const StyledPolls = withStyles(styles)(Polls)
 
 const mapState = state => ({
   polls: state.polls
@@ -79,4 +67,4 @@ const mapDispatch = dispatch => ({
   fetchPolls: clubId => dispatch(fetchPolls(clubId))
 })
 
-export default connect(mapState, mapDispatch)(StyledPolls)
+export default connect(mapState, mapDispatch)(Polls)

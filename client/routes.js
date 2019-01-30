@@ -13,6 +13,15 @@ import {
   SingleClub
 } from './components'
 import {me} from './store'
+import {withStyles} from '@material-ui/core/styles'
+
+const styles = theme => ({
+  root: {
+    ...theme.mixins.gutters(),
+    paddingTop: theme.spacing.unit * 2,
+    paddingBottom: theme.spacing.unit * 2
+  }
+})
 
 /**
  * COMPONENT
@@ -23,39 +32,43 @@ class Routes extends Component {
   }
 
   render() {
-    const {isLoggedIn} = this.props
+    const {isLoggedIn, classes} = this.props
 
     return (
-      <Switch>
-        {/* Routes placed here are available to all visitors */}
-        <Route exact path="/clubs/:clubId/polls" component={Polls} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/signup" component={Signup} />
-        <Route exact path="/clubs/:clubId/polls" component={Polls} />
-        <Route
-          exact
-          path="/clubs/:clubId/polls/create"
-          component={CreatePoll}
-        />
+      <main className={classes.root}>
+        <Switch>
+          {/* Routes placed here are available to all visitors */}
+          <Route exact path="/clubs/:clubId/polls" component={Polls} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/signup" component={Signup} />
+          <Route exact path="/clubs/:clubId/polls" component={Polls} />
+          <Route
+            exact
+            path="/clubs/:clubId/polls/create"
+            component={CreatePoll}
+          />
 
-        {isLoggedIn && (
-          <Switch>
-            {/* Routes placed here are only available after logging in */}
-            <Route exact path="/clubs" component={Clubs} />
-            <Route exact path="/clubs/:clubsId" component={SingleClub} />
-            <Route
-              exact
-              path="/clubs/:clubId/polls/:pollId"
-              component={SinglePoll}
-            />
-          </Switch>
-        )}
-        {/* Displays our Login component as a fallback */}
-        <Route component={Login} />
-      </Switch>
+          {isLoggedIn && (
+            <Switch>
+              {/* Routes placed here are only available after logging in */}
+              <Route exact path="/clubs" component={Clubs} />
+              <Route exact path="/clubs/:clubsId" component={SingleClub} />
+              <Route
+                exact
+                path="/clubs/:clubId/polls/:pollId"
+                component={SinglePoll}
+              />
+            </Switch>
+          )}
+          {/* Displays our Login component as a fallback */}
+          <Route component={Login} />
+        </Switch>
+      </main>
     )
   }
 }
+
+const StyledRoutes = withStyles(styles)(Routes)
 
 /**
  * CONTAINER
@@ -78,7 +91,7 @@ const mapDispatch = dispatch => {
 
 // The `withRouter` wrapper makes sure that updates are not blocked
 // when the url changes
-export default withRouter(connect(mapState, mapDispatch)(Routes))
+export default withRouter(connect(mapState, mapDispatch)(StyledRoutes))
 
 /**
  * PROP TYPES

@@ -5,24 +5,11 @@ import axios from 'axios'
 import Popup from 'reactjs-popup'
 import Search from './Search'
 import {withStyles} from '@material-ui/core/styles'
-import {
-  TextField,
-  Typography,
-  Button,
-  IconButton,
-  Grid,
-  Divider
-} from '@material-ui/core'
-import {DeleteIcon} from '@material-ui/icons'
+import {TextField, Typography, Button, Grid} from '@material-ui/core'
 
 const apiKey = 'jrAzhFY1JP1FdDk1vp7Zg'
 
 const styles = theme => ({
-  root: {
-    ...theme.mixins.gutters(),
-    paddingTop: theme.spacing.unit * 4,
-    paddingBottom: theme.spacing.unit * 2
-  },
   form: {
     maxWidth: 660
   },
@@ -219,7 +206,7 @@ class CreatePoll extends Component {
   render() {
     const {classes} = this.props
     return (
-      <main className={classes.root}>
+      <div>
         <form className={classes.form}>
           <Typography variant="h3" gutterBottom color="primary">
             Create a New Poll
@@ -474,7 +461,7 @@ class CreatePoll extends Component {
             Create Poll
           </Button>
         </form>
-      </main>
+      </div>
     )
   }
 }

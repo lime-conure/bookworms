@@ -3,16 +3,7 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {fetchSingleClub} from '../store/singleClub'
 import {leaveClub} from '../store/clubs'
-import {withStyles} from '@material-ui/core/styles'
 import {Button, Typography} from '@material-ui/core'
-
-const styles = theme => ({
-  root: {
-    ...theme.mixins.gutters(),
-    paddingTop: theme.spacing.unit * 4,
-    paddingBottom: theme.spacing.unit * 2
-  }
-})
 
 export class SingleClub extends Component {
   constructor(props) {
@@ -28,9 +19,8 @@ export class SingleClub extends Component {
   }
   render() {
     const club = this.props.singleClub
-    const {classes} = this.props
     return (
-      <main className={classes.root}>
+      <div>
         <Typography variant="h3" gutterBottom>
           {club.name}
         </Typography>
@@ -43,12 +33,10 @@ export class SingleClub extends Component {
         >
           Leave Club
         </Button>
-      </main>
+      </div>
     )
   }
 }
-
-const StyledSingleClub = withStyles(styles)(SingleClub)
 
 const mapState = state => ({
   singleClub: state.singleClub
@@ -59,4 +47,4 @@ const mapDispatch = dispatch => ({
   leaveClub: id => dispatch(leaveClub(id))
 })
 
-export default connect(mapState, mapDispatch)(StyledSingleClub)
+export default connect(mapState, mapDispatch)(SingleClub)
