@@ -186,7 +186,7 @@ export class SinglePoll extends Component {
               <Button
                 size="large"
                 color="primary"
-                variant="outlined"
+                variant="contained"
                 type="submit"
               >
                 Vote

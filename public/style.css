@@ -15,13 +15,6 @@ nav a {
   margin: 1em;
 }
 
-form div {
-  display: inline-block;
-}
-
-button.leaveClub {
-  background-color: red;
-}
 /* =========================== */
 .modal {
   font-size: 12px;

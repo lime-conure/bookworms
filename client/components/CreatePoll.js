@@ -2,11 +2,10 @@ import React, {Component} from 'react'
 import {NavLink, Link} from 'react-router-dom'
 import BooksView from './BooksView'
 import axios from 'axios'
-import Calendar from 'react-input-calendar'
 import Popup from 'reactjs-popup'
 import Search from './Search'
 import {withStyles} from '@material-ui/core/styles'
-import {TextField, Typography} from '@material-ui/core'
+import {TextField, Typography, Grid, Divider} from '@material-ui/core'
 
 const apiKey = 'jrAzhFY1JP1FdDk1vp7Zg'
 
@@ -18,6 +17,10 @@ const styles = theme => ({
   },
   form: {
     maxWidth: 660
+  },
+  optionsSection: {
+    marginTop: theme.spacing.unit * 3,
+    marginBottom: theme.spacing.unit * 3
   }
 })
 
@@ -213,8 +216,7 @@ class CreatePoll extends Component {
           <Typography variant="h2" gutterBottom color="primary">
             Create a New Poll
           </Typography>
-          {/* <label htmlFor="title">Title</label>
-            <input name="title" onChange={this.handleChange} required /> */}
+
           <TextField
             label="Title"
             name="title"
@@ -252,10 +254,12 @@ class CreatePoll extends Component {
             fullWidth
           />
 
-          <br />
           {/* select books */}
-          <div>
-            <label>Add Book Options</label>
+          <div className={classes.optionsSection}>
+            <Typography variant="h5" color="secondary">
+              Add Book Options
+            </Typography>
+
             <Search setResults={this.setResults} />
             <br />
 

@@ -2,7 +2,12 @@ import React, {Component} from 'react'
 import Axios from 'axios'
 import AllResults from './AllResults'
 import PropTypes from 'prop-types'
+import {withStyles} from '@material-ui/core/styles'
+import {TextField, Typography, Button, Grid} from '@material-ui/core'
+
 const apiKey = 'jrAzhFY1JP1FdDk1vp7Zg'
+
+const styles = theme => ({})
 
 class Search extends Component {
   state = {
@@ -76,42 +81,33 @@ class Search extends Component {
   }
 
   render() {
+    const {classes} = this.props
     return (
-      <div>
-        <div className="form-group row">
-          <input
-            className="mr-1 col-sm-9 form-control"
+      <Grid container spacing={24} justify="space-between" alignItems="center">
+        <Grid item xs={8}>
+          <TextField
             type="text"
-            placeholder="Search Books By title, author, or ISBN..."
+            label="Search Books By title, author, or ISBN..."
             name="searchText"
+            className={classes.search}
             onChange={this.onTextChange}
             value={this.state.searchText}
+            margin="normal"
+            variant="filled"
+            fullWidth
           />
-          <button
+        </Grid>
+        <Grid item xs={4}>
+          <Button
             disabled={!this.state.searchText}
-            className="col-sm-2 btn btn-primary"
             onClick={e => this.onButtonClick(e)}
+            variant="contained"
+            color="secondary"
           >
-            Search
-          </button>
-        </div>
-
-        {/**
-         * if fetching data, display "loading...", if error, display error message, else display search results
-         */}
-        {/* {this.state.fetchingData ? (
-          <p className="lead text-center">loading... </p>
-        ) : (
-          (this.state.error && (
-            <p className="text-danger">{this.state.error}</p>
-          )) || (
-            <AllResults
-              books={this.props.results}
-              expandBook={this.props.expandBook}
-            />
-          )
-        )} */}
-      </div>
+            Search for Books
+          </Button>
+        </Grid>
+      </Grid>
     )
   }
 }
@@ -122,4 +118,4 @@ Search.propTypes = {
   //expandBook: PropTypes.func
 }
 
-export default Search
+export default withStyles(styles)(Search)
