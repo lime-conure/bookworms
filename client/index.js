@@ -11,7 +11,22 @@ const theme = createMuiTheme({
   palette: {
     type: 'dark',
     secondary: lime
+  },
+  typography: {
+    fontFamily: ['Roboto Slab', 'Roboto', 'Arial', 'sans-serif'].join(','),
+    button: {
+      fontFamily: 'Roboto',
+      fontWeight: 500
+    }
   }
+  // props: {
+  //   MuiButton: {
+  //     text: {
+  //       fontFamily: 'Roboto',
+  //       fontWeight: 700
+  //     }
+  //   }
+  // }
 })
 
 // establishes socket connection

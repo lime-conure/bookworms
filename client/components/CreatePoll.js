@@ -454,7 +454,7 @@ class CreatePoll extends Component {
             type="submit"
             onClick={this.createPoll}
             disabled={!this.state.title}
-            variant="contained"
+            variant="raised"
             color="primary"
             size="large"
           >
