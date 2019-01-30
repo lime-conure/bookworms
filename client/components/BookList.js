@@ -27,30 +27,36 @@ class BookList extends Component {
     const {books, classes} = this.props
     if (books.length) {
       return (
-        <div className={classes.root}>
-          <GridList cellHeight={240} cols={4} className={classes.gridList}>
-            {books.map(bookResult => (
-              <GridListTile cols={1} key={bookResult.best_book.id}>
-                <img
-                  src={bookResult.best_book.image_url}
-                  alt={bookResult.best_book.title}
-                />
-                <GridListTileBar
-                  title={bookResult.best_book.title}
-                  subtitle={<span>by: {bookResult.best_book.author.name}</span>}
-                  actionIcon={
-                    <IconButton onClick={e => this.addBook(e, bookResult)}>
-                      <Icon>add_circle</Icon>
-                    </IconButton>
-                  }
-                />
-              </GridListTile>
-            ))}
-          </GridList>
+        <div>
+          <div className={classes.root}>
+            <GridList cellHeight={240} cols={4} className={classes.gridList}>
+              {books.map(bookResult => (
+                <GridListTile cols={1} key={bookResult.best_book.id}>
+                  <img
+                    src={bookResult.best_book.image_url}
+                    alt={bookResult.best_book.title}
+                  />
+                  <GridListTileBar
+                    title={bookResult.best_book.title}
+                    subtitle={
+                      <span>by: {bookResult.best_book.author.name}</span>
+                    }
+                    actionIcon={
+                      <IconButton
+                        onClick={e => this.props.addBook(e, bookResult)}
+                      >
+                        <Icon>add_circle</Icon>
+                      </IconButton>
+                    }
+                  />
+                </GridListTile>
+              ))}
+            </GridList>
+          </div>
         </div>
       )
     } else {
-      return <div>No books to display</div>
+      return <div />
     }
   }
 }
