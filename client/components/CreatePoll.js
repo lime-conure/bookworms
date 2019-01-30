@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
-import {NavLink, Link} from 'react-router-dom'
-import BooksView from './BooksView'
+import {Link} from 'react-router-dom'
 import axios from 'axios'
-import Popup from 'reactjs-popup'
-import Search from './Search'
+import {Search, BookList} from './index'
+
+// Material UI
 import {withStyles} from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
@@ -281,6 +281,7 @@ class CreatePoll extends Component {
               Add Book Options
             </Typography>
             <Search setResults={this.setResults} />
+
             <br />
             {this.state.selectedBooks.length ? (
               <List>
@@ -331,7 +332,10 @@ class CreatePoll extends Component {
               </List>
             ) : null}
             <br />
-            {this.state.searchResults.length ? (
+
+            <BookList books={this.state.searchResults} />
+
+            {/* {this.state.searchResults.length ? (
               <div className={classes.root}>
                 <GridList
                   cellHeight={240}
@@ -361,7 +365,7 @@ class CreatePoll extends Component {
                   ))}
                 </GridList>
               </div>
-            ) : null}
+            ) : null} */}
           </div>
           {/* select dates */}
 
