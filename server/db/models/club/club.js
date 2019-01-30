@@ -8,7 +8,7 @@ const Club = db.define('club', {
   },
   inviteLink: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: true
   }
 })
 
