@@ -34,11 +34,14 @@ class Routes extends Component {
   }
 
   render() {
-    const {isLoggedIn, classes} = this.props
+    const {isLoggedIn, invitePending, classes} = this.props
+
+    console.log('isLoggedIn: ', isLoggedIn)
+    console.log('invitePending: ', invitePending)
 
     return (
       <div>
-        {isLoggedIn ? (
+        {isLoggedIn && !invitePending ? (
           <Switch>
             <Route exact path="/clubs" component={Clubs} />
             {/* Sidebar is scoped to a single club */}
@@ -62,7 +65,7 @@ class Routes extends Component {
             {isLoggedIn && (
               <Switch>
                 {/* Routes placed here are only available after logging in */}
-
+                <Route exact path="/clubs" component={Clubs} />
                 <Route exact path="/clubs/:clubId" component={SingleClub} />
                 <Route exact path="/clubs/:clubId/polls" component={Polls} />
                 <Route
@@ -95,7 +98,8 @@ const mapState = state => {
   return {
     // Being 'logged in' for our purposes will be defined has having a state.user that has a truthy id.
     // Otherwise, state.user will be an empty object, and state.user.id will be falsey
-    isLoggedIn: !!state.user.id
+    isLoggedIn: !!state.user.id,
+    invitePending: !!state.user.inviteLink
   }
 }
 

@@ -19,6 +19,7 @@ class JoinClub extends Component {
         this.props.match.params.hash
       }`
     )
+    this.props.inviteUser('')
     this.props.history.push(`/clubs/${this.props.match.params.clubId}`)
   }
 
@@ -32,8 +33,7 @@ class JoinClub extends Component {
     this.setState({
       clubName: data
     })
-    if (this.props.inviteLink === inviteLink) this.props.inviteUser('')
-    else this.props.inviteUser(inviteLink)
+    this.props.inviteUser(inviteLink)
   }
 
   render() {
