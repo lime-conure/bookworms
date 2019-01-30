@@ -34,8 +34,8 @@ router.get('/', async (req, res, next) => {
 //POST api/clubs/create - to create a new club
 router.post('/create', async (req, res, next) => {
   try {
-    const {name, inviteLink, userId} = req.body
-    const newClub = await Club.create({name, inviteLink})
+    const {name, userId} = req.body
+    const newClub = await Club.create({name})
     const clubId = newClub.id
     await UserClub.create({userId, clubId})
     res.json(newClub)

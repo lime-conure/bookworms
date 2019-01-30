@@ -12,8 +12,7 @@ export class CreateClub extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      name: '',
-      inviteLink: ''
+      name: ''
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -29,8 +28,8 @@ export class CreateClub extends Component {
   async createClub(evt) {
     evt.preventDefault()
     try {
-      const {name, inviteLink} = this.state
-      const newClub = {name, inviteLink, userId: this.props.userId}
+      const {name} = this.state
+      const newClub = {name, userId: this.props.userId}
       await axios.post('/api/clubs/create', newClub)
       this.props.history.push(`/clubs`)
     } catch (err) {
@@ -56,30 +55,8 @@ export class CreateClub extends Component {
           >
             <Textfield
               name="name"
-              label="type a club name"
+              label="Type a club name"
               value={this.state.name}
-              onChange={this.handleChange}
-              variant="filled"
-              type="text"
-            />
-          </Grid>
-          <br />
-          <Typography variant="h5" color="secondary" gutterBottom>
-            {' '}
-            Invite Link{' '}
-          </Typography>
-          <Grid
-            item
-            xs={6}
-            container
-            spacing={24}
-            justify="space-between"
-            alignItems="center"
-          >
-            <Textfield
-              name="inviteLink"
-              label="type a inviteLink"
-              value={this.state.inviteLink}
               onChange={this.handleChange}
               variant="filled"
               type="text"
