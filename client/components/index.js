@@ -4,6 +4,7 @@
  * having to figure out which file they belong to!
  */
 export {default as Navbar} from './Navbar'
+export {default as Sidebar} from './Sidebar'
 export {default as UserHome} from './UserHome'
 export {default as Polls} from './Polls'
 export {default as CreatePoll} from './CreatePoll'

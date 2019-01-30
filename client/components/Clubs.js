@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {fetchClubs} from '../store'
 import {leaveClub} from '../store/clubs'
 import {Link} from 'react-router-dom'
+
 import {
   Button,
   Typography,

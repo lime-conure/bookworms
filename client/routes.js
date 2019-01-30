@@ -10,16 +10,18 @@ import {
   CreatePoll,
   Clubs,
   SingleClub,
-  JoinClub
+  JoinClub,
+  Sidebar
 } from './components'
 import {me} from './store'
 import {withStyles} from '@material-ui/core/styles'
 
 const styles = theme => ({
   root: {
-    ...theme.mixins.gutters(),
-    paddingTop: theme.spacing.unit * 4,
-    paddingBottom: theme.spacing.unit * 2
+    paddingTop: 96, // Navbar height + 32
+    paddingBottom: theme.spacing.unit * 4,
+    paddingLeft: 272, // Sidebar width + 32,
+    paddingRight: theme.spacing.unit * 4
   }
 })
 
@@ -35,36 +37,51 @@ class Routes extends Component {
     const {isLoggedIn, classes} = this.props
 
     return (
-      <main>
-        <Switch>
-          {/* Routes placed here are available to all visitors */}
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/signup" component={Signup} />
-          <Route exact path="/clubs/:clubId/join/:hash" component={JoinClub} />
+      <div>
+        {isLoggedIn ? (
+          <Switch>
+            <Route exact path="/clubs" component={Clubs} />
+            {/* Sidebar is scoped to a single club */}
+            <Route path="/clubs/:clubId" component={Sidebar} />
+          </Switch>
+        ) : (
+          ''
+        )}
+        <main className={classes.root}>
+          <Switch>
+            {/* Routes placed here are available to all visitors */}
 
-          {isLoggedIn && (
-            <Switch>
-              {/* Routes placed here are only available after logging in */}
-              <Route exact path="/clubs" component={Clubs} />
-              <Route exact path="/clubs/:clubId" component={SingleClub} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/signup" component={Signup} />
+            <Route
+              exact
+              path="/clubs/:clubId/join/:hash"
+              component={JoinClub}
+            />
 
-              <Route exact path="/clubs/:clubId/polls" component={Polls} />
-              <Route
-                exact
-                path="/clubs/:clubId/polls/create"
-                component={CreatePoll}
-              />
-              <Route
-                exact
-                path="/clubs/:clubId/polls/:pollId"
-                component={SinglePoll}
-              />
-            </Switch>
-          )}
-          {/* Displays our Login component as a fallback */}
-          <Route component={Login} />
-        </Switch>
-      </main>
+            {isLoggedIn && (
+              <Switch>
+                {/* Routes placed here are only available after logging in */}
+
+                <Route exact path="/clubs/:clubId" component={SingleClub} />
+                <Route exact path="/clubs/:clubId/polls" component={Polls} />
+                <Route
+                  exact
+                  path="/clubs/:clubId/polls/create"
+                  component={CreatePoll}
+                />
+                <Route
+                  exact
+                  path="/clubs/:clubId/polls/:pollId"
+                  component={SinglePoll}
+                />
+              </Switch>
+            )}
+            {/* Displays our Login component as a fallback */}
+            <Route component={Login} />
+          </Switch>
+        </main>
+      </div>
     )
   }
 }
