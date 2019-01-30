@@ -6,7 +6,14 @@ import history from './history'
 import store from './store'
 import App from './app'
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles'
-const theme = createMuiTheme()
+import {green, lime} from '@material-ui/core/colors'
+const theme = createMuiTheme({
+  palette: {
+    type: 'dark',
+    primary: green,
+    secondary: lime
+  }
+})
 
 // establishes socket connection
 import './socket'

@@ -3,7 +3,13 @@ import {connect} from 'react-redux'
 import {fetchPolls} from '../store'
 import {NavLink, Link} from 'react-router-dom'
 import {withStyles} from '@material-ui/core/styles'
-import {Button, Typography, List, ListItem} from '@material-ui/core'
+import {
+  Button,
+  Typography,
+  List,
+  ListItem,
+  ListItemText
+} from '@material-ui/core'
 
 const styles = theme => ({
   root: {
@@ -23,7 +29,7 @@ class Polls extends Component {
     const {classes} = this.props
     return (
       <main className={classes.root}>
-        <Typography variant="h2" gutterBottom color="primary">
+        <Typography variant="h3" gutterBottom color="primary">
           All Polls
         </Typography>
 
@@ -35,14 +41,14 @@ class Polls extends Component {
               key={poll.id}
               to={`/clubs/${this.props.match.params.clubId}/polls/${poll.id}`}
             >
-              {poll.title}{' '}
-              {poll.dueDate ? (
-                <span>
-                  &ndash; <em>voting ends on {poll.dueDate}</em>
-                </span>
-              ) : (
-                ''
-              )}
+              <ListItemText>
+                {poll.title}
+                {poll.dueDate ? (
+                  <em>&mdash;voting ends on {poll.dueDate}</em>
+                ) : (
+                  ''
+                )}
+              </ListItemText>
             </ListItem>
           ))}
         </List>
@@ -50,10 +56,9 @@ class Polls extends Component {
           <Button
             type="button"
             variant="contained"
-            color="primary"
+            color="secondary"
             size="large"
           >
-            {' '}
             Create a New Poll
           </Button>
         </Link>
