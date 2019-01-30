@@ -25,36 +25,43 @@ class Clubs extends Component {
     this.props.leaveClub(id)
   }
   render() {
+    console.log(this.props.clubs, 'PROPS.CLUBS')
     const clubs = this.props.clubs
     return (
       <div>
-        <Typography variant="h3" gutterBottom color="primary">
-          Your Clubs
-        </Typography>
+        <div>
+          <Typography variant="h3" gutterBottom color="primary">
+            Your Clubs
+          </Typography>
 
-        <List>
-          {clubs.map(club => (
-            <ListItem
-              button
-              component={Link}
-              key={club.id}
-              to={`/clubs/${club.id}`}
-            >
-              <ListItemText>
-                <Typography variant="h5">{club.name}</Typography>
-              </ListItemText>
-              <Button
-                type="submit"
-                onClick={() => this.leaveClub(club.id)}
-                className="leaveClub"
-                color="primary"
-                variant="contained"
+          <List>
+            {clubs.map(club => (
+              <ListItem
+                button
+                component={Link}
+                key={club.id}
+                to={`/clubs/${club.id}`}
               >
-                Leave Club
-              </Button>
-            </ListItem>
-          ))}
-        </List>
+                <ListItemText>
+                  <Typography variant="h5">{club.name}</Typography>
+                </ListItemText>
+                <Button
+                  type="submit"
+                  onClick={() => this.leaveClub(club.id)}
+                  className="leaveClub"
+                  color="primary"
+                  variant="contained"
+                >
+                  Leave Club
+                </Button>
+              </ListItem>
+            ))}
+          </List>
+        </div>
+
+        <Link to="/clubs/create">
+          <button type="button">Create Club</button>
+        </Link>
       </div>
     )
   }

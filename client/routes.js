@@ -41,6 +41,7 @@ class Routes extends Component {
         {isLoggedIn ? (
           <Switch>
             <Route exact path="/clubs" component={Clubs} />
+            <Route exact path="/clubs/create" component={CreateClub} />
             {/* Sidebar is scoped to a single club */}
             <Route path="/clubs/:clubId" component={Sidebar} />
           </Switch>
@@ -58,7 +59,6 @@ class Routes extends Component {
               <Switch>
                 {/* Routes placed here are only available after logging in */}
 
-                <Route exact path="/clubs/create" component={CreateClub} />
                 <Route exact path="/clubs/:clubId" component={SingleClub} />
                 <Route exact path="/clubs/:clubId/polls" component={Polls} />
                 <Route

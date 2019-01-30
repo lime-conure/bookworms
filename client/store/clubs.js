@@ -59,6 +59,7 @@ export const createNewClub = () => async dispatch => {
   try {
     const {data} = await axios.post('/api/clubs/create')
     dispatch(createClub(data))
+    console.log(data, 'DATAAA')
   } catch (err) {
     console.log(err)
   }
