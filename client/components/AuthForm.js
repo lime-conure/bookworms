@@ -11,7 +11,7 @@ const AuthForm = props => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit} name={name}>
+      <form onSubmit={evt => handleSubmit(evt, props)} name={name}>
         <div>
           <label htmlFor="email">
             <small>Email</small>
@@ -45,7 +45,8 @@ const mapLogin = state => {
   return {
     name: 'login',
     displayName: 'Login',
-    error: state.user.error
+    error: state.user.error,
+    inviteLink: state.user.inviteLink
   }
 }
 
@@ -53,18 +54,21 @@ const mapSignup = state => {
   return {
     name: 'signup',
     displayName: 'Sign Up',
-    error: state.user.error
+    error: state.user.error,
+    inviteLink: state.user.inviteLink
   }
 }
 
 const mapDispatch = dispatch => {
   return {
-    handleSubmit(evt) {
+    handleSubmit(evt, props) {
       evt.preventDefault()
       const formName = evt.target.name
       const email = evt.target.email.value
       const password = evt.target.password.value
       dispatch(auth(email, password, formName))
+      if (props.inviteLink) props.history.push(props.inviteLink)
+      else props.history.push('/home')
     }
   }
 }
