@@ -5,26 +5,22 @@ import axios from 'axios'
 import Popup from 'reactjs-popup'
 import Search from './Search'
 import {withStyles} from '@material-ui/core/styles'
-import {
-  TextField,
-  Typography,
-  Button,
-  Grid,
-  GridList,
-  GridListTile,
-  GridListTileBar,
-  ListSubheader,
-  IconButton,
-  Icon,
-  List,
-  ListItem,
-  ListItemText,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText
-} from '@material-ui/core'
-import {InfoIcon} from '@material-ui/icons'
+import TextField from '@material-ui/core/TextField'
+import Typography from '@material-ui/core/Typography'
+import Button from '@material-ui/core/Button'
+import Grid from '@material-ui/core/Grid'
+import GridList from '@material-ui/core/GridList'
+import GridListTile from '@material-ui/core/GridListTile'
+import GridListTileBar from '@material-ui/core/GridListTileBar'
+import IconButton from '@material-ui/core/IconButton'
+import Icon from '@material-ui/core/Icon'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
+import Dialog from '@material-ui/core/Dialog'
+import DialogTitle from '@material-ui/core/DialogTitle'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogContentText from '@material-ui/core/DialogContentText'
 
 const apiKey = 'jrAzhFY1JP1FdDk1vp7Zg'
 
@@ -49,6 +45,10 @@ const styles = theme => ({
   },
   icon: {
     color: 'rgba(255, 255, 255, 0.54)'
+  },
+  description: {
+    marginTop: theme.spacing.unit * 3,
+    marginBottom: theme.spacing.unit * 3
   }
 })
 
@@ -64,7 +64,7 @@ class CreatePoll extends Component {
       selectedPlaces: [],
       title: '',
       notes: '',
-      dueDate: '',
+      dueDate: null,
       searchValue: '',
       date: '',
       time: '',
@@ -100,49 +100,20 @@ class CreatePoll extends Component {
       const {data} = await axios.get(requestUri)
       const parser = new DOMParser()
       const XMLResponse = parser.parseFromString(data, 'application/xml')
-      description = XMLResponse.getElementsByTagName('description')[0].innerText
+      description = XMLResponse.getElementsByTagName('description')[0]
+        .textContent
+      if (!description) {
+        return 'No description found.'
+      }
+      // remove html tags
+      const shorterDescWithoutHTML = description
+        .replace(/<\/?[^>]+(>|$)/g, '')
+        .substr(0, 500)
+      return `${shorterDescWithoutHTML}...`
     } catch (err) {
       console.error(err)
     }
-    return description
-
-    // axios
-    //   .get(requestUri)
-    //   .then(res => {
-    //     const parser = new DOMParser()
-    //     const XMLResponse = parser.parseFromString(res.data, 'application/xml')
-
-    //     const parseError = XMLResponse.getElementsByTagName('parsererror')
-
-    //     if (parseError.length) {
-    //       this.setState({
-    //         error: 'There was an error fetching results.'
-    //       })
-    //     } else {
-    //       let description = XMLResponse.getElementsByTagName('description')[0]
-    //         .innerText
-
-    //       description = description.replace('<![CDATA[', '').replace(']]>', '')
-
-    //       if (!description) {
-    //         description = 'No description found.'
-    //       }
-    //       // this.setState({description})
-    //     }
-    //   })
-    //   .catch(error => {
-    //     this.setState({
-    //       error: error.toString()
-    //     })
-    //   })
   }
-
-  // handleClick(e, bookId) {
-  //   e.preventDefault()
-  //   // const description = await this.getDescription(bookId)
-  //   const description = 'description will go here'
-  //   this.setState({open: true, description})
-  // }
 
   async createPoll(e) {
     e.preventDefault()
@@ -176,6 +147,7 @@ class CreatePoll extends Component {
   addDateTime(e) {
     e.preventDefault()
     const {time, date} = this.state
+
     const dateTime = new Date(
       Number(date.slice(0, 4)),
       Number(date.slice(5, 7)) - 1,
@@ -248,7 +220,6 @@ class CreatePoll extends Component {
   handleClickOpen = async (e, bookId) => {
     e.preventDefault()
     const description = await this.getDescription(bookId)
-    console.log('description from server: ', description)
     this.setState({
       open: true,
       description
@@ -334,19 +305,25 @@ class CreatePoll extends Component {
                     >
                       <DialogTitle id="book-modal">{book.title}</DialogTitle>
                       <DialogContent>
+                        <img src={book.imageUrl} alt={book.title} />
                         <DialogContentText>
-                          <Typography variant="body1">
+                          <Typography
+                            variant="body1"
+                            className={classes.description}
+                          >
                             {this.state.description}
                           </Typography>
-                          <Button
-                            component={Link}
-                            href={`https://www.goodreads.com/book/show/${
-                              book.goodReadsId
-                            }`}
-                          >
-                            View On Goodreads
-                          </Button>
                         </DialogContentText>
+                        <Button
+                          target="_blank"
+                          href={`https://www.goodreads.com/book/show/${
+                            book.goodReadsId
+                          }`}
+                          variant="contained"
+                          color="primary"
+                        >
+                          View On Goodreads
+                        </Button>
                       </DialogContent>
                     </Dialog>
                   </div>

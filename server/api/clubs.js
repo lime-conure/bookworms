@@ -66,8 +66,6 @@ router.post('/:clubId/polls', async (req, res, next) => {
       notes
     } = req.body
 
-    console.log(req.body.selectedDates)
-
     const newPoll = await Poll.create({title, dueDate, notes})
 
     const books = []
@@ -81,8 +79,6 @@ router.post('/:clubId/polls', async (req, res, next) => {
         let existingAuthor = await Author.findOne({
           where: {goodReadsId: book.author.id}
         })
-        console.log('book', book)
-        console.log(existingBook, 'existing book')
         if (!existingAuthor) {
           existingAuthor = await Author.create({
             name: book.author.name,
@@ -93,7 +89,6 @@ router.post('/:clubId/polls', async (req, res, next) => {
       }
       books.push(existingBook)
     }
-    console.log(books, 'books')
 
     await Promise.all(
       books.map(book =>
@@ -108,9 +103,7 @@ router.post('/:clubId/polls', async (req, res, next) => {
 
     await Promise.all(
       selectedDates.map(date => {
-        console.log('date:', date)
         const dateTime = new Date(date)
-        console.log('dateTime:', dateTime)
         return Option.create({
           type: 'time',
           dateTime: dateTime,
