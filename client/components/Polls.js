@@ -45,12 +45,7 @@ class Polls extends Component {
           ))}
         </List>
         <Link to={`/clubs/${this.props.match.params.clubId}/polls/create`}>
-          <Button
-            type="button"
-            variant="contained"
-            color="secondary"
-            size="large"
-          >
+          <Button type="button" variant="raised" color="secondary" size="large">
             Create a New Poll
           </Button>
         </Link>
