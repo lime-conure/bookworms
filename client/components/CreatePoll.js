@@ -76,8 +76,6 @@ class CreatePoll extends Component {
     this.addDateTime = this.addDateTime.bind(this)
     this.addPlaces = this.addPlaces.bind(this)
     this.setResults = this.setResults.bind(this)
-    this.handleClick = this.handleClick.bind(this)
-    this.closeModal = this.closeModal.bind(this)
 
     this.handleClickOpen = this.handleClickOpen.bind(this)
     this.handleClose = this.handleClose.bind(this)
@@ -97,16 +95,16 @@ class CreatePoll extends Component {
     const requestUri =
       `https://cors-anywhere.herokuapp.com/` +
       `https://www.goodreads.com/book/show/${bookId}?key=${apiKey}`
+    let description = 'loading...'
     try {
       const {data} = await axios.get(requestUri)
       const parser = new DOMParser()
       const XMLResponse = parser.parseFromString(data, 'application/xml')
-      const description = XMLResponse.getElementsByTagName('description')[0]
-        .innerText
-      return description
+      description = XMLResponse.getElementsByTagName('description')[0].innerText
     } catch (err) {
       console.error(err)
     }
+    return description
 
     // axios
     //   .get(requestUri)
@@ -139,16 +137,12 @@ class CreatePoll extends Component {
     //   })
   }
 
-  handleClick(e, bookId) {
-    e.preventDefault()
-    // const description = await this.getDescription(bookId)
-    const description = 'description will go here'
-    this.setState({open: true, description})
-  }
-
-  closeModal() {
-    this.setState({open: false, description: 'loading...'})
-  }
+  // handleClick(e, bookId) {
+  //   e.preventDefault()
+  //   // const description = await this.getDescription(bookId)
+  //   const description = 'description will go here'
+  //   this.setState({open: true, description})
+  // }
 
   async createPoll(e) {
     e.preventDefault()
@@ -251,9 +245,10 @@ class CreatePoll extends Component {
     }
   }
 
-  handleClickOpen = (e, bookId) => {
+  handleClickOpen = async (e, bookId) => {
     e.preventDefault()
-    const description = this.getDescription(bookId)
+    const description = await this.getDescription(bookId)
+    console.log('description from server: ', description)
     this.setState({
       open: true,
       description
@@ -261,7 +256,6 @@ class CreatePoll extends Component {
   }
 
   handleClose = () => {
-    console.log('dialog is closing')
     this.setState({open: false, description: 'loading...'})
   }
 
@@ -346,8 +340,8 @@ class CreatePoll extends Component {
                           </Typography>
                           <Button
                             component={Link}
-                            to={`https://www.goodreads.com/book/show/${
-                              book.id
+                            href={`https://www.goodreads.com/book/show/${
+                              book.goodReadsId
                             }`}
                           >
                             View On Goodreads
@@ -446,21 +440,20 @@ class CreatePoll extends Component {
             </Grid>
 
             <br />
-            <div>
+            <List>
               {this.state.selectedDates.length
                 ? this.state.selectedDates.map((date, idx) => (
-                    <div key={idx}>
-                      {date.toString()}
-                      <Button
+                    <ListItem button key={idx}>
+                      <ListItemText> {date.toString()}</ListItemText>
+                      <IconButton
                         onClick={e => this.deleteOption(idx, 'date', e)}
-                        type="button"
                       >
-                        x
-                      </Button>
-                    </div>
+                        <Icon>cancel</Icon>
+                      </IconButton>
+                    </ListItem>
                   ))
                 : null}
-            </div>
+            </List>
           </div>
           {/* select location */}
           <div className={classes.optionsSection}>
@@ -496,21 +489,20 @@ class CreatePoll extends Component {
               </Grid>
             </Grid>
             <br />
-            <div>
+            <List>
               {this.state.selectedPlaces.length
                 ? this.state.selectedPlaces.map((place, idx) => (
-                    <div key={idx}>
-                      {place}
-                      <Button
+                    <ListItem button key={idx}>
+                      <ListItemText> {place}</ListItemText>
+                      <IconButton
                         onClick={e => this.deleteOption(idx, 'place', e)}
-                        type="button"
                       >
-                        x
-                      </Button>
-                    </div>
+                        <Icon>cancel</Icon>
+                      </IconButton>
+                    </ListItem>
                   ))
                 : null}
-            </div>
+            </List>
           </div>
           <br />
           <Button
