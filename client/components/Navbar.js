@@ -24,10 +24,10 @@ const styles = {
 function Navbar({handleClick, isLoggedIn, classes}) {
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar>
         <Toolbar>
           <Typography variant="h6" className={classes.grow}>
-            Bookworms 📖 🐛
+            Bookworms &nbsp;&nbsp; 📖 🐛
           </Typography>
           {isLoggedIn ? (
             <div>

@@ -149,13 +149,7 @@ export class SinglePoll extends Component {
     if (poll) {
       return (
         <div>
-          <Button
-            component={Link}
-            to={`/clubs/${this.props.match.params.clubId}/polls/`}
-          >
-            ← Back to all polls
-          </Button>
-          <Typography variant="h2" gutterBottom color="secondary">
+          <Typography variant="h2" gutterBottom>
             {poll.title}
           </Typography>
           <Typography variant="subtitle1" gutterBottom>
@@ -163,7 +157,7 @@ export class SinglePoll extends Component {
           </Typography>
 
           {poll.dueDate ? (
-            <Typography variant="subtitle2" gutterBottom>
+            <Typography variant="subtitle2" gutterBottom color="secondary">
               Voting ends on {poll.dueDate.slice(0, 10)}
             </Typography>
           ) : (
