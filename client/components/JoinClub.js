@@ -24,12 +24,10 @@ class JoinClub extends Component {
   }
 
   async componentDidMount() {
-    console.log('JoinCLub mounted')
     const inviteLink = `/clubs/${this.props.match.params.clubId}/join/${
       this.props.match.params.hash
     }`
     const {data} = await Axios.get(`/api/${inviteLink}`)
-    //console.log(data)
     this.setState({
       clubName: data
     })
@@ -37,7 +35,6 @@ class JoinClub extends Component {
   }
 
   render() {
-    console.log(this.props, 'props')
     const {isLoggedIn} = this.props
     return (
       <div>
