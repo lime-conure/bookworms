@@ -25,7 +25,6 @@ class Clubs extends Component {
     this.props.leaveClub(id)
   }
   render() {
-    console.log(this.props.clubs, 'PROPS.CLUBS')
     const clubs = this.props.clubs
     return (
       <div>
@@ -60,7 +59,9 @@ class Clubs extends Component {
         </div>
 
         <Link to="/clubs/create">
-          <button type="button">Create Club</button>
+          <Button type="button" color="secondary" variant="contained">
+            Create Club
+          </Button>
         </Link>
       </div>
     )

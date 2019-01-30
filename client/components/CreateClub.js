@@ -3,6 +3,11 @@ import {connect} from 'react-redux'
 import {createNewClub} from '../store/clubs'
 import axios from 'axios'
 
+import Button from '@material-ui/core/Button'
+import Textfield from '@material-ui/core/TextField'
+import Typography from '@material-ui/core/Typography'
+import Grid from '@material-ui/core/Grid'
+
 export class CreateClub extends Component {
   constructor(props) {
     super(props)
@@ -25,7 +30,7 @@ export class CreateClub extends Component {
     evt.preventDefault()
     try {
       const {name, inviteLink} = this.state
-      const newClub = {name, inviteLink}
+      const newClub = {name, inviteLink, userId: this.props.userId}
       await axios.post('/api/clubs/create', newClub)
       this.props.history.push(`/clubs`)
     } catch (err) {
@@ -39,31 +44,44 @@ export class CreateClub extends Component {
         <h3>New Club</h3>
         <form>
           <label>Club Name </label>
-          <input
-            value={this.state.name}
-            onChange={this.handleChange}
-            name="name"
-            type="text"
-          />
+          <Grid item xs={4}>
+            <Textfield
+              value={this.state.name}
+              onChange={this.handleChange}
+              name="name"
+              type="text"
+            />
+          </Grid>
           <br />
           <label>Invite Link</label>
-          <input
-            value={this.state.inviteLink}
-            onChange={this.handleChange}
-            name="inviteLink"
-            type="text"
-          />
+          <Grid item xs={4}>
+            <Textfield
+              value={this.state.inviteLink}
+              onChange={this.handleChange}
+              name="inviteLink"
+              type="text"
+            />
+          </Grid>
         </form>
-        <button onClick={this.createClub} type="submit">
+        <Button
+          onClick={this.createClub}
+          type="submit"
+          color="secondary"
+          variant="contained"
+        >
           Create Club
-        </button>
+        </Button>
       </div>
     )
   }
 }
 
+const mapState = state => ({
+  userId: state.user.id
+})
+
 const mapDispatch = dispatch => ({
   createNewClub: newClub => dispatch(createNewClub(newClub))
 })
 
-export default connect(null, mapDispatch)(CreateClub)
+export default connect(mapState, mapDispatch)(CreateClub)

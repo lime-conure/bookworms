@@ -1,5 +1,14 @@
 const router = require('express').Router()
-const {Club, Poll, Option, Vote, Book, User, Author} = require('../db/models')
+const {
+  Club,
+  Poll,
+  Option,
+  Vote,
+  Book,
+  User,
+  Author,
+  UserClub
+} = require('../db/models')
 module.exports = router
 
 module.exports = router
@@ -20,8 +29,10 @@ router.get('/', async (req, res, next) => {
 //POST api/clubs/create - to create a new club
 router.post('/create', async (req, res, next) => {
   try {
-    const {name, inviteLink} = req.body
+    const {name, inviteLink, userId} = req.body
     const newClub = await Club.create({name, inviteLink})
+    const clubId = newClub.id
+    await UserClub.create({userId, clubId})
     res.json(newClub)
   } catch (err) {
     next(err)
