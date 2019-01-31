@@ -12,6 +12,8 @@ import {
   SingleClub,
   JoinClub,
   Sidebar,
+  ClubMembers,
+  ClubBooks,
   CreateClub
 } from './components'
 import {me} from './store'
@@ -65,7 +67,17 @@ class Routes extends Component {
               <Switch>
                 {/* Routes placed here are only available after logging in */}
                 <Route exact path="/clubs/:clubId" component={SingleClub} />
+                <Route
+                  exact
+                  path="/clubs/:clubId/books"
+                  component={ClubBooks}
+                />
                 <Route exact path="/clubs/:clubId/polls" component={Polls} />
+                <Route
+                  exact
+                  path="/clubs/:clubId/members"
+                  component={ClubMembers}
+                />
                 <Route
                   exact
                   path="/clubs/:clubId/polls/create"
