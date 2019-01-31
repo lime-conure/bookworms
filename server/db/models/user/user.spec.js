@@ -9,6 +9,40 @@ describe('User model', () => {
     return db.sync({force: true})
   })
 
+  describe('User fields', () => {
+    describe('email is require', () => {
+      function emailNeeded() {
+        return User.build({
+          firstName: 'Bob',
+          lastName: 'Sponge',
+          email: '',
+          image:
+            'https://www.google.com/search?q=spongebob&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjvl-zZxZjgAhXL1lkKHW9wBbIQ_AUIDigB&biw=1419&bih=746#imgrc=MRgvP73wILOCZM:',
+          password: 'pineapple'
+        })
+      }
+      it('throws error if email is empty', async () => {
+        expect(await emailNeeded().validate).to.throw()
+      })
+    })
+  })
+
+  describe('password is require', () => {
+    function passwordNeeded() {
+      return User.build({
+        firstName: 'Bob',
+        lastName: 'Sponge',
+        email: 'underwaterbob@gmail.com',
+        image:
+          'https://www.google.com/search?q=spongebob&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjvl-zZxZjgAhXL1lkKHW9wBbIQ_AUIDigB&biw=1419&bih=746#imgrc=MRgvP73wILOCZM:',
+        password: ''
+      })
+    }
+    it('throws error if password is empty', async () => {
+      expect(await passwordNeeded().validate).to.throw()
+    })
+  })
+
   describe('instanceMethods', () => {
     describe('correctPassword', () => {
       let cody
