@@ -9,6 +9,7 @@ import {
   ListItem,
   ListItemText
 } from '@material-ui/core'
+import Divider from '@material-ui/core/Divider'
 
 class Polls extends Component {
   componentDidMount() {
@@ -20,8 +21,9 @@ class Polls extends Component {
     return (
       <div>
         <Typography variant="h3" gutterBottom color="primary">
-          All Polls
+          Polls
         </Typography>
+        <Divider />
 
         <List>
           {polls.map(poll => (

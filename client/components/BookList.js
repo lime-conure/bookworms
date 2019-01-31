@@ -14,11 +14,12 @@ const styles = theme => ({
     flexWrap: 'wrap',
     justifyContent: 'space-around',
     overflow: 'hidden',
-    backgroundColor: theme.palette.background.paper
+    backgroundColor: theme.palette.background.paper,
+    marginTop: theme.spacing.unit * 2
   },
   gridList: {
     width: 660,
-    height: 450
+    height: 350
   }
 })
 

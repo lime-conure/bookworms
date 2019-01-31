@@ -12,6 +12,8 @@ import {
   SingleClub,
   JoinClub,
   Sidebar,
+  ClubMembers,
+  ClubBooks,
   CreateClub
 } from './components'
 import {me} from './store'
@@ -47,12 +49,7 @@ class Routes extends Component {
             <Route path="/clubs/:clubId" component={Sidebar} />
           </Switch>
         ) : (
-          ''
-        )}
-        <main className={classes.root}>
           <Switch>
-            {/* Routes placed here are available to all visitors */}
-
             <Route exact path="/login" component={Login} />
             <Route exact path="/signup" component={Signup} />
             <Route
@@ -60,12 +57,27 @@ class Routes extends Component {
               path="/clubs/:clubId/join/:hash"
               component={JoinClub}
             />
+          </Switch>
+        )}
+        <main className={classes.root}>
+          <Switch>
+            {/* Routes placed here are available to all visitors */}
 
             {isLoggedIn && (
               <Switch>
                 {/* Routes placed here are only available after logging in */}
                 <Route exact path="/clubs/:clubId" component={SingleClub} />
+                <Route
+                  exact
+                  path="/clubs/:clubId/books"
+                  component={ClubBooks}
+                />
                 <Route exact path="/clubs/:clubId/polls" component={Polls} />
+                <Route
+                  exact
+                  path="/clubs/:clubId/members"
+                  component={ClubMembers}
+                />
                 <Route
                   exact
                   path="/clubs/:clubId/polls/create"
@@ -79,7 +91,7 @@ class Routes extends Component {
               </Switch>
             )}
             {/* Displays our Login component as a fallback */}
-            <Route component={Login} />
+            {/* <Route component={Login} /> */}
           </Switch>
         </main>
       </div>

@@ -8,6 +8,7 @@ const {
   Club,
   UserBook,
   UserClub,
+  ClubBook,
   BookAuthor,
   Poll,
   Option,
@@ -140,6 +141,20 @@ async function seed() {
     UserBook.create({
       userId: 1,
       bookId: 2
+    })
+  ])
+
+  // associate club 1 with both books
+  await Promise.all([
+    ClubBook.create({
+      clubId: 1,
+      bookId: 1,
+      type: 'now'
+    }),
+    ClubBook.create({
+      clubId: 1,
+      bookId: 2,
+      type: 'past'
     })
   ])
 

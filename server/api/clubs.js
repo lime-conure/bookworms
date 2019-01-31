@@ -13,7 +13,7 @@ const {
 } = require('../db/models')
 module.exports = router
 
-module.exports = router
+router.use('/', require('./books'))
 
 //****** ROUTES FOR CLUBS ******//
 
@@ -38,6 +38,7 @@ router.post('/create', async (req, res, next) => {
     const newClub = await Club.create({name})
     const clubId = newClub.id
     await UserClub.create({userId, clubId})
+    // TODO: generate random invite link and display it
     res.json(newClub)
   } catch (err) {
     next(err)
@@ -484,9 +485,7 @@ router.get('/:clubId/users', async (req, res, next) => {
         const isUser = await club.hasUser(req.user.id)
         if (!isUser) res.status(403).send(`Not authorized`)
         else {
-          const users = await UserClub.findAll({
-            where: {clubId}
-          })
+          const users = await club.getUsers()
           res.send(users)
         }
       }
