@@ -36,10 +36,13 @@ export const fetchClubBooks = clubId => async dispatch => {
   }
 }
 
-export const postClubBook = (book, clubId) => async dispatch => {
+export const postClubBook = (book, type, clubId) => async dispatch => {
   try {
-    const {data} = await axios.post(`/api/clubs/${clubId}/books/add`, book)
-    dispatch(addClubBook(data))
+    const {data} = await axios.post(`/api/clubs/${clubId}/books/add`, {
+      book,
+      type
+    })
+    dispatch(addClubBook({...data, clubs_books: {type}}))
   } catch (err) {
     console.log(err)
   }
@@ -50,7 +53,7 @@ export default function(state = clubBooks, action) {
     case GET_CLUB_BOOKS:
       return action.books
     case ADD_CLUB_BOOK:
-      return [...state.books, action.book]
+      return [...state, action.book]
     default:
       return state
   }

@@ -54,12 +54,14 @@ router.post('/:clubId/books/add', async (req, res, next) => {
             }
             existingBook.setAuthors([existingAuthor])
           }
-          await ClubBook.create({
-            type,
-            bookId: existingBook.id,
-            bookName: existingBook.title,
-            clubId
-          })
+          // await ClubBook.create({
+          //   type,
+          //   bookId: existingBook.id,
+          //   bookName: existingBook.title,
+          //   clubId
+          // })
+          // club.addBook(existingBook, {through: {type}})
+          existingBook.addClub(club, {through: {type}})
           res.json(existingBook)
         }
       }

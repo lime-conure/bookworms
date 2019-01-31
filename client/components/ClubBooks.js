@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
-import {fetchClubBooks} from '../store'
+import {fetchClubBooks, postClubBook} from '../store'
 import {Search, BookList} from './index'
 
 // Material UI
@@ -52,9 +52,9 @@ export class ClubBooks extends Component {
     this.setState({pastResults: results})
   }
 
-  handleAddBook(e, bookResult) {
+  handleAddBook(e, bookResult, type) {
     e.preventDefault()
-
+    console.log('type: ', type)
     const newBook = {
       author: bookResult.best_book.author,
       goodReadsId: bookResult.best_book.id,
@@ -69,7 +69,7 @@ export class ClubBooks extends Component {
         bookResult.original_publication_year,
       rating: Math.round(bookResult.average_rating * 100)
     }
-    console.log('new book: ', newBook)
+    this.props.postClubBook(newBook, type, this.props.clubId)
     // this.setState({
     //   selectedBooks: [...this.state.selectedBooks, newBook]
     // })
@@ -108,7 +108,7 @@ export class ClubBooks extends Component {
           <Search setResults={this.setNowResults} />
           <BookList
             books={this.state.nowResults}
-            addBook={this.handleAddBook}
+            addBook={(e, book) => this.handleAddBook(e, book, 'now')}
           />
         </div>
         <Divider />
@@ -132,7 +132,7 @@ export class ClubBooks extends Component {
           <Search setResults={this.setFutureResults} />
           <BookList
             books={this.state.futureResults}
-            addBook={this.handleAddBook}
+            addBook={(e, book) => this.handleAddBook(e, book, 'future')}
           />
         </div>
         <Divider />
@@ -156,7 +156,7 @@ export class ClubBooks extends Component {
           <Search setResults={this.setPastResults} />
           <BookList
             books={this.state.pastResults}
-            addBook={this.handleAddBook}
+            addBook={(e, book) => this.handleAddBook(e, book, 'past')}
           />
         </div>
       </div>
@@ -167,11 +167,14 @@ export class ClubBooks extends Component {
 const StyledClubBooks = withStyles(styles)(ClubBooks)
 
 const mapState = state => ({
-  books: state.clubBooks
+  books: state.clubBooks,
+  clubId: state.singleClub.id
 })
 
 const mapDispatch = dispatch => ({
-  fetchClubBooks: clubId => dispatch(fetchClubBooks(clubId))
+  fetchClubBooks: clubId => dispatch(fetchClubBooks(clubId)),
+  postClubBook: (book, type, clubId) =>
+    dispatch(postClubBook(book, type, clubId))
 })
 
 export default connect(mapState, mapDispatch)(StyledClubBooks)
