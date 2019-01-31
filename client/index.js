@@ -19,8 +19,14 @@ const theme = createMuiTheme({
       fontWeight: 500
     }
   },
+
   zIndex: {
     appBar: 1300 // makes sure top navbar always sits above sidebar
+  },
+  overrides: {
+    MuiTooltip: {
+      fontFamily: 'Roboto'
+    }
   }
 })
 

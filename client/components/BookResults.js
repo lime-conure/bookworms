@@ -53,7 +53,6 @@ class BookResults extends Component {
                     }
                     actionIcon={
                       <IconButton
-                        color="primary"
                         onClick={e => this.props.addBook(e, bookResult)}
                       >
                         <Icon>add_circle</Icon>

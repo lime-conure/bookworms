@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {fetchClubBooks, postClubBook} from '../store'
 import {Search, BookResults} from './index'
+import BookList from './BookSearch/BookList'
 
 // Material UI
 import {withStyles} from '@material-ui/core/styles'
@@ -45,6 +46,7 @@ export class ClubBooks extends Component {
 
   handleAddBook(e, bookResult, type) {
     e.preventDefault()
+    // TODO: fetch book description and save to db
     const newBook = {
       author: bookResult.best_book.author,
       goodReadsId: bookResult.best_book.id,
@@ -70,22 +72,12 @@ export class ClubBooks extends Component {
   renderBookSection(books, type, classes) {
     return (
       <div className={classes.bookSection}>
-        <Typography variant="h5" gutterBottom>
+        <Typography variant="h4" component="h4" gutterBottom>
           {type === 'now'
             ? `Books We're Reading`
             : type === 'future' ? `Books We Want To Read` : `Books We've Read`}
         </Typography>
-        {books.length ? (
-          <List>
-            {books.map(book => (
-              <ListItem button key={book.id}>
-                <ListItemText>{book.title}</ListItemText>
-              </ListItem>
-            ))}
-          </List>
-        ) : (
-          ''
-        )}
+        {books.length ? <BookList books={books} /> : ''}
         <Search setResults={results => this.setResults(results, type)} />
         <BookResults
           books={this.state[`${type}Results`]}
