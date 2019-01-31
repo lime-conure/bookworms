@@ -50,6 +50,11 @@ const BookAuthor = db.define('books_authors')
 const UserBook = db.define('users_books')
 const UserClub = db.define('users_clubs')
 const Vote = db.define('vote')
+const ClubBook = require('./clubBook/clubBook.js')
+
+// clubs_books association table columns: clubId, bookId, type = ['past', 'now', 'future']
+Club.belongsToMany(Book, {through: ClubBook})
+Book.belongsToMany(Club, {through: ClubBook})
 
 // books_authors association table columns: bookId, authorId
 Book.belongsToMany(Author, {through: BookAuthor})
@@ -88,5 +93,6 @@ module.exports = {
   UserBook,
   UserClub,
   BookAuthor,
+  ClubBook,
   Vote
 }

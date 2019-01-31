@@ -8,6 +8,7 @@ const {
   User,
   Author,
   Thread,
+  UserClub,
   Message
 } = require('../db/models')
 module.exports = router
@@ -427,7 +428,7 @@ router.get('/:clubId/join/:hash', async (req, res, next) => {
         }`
       }
     })
-    if (!club) res.send('Invalid link')
+    if (!club) res.status(403).send('Invalid link')
     res.send(club.name)
   } catch (err) {
     next(err)
@@ -448,11 +449,35 @@ router.post('/:clubId/join/:hash', async (req, res, next) => {
       })
       if (club) {
         const clubUsers = await club.getUsers()
-        if (!clubUsers.includes(clubUser => clubUser.id === req.user.id))
+        if (!clubUsers.includes(clubUser => clubUser.id == req.user.id))
           await club.addUser(req.user)
         res.send(club)
       }
-    } else res.sendStatus(404)
+    } else res.status(403).send('Not authorized')
+  } catch (err) {
+    next(err)
+  }
+})
+
+// GET /api/clubs/:clubId/users
+router.get('/:clubId/users', async (req, res, next) => {
+  try {
+    if (!req.user) res.status(403).send(`Not authorized`)
+    else {
+      const clubId = req.params.clubId
+      const club = await Club.findById(clubId)
+      if (!club) res.status(403).send('Club does not exist!')
+      else {
+        const isUser = await club.hasUser(req.user.id)
+        if (!isUser) res.status(403).send(`Not authorized`)
+        else {
+          const users = await UserClub.findAll({
+            where: {clubId}
+          })
+          res.send(users)
+        }
+      }
+    }
   } catch (err) {
     next(err)
   }
