@@ -26,6 +26,10 @@ const styles = theme => ({
   },
   drawerHeader: {
     padding: theme.spacing.unit * 2,
+    marginTop: theme.spacing.unit * 4,
+    fontFamily: 'Roboto'
+  },
+  drawerList: {
     fontFamily: 'Roboto'
   }
 })
@@ -56,9 +60,8 @@ class Sidebar extends Component {
         >
           {club.name}
         </Typography>
-        <Divider />
 
-        <List>
+        <List className={classes.drawerList}>
           <ListItem
             button
             component={Link}
