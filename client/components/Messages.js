@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {postMessage, writeInputMessage} from '../store'
+import {postMessage, writeInputMessage, fetchMessages} from '../store'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
@@ -17,6 +17,11 @@ class Messages extends Component {
     this.handleInput = this.handleInput.bind(this)
   }
 
+  componentDidMount() {
+    console.log('component did mount')
+    this.props.fetchMessages()
+  }
+
   handleInput(e) {
     e.preventDefault()
     const clubId = Number(this.props.match.params.clubId)
@@ -30,7 +35,6 @@ class Messages extends Component {
     const newMessage = {
       text: inputValue
     }
-
     this.props.postMessage(newMessage, clubId)
   }
 
@@ -59,7 +63,7 @@ class Messages extends Component {
 
     return (
       <div>
-        {messages ? (
+        {messages.length ? (
           <div>
             {messages.map(message => (
               <List key={message.id}>
@@ -67,14 +71,15 @@ class Messages extends Component {
                   <Avatar alt="userImg" src={message.user.imageUrl} />
                   <ListItemText
                     primary={message.user.fullName}
-                    secondary={`${new Date(
-                      message.user.createdAt
-                    ).toLocaleString('en-us', {
-                      month: 'short',
-                      day: 'numeric',
-                      hour: 'numeric',
-                      minute: 'numeric'
-                    })}`}
+                    secondary={`${new Date(message.createdAt).toLocaleString(
+                      'en-us',
+                      {
+                        month: 'short',
+                        day: 'numeric',
+                        hour: 'numeric',
+                        minute: 'numeric'
+                      }
+                    )}`}
                   />
                 </ListItem>
                 <ListItemText>{message.text}</ListItemText>
@@ -110,7 +115,8 @@ const mapState = state => ({
 const mapDispatch = dispatch => ({
   postMessage: (message, clubId) => dispatch(postMessage(message, clubId)),
   writeInputMessage: (message, clubId) =>
-    dispatch(writeInputMessage(message, clubId))
+    dispatch(writeInputMessage(message, clubId)),
+  fetchMessages: () => dispatch(fetchMessages())
 })
 
 export default connect(mapState, mapDispatch)(Messages)
