@@ -31,6 +31,19 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+//POST api/clubs/create - to create a new club
+router.post('/create', async (req, res, next) => {
+  try {
+    const {name, userId} = req.body
+    const newClub = await Club.create({name})
+    const clubId = newClub.id
+    await UserClub.create({userId, clubId})
+    res.json(newClub)
+  } catch (err) {
+    next(err)
+  }
+})
+
 //POST /api/clubs/:clubId/deleteMember
 router.post('/:clubId/deletemember', async (req, res, next) => {
   try {

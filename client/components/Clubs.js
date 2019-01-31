@@ -4,13 +4,11 @@ import {fetchClubs} from '../store'
 import {leaveClub} from '../store/clubs'
 import {Link} from 'react-router-dom'
 
-import {
-  Button,
-  Typography,
-  List,
-  ListItem,
-  ListItemText
-} from '@material-ui/core'
+import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
 
 class Clubs extends Component {
   constructor(props) {
@@ -28,33 +26,41 @@ class Clubs extends Component {
     const clubs = this.props.clubs
     return (
       <div>
-        <Typography variant="h3" gutterBottom color="primary">
-          Your Clubs
-        </Typography>
+        <div>
+          <Typography variant="h3" gutterBottom color="primary">
+            Your Clubs
+          </Typography>
 
-        <List>
-          {clubs.map(club => (
-            <ListItem
-              button
-              component={Link}
-              key={club.id}
-              to={`/clubs/${club.id}`}
-            >
-              <ListItemText>
-                <Typography variant="h5">{club.name}</Typography>
-              </ListItemText>
-              <Button
-                type="submit"
-                onClick={() => this.leaveClub(club.id)}
-                className="leaveClub"
-                color="primary"
-                variant="contained"
+          <List>
+            {clubs.map(club => (
+              <ListItem
+                button
+                component={Link}
+                key={club.id}
+                to={`/clubs/${club.id}`}
               >
-                Leave Club
-              </Button>
-            </ListItem>
-          ))}
-        </List>
+                <ListItemText>
+                  <Typography variant="h5">{club.name}</Typography>
+                </ListItemText>
+                <Button
+                  type="submit"
+                  onClick={() => this.leaveClub(club.id)}
+                  className="leaveClub"
+                  color="primary"
+                  variant="contained"
+                >
+                  Leave Club
+                </Button>
+              </ListItem>
+            ))}
+          </List>
+        </div>
+
+        <Link to="/createclub">
+          <Button type="button" color="secondary" variant="contained">
+            Create Club
+          </Button>
+        </Link>
       </div>
     )
   }
