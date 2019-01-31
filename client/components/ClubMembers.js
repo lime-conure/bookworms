@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {fetchClubMembers} from '../store'
 import Typography from '@material-ui/core/Typography'
+import Divider from '@material-ui/core/Divider'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
@@ -20,12 +21,15 @@ export class ClubMembers extends Component {
         <Typography variant="h2" gutterBottom>
           Club Members
         </Typography>
+        <Divider />
         <List>
           {members.length
             ? members.map(member => (
                 <ListItem button key={member.userId}>
                   {/* TODO: link these to user profiles */}
-                  <ListItemText>Member ID: {member.userId}</ListItemText>
+                  <ListItemText>
+                    {member.firstName} {member.lastName}
+                  </ListItemText>
                 </ListItem>
               ))
             : ''}

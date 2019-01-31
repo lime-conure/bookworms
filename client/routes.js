@@ -65,11 +65,11 @@ class Routes extends Component {
               <Switch>
                 {/* Routes placed here are only available after logging in */}
                 <Route exact path="/clubs/:clubId" component={SingleClub} />
-                {/* <Route
+                <Route
                   exact
                   path="/clubs/:clubId/books"
                   component={ClubBooks}
-                /> */}
+                />
                 <Route exact path="/clubs/:clubId/polls" component={Polls} />
                 <Route
                   exact
