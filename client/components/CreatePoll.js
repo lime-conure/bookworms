@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import axios from 'axios'
-import {Search, BookList} from './index'
+import {Search, BookResults} from './index'
 
 // Material UI
 import {withStyles} from '@material-ui/core/styles'
@@ -327,7 +327,10 @@ class CreatePoll extends Component {
                 ))}
               </List>
             ) : null}
-            <BookList books={this.state.searchResults} addBook={this.addBook} />
+            <BookResults
+              books={this.state.searchResults}
+              addBook={this.addBook}
+            />
           </div>
           {/* select dates */}
 

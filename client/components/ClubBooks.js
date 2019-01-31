@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {fetchClubBooks, postClubBook} from '../store'
-import {Search, BookList} from './index'
+import {Search, BookResults} from './index'
 
 // Material UI
 import {withStyles} from '@material-ui/core/styles'
@@ -87,7 +87,7 @@ export class ClubBooks extends Component {
           ''
         )}
         <Search setResults={results => this.setResults(results, type)} />
-        <BookList
+        <BookResults
           books={this.state[`${type}Results`]}
           addBook={(e, book) => this.handleAddBook(e, book, type)}
         />

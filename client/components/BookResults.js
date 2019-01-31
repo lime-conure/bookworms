@@ -24,7 +24,7 @@ const styles = theme => ({
   }
 })
 
-class BookList extends Component {
+class BookResults extends Component {
   render() {
     const {books, classes} = this.props
     if (books.length) {
@@ -45,7 +45,7 @@ class BookList extends Component {
                         placement="top"
                         title={bookResult.best_book.title}
                       >
-                        <span>{bookResult.best_book.title}</span>
+                        <div>{bookResult.best_book.title}</div>
                       </Tooltip>
                     }
                     subtitle={
@@ -53,6 +53,7 @@ class BookList extends Component {
                     }
                     actionIcon={
                       <IconButton
+                        color="primary"
                         onClick={e => this.props.addBook(e, bookResult)}
                       >
                         <Icon>add_circle</Icon>
@@ -71,4 +72,4 @@ class BookList extends Component {
   }
 }
 
-export default withStyles(styles)(BookList)
+export default withStyles(styles)(BookResults)
