@@ -26,9 +26,13 @@ export class ClubBooks extends Component {
   constructor() {
     super()
     this.state = {
-      searchResults: []
+      nowResults: [],
+      futureResults: [],
+      pastResults: []
     }
-    this.setResults = this.setResults.bind(this)
+    this.setNowResults = this.setNowResults.bind(this)
+    this.setFutureResults = this.setFutureResults.bind(this)
+    this.setPastResults = this.setPastResults.bind(this)
     this.handleAddBook = this.handleAddBook.bind(this)
   }
 
@@ -37,8 +41,15 @@ export class ClubBooks extends Component {
     this.props.fetchClubBooks(clubId)
   }
 
-  setResults = results => {
-    this.setState({searchResults: results})
+  // TODO: there is probably a clever way to do this...
+  setNowResults = results => {
+    this.setState({nowResults: results})
+  }
+  setFutureResults = results => {
+    this.setState({futureResults: results})
+  }
+  setPastResults = results => {
+    this.setState({pastResults: results})
   }
 
   handleAddBook(e, bookResult) {
@@ -78,6 +89,55 @@ export class ClubBooks extends Component {
         </Typography>
         <Divider />
 
+        {/* CURRENT BOOKS */}
+        <div className={classes.bookSection}>
+          <Typography variant="h5" gutterBottom>
+            Books We're Reading
+          </Typography>
+          {pastBooks.length ? (
+            <List>
+              {currentBooks.map(book => (
+                <ListItem button key={book.id}>
+                  <ListItemText>{book.title}</ListItemText>
+                </ListItem>
+              ))}
+            </List>
+          ) : (
+            ''
+          )}
+          <Search setResults={this.setNowResults} />
+          <BookList
+            books={this.state.nowResults}
+            addBook={this.handleAddBook}
+          />
+        </div>
+        <Divider />
+
+        {/* FUTURE BOOKS */}
+        <div className={classes.bookSection}>
+          <Typography variant="h5" gutterBottom>
+            Books We Want to Read
+          </Typography>
+          {futureBooks.length ? (
+            <List>
+              {futureBooks.map(book => (
+                <ListItem button key={book.id}>
+                  <ListItemText>{book.title}</ListItemText>
+                </ListItem>
+              ))}
+            </List>
+          ) : (
+            ''
+          )}
+          <Search setResults={this.setFutureResults} />
+          <BookList
+            books={this.state.futureResults}
+            addBook={this.handleAddBook}
+          />
+        </div>
+        <Divider />
+
+        {/* PAST BOOKS */}
         <div className={classes.bookSection}>
           <Typography variant="h5" gutterBottom>
             Books We've Read
@@ -93,9 +153,9 @@ export class ClubBooks extends Component {
           ) : (
             ''
           )}
-          <Search setResults={this.setResults} />
+          <Search setResults={this.setPastResults} />
           <BookList
-            books={this.state.searchResults}
+            books={this.state.pastResults}
             addBook={this.handleAddBook}
           />
         </div>

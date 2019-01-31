@@ -19,7 +19,7 @@ const styles = theme => ({
   },
   gridList: {
     width: 660,
-    height: 450
+    height: 350
   }
 })
 
