@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import Axios from 'axios'
 import {inviteUser} from '../store'
+import socket from '../socket'
 
 class JoinClub extends Component {
   constructor() {
@@ -19,6 +20,7 @@ class JoinClub extends Component {
         this.props.match.params.hash
       }`
     )
+    socket.emit('join', this.props.match.params.clubId)
     this.props.inviteUser('')
     this.props.history.push(`/clubs/${this.props.match.params.clubId}`)
   }

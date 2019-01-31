@@ -1,5 +1,6 @@
 import axios from 'axios'
 import history from '../history'
+import socket from '../socket'
 
 /**
  * ACTION TYPES
@@ -44,14 +45,16 @@ export const auth = (email, password, method) => async dispatch => {
 
   try {
     dispatch(getUser(res.data))
+    socket.emit('LOGIN', res.data.id) //user should join all existing clubRooms
   } catch (dispatchOrHistoryErr) {
     console.error(dispatchOrHistoryErr)
   }
 }
 
-export const logout = () => async dispatch => {
+export const logout = userId => async dispatch => {
   try {
     await axios.post('/auth/logout')
+    socket.emit('LOGOUT', userId) //user should be removed from all clubRooms
     dispatch(removeUser())
     history.push('/login')
   } catch (err) {

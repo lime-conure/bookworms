@@ -21,7 +21,7 @@ const styles = {
   }
 }
 
-function Navbar({handleClick, isLoggedIn, classes}) {
+function Navbar({handleClick, isLoggedIn, userId, classes}) {
   return (
     <div className={classes.root}>
       <AppBar>
@@ -38,7 +38,7 @@ function Navbar({handleClick, isLoggedIn, classes}) {
               <Button component={Link} to="/profile">
                 Profile
               </Button>
-              <Button onClick={handleClick}>Logout</Button>
+              <Button onClick={() => handleClick(userId)}>Logout</Button>
             </div>
           ) : (
             <div>
@@ -64,14 +64,15 @@ const materialNavbar = withStyles(styles)(Navbar)
  */
 const mapState = state => {
   return {
-    isLoggedIn: !!state.user.id
+    isLoggedIn: !!state.user.id,
+    userId: state.user.id
   }
 }
 
 const mapDispatch = dispatch => {
   return {
-    handleClick() {
-      dispatch(logout())
+    handleClick(userId) {
+      dispatch(logout(userId))
     }
   }
 }
