@@ -52,16 +52,16 @@ class Routes extends Component {
           <Switch>
             <Route exact path="/login" component={Login} />
             <Route exact path="/signup" component={Signup} />
-          </Switch>
-        )}
-        <main className={classes.root}>
-          <Switch>
-            {/* Routes placed here are available to all visitors */}
             <Route
               exact
               path="/clubs/:clubId/join/:hash"
               component={JoinClub}
             />
+          </Switch>
+        )}
+        <main className={classes.root}>
+          <Switch>
+            {/* Routes placed here are available to all visitors */}
 
             {isLoggedIn && (
               <Switch>
