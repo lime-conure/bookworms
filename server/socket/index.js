@@ -1,7 +1,8 @@
-import {UserClub} from '../db/models'
+//import {UserClub} from '../db/models'
 
 module.exports = io => {
   io.on('connection', socket => {
+    const {UserClub} = require('../db/models')
     console.log(`A socket connection to the server has been made: ${socket.id}`)
 
     socket.on('disconnect', () => {
