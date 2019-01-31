@@ -20,8 +20,15 @@ class Messages extends Component {
   handleInput(e) {
     e.preventDefault()
     const clubId = Number(this.props.match.params.clubId)
+    let inputValue = ''
+    const input = this.props.messageEntry.filter(
+      message => message.clubId === clubId
+    )
+    if (input.length) {
+      inputValue = input[0].message
+    }
     const newMessage = {
-      text: this.state.text
+      text: inputValue
     }
 
     this.props.postMessage(newMessage, clubId)
