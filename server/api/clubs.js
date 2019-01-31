@@ -471,9 +471,7 @@ router.get('/:clubId/users', async (req, res, next) => {
         const isUser = await club.hasUser(req.user.id)
         if (!isUser) res.status(403).send(`Not authorized`)
         else {
-          const users = await UserClub.findAll({
-            where: {clubId}
-          })
+          const users = await club.getUsers()
           res.send(users)
         }
       }

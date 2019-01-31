@@ -15,9 +15,7 @@ router.get('/:clubId', async (req, res, next) => {
         const isUser = await club.hasUser(req.user.id)
         if (!isUser) res.status(403).send(`Not authorized`)
         else {
-          const books = await ClubBook.findAll({
-            where: {clubId}
-          })
+          const books = await club.getBooks()
           res.send(books)
         }
       }

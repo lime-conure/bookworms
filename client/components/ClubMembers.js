@@ -2,7 +2,10 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {fetchClubMembers} from '../store'
-import {Button, Typography} from '@material-ui/core'
+import Typography from '@material-ui/core/Typography'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
 
 export class ClubMembers extends Component {
   componentDidMount() {
@@ -11,12 +14,22 @@ export class ClubMembers extends Component {
   }
 
   render() {
-    const members = this.props.clubMembers
+    const members = this.props.members
     return (
       <div>
         <Typography variant="h2" gutterBottom>
-          {members.length}
+          Club Members
         </Typography>
+        <List>
+          {members.length
+            ? members.map(member => (
+                <ListItem button key={member.userId}>
+                  {/* TODO: link these to user profiles */}
+                  <ListItemText>Member ID: {member.userId}</ListItemText>
+                </ListItem>
+              ))
+            : ''}
+        </List>
       </div>
     )
   }
