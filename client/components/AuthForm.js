@@ -16,8 +16,8 @@ const styles = theme => ({
     ...theme.mixins.gutters(),
     padding: theme.spacing.unit * 4,
     marginTop: theme.spacing.unit * 16,
-    marginLeft: theme.spacing.unit * 24,
-    marginRight: theme.spacing.unit * 24
+    marginLeft: theme.spacing.unit * 36,
+    marginRight: theme.spacing.unit * 36
   },
   button: {
     marginTop: theme.spacing.unit * 4,
@@ -51,6 +51,21 @@ const AuthForm = props => {
           justify="space-between"
           alignItems="center"
         >
+          {name === 'signup' ? (
+            <Grid item xs={12}>
+              {' '}
+              <Textfield
+                name="fullName"
+                label="Your Name"
+                variant="filled"
+                type="text"
+                fullWidth
+                required
+              />
+            </Grid>
+          ) : (
+            ''
+          )}
           <Grid item xs={6}>
             <Textfield
               name="email"
@@ -58,6 +73,7 @@ const AuthForm = props => {
               variant="filled"
               type="text"
               fullWidth
+              required
             />
           </Grid>
           <Grid item xs={6}>
@@ -67,6 +83,7 @@ const AuthForm = props => {
               variant="filled"
               type="password"
               fullWidth
+              required
             />
           </Grid>
         </Grid>
@@ -132,7 +149,9 @@ const mapDispatch = dispatch => {
       const formName = evt.target.name
       const email = evt.target.email.value
       const password = evt.target.password.value
-      dispatch(auth(email, password, formName))
+      const fullName = evt.target.fullName.value
+
+      dispatch(auth(email, password, fullName, formName))
       if (props.inviteLink) props.history.push(props.inviteLink)
       else props.history.push('/clubs')
     }

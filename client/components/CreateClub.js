@@ -59,7 +59,7 @@ export class CreateClub extends Component {
     const {classes} = this.props
     return (
       <Paper className={classes.root} elevation={2}>
-        <Typography variant="h3" component="h3" color="secondary" gutterBottom>
+        <Typography variant="h3" component="h3" gutterBottom>
           Create a New Book Club
         </Typography>
         <form className={classes.form}>
