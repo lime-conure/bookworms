@@ -18,8 +18,8 @@ export class ClubBooks extends Component {
     const books = this.props.books
     return (
       <div>
-        <Typography variant="h2" gutterBottom>
-          Club Books
+        <Typography variant="h3" gutterBottom color="primary">
+          Books
         </Typography>
         <Divider />
         <List>

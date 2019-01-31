@@ -3,12 +3,13 @@ const {Book, ClubBook, Club, Author} = require('../db/models')
 module.exports = router
 
 /****** ROUTES FOR ClubBook ******/
-//GET /api/books/:clubId - get all books from club
-router.get('/:clubId', async (req, res, next) => {
+//GET /api/clubs/:clubId/books - get all books from club
+router.get('/:clubId/books', async (req, res, next) => {
   try {
     if (!req.user) res.status(403).send(`Not authorized`)
     else {
       const clubId = req.params.clubId
+      console.log(clubId)
       const club = await Club.findById(clubId)
       if (!club) res.status(403).send('Club does not exist!')
       else {
@@ -25,8 +26,8 @@ router.get('/:clubId', async (req, res, next) => {
   }
 })
 
-// POST /api/books/:clubId/add - add a book to club
-router.post('/:clubId/add', async (req, res, next) => {
+// POST /api/clubs/:clubId/books/add - add a book to club
+router.post('/:clubId/books/add', async (req, res, next) => {
   try {
     if (!req.user) res.status(403).send(`Not authorized`)
     else {
@@ -69,8 +70,8 @@ router.post('/:clubId/add', async (req, res, next) => {
   }
 })
 
-// Put /api/books/:clubId/delete - delete a book from club
-router.put('/:clubId/delete', async (req, res, next) => {
+// PUT /api/clubs/:clubId/books/delete - delete a book from club
+router.put('/:clubId/books/delete', async (req, res, next) => {
   try {
     if (!req.user) res.status(403).send(`Not authorized`)
     else {

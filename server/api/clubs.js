@@ -13,7 +13,7 @@ const {
 } = require('../db/models')
 module.exports = router
 
-module.exports = router
+router.use('/', require('./books'))
 
 //****** ROUTES FOR CLUBS ******//
 

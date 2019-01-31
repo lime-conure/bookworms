@@ -18,8 +18,8 @@ export class ClubMembers extends Component {
     const members = this.props.members
     return (
       <div>
-        <Typography variant="h2" gutterBottom>
-          Club Members
+        <Typography variant="h3" gutterBottom color="primary">
+          Members
         </Typography>
         <Divider />
         <List>
@@ -28,7 +28,9 @@ export class ClubMembers extends Component {
                 <ListItem button key={member.userId}>
                   {/* TODO: link these to user profiles */}
                   <ListItemText>
-                    {member.firstName} {member.lastName}
+                    <Typography variant="h5">
+                      {member.firstName} {member.lastName}
+                    </Typography>
                   </ListItemText>
                 </ListItem>
               ))
