@@ -1,20 +1,18 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {fetchMessages, postMessage} from '../store'
+import {postMessage, writeInputMessage} from '../store'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import Avatar from '@material-ui/core/Avatar'
 import TextField from '@material-ui/core/TextField'
 import IconButton from '@material-ui/core/IconButton'
+import Typography from '@material-ui/core/Typography'
 import Send from '@material-ui/icons/Send'
 
 class Messages extends Component {
   constructor() {
     super()
-    this.state = {
-      text: ''
-    }
     this.handleChangeInput = this.handleChangeInput.bind(this)
     this.handleInput = this.handleInput.bind(this)
   }
@@ -27,49 +25,62 @@ class Messages extends Component {
     }
 
     this.props.postMessage(newMessage, clubId)
-    this.setState({text: ''})
-
-    console.log(this.state.text, 'text')
   }
 
   handleChangeInput(e) {
-    this.setState({
-      text: e.target.value
-    })
+    const clubId = Number(this.props.match.params.clubId)
+    this.props.writeInputMessage(e.target.value, clubId)
   }
 
   render() {
     const clubId = Number(this.props.match.params.clubId)
-    const messages = this.props.messages.filter(
-      message => message.clubId === clubId
-    )
-    console.log(messages, 'clubMessages')
+    let messages = []
+    if (this.props.messages.length) {
+      messages = this.props.messages.filter(
+        message => message.clubId === clubId
+      )
+    }
+    let inputValue = ''
+    if (this.props.messageEntry.length) {
+      const input = this.props.messageEntry.filter(
+        message => message.clubId === clubId
+      )
+      if (input.length) {
+        inputValue = input[0].message
+      }
+    }
+
     return (
       <div>
-        {messages.map(message => (
-          <List key={message.id}>
-            <ListItem>
-              <Avatar alt="userImg" src={message.user.imageUrl} />
-              <ListItemText
-                primary={message.user.fullName}
-                secondary={`${new Date(message.user.createdAt).toLocaleString(
-                  'en-us',
-                  {
-                    month: 'short',
-                    day: 'numeric',
-                    hour: 'numeric',
-                    minute: 'numeric'
-                  }
-                )}`}
-              />
-            </ListItem>
-            <ListItemText>{message.text}</ListItemText>
-          </List>
-        ))}
+        {messages ? (
+          <div>
+            {messages.map(message => (
+              <List key={message.id}>
+                <ListItem>
+                  <Avatar alt="userImg" src={message.user.imageUrl} />
+                  <ListItemText
+                    primary={message.user.fullName}
+                    secondary={`${new Date(
+                      message.user.createdAt
+                    ).toLocaleString('en-us', {
+                      month: 'short',
+                      day: 'numeric',
+                      hour: 'numeric',
+                      minute: 'numeric'
+                    })}`}
+                  />
+                </ListItem>
+                <ListItemText>{message.text}</ListItemText>
+              </List>
+            ))}
+          </div>
+        ) : (
+          <Typography>No messages in this book Club </Typography>
+        )}
 
         <TextField
           id="outlined-bare"
-          defaultValue={this.state.text}
+          defaultValue={inputValue}
           margin="normal"
           variant="outlined"
           fullWidth
@@ -85,11 +96,14 @@ class Messages extends Component {
 }
 
 const mapState = state => ({
-  messages: state.messages
+  messages: state.messages,
+  messageEntry: state.messageEntry
 })
 
 const mapDispatch = dispatch => ({
-  postMessage: (message, clubId) => dispatch(postMessage(message, clubId))
+  postMessage: (message, clubId) => dispatch(postMessage(message, clubId)),
+  writeInputMessage: (message, clubId) =>
+    dispatch(writeInputMessage(message, clubId))
 })
 
 export default connect(mapState, mapDispatch)(Messages)
