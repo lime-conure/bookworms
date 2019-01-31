@@ -7,7 +7,7 @@ const GET_CLUB_MEMBERS = 'GET_CLUB_MEMBERS'
 /**
  * INITIAL STATE
  */
-const singleClub = {}
+const clubMembers = []
 
 /**
  * ACTION CREATORS
@@ -30,7 +30,7 @@ export const fetchClubMembers = clubId => async dispatch => {
   }
 }
 
-export default function(state = singleClub, action) {
+export default function(state = clubMembers, action) {
   switch (action.type) {
     case GET_CLUB_MEMBERS:
       return action.members
