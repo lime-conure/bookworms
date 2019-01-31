@@ -11,7 +11,7 @@ describe('User model', () => {
 
   describe('User fields', () => {
     describe('email is require', () => {
-      function emailNeeded() {
+      function emailRequired() {
         return User.build({
           firstName: 'Bob',
           lastName: 'Sponge',
@@ -22,8 +22,53 @@ describe('User model', () => {
         })
       }
       it('throws error if email is empty', async () => {
-        expect(await emailNeeded().validate).to.throw()
+        expect(await emailRequired().validate).to.throw()
       })
+    })
+    describe('email must exist', () => {
+      function noEmail() {
+        return User.build({
+          firstName: 'Bob',
+          lastName: 'Sponge',
+          image:
+            'https://www.google.com/search?q=spongebob&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjvl-zZxZjgAhXL1lkKHW9wBbIQ_AUIDigB&biw=1419&bih=746#imgrc=MRgvP73wILOCZM:',
+          password: 'pineapple'
+        })
+      }
+      it('throw error if email is missing', async () => {
+        expect(await noEmail().validate).to.throw()
+      })
+    })
+  })
+
+  describe('firstName must not be empty', () => {
+    function nameRequired() {
+      return User.build({
+        firstName: '',
+        lastName: 'Sponge',
+        email: 'underwaterbob@gmail.com',
+        image:
+          'https://www.google.com/search?q=spongebob&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjvl-zZxZjgAhXL1lkKHW9wBbIQ_AUIDigB&biw=1419&bih=746#imgrc=MRgvP73wILOCZM:',
+        password: 'pineapple'
+      })
+    }
+    it('throws error if name is empty', async () => {
+      expect(await nameRequired().validate).to.throw()
+    })
+  })
+
+  describe('firstName must exist', () => {
+    function nameRequired() {
+      return User.build({
+        lastName: 'Sponge',
+        email: 'underwaterbob@gmail.com',
+        image:
+          'https://www.google.com/search?q=spongebob&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjvl-zZxZjgAhXL1lkKHW9wBbIQ_AUIDigB&biw=1419&bih=746#imgrc=MRgvP73wILOCZM:',
+        password: 'pineapple'
+      })
+    }
+    it('throws error if name is missing', async () => {
+      expect(await nameRequired().validate).to.throw()
     })
   })
 
@@ -43,12 +88,28 @@ describe('User model', () => {
     })
   })
 
+  describe('password must exist', () => {
+    function noEmail() {
+      return User.build({
+        firstName: 'Bob',
+        lastName: 'Sponge',
+        image:
+          'https://www.google.com/search?q=spongebob&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjvl-zZxZjgAhXL1lkKHW9wBbIQ_AUIDigB&biw=1419&bih=746#imgrc=MRgvP73wILOCZM:',
+        password: 'pineapple'
+      })
+    }
+    it('throw error if email is missing', async () => {
+      expect(await noEmail().validate).to.throw()
+    })
+  })
+
   describe('instanceMethods', () => {
     describe('correctPassword', () => {
       let cody
 
       beforeEach(async () => {
         cody = await User.create({
+          firstName: 'Cody',
           email: 'cody@puppybook.com',
           password: 'bones'
         })
@@ -62,5 +123,5 @@ describe('User model', () => {
         expect(cody.correctPassword('bonez')).to.be.equal(false)
       })
     }) // end describe('correctPassword')
-  }) // end describe('instanceMethods')
-}) // end describe('User model')
+  }) // end describe('instanceMethods') // end describe('User model')
+})
