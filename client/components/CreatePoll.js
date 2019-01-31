@@ -278,7 +278,6 @@ class CreatePoll extends Component {
               Add Book Options
             </Typography>
             <Search setResults={this.setResults} />
-
             <br />
             {this.state.selectedBooks.length ? (
               <List>
@@ -328,7 +327,6 @@ class CreatePoll extends Component {
                 ))}
               </List>
             ) : null}
-            <br />
             <BookList books={this.state.searchResults} addBook={this.addBook} />
           </div>
           {/* select dates */}
