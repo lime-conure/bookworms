@@ -18,8 +18,8 @@ const styles = theme => ({
     ...theme.mixins.gutters(),
     padding: theme.spacing.unit * 4,
     marginTop: theme.spacing.unit * 16,
-    marginLeft: theme.spacing.unit * 16,
-    marginRight: theme.spacing.unit * 16
+    marginLeft: theme.spacing.unit * 24,
+    marginRight: theme.spacing.unit * 24
   },
   button: {
     marginTop: theme.spacing.unit * 4
@@ -42,7 +42,7 @@ class Clubs extends Component {
     const {classes} = this.props
     const clubs = this.props.clubs
     return (
-      <Paper className={classes.root} elevation={1}>
+      <Paper className={classes.root} elevation={2}>
         <div>
           <Typography variant="h2" component="h2" gutterBottom>
             Your Clubs
