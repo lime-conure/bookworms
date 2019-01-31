@@ -5,7 +5,6 @@ import axios from 'axios'
 
 import {withStyles} from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
-import Divider from '@material-ui/core/Divider'
 import Button from '@material-ui/core/Button'
 import Textfield from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
@@ -20,6 +19,9 @@ const styles = theme => ({
     marginRight: theme.spacing.unit * 24
   },
   button: {
+    marginTop: theme.spacing.unit * 4
+  },
+  form: {
     marginTop: theme.spacing.unit * 4
   }
 })
@@ -58,9 +60,9 @@ export class CreateClub extends Component {
     return (
       <Paper className={classes.root} elevation={2}>
         <Typography variant="h3" component="h3" color="secondary" gutterBottom>
-          Create a New Club
+          Create a New Book Club
         </Typography>
-        <form>
+        <form className={classes.form}>
           <Grid
             container
             spacing={24}

@@ -2,37 +2,103 @@ import React from 'react'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import {auth} from '../store'
+import {Link} from 'react-router-dom'
+
+import {withStyles} from '@material-ui/core/styles'
+import Paper from '@material-ui/core/Paper'
+import Button from '@material-ui/core/Button'
+import Textfield from '@material-ui/core/TextField'
+import Typography from '@material-ui/core/Typography'
+import Grid from '@material-ui/core/Grid'
+
+const styles = theme => ({
+  root: {
+    ...theme.mixins.gutters(),
+    padding: theme.spacing.unit * 4,
+    marginTop: theme.spacing.unit * 16,
+    marginLeft: theme.spacing.unit * 24,
+    marginRight: theme.spacing.unit * 24
+  },
+  button: {
+    marginTop: theme.spacing.unit * 4,
+    marginRight: theme.spacing.unit * 2
+  },
+  form: {
+    marginTop: theme.spacing.unit * 4
+  }
+})
 
 /**
  * COMPONENT
  */
 const AuthForm = props => {
-  const {name, displayName, handleSubmit, error} = props
+  const {name, displayName, handleSubmit, error, classes} = props
 
   return (
-    <div>
-      <form onSubmit={evt => handleSubmit(evt, props)} name={name}>
-        <div>
-          <label htmlFor="email">
-            <small>Email</small>
-          </label>
-          <input name="email" type="text" />
-        </div>
-        <div>
-          <label htmlFor="password">
-            <small>Password</small>
-          </label>
-          <input name="password" type="password" />
-        </div>
-        <div>
-          <button type="submit">{displayName}</button>
-        </div>
+    <Paper className={classes.root} elevation={2}>
+      <Typography variant="h3" component="h3" gutterBottom>
+        {/* Log In To Bookworms or Sign Up For Bookworms */}
+        {displayName} {name === 'login' ? 'To' : 'For'} Bookworms
+      </Typography>
+      <form
+        onSubmit={evt => handleSubmit(evt, props)}
+        name={name}
+        className={classes.form}
+      >
+        <Grid
+          container
+          spacing={24}
+          justify="space-between"
+          alignItems="center"
+        >
+          <Grid item xs={6}>
+            <Textfield
+              name="email"
+              label="Your Email Address"
+              variant="filled"
+              type="text"
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <Textfield
+              name="password"
+              label="Your Password"
+              variant="filled"
+              type="password"
+              fullWidth
+            />
+          </Grid>
+        </Grid>
+        <Button
+          type="submit"
+          color="secondary"
+          variant="contained"
+          size="large"
+          className={classes.button}
+        >
+          {displayName}
+        </Button>
+        <Button
+          type="button"
+          color="primary"
+          variant="contained"
+          size="large"
+          component={Link}
+          to="/auth/google"
+          className={classes.button}
+        >
+          {displayName} with Google
+        </Button>
+
         {error && error.response && <div> {error.response.data} </div>}
       </form>
-      <a href="/auth/google">{displayName} with Google</a>
-    </div>
+      {/* <a href="/auth/google">{displayName} with Google</a> */}
+    </Paper>
   )
 }
+
+const StyledAuthForm = withStyles(styles)(AuthForm)
 
 /**
  * CONTAINER
@@ -44,7 +110,7 @@ const AuthForm = props => {
 const mapLogin = state => {
   return {
     name: 'login',
-    displayName: 'Login',
+    displayName: 'Log In',
     error: state.user.error,
     inviteLink: state.user.inviteLink
   }
@@ -73,8 +139,8 @@ const mapDispatch = dispatch => {
   }
 }
 
-export const Login = connect(mapLogin, mapDispatch)(AuthForm)
-export const Signup = connect(mapSignup, mapDispatch)(AuthForm)
+export const Login = connect(mapLogin, mapDispatch)(StyledAuthForm)
+export const Signup = connect(mapSignup, mapDispatch)(StyledAuthForm)
 
 /**
  * PROP TYPES
