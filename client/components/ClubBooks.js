@@ -16,8 +16,8 @@ const apiKey = 'jrAzhFY1JP1FdDk1vp7Zg'
 
 const styles = theme => ({
   bookSection: {
-    marginTop: theme.spacing.unit * 3,
-    marginBottom: theme.spacing.unit * 3,
+    marginTop: theme.spacing.unit * 4,
+    marginBottom: theme.spacing.unit * 4,
     width: 660
   }
 })
@@ -54,7 +54,6 @@ export class ClubBooks extends Component {
 
   handleAddBook(e, bookResult, type) {
     e.preventDefault()
-    console.log('type: ', type)
     const newBook = {
       author: bookResult.best_book.author,
       goodReadsId: bookResult.best_book.id,
@@ -70,9 +69,11 @@ export class ClubBooks extends Component {
       rating: Math.round(bookResult.average_rating * 100)
     }
     this.props.postClubBook(newBook, type, this.props.clubId)
-    // this.setState({
-    //   selectedBooks: [...this.state.selectedBooks, newBook]
-    // })
+    this.setState({
+      nowResults: [],
+      futureResults: [],
+      pastResults: []
+    })
   }
 
   render() {
