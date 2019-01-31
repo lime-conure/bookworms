@@ -8,14 +8,15 @@ import search from './search'
 import singlePoll from './singlePoll'
 import clubs from './clubs'
 import singleClub from './singleClub'
-
+import messages from './messages'
 const reducer = combineReducers({
   user,
   polls,
   search,
   singlePoll,
   clubs,
-  singleClub
+  singleClub,
+  messages
 })
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
@@ -29,3 +30,4 @@ export * from './search'
 export * from './singlePoll'
 export * from './clubs'
 export * from './singleClub'
+export * from './messages'

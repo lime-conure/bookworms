@@ -302,7 +302,8 @@ router.get('/:clubId/messages', async (req, res, next) => {
             where: {
               clubId,
               main: true
-            }
+            },
+            include: User
           })
           res.send(messages)
         }
@@ -324,19 +325,14 @@ router.post('/:clubId/messages', async (req, res, next) => {
         const check = await club.hasUser(req.user.id)
         if (!check) res.status(403).send(`Not authorized`)
         else {
-          await Message.create({
+          const message = await Message.create({
             text: req.body.text,
             userId: req.user.id,
             clubId,
             main: true
           })
-          const messages = await Message.findAll({
-            where: {
-              clubId,
-              main: true
-            }
-          })
-          res.send(messages)
+          message.setDataValue('user', await message.getUser())
+          res.send(message)
         }
       }
     }
