@@ -38,6 +38,7 @@ router.post('/create', async (req, res, next) => {
     const newClub = await Club.create({name})
     const clubId = newClub.id
     await UserClub.create({userId, clubId})
+    // TODO: generate random invite link and display it
     res.json(newClub)
   } catch (err) {
     next(err)

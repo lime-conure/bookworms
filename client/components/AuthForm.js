@@ -149,7 +149,10 @@ const mapDispatch = dispatch => {
       const formName = evt.target.name
       const email = evt.target.email.value
       const password = evt.target.password.value
-      const fullName = evt.target.fullName.value
+      let fullName
+      if (evt.target.fullName) {
+        fullName = evt.target.fullName.value
+      }
 
       dispatch(auth(email, password, fullName, formName))
       if (props.inviteLink) props.history.push(props.inviteLink)
