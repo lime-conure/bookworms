@@ -38,16 +38,12 @@ class Messages extends Component {
     })
   }
 
-  componentDidMount() {
-    console.log('here at messages')
-    console.log(this.props.match.params.clubId, 'clubId')
-    const clubId = Number(this.props.match.params.clubId)
-    this.props.fetchMessages(clubId)
-  }
-
   render() {
-    const {messages} = this.props
-    console.log(messages)
+    const clubId = Number(this.props.match.params.clubId)
+    const messages = this.props.messages.filter(
+      message => message.clubId === clubId
+    )
+    console.log(messages, 'clubMessages')
     return (
       <div>
         {messages.map(message => (
@@ -93,7 +89,6 @@ const mapState = state => ({
 })
 
 const mapDispatch = dispatch => ({
-  fetchMessages: clubId => dispatch(fetchMessages(clubId)),
   postMessage: (message, clubId) => dispatch(postMessage(message, clubId))
 })
 

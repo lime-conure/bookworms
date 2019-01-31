@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {fetchClubs} from '../store'
+import {fetchClubs, fetchMessages} from '../store'
 import {leaveClub} from '../store/clubs'
 import {Link} from 'react-router-dom'
 
@@ -20,6 +20,7 @@ class Clubs extends Component {
 
   componentDidMount() {
     this.props.fetchClubs()
+    this.props.fetchMessages()
   }
   leaveClub(id) {
     this.props.leaveClub(id)
@@ -61,12 +62,14 @@ class Clubs extends Component {
 }
 
 const mapState = state => ({
-  clubs: state.clubs
+  clubs: state.clubs,
+  messages: state.messages
 })
 
 const mapDispatch = dispatch => ({
   fetchClubs: () => dispatch(fetchClubs()),
-  leaveClub: id => dispatch(leaveClub(id))
+  leaveClub: id => dispatch(leaveClub(id)),
+  fetchMessages: () => dispatch(fetchMessages())
 })
 
 export default connect(mapState, mapDispatch)(Clubs)

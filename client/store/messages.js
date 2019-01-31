@@ -12,10 +12,11 @@ const writeMessage = message => ({
   message
 })
 
-export const fetchMessages = clubId => {
+export const fetchMessages = () => {
   return async dispatch => {
     try {
-      const {data} = await axios.get(`/api/clubs/${clubId}/messages`)
+      const {data} = await axios.get(`/api/messages`)
+      console.log(data, 'data')
       dispatch(getMessages(data))
     } catch (err) {
       console.error(err)
