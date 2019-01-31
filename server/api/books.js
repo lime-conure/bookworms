@@ -9,7 +9,6 @@ router.get('/:clubId/books', async (req, res, next) => {
     if (!req.user) res.status(403).send(`Not authorized`)
     else {
       const clubId = req.params.clubId
-      console.log(clubId)
       const club = await Club.findById(clubId)
       if (!club) res.status(403).send('Club does not exist!')
       else {
