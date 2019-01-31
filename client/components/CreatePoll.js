@@ -37,8 +37,8 @@ const styles = theme => ({
     backgroundColor: theme.palette.background.paper
   },
   gridList: {
-    width: 660,
-    height: 450
+    // width: 660,
+    // height: 450
   },
   icon: {
     color: 'rgba(255, 255, 255, 0.54)'

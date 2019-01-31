@@ -7,6 +7,7 @@ import GridListTile from '@material-ui/core/GridListTile'
 import GridListTileBar from '@material-ui/core/GridListTileBar'
 import IconButton from '@material-ui/core/IconButton'
 import Icon from '@material-ui/core/Icon'
+import Tooltip from '@material-ui/core/Tooltip'
 
 const styles = theme => ({
   root: {
@@ -37,8 +38,16 @@ class BookList extends Component {
                     src={bookResult.best_book.image_url}
                     alt={bookResult.best_book.title}
                   />
+
                   <GridListTileBar
-                    title={bookResult.best_book.title}
+                    title={
+                      <Tooltip
+                        placement="top"
+                        title={bookResult.best_book.title}
+                      >
+                        <span>{bookResult.best_book.title}</span>
+                      </Tooltip>
+                    }
                     subtitle={
                       <span>by: {bookResult.best_book.author.name}</span>
                     }
