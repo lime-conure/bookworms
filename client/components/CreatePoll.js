@@ -1,17 +1,14 @@
 import React, {Component} from 'react'
-import {NavLink, Link} from 'react-router-dom'
-import BooksView from './BooksView'
+import {Link} from 'react-router-dom'
 import axios from 'axios'
-import Popup from 'reactjs-popup'
-import Search from './Search'
+import {Search, BookList} from './index'
+
+// Material UI
 import {withStyles} from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
-import GridList from '@material-ui/core/GridList'
-import GridListTile from '@material-ui/core/GridListTile'
-import GridListTileBar from '@material-ui/core/GridListTileBar'
 import IconButton from '@material-ui/core/IconButton'
 import Icon from '@material-ui/core/Icon'
 import List from '@material-ui/core/List'
@@ -330,38 +327,7 @@ class CreatePoll extends Component {
                 ))}
               </List>
             ) : null}
-            <br />
-            {this.state.searchResults.length ? (
-              <div className={classes.root}>
-                <GridList
-                  cellHeight={240}
-                  cols={4}
-                  className={classes.gridList}
-                >
-                  {this.state.searchResults.map(bookResult => (
-                    <GridListTile cols={1} key={bookResult.best_book.id}>
-                      <img
-                        src={bookResult.best_book.image_url}
-                        alt={bookResult.best_book.title}
-                      />
-                      <GridListTileBar
-                        title={bookResult.best_book.title}
-                        subtitle={
-                          <span>by: {bookResult.best_book.author.name}</span>
-                        }
-                        actionIcon={
-                          <IconButton
-                            onClick={e => this.addBook(e, bookResult)}
-                          >
-                            <Icon>add_circle</Icon>
-                          </IconButton>
-                        }
-                      />
-                    </GridListTile>
-                  ))}
-                </GridList>
-              </div>
-            ) : null}
+            <BookList books={this.state.searchResults} addBook={this.addBook} />
           </div>
           {/* select dates */}
 

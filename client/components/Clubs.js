@@ -4,13 +4,27 @@ import {fetchClubs, fetchMessages} from '../store'
 import {leaveClub} from '../store/clubs'
 import {Link} from 'react-router-dom'
 
-import {
-  Button,
-  Typography,
-  List,
-  ListItem,
-  ListItemText
-} from '@material-ui/core'
+import {withStyles} from '@material-ui/core/styles'
+import Paper from '@material-ui/core/Paper'
+import Divider from '@material-ui/core/Divider'
+import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
+
+const styles = theme => ({
+  root: {
+    ...theme.mixins.gutters(),
+    padding: theme.spacing.unit * 4,
+    marginTop: theme.spacing.unit * 16,
+    marginLeft: theme.spacing.unit * 24,
+    marginRight: theme.spacing.unit * 24
+  },
+  button: {
+    marginTop: theme.spacing.unit * 4
+  }
+})
 
 class Clubs extends Component {
   constructor(props) {
@@ -26,40 +40,58 @@ class Clubs extends Component {
     this.props.leaveClub(id)
   }
   render() {
+    const {classes} = this.props
     const clubs = this.props.clubs
     return (
-      <div>
-        <Typography variant="h3" gutterBottom color="primary">
-          Your Clubs
-        </Typography>
-
-        <List>
-          {clubs.map(club => (
-            <ListItem
-              button
-              component={Link}
-              key={club.id}
-              to={`/clubs/${club.id}`}
-            >
-              <ListItemText>
-                <Typography variant="h5">{club.name}</Typography>
-              </ListItemText>
-              <Button
-                type="submit"
-                onClick={() => this.leaveClub(club.id)}
-                className="leaveClub"
-                color="primary"
-                variant="contained"
+      <Paper className={classes.root} elevation={2}>
+        <div>
+          <Typography variant="h2" component="h2" gutterBottom>
+            Your Clubs
+          </Typography>
+          <Divider />
+          <List>
+            {clubs.map(club => (
+              <ListItem
+                button
+                component={Link}
+                key={club.id}
+                to={`/clubs/${club.id}`}
               >
-                Leave Club
-              </Button>
-            </ListItem>
-          ))}
-        </List>
-      </div>
+                <ListItemText>
+                  <Typography variant="h5">{club.name}</Typography>
+                </ListItemText>
+
+                <Button
+                  type="submit"
+                  onClick={() => this.leaveClub(club.id)}
+                  className="leaveClub"
+                  color="primary"
+                  variant="contained"
+                >
+                  Leave Club
+                </Button>
+              </ListItem>
+            ))}
+          </List>
+        </div>
+
+        <Link to="/createclub">
+          <Button
+            type="button"
+            color="secondary"
+            variant="contained"
+            size="large"
+            className={classes.button}
+          >
+            Create a New Club
+          </Button>
+        </Link>
+      </Paper>
     )
   }
 }
+
+const StyledClubs = withStyles(styles)(Clubs)
 
 const mapState = state => ({
   clubs: state.clubs,
@@ -72,4 +104,4 @@ const mapDispatch = dispatch => ({
   fetchMessages: () => dispatch(fetchMessages())
 })
 
-export default connect(mapState, mapDispatch)(Clubs)
+export default connect(mapState, mapDispatch)(StyledClubs)

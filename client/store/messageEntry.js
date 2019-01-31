@@ -16,13 +16,11 @@ const messageEntry = (state = initState, action) => {
   switch (action.type) {
     case WRITE_INPUT_MESSAGE:
       if (state.length && state.some(entry => entry.clubId === action.clubId)) {
-        console.log('getting to filter')
         return state.filter(entry => {
           if (entry.clubId === action.clubId) entry.message = action.message
           return entry
         })
       }
-
       return [...state, {message: action.message, clubId: action.clubId}]
 
     default:
