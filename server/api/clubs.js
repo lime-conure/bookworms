@@ -427,7 +427,7 @@ router.get('/:clubId/join/:hash', async (req, res, next) => {
         }`
       }
     })
-    if (!club) res.send('Invalid link')
+    if (!club) res.status(403).send('Invalid link')
     res.send(club.name)
   } catch (err) {
     next(err)
@@ -448,11 +448,11 @@ router.post('/:clubId/join/:hash', async (req, res, next) => {
       })
       if (club) {
         const clubUsers = await club.getUsers()
-        if (!clubUsers.includes(clubUser => clubUser.id === req.user.id))
+        if (!clubUsers.includes(clubUser => clubUser.id == req.user.id))
           await club.addUser(req.user)
         res.send(club)
       }
-    } else res.sendStatus(404)
+    } else res.status(403).send('Not authorized')
   } catch (err) {
     next(err)
   }
