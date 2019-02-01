@@ -15,7 +15,8 @@ import {
   Messages,
   ClubMembers,
   ClubBooks,
-  CreateClub
+  CreateClub,
+  Meetings
 } from './components'
 import {me} from './store'
 import {withStyles} from '@material-ui/core/styles'
@@ -93,6 +94,11 @@ class Routes extends Component {
                   exact
                   path="/clubs/:clubId/polls/:pollId"
                   component={SinglePoll}
+                />
+                <Route
+                  exact
+                  path="/clubs/:clubId/meetings"
+                  component={Meetings}
                 />
               </Switch>
             )}

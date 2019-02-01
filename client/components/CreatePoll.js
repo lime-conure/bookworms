@@ -32,9 +32,8 @@ const styles = theme => ({
   icon: {
     color: 'rgba(255, 255, 255, 0.54)'
   },
-  description: {
-    marginTop: theme.spacing.unit * 3,
-    marginBottom: theme.spacing.unit * 3
+  headerIcon: {
+    marginRight: theme.spacing.unit
   }
 })
 
@@ -223,6 +222,7 @@ class CreatePoll extends Component {
           {/* select books */}
           <div className={classes.optionsSection}>
             <Typography variant="h5" color="secondary" gutterBottom>
+              <Icon className={classes.headerIcon}>book</Icon>
               Add Book Options
             </Typography>
             <BookSearch
@@ -237,6 +237,7 @@ class CreatePoll extends Component {
           {/* select dates */}
           <div className={classes.optionsSection}>
             <Typography variant="h5" color="secondary" gutterBottom>
+              <Icon className={classes.headerIcon}>date_range</Icon>
               Add Date/Time Options
             </Typography>
             <Grid
@@ -306,6 +307,7 @@ class CreatePoll extends Component {
           {/* select location */}
           <div className={classes.optionsSection}>
             <Typography variant="h5" color="secondary" gutterBottom>
+              <Icon className={classes.headerIcon}>location_on</Icon>
               Add Location Options
             </Typography>
             <Grid
