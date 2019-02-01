@@ -6,6 +6,7 @@ import {logout} from '../store'
 import {withStyles} from '@material-ui/core/styles'
 import {AppBar, Toolbar, Typography, Button} from '@material-ui/core'
 import {white} from '@material-ui/core/colors'
+import DropDownClubs from './DropDownClubs'
 
 const styles = {
   root: {
@@ -29,12 +30,10 @@ function Navbar({handleClick, isLoggedIn, classes}) {
           <Typography variant="h6" className={classes.grow}>
             Bookworms &nbsp;&nbsp; 📖 🐛
           </Typography>
+          {isLoggedIn && <DropDownClubs />}
           {isLoggedIn ? (
             <div>
               {/* The navbar will show these links after you log in */}
-              <Button component={Link} to="/clubs">
-                Clubs
-              </Button>
               <Button component={Link} to="/profile">
                 Profile
               </Button>
