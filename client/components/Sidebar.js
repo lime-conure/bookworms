@@ -95,6 +95,9 @@ class Sidebar extends Component {
             key="meetings"
             to={`/clubs/${club.id}/meetings`}
           >
+            <ListItemIcon>
+              <Icon>event</Icon>
+            </ListItemIcon>
             <ListItemText>Meetings</ListItemText>
           </ListItem>
           <ListItem
@@ -126,7 +129,7 @@ class Sidebar extends Component {
             to={`/clubs/${club.id}/members`}
           >
             <ListItemIcon>
-              <Icon>person</Icon>
+              <Icon>group</Icon>
             </ListItemIcon>
             <ListItemText>Members</ListItemText>
           </ListItem>
