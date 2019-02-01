@@ -27,7 +27,6 @@ export class ClubBooks extends Component {
     }
     this.setResults = this.setResults.bind(this)
     this.handleAddBook = this.handleAddBook.bind(this)
-    // this.handleRemoveBook = this.handleRemoveBook.bind(this)
   }
 
   componentDidMount() {
