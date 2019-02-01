@@ -18,11 +18,10 @@ class Messages extends Component {
   }
 
   componentDidMount() {
-    console.log('component did mount')
     this.props.fetchMessages()
   }
 
-  handleInput(e) {
+  async handleInput(e) {
     e.preventDefault()
     const clubId = Number(this.props.match.params.clubId)
     let inputValue = ''
@@ -35,7 +34,7 @@ class Messages extends Component {
     const newMessage = {
       text: inputValue
     }
-    this.props.postMessage(newMessage, clubId)
+    await this.props.postMessage(newMessage, clubId)
   }
 
   handleChangeInput(e) {

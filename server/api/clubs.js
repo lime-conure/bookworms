@@ -301,6 +301,28 @@ router.put('/:clubId/polls/:pollId', async (req, res, next) => {
     next(err)
   }
 })
+//GET messages /api/clubs/:clubId/messages
+
+router.get('/:clubId/messages', async (req, res, next) => {
+  try {
+    if (!req.user) res.status(403).send(`Not authorized`)
+    else {
+      const clubId = Number(req.params.clubId)
+      const club = await Club.findById(clubId)
+      if (!club) res.send('Club does not exist!')
+      const messages = await Message.findAll({
+        where: {
+          clubId: club.id
+        },
+        include: [{all: true}]
+      })
+
+      res.send(messages)
+    }
+  } catch (err) {
+    next(err)
+  }
+})
 
 // POST a message  /api/clubs/:clubId/messages
 router.post('/:clubId/messages', async (req, res, next) => {
