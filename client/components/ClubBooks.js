@@ -13,6 +13,7 @@ import Divider from '@material-ui/core/Divider'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 const apiKey = 'jrAzhFY1JP1FdDk1vp7Zg'
 
@@ -90,7 +91,10 @@ export class ClubBooks extends Component {
             removeBook={this.handleRemoveBook}
           />
         ) : (
-          ''
+          <div>
+            {' '}
+            <CircularProgress className={classes.progress} color="primary" />
+          </div>
         )}
         {/* {books.length ? <BookList books={books} /> : ''}
         <Search setResults={results => this.setResults(results, type)} />

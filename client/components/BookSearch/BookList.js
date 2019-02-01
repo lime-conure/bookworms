@@ -16,7 +16,7 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogContent from '@material-ui/core/DialogContent'
-import DialogContentText from '@material-ui/core/DialogContentText'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 const styles = theme => ({
   root: {
@@ -38,6 +38,9 @@ const styles = theme => ({
     right: theme.spacing.unit,
     top: theme.spacing.unit,
     color: theme.palette.grey[500]
+  },
+  progress: {
+    margin: theme.spacing.unit * 2
   }
 })
 
@@ -70,7 +73,6 @@ class BookList extends Component {
       const shorterDescWithoutHTML = description
         .replace(/<\/?[^>]+(>|$)/g, '')
         .substr(0, 500)
-      console.log('got description: ', shorterDescWithoutHTML)
       return `${shorterDescWithoutHTML}...`
     } catch (err) {
       console.error(err)
@@ -79,16 +81,20 @@ class BookList extends Component {
 
   handleDialogOpen = async (e, book) => {
     e.preventDefault()
-    const description = await this.getDescription(book.goodReadsId)
-    const dialogBook = {...book, description}
-    this.setState({
-      dialogOpen: true,
-      dialogBook
-    })
+    if (!this.state.dialogOpen) {
+      const description = await this.getDescription(book.goodReadsId)
+      const dialogBook = {...book, description}
+      this.setState({
+        dialogOpen: true,
+        dialogBook
+      })
+    }
   }
 
   handleDialogClose = () => {
-    this.setState({dialogOpen: false, dialogBook: {}})
+    if (this.state.dialogOpen) {
+      this.setState({dialogOpen: false, dialogBook: {}})
+    }
   }
 
   render() {
@@ -171,7 +177,11 @@ class BookList extends Component {
         </List>
       )
     } else {
-      return <div />
+      return (
+        <div>
+          <CircularProgress className={classes.progress} color="primary" />
+        </div>
+      )
     }
   }
 }
