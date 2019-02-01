@@ -19,9 +19,12 @@ class BookSearch extends Component {
     super()
     this.state = {}
     this.setResults = this.setResults.bind(this)
+    this.addBook = this.addBook.bind(this)
   }
 
   setResults() {}
+  addBook() {}
+
   render() {
     const {books, classes} = this.props
 
@@ -29,7 +32,7 @@ class BookSearch extends Component {
       <div className={classes.root}>
         <BookList books={books} />
         <Search setResults={this.setResults} />
-        <BookResults books={books} />
+        <BookResults results={[]} addBook={this.addBook} />
       </div>
     )
   }

@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom'
 import {fetchClubBooks, postClubBook} from '../store'
 import {Search, BookResults} from './index'
 import BookList from './BookSearch/BookList'
+import BookSearch from './BookSearch'
 
 // Material UI
 import {withStyles} from '@material-ui/core/styles'
@@ -77,12 +78,13 @@ export class ClubBooks extends Component {
             ? `Books We're Reading`
             : type === 'future' ? `Books We Want To Read` : `Books We've Read`}
         </Typography>
-        {books.length ? <BookList books={books} /> : ''}
+        {books.length ? <BookSearch books={books} /> : ''}
+        {/* {books.length ? <BookList books={books} /> : ''}
         <Search setResults={results => this.setResults(results, type)} />
         <BookResults
           books={this.state[`${type}Results`]}
           addBook={(e, book) => this.handleAddBook(e, book, type)}
-        />
+        /> */}
       </div>
     )
   }

@@ -26,13 +26,13 @@ const styles = theme => ({
 
 class BookResults extends Component {
   render() {
-    const {books, classes} = this.props
-    if (books.length) {
+    const {results, classes} = this.props
+    if (results.length) {
       return (
         <div>
           <div className={classes.root}>
             <GridList cellHeight={240} cols={4} className={classes.gridList}>
-              {books.map(bookResult => (
+              {results.map(bookResult => (
                 <GridListTile cols={1} key={bookResult.best_book.id}>
                   <img
                     src={bookResult.best_book.image_url}
