@@ -9,7 +9,6 @@ socket.on('connect', () => {
 })
 
 socket.on('NEW_MESSAGE', message => {
-  console.log('get a new message')
   store.dispatch(writeMessage(message))
   push.create('New Message!', {
     body: `You have a new message from ${message.userId} in Club ${
