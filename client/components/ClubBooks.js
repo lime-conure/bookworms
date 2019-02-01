@@ -1,21 +1,13 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {Link} from 'react-router-dom'
 import {fetchClubBooks, postClubBook} from '../store'
-import {Search, BookResults} from './index'
-import BookList from './BookSearch/BookList'
 import BookSearch from './BookSearch'
 
 // Material UI
 import {withStyles} from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Divider from '@material-ui/core/Divider'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
 import CircularProgress from '@material-ui/core/CircularProgress'
-
-const apiKey = 'jrAzhFY1JP1FdDk1vp7Zg'
 
 const styles = theme => ({
   bookSection: {
@@ -73,6 +65,7 @@ export class ClubBooks extends Component {
   }
 
   handleRemoveBook(e) {
+    // TODO: handle removing books
     e.preventDefault()
   }
 
@@ -93,17 +86,8 @@ export class ClubBooks extends Component {
             removeBook={this.handleRemoveBook}
           />
         ) : (
-          <div>
-            {' '}
-            <CircularProgress className={classes.progress} color="primary" />
-          </div>
+          <div />
         )}
-        {/* {books.length ? <BookList books={books} /> : ''}
-        <Search setResults={results => this.setResults(results, type)} />
-        <BookResults
-          books=
-          addBook={(e, book) => this.handleAddBook(e, book, type)}
-        /> */}
       </div>
     )
   }
@@ -115,19 +99,27 @@ export class ClubBooks extends Component {
     const currentBooks = books.filter(book => book.clubs_books.type === 'now')
     const pastBooks = books.filter(book => book.clubs_books.type === 'past')
     const futureBooks = books.filter(book => book.clubs_books.type === 'future')
-    return (
-      <div>
-        <Typography variant="h3" gutterBottom color="primary">
-          Books
-        </Typography>
-        <Divider />
-        {this.renderBookSection(currentBooks, 'now', classes)}
-        <Divider />
-        {this.renderBookSection(futureBooks, 'future', classes)}
-        <Divider />
-        {this.renderBookSection(pastBooks, 'past', classes)}
-      </div>
-    )
+    if (books.length) {
+      return (
+        <div>
+          <Typography variant="h3" gutterBottom color="primary">
+            Books
+          </Typography>
+          <Divider />
+          {this.renderBookSection(currentBooks, 'now', classes)}
+          <Divider />
+          {this.renderBookSection(futureBooks, 'future', classes)}
+          <Divider />
+          {this.renderBookSection(pastBooks, 'past', classes)}
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          <CircularProgress color="primary" />
+        </div>
+      )
+    }
   }
 }
 
