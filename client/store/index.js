@@ -8,6 +8,8 @@ import search from './search'
 import singlePoll from './singlePoll'
 import clubs from './clubs'
 import singleClub from './singleClub'
+import messages from './messages'
+import messageEntry from './messageEntry'
 import clubBooks from './clubBooks'
 import clubMembers from './clubMembers'
 
@@ -18,6 +20,8 @@ const reducer = combineReducers({
   singlePoll,
   clubs,
   singleClub,
+  messages,
+  messageEntry,
   clubBooks,
   clubMembers
 })
@@ -33,5 +37,7 @@ export * from './search'
 export * from './singlePoll'
 export * from './clubs'
 export * from './singleClub'
+export * from './messages'
+export * from './messageEntry'
 export * from './clubBooks'
 export * from './clubMembers'
