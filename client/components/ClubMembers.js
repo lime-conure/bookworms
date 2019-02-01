@@ -29,9 +29,7 @@ export class ClubMembers extends Component {
                   {/* TODO: link these to user profiles */}
                   <ListItemText>
                     <Typography variant="h5">
-                      {member.firstName || member.lastName
-                        ? member.firstName + member.lastName
-                        : member.email}
+                      {member.firstName} {member.lastName}
                     </Typography>
                   </ListItemText>
                 </ListItem>
