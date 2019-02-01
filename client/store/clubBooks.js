@@ -42,7 +42,13 @@ export const postClubBook = (book, type, clubId) => async dispatch => {
       book,
       type
     })
-    dispatch(addClubBook({...data, clubs_books: {type}}))
+    dispatch(
+      addClubBook({
+        ...data,
+        clubs_books: {type},
+        authors: [book.author]
+      })
+    )
   } catch (err) {
     console.log(err)
   }

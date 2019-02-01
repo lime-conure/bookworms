@@ -121,7 +121,9 @@ class BookList extends Component {
                   <ListItemText>
                     <Typography variant="h6" component="h6" gutterBottom>
                       {book.title}{' '}
-                      {book.authors.length ? `by ${book.authors[0].name}` : ''}
+                      {book.authors && book.authors.length
+                        ? `by ${book.authors[0].name}`
+                        : ''}
                     </Typography>
                     <Typography variant="body2" component="p">
                       {book.description

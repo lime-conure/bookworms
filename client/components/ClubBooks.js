@@ -87,6 +87,8 @@ export class ClubBooks extends Component {
         {books.length ? (
           <BookSearch
             books={books}
+            results={this.state[`${type}Results`]}
+            setResults={results => this.setResults(results, type)}
             addBook={(e, book) => this.handleAddBook(e, book, type)}
             removeBook={this.handleRemoveBook}
           />
@@ -99,7 +101,7 @@ export class ClubBooks extends Component {
         {/* {books.length ? <BookList books={books} /> : ''}
         <Search setResults={results => this.setResults(results, type)} />
         <BookResults
-          books={this.state[`${type}Results`]}
+          books=
           addBook={(e, book) => this.handleAddBook(e, book, type)}
         /> */}
       </div>
