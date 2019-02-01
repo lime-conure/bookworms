@@ -37,11 +37,11 @@ async function seed() {
   const clubs = await Promise.all([
     Club.create({
       name: 'Lime Conure',
-      inviteLink: `http://localhost:8080/clubs/1/join/123`
+      inviteLink: `/clubs/1/join/12345678`
     }),
     Club.create({
       name: 'Harry Potter fans',
-      inviteLink: `http://localhost:8080/clubs/2/join/123`
+      inviteLink: `/clubs/2/join/12345678`
     })
   ])
 

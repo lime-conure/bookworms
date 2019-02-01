@@ -40,9 +40,8 @@ router.post('/create', async (req, res, next) => {
       const club = await Club.create({name})
       const clubId = club.id
       await club.addUser(req.user.id)
-      //await UserClub.create({userId: req.user.id, clubId})
       const hash = Math.floor(Math.random() * 100000000)
-      const inviteLink = `http://localhost:8080/clubs/${clubId}/join/${hash}`
+      const inviteLink = `/clubs/${clubId}/join/${hash}`
       const newClub = await club.update({inviteLink})
       res.json(newClub)
     }
@@ -87,6 +86,9 @@ router.get('/:clubId', async (req, res, next) => {
         const check = await club.hasUser(req.user.id)
         if (!check) res.status(403).send(`Not authorized`)
         else {
+          const hostName = process.env.HOST_NAME || 'http://localhost:8080'
+          const inviteLink = hostName + club.inviteLink
+          club.inviteLink = inviteLink
           res.json(club)
         }
       }
