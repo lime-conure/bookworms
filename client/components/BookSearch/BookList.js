@@ -110,15 +110,18 @@ class BookList extends Component {
           <List className={classes.root}>
             {bookList.map((book, idx) => (
               <div key={book.goodReadsId}>
-                <ListItem button onClick={e => this.handleDialogOpen(e, book)}>
-                  <Avatar className={classes.avatar}>
+                <ListItem button>
+                  <Avatar
+                    onClick={e => this.handleDialogOpen(e, book)}
+                    className={classes.avatar}
+                  >
                     <img
                       className={classes.avatarImg}
                       src={book.imageUrl}
                       alt={book.title}
                     />
                   </Avatar>
-                  <ListItemText>
+                  <ListItemText onClick={e => this.handleDialogOpen(e, book)}>
                     <Typography variant="h6" component="h6" gutterBottom>
                       {book.title}{' '}
                       {book.authors && book.authors.length
@@ -133,7 +136,6 @@ class BookList extends Component {
                   </ListItemText>
                   <IconButton
                     className={classes.removeIcon}
-                    // onClick={e => this.props.removeBook(e, idx)}
                     onClick={e => this.props.removeBook(e, idx, book.id)}
                   >
                     <Tooltip placement="right" title="Remove This Book">
@@ -141,6 +143,7 @@ class BookList extends Component {
                     </Tooltip>
                   </IconButton>
                 </ListItem>
+
                 <Dialog
                   aria-labelledby="book-modal"
                   onClose={this.handleDialogClose}

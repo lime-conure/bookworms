@@ -64,7 +64,7 @@ router.post('/:clubId/books/add', async (req, res, next) => {
   }
 })
 
-// PUT /api/clubs/:clubId/books/delete - delete a book from club
+// PUT /api/clubs/:clubId/books/delete - delete a book from club, given its id
 router.put('/:clubId/books/delete', async (req, res, next) => {
   try {
     if (!req.user) res.status(403).send(`Not authorized`)

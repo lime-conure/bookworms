@@ -27,7 +27,7 @@ export class ClubBooks extends Component {
     }
     this.setResults = this.setResults.bind(this)
     this.handleAddBook = this.handleAddBook.bind(this)
-    this.handleRemoveBook = this.handleRemoveBook.bind(this)
+    // this.handleRemoveBook = this.handleRemoveBook.bind(this)
   }
 
   componentDidMount() {
@@ -65,30 +65,8 @@ export class ClubBooks extends Component {
   }
 
   handleRemoveBook(e, idx, bookId) {
-    // TODO: thunk for removing books (type might not be necessary?)
     e.preventDefault()
-    // e.stopPropogation()
-    console.log('removing book at ', idx)
-    // const book = this.props.books[idx]
-    console.log('bookId to remove: ', bookId)
     this.props.deleteClubBook(bookId, this.props.clubId)
-    // console.log(`${type}Results`)
-    // const newResults = this.state[`${type}Results`].filter(
-    //   book => book !== this.state[`${type}Results`][idx]
-    // )
-    // console.log(newResults)
-    // this.setState({
-    //   [`${type}Results`]: this.state[`${type}Results`].filter(
-    //     book => book !== this.state[`${type}Results`][idx]
-    //   )
-    // })
-    // const bookIds = this.state.bookList.map(b => b.goodReadsId)
-    // const indexToRemove = bookIds.indexOf(book.goodReadsId)
-    // this.setState({
-    //   bookList: this.state.bookList.filter(
-    //     b => b !== this.state.bookList[indexToRemove]
-    //   )
-    // })
   }
 
   renderBookSection(books, type, classes) {
