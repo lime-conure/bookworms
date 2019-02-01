@@ -7,6 +7,7 @@ import GridListTile from '@material-ui/core/GridListTile'
 import GridListTileBar from '@material-ui/core/GridListTileBar'
 import IconButton from '@material-ui/core/IconButton'
 import Icon from '@material-ui/core/Icon'
+import Tooltip from '@material-ui/core/Tooltip'
 
 const styles = theme => ({
   root: {
@@ -23,22 +24,30 @@ const styles = theme => ({
   }
 })
 
-class BookList extends Component {
+class BookResults extends Component {
   render() {
-    const {books, classes} = this.props
-    if (books.length) {
+    const {results, classes} = this.props
+    if (results.length) {
       return (
         <div>
           <div className={classes.root}>
             <GridList cellHeight={240} cols={4} className={classes.gridList}>
-              {books.map(bookResult => (
+              {results.map(bookResult => (
                 <GridListTile cols={1} key={bookResult.best_book.id}>
                   <img
                     src={bookResult.best_book.image_url}
                     alt={bookResult.best_book.title}
                   />
+
                   <GridListTileBar
-                    title={bookResult.best_book.title}
+                    title={
+                      <Tooltip
+                        placement="top"
+                        title={bookResult.best_book.title}
+                      >
+                        <div>{bookResult.best_book.title}</div>
+                      </Tooltip>
+                    }
                     subtitle={
                       <span>by: {bookResult.best_book.author.name}</span>
                     }
@@ -62,4 +71,4 @@ class BookList extends Component {
   }
 }
 
-export default withStyles(styles)(BookList)
+export default withStyles(styles)(BookResults)

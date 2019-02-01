@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
-import {Link} from 'react-router-dom'
 import axios from 'axios'
-import {Search, BookList} from './index'
+import BookSearch from './BookSearch'
 
 // Material UI
 import {withStyles} from '@material-ui/core/styles'
@@ -14,12 +13,6 @@ import Icon from '@material-ui/core/Icon'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
-import Dialog from '@material-ui/core/Dialog'
-import DialogTitle from '@material-ui/core/DialogTitle'
-import DialogContent from '@material-ui/core/DialogContent'
-import DialogContentText from '@material-ui/core/DialogContentText'
-
-const apiKey = 'jrAzhFY1JP1FdDk1vp7Zg'
 
 const styles = theme => ({
   form: {
@@ -36,10 +29,6 @@ const styles = theme => ({
     overflow: 'hidden',
     backgroundColor: theme.palette.background.paper
   },
-  gridList: {
-    width: 660,
-    height: 450
-  },
   icon: {
     color: 'rgba(255, 255, 255, 0.54)'
   },
@@ -53,8 +42,6 @@ class CreatePoll extends Component {
   constructor() {
     super()
     this.state = {
-      open: false,
-      description: 'loading...',
       searchResults: [],
       selectedBooks: [],
       selectedDates: [],
@@ -62,7 +49,6 @@ class CreatePoll extends Component {
       title: '',
       notes: '',
       dueDate: null,
-      searchValue: '',
       date: '',
       time: '',
       place: ''
@@ -73,9 +59,6 @@ class CreatePoll extends Component {
     this.addDateTime = this.addDateTime.bind(this)
     this.addPlaces = this.addPlaces.bind(this)
     this.setResults = this.setResults.bind(this)
-
-    this.handleClickOpen = this.handleClickOpen.bind(this)
-    this.handleClose = this.handleClose.bind(this)
   }
 
   handleChange(e) {
@@ -86,30 +69,6 @@ class CreatePoll extends Component {
 
   setResults = results => {
     this.setState({searchResults: results})
-  }
-
-  getDescription = async bookId => {
-    const requestUri =
-      `https://cors-anywhere.herokuapp.com/` +
-      `https://www.goodreads.com/book/show/${bookId}?key=${apiKey}`
-    let description = 'loading...'
-    try {
-      const {data} = await axios.get(requestUri)
-      const parser = new DOMParser()
-      const XMLResponse = parser.parseFromString(data, 'application/xml')
-      description = XMLResponse.getElementsByTagName('description')[0]
-        .textContent
-      if (!description) {
-        return 'No description found.'
-      }
-      // remove html tags
-      const shorterDescWithoutHTML = description
-        .replace(/<\/?[^>]+(>|$)/g, '')
-        .substr(0, 500)
-      return `${shorterDescWithoutHTML}...`
-    } catch (err) {
-      console.error(err)
-    }
   }
 
   async createPoll(e) {
@@ -189,8 +148,9 @@ class CreatePoll extends Component {
     })
   }
 
-  deleteOption(idx, method, e) {
+  deleteOption(e, idx, method) {
     e.preventDefault()
+    e.stopPropagation()
     if (method === 'book') {
       this.setState({
         selectedBooks: this.state.selectedBooks.filter(
@@ -212,19 +172,6 @@ class CreatePoll extends Component {
         )
       })
     }
-  }
-
-  handleClickOpen = async (e, bookId) => {
-    e.preventDefault()
-    const description = await this.getDescription(bookId)
-    this.setState({
-      open: true,
-      description
-    })
-  }
-
-  handleClose = () => {
-    this.setState({open: false, description: 'loading...'})
   }
 
   render() {
@@ -272,65 +219,22 @@ class CreatePoll extends Component {
             variant="filled"
             fullWidth
           />
+
           {/* select books */}
           <div className={classes.optionsSection}>
             <Typography variant="h5" color="secondary" gutterBottom>
               Add Book Options
             </Typography>
-            <Search setResults={this.setResults} />
-            <br />
-            {this.state.selectedBooks.length ? (
-              <List>
-                {this.state.selectedBooks.map((book, idx) => (
-                  <div key={idx}>
-                    <ListItem
-                      button
-                      onClick={e => this.handleClickOpen(e, book.goodReadsId)}
-                    >
-                      <ListItemText>{book.title}</ListItemText>
-
-                      <IconButton
-                        onClick={e => this.deleteOption(idx, 'book', e)}
-                      >
-                        <Icon>cancel</Icon>
-                      </IconButton>
-                    </ListItem>
-                    <Dialog
-                      aria-labelledby="book-modal"
-                      onClose={this.handleClose}
-                      open={this.state.open}
-                    >
-                      <DialogTitle id="book-modal">{book.title}</DialogTitle>
-                      <DialogContent>
-                        <img src={book.imageUrl} alt={book.title} />
-                        <DialogContentText>
-                          <Typography
-                            variant="body1"
-                            className={classes.description}
-                          >
-                            {this.state.description}
-                          </Typography>
-                        </DialogContentText>
-                        <Button
-                          target="_blank"
-                          href={`https://www.goodreads.com/book/show/${
-                            book.goodReadsId
-                          }`}
-                          variant="contained"
-                          color="primary"
-                        >
-                          View On Goodreads
-                        </Button>
-                      </DialogContent>
-                    </Dialog>
-                  </div>
-                ))}
-              </List>
-            ) : null}
-            <BookList books={this.state.searchResults} addBook={this.addBook} />
+            <BookSearch
+              bookList={this.state.selectedBooks}
+              results={this.state.searchResults}
+              setResults={this.setResults}
+              addBook={(e, book) => this.addBook(e, book)}
+              removeBook={(e, idx) => this.deleteOption(e, idx, 'book')}
+            />
           </div>
-          {/* select dates */}
 
+          {/* select dates */}
           <div className={classes.optionsSection}>
             <Typography variant="h5" color="secondary" gutterBottom>
               Add Date/Time Options
@@ -386,10 +290,10 @@ class CreatePoll extends Component {
             <List>
               {this.state.selectedDates.length
                 ? this.state.selectedDates.map((date, idx) => (
-                    <ListItem button key={idx}>
+                    <ListItem button key={date}>
                       <ListItemText> {date.toString()}</ListItemText>
                       <IconButton
-                        onClick={e => this.deleteOption(idx, 'date', e)}
+                        onClick={e => this.deleteOption(e, idx, 'date')}
                       >
                         <Icon>cancel</Icon>
                       </IconButton>
@@ -398,6 +302,7 @@ class CreatePoll extends Component {
                 : null}
             </List>
           </div>
+
           {/* select location */}
           <div className={classes.optionsSection}>
             <Typography variant="h5" color="secondary" gutterBottom>
@@ -435,10 +340,10 @@ class CreatePoll extends Component {
             <List>
               {this.state.selectedPlaces.length
                 ? this.state.selectedPlaces.map((place, idx) => (
-                    <ListItem button key={idx}>
+                    <ListItem button key={place}>
                       <ListItemText> {place}</ListItemText>
                       <IconButton
-                        onClick={e => this.deleteOption(idx, 'place', e)}
+                        onClick={e => this.deleteOption(e, idx, 'place')}
                       >
                         <Icon>cancel</Icon>
                       </IconButton>
