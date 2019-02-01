@@ -8,7 +8,6 @@ import GridListTileBar from '@material-ui/core/GridListTileBar'
 import IconButton from '@material-ui/core/IconButton'
 import Icon from '@material-ui/core/Icon'
 import Tooltip from '@material-ui/core/Tooltip'
-import CircularProgress from '@material-ui/core/CircularProgress'
 
 const styles = theme => ({
   root: {
@@ -67,11 +66,7 @@ class BookResults extends Component {
         </div>
       )
     } else {
-      return (
-        <div>
-          <CircularProgress className={classes.progress} color="primary" />
-        </div>
-      )
+      return <div />
     }
   }
 }
