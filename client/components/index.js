@@ -5,7 +5,6 @@
  */
 export {default as Navbar} from './Navbar'
 export {default as Sidebar} from './Sidebar'
-export {default as UserHome} from './UserHome'
 export {default as Polls} from './Polls'
 export {default as ClubBooks} from './ClubBooks'
 export {default as ClubMembers} from './ClubMembers'
