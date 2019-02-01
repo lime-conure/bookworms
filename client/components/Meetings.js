@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {fetchMeetings} from '../store/meetings'
 
 import Typography from '@material-ui/core/Typography'
+import Divider from '@material-ui/core/Divider'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
@@ -17,15 +18,25 @@ class Meetings extends Component {
     let meetings = this.props.meetings
     return (
       <div>
-        {meetings.length
-          ? meetings.map(meeting => (
-              <h3 key={meeting.id}>
-                {meeting.name}
-                {meeting.location}
-                {meeting.date}
-              </h3>
-            ))
-          : ''}
+        <Typography variant="h3" color="primary">
+          Meetings
+        </Typography>
+        <Divider />
+        <List>
+          {meetings.length
+            ? meetings.map(meeting => (
+                <ListItem key={meeting.id}>
+                  <ListItemText>
+                    <Typography variant="h5">
+                      {meeting.name}
+                      {meeting.location}
+                      {meeting.date}
+                    </Typography>
+                  </ListItemText>
+                </ListItem>
+              ))
+            : ''}
+        </List>
       </div>
     )
   }
