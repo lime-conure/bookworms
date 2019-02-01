@@ -88,7 +88,6 @@ router.get('/:clubId', async (req, res, next) => {
         else {
           const hostName = process.env.HOST_NAME || 'http://localhost:8080'
           const inviteLink = hostName + club.inviteLink
-          console.log(inviteLink)
           club.inviteLink = inviteLink
           res.json(club)
         }
