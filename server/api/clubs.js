@@ -350,20 +350,20 @@ router.post('/:clubId/threads', async (req, res, next) => {
           })
           console.log('di i create a thread?', thread)
 
-          const message = await Message.create({
+          await Message.create({
             text: req.body.text,
             userId: req.user.id,
             clubId,
             threadId: thread.id
           })
-          const threadMes = await thread.getMessages()
-          const merged = [].concat.apply([], threadMes)
-          console.log('threadMesssages', threadMes)
-          thread.setDataValue('messages', merged)
-          // message.setDataValue('user', await message.getUser())
-          console.log('=======================')
-          console.log('merged', merged)
-          res.send(merged)
+          const threaddy = await Thread.findOne({
+            where: {
+              id: thread.id
+            },
+            include: [{model: Message, include: User}]
+          })
+
+          res.send(threaddy)
         }
       }
     }

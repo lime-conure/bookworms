@@ -67,7 +67,6 @@ class Messages extends Component {
           <div>
             {threads.map(thread => (
               <div key={thread.id}>
-                <Typography> thread iteration {thread.name}</Typography>
                 <List>
                   <ListItem>
                     <Avatar
@@ -89,38 +88,12 @@ class Messages extends Component {
                   <ListItemText>{thread.messages[0].text}</ListItemText>
                 </List>
                 {thread.messages[1] ? (
-                  <List>
-                    <Typography>
-                      Dispalaying last message in the thread{' '}
-                    </Typography>
-                    <ListItem>
-                      <Avatar
-                        alt="userImg"
-                        src={
-                          thread.messages[thread.messages.length - 1].user
-                            .imageUrl
-                        }
-                      />
-                      <ListItemText
-                        primary={
-                          thread.messages[thread.messages.length - 1].user
-                            .fullName
-                        }
-                        secondary={`${new Date(
-                          thread.messages[thread.messages.length - 1].createdAt
-                        ).toLocaleString('en-us', {
-                          month: 'short',
-                          day: 'numeric',
-                          hour: 'numeric',
-                          minute: 'numeric'
-                        })}`}
-                      />
-                    </ListItem>
-                    <ListItemText>
-                      {thread.messages[thread.messages.length - 1].text}
-                    </ListItemText>
-                  </List>
-                ) : null}
+                  <ListItemText>
+                    {thread.messages.length - 1} replies
+                  </ListItemText>
+                ) : (
+                  <button>Start a thread</button>
+                )}
               </div>
             ))}
           </div>

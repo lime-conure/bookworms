@@ -19,7 +19,6 @@ router.get('/', async (req, res, next) => {
           })
         )
       )
-      console.log(clubsThreads, 'threads')
       const merged = [].concat.apply([], clubsThreads)
       res.send(merged)
     }
