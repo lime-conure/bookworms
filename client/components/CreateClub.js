@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {createNewClub} from '../store/clubs'
+import {createNewClub, fetchClubs} from '../store/clubs'
 import axios from 'axios'
 
 import {withStyles} from '@material-ui/core/styles'
@@ -48,8 +48,9 @@ export class CreateClub extends Component {
     try {
       const {name} = this.state
       const newClub = {name, userId: this.props.userId}
-      await axios.post('/api/clubs/create', newClub)
-      this.props.history.push(`/clubs`)
+      const club = await axios.post('/api/clubs/create', newClub)
+      this.props.fetchClubs()
+      this.props.history.push(`/clubs/${club.data.id}`)
     } catch (err) {
       console.log(err)
     }
@@ -105,7 +106,8 @@ const mapState = state => ({
 })
 
 const mapDispatch = dispatch => ({
-  createNewClub: newClub => dispatch(createNewClub(newClub))
+  createNewClub: newClub => dispatch(createNewClub(newClub)),
+  fetchClubs: () => dispatch(fetchClubs())
 })
 
 export default connect(mapState, mapDispatch)(StyledCreateClub)
