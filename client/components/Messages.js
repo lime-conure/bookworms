@@ -36,6 +36,7 @@ class Messages extends Component {
       text: inputValue
     }
     this.props.postMessage(newMessage, clubId)
+    this.props.writeInputMessage('', clubId)
   }
 
   handleChangeInput(e) {
