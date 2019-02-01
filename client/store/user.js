@@ -1,6 +1,5 @@
 import axios from 'axios'
 import history from '../history'
-//import socket from '../socket'
 
 /**
  * ACTION TYPES
