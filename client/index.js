@@ -13,10 +13,23 @@ const theme = createMuiTheme({
     secondary: lime
   },
   typography: {
-    fontFamily: ['Roboto Slab', 'Roboto', 'Arial', 'sans-serif'].join(','),
-    button: {
-      fontFamily: 'Roboto',
-      fontWeight: 500
+    fontFamily: ['Lato', 'Arial', 'sans-serif'].join(','),
+    // button: {
+    //   fontFamily: 'Roboto',
+    //   fontWeight: 500
+    // },
+    h2: {
+      fontFamily: 'Cutive'
+    },
+    h3: {
+      fontFamily: 'Cutive'
+    },
+    h5: {
+      fontFamily: 'Cutive',
+      lineHeight: 'normal'
+    },
+    h6: {
+      fontFamily: 'Cutive'
     }
   },
 

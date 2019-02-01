@@ -160,11 +160,13 @@ class BookList extends Component {
                     <Icon>cancel</Icon>
                   </IconButton>
                   <DialogTitle id="book-modal">
-                    {this.state.dialogBook.title}
-                    {this.state.dialogBook.authors &&
-                    this.state.dialogBook.authors.length
-                      ? ` by ${this.state.dialogBook.authors[0].name}`
-                      : ''}
+                    <Typography variant="h6" component="h6">
+                      {this.state.dialogBook.title}
+                      {this.state.dialogBook.authors &&
+                      this.state.dialogBook.authors.length
+                        ? ` by ${this.state.dialogBook.authors[0].name}`
+                        : ''}
+                    </Typography>
                   </DialogTitle>
                   <DialogContent>
                     <img

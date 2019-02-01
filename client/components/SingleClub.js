@@ -21,7 +21,7 @@ export class SingleClub extends Component {
     const club = this.props.singleClub
     return (
       <div>
-        <Typography variant="h2" gutterBottom>
+        <Typography variant="h3" gutterBottom>
           {club.name}
         </Typography>
         <Button

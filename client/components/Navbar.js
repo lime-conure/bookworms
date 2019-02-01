@@ -28,7 +28,7 @@ function Navbar({handleClick, isLoggedIn, userId, classes}) {
     <div className={classes.root}>
       <AppBar>
         <Toolbar>
-          <Typography variant="h6" className={classes.grow}>
+          <Typography variant="h5" component="h5" className={classes.grow}>
             Bookworms &nbsp;&nbsp; 📖 🐛
           </Typography>
           {isLoggedIn && <DropDownClubs />}

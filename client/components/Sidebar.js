@@ -17,7 +17,7 @@ import Collapse from '@material-ui/core/Collapse'
 import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 
-const drawerWidth = 240
+const drawerWidth = 290
 
 const styles = theme => ({
   root: {
@@ -31,10 +31,7 @@ const styles = theme => ({
   drawerHeader: {
     padding: theme.spacing.unit * 2,
     marginTop: theme.spacing.unit * 4,
-    fontFamily: 'Roboto'
-  },
-  drawerList: {
-    fontFamily: 'Roboto'
+    fontSize: 24
   }
 })
 
@@ -71,7 +68,7 @@ class Sidebar extends Component {
       >
         <Typography
           color="secondary"
-          variant="h5"
+          variant="subtitle1"
           className={classes.drawerHeader}
         >
           {club.name}
