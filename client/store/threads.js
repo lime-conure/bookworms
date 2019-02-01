@@ -16,7 +16,7 @@ const writeMessage = message => ({
 export const fetchMessages = () => {
   return async dispatch => {
     try {
-      let {data} = await axios.get(`/api/messages`)
+      let {data} = await axios.get(`/api/threads`)
 
       if (data.length) {
         data = data.sort((a, b) => {
@@ -25,6 +25,7 @@ export const fetchMessages = () => {
           )
         })
       }
+      console.log(data, 'data')
       dispatch(getMessages(data))
     } catch (err) {
       console.error(err)
@@ -35,7 +36,7 @@ export const fetchMessages = () => {
 export const postMessage = (message, clubId) => {
   return async dispatch => {
     try {
-      const {data} = await axios.post(`/api/clubs/${clubId}/messages`, message)
+      const {data} = await axios.post(`/api/clubs/${clubId}/threads`, message)
       dispatch(writeMessage(data))
       dispatch(writeInputMessage('', clubId))
     } catch (err) {
@@ -44,7 +45,7 @@ export const postMessage = (message, clubId) => {
   }
 }
 
-const messages = (state = [], action) => {
+const threads = (state = [], action) => {
   switch (action.type) {
     case GET_MESSAGES:
       return action.messages
@@ -54,4 +55,4 @@ const messages = (state = [], action) => {
       return state
   }
 }
-export default messages
+export default threads

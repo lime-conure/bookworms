@@ -324,8 +324,8 @@ router.get('/:clubId/messages', async (req, res, next) => {
   }
 })
 
-// POST a message  /api/clubs/:clubId/messages
-router.post('/:clubId/messages', async (req, res, next) => {
+// POST a message  /api/clubs/:clubId/threads
+router.post('/:clubId/threads', async (req, res, next) => {
   try {
     if (!req.user) res.status(403).send(`Not authorized`)
     else {
@@ -336,14 +336,26 @@ router.post('/:clubId/messages', async (req, res, next) => {
         const check = await club.hasUser(req.user.id)
         if (!check) res.status(403).send(`Not authorized`)
         else {
+          const thread = await Thread.create({
+            name: 'do we need a name?',
+            clubId
+          })
+          console.log('di i create a thread?', thread)
+
           const message = await Message.create({
             text: req.body.text,
             userId: req.user.id,
             clubId,
-            main: true
+            threadId: thread.id
           })
-          message.setDataValue('user', await message.getUser())
-          res.send(message)
+          const threadMes = await thread.getMessages()
+          const merged = [].concat.apply([], threadMes)
+          console.log('threadMesssages', threadMes)
+          thread.setDataValue('messages', merged)
+          // message.setDataValue('user', await message.getUser())
+          console.log('=======================')
+          console.log('merged', merged)
+          res.send(merged)
         }
       }
     }

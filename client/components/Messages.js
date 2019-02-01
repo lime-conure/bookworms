@@ -17,8 +17,9 @@ class Messages extends Component {
     this.handleInput = this.handleInput.bind(this)
   }
 
-  componentDidMount() {
-    this.props.fetchMessages()
+  async componentDidMount() {
+    await this.props.fetchMessages()
+    console.log(this.props.threads, 'props')
   }
 
   async handleInput(e) {
@@ -44,12 +45,12 @@ class Messages extends Component {
 
   render() {
     const clubId = Number(this.props.match.params.clubId)
-    let messages = []
-    if (this.props.messages.length) {
-      messages = this.props.messages.filter(
-        message => message.clubId === clubId
-      )
+    let threads = []
+    if (this.props.threads.length) {
+      threads = this.props.threads.filter(thread => thread.clubId === clubId)
     }
+    console.log(threads, 'threads')
+
     let inputValue = ''
     if (this.props.messageEntry.length) {
       const input = this.props.messageEntry.filter(
@@ -59,36 +60,72 @@ class Messages extends Component {
         inputValue = input[0].message
       }
     }
-
     return (
       <div>
-        {messages.length ? (
+        {threads[0] && threads[0].id ? (
           <div>
-            {messages.map(message => (
-              <List key={message.id}>
-                <ListItem>
-                  <Avatar alt="userImg" src={message.user.imageUrl} />
-                  <ListItemText
-                    primary={message.user.fullName}
-                    secondary={`${new Date(message.createdAt).toLocaleString(
-                      'en-us',
-                      {
+            {threads.map(thread => (
+              <div key={thread.id}>
+                <Typography> thread iteration {thread.name}</Typography>
+                <List>
+                  <ListItem>
+                    <Avatar
+                      alt="userImg"
+                      src={thread.messages[0].user.imageUrl}
+                    />
+                    <ListItemText
+                      primary={thread.messages[0].user.fullName}
+                      secondary={`${new Date(
+                        thread.messages[0].createdAt
+                      ).toLocaleString('en-us', {
                         month: 'short',
                         day: 'numeric',
                         hour: 'numeric',
                         minute: 'numeric'
-                      }
-                    )}`}
-                  />
-                </ListItem>
-                <ListItemText>{message.text}</ListItemText>
-              </List>
+                      })}`}
+                    />
+                  </ListItem>
+                  <ListItemText>{thread.messages[0].text}</ListItemText>
+                </List>
+                {thread.messages[1] ? (
+                  <List>
+                    <Typography>
+                      Dispalaying last message in the thread{' '}
+                    </Typography>
+                    <ListItem>
+                      <Avatar
+                        alt="userImg"
+                        src={
+                          thread.messages[thread.messages.length - 1].user
+                            .imageUrl
+                        }
+                      />
+                      <ListItemText
+                        primary={
+                          thread.messages[thread.messages.length - 1].user
+                            .fullName
+                        }
+                        secondary={`${new Date(
+                          thread.messages[thread.messages.length - 1].createdAt
+                        ).toLocaleString('en-us', {
+                          month: 'short',
+                          day: 'numeric',
+                          hour: 'numeric',
+                          minute: 'numeric'
+                        })}`}
+                      />
+                    </ListItem>
+                    <ListItemText>
+                      {thread.messages[thread.messages.length - 1].text}
+                    </ListItemText>
+                  </List>
+                ) : null}
+              </div>
             ))}
           </div>
         ) : (
           <Typography>No messages in this book Club </Typography>
         )}
-
         <TextField
           id="outlined-bare"
           defaultValue={inputValue}
@@ -107,7 +144,7 @@ class Messages extends Component {
 }
 
 const mapState = state => ({
-  messages: state.messages,
+  threads: state.threads,
   messageEntry: state.messageEntry
 })
 
