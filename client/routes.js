@@ -12,6 +12,7 @@ import {
   SingleClub,
   JoinClub,
   Sidebar,
+  Messages,
   ClubMembers,
   ClubBooks,
   CreateClub
@@ -66,6 +67,11 @@ class Routes extends Component {
             {isLoggedIn && (
               <Switch>
                 {/* Routes placed here are only available after logging in */}
+                <Route
+                  exact
+                  path="/clubs/:clubId/messages"
+                  component={Messages}
+                />
                 <Route exact path="/clubs/:clubId" component={SingleClub} />
                 <Route
                   exact
