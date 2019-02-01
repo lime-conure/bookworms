@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {Link} from 'react-router-dom'
 import {fetchSinglePoll, sendVotes} from '../store'
 
 // Material UI
@@ -21,6 +20,9 @@ const styles = theme => ({
     marginTop: theme.spacing.unit * 3,
     marginBottom: theme.spacing.unit * 3,
     marginRight: theme.spacing.unit * 3
+  },
+  headerIcon: {
+    marginRight: theme.spacing.unit
   }
 })
 
@@ -91,7 +93,7 @@ export class SinglePoll extends Component {
     if (options && options.length) {
       return (
         <Paper elevation={2} className={classes.poll}>
-          <Typography variant="h6" id="tableTitle">
+          <Typography variant="h6" id="tableTitle" gutterBottom>
             {type} Options
           </Typography>
           <Table>

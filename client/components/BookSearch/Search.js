@@ -109,6 +109,7 @@ class Search extends Component {
             onClick={e => this.onButtonClick(e)}
             variant="contained"
             color="secondary"
+            size="large"
           >
             {this.state.fetchingData ? (
               <CircularProgress
@@ -118,7 +119,7 @@ class Search extends Component {
               />
             ) : (
               ''
-            )}Search for Books
+            )}Search
           </Button>
         </Grid>
       </Grid>

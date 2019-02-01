@@ -1,15 +1,20 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {fetchPolls} from '../store'
-import {NavLink, Link} from 'react-router-dom'
-import {
-  Button,
-  Typography,
-  List,
-  ListItem,
-  ListItemText
-} from '@material-ui/core'
+import {Link} from 'react-router-dom'
+
+// Material UI
+import {withStyles} from '@material-ui/core/styles'
+import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import Icon from '@material-ui/core/Icon'
 import Divider from '@material-ui/core/Divider'
+
+const styles = theme => ({})
 
 class Polls extends Component {
   componentDidMount() {
@@ -17,6 +22,7 @@ class Polls extends Component {
   }
 
   render() {
+    const {classes} = this.props
     const polls = this.props.polls
     return (
       <div>
@@ -33,6 +39,9 @@ class Polls extends Component {
               key={poll.id}
               to={`/clubs/${this.props.match.params.clubId}/polls/${poll.id}`}
             >
+              <ListItemIcon>
+                <Icon>poll</Icon>
+              </ListItemIcon>
               <ListItemText>
                 <Typography variant="h5">
                   {poll.title}
@@ -47,7 +56,12 @@ class Polls extends Component {
           ))}
         </List>
         <Link to={`/clubs/${this.props.match.params.clubId}/polls/create`}>
-          <Button type="button" variant="raised" color="secondary" size="large">
+          <Button
+            type="button"
+            variant="contained"
+            color="secondary"
+            size="large"
+          >
             Create a New Poll
           </Button>
         </Link>
@@ -55,6 +69,8 @@ class Polls extends Component {
     )
   }
 }
+
+const StyledPolls = withStyles(styles)(Polls)
 
 const mapState = state => ({
   polls: state.polls
@@ -64,4 +80,4 @@ const mapDispatch = dispatch => ({
   fetchPolls: clubId => dispatch(fetchPolls(clubId))
 })
 
-export default connect(mapState, mapDispatch)(Polls)
+export default connect(mapState, mapDispatch)(StyledPolls)

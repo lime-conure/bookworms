@@ -9,7 +9,8 @@ const {
   Author,
   Thread,
   UserClub,
-  Message
+  Message,
+  Meeting
 } = require('../db/models')
 module.exports = router
 
@@ -449,13 +450,11 @@ router.get('/:clubId/join/:hash', async (req, res, next) => {
   try {
     const club = await Club.findOne({
       where: {
-        inviteLink: `http://localhost:8080/clubs/${req.params.clubId}/join/${
-          req.params.hash
-        }`
+        inviteLink: `/clubs/${req.params.clubId}/join/${req.params.hash}`
       }
     })
     if (!club) res.status(403).send('Invalid link')
-    res.send(club.name)
+    else res.send(club.name)
   } catch (err) {
     next(err)
   }
@@ -465,9 +464,7 @@ router.get('/:clubId/join/:hash', async (req, res, next) => {
 router.post('/:clubId/join/:hash', async (req, res, next) => {
   try {
     if (req.user && req.user.id) {
-      const inviteLink = `http://localhost:8080/clubs/${
-        req.params.clubId
-      }/join/${req.params.hash}`
+      const inviteLink = `/clubs/${req.params.clubId}/join/${req.params.hash}`
       const club = await Club.findOne({
         where: {
           inviteLink
@@ -501,6 +498,57 @@ router.get('/:clubId/users', async (req, res, next) => {
           res.send(users)
         }
       }
+    }
+  } catch (err) {
+    next(err)
+  }
+})
+
+//****** ROUTES FOR MEETINGS ******//
+
+//GET api/clubs/clubId/meetings - to find all meetings in one club
+router.get('/:clubId/meetings', async (req, res, next) => {
+  try {
+    if (!req.user.id) res.status(403).send('Not authorized')
+    if (!req.params.clubId) res.status(403).send('Not authorized')
+    else {
+      const user = await User.findById(req.user.id)
+      const club = await Club.findById(req.params.clubId)
+      const check = await club.hasUser(user.id)
+      if (!check)
+        res
+          .status(403)
+          .send('You are not authorized to see the meetings for this club')
+      else {
+        const meetings = await Meeting.findAll({where: {clubId: club.id}})
+        res.json(meetings)
+      }
+    }
+  } catch (err) {
+    next(err)
+  }
+})
+
+//POST api/meetings/create - to create a meeting
+router.post('/:clubId/meetings/create', async (req, res, next) => {
+  try {
+    if (!req.body.userId) res.status(403).send('Not authorized')
+    if (!req.params.clubId) res.status(403).send('Not authorized')
+    const user = await User.findById(req.body.userId)
+    const club = await Club.findById(req.params.clubId)
+    const check = await club.hasUser(user.id)
+    if (!check)
+      res.status(403).send('Not authorized to create a meeting for this club')
+    else {
+      const {clubId} = req.params
+      const {name, location, date} = req.body
+      const newMeeting = await Meeting.create({
+        name: name,
+        location: location,
+        date: date,
+        clubId: clubId
+      })
+      res.json(newMeeting)
     }
   } catch (err) {
     next(err)

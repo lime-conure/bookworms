@@ -7,6 +7,8 @@ import Divider from '@material-ui/core/Divider'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import Icon from '@material-ui/core/Icon'
 
 export class ClubMembers extends Component {
   componentDidMount() {
@@ -27,6 +29,9 @@ export class ClubMembers extends Component {
             ? members.map(member => (
                 <ListItem button key={member.userId}>
                   {/* TODO: link these to user profiles */}
+                  <ListItemIcon>
+                    <Icon>person</Icon>
+                  </ListItemIcon>
                   <ListItemText>
                     <Typography variant="h5">
                       {member.firstName} {member.lastName}
