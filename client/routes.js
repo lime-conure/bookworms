@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {withRouter, Route, Switch, Redirect} from 'react-router-dom'
+import {withRouter, Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {
   Login,
@@ -12,6 +12,7 @@ import {
   SingleClub,
   JoinClub,
   Sidebar,
+  Messages,
   ClubMembers,
   ClubBooks,
   CreateClub
@@ -44,7 +45,6 @@ class Routes extends Component {
         {isLoggedIn && !invitePending ? (
           <Switch>
             <Route exact path="/createclub" component={CreateClub} />
-            <Route exact path="/clubs" component={Clubs} />
             {/* Sidebar is scoped to a single club */}
             <Route path="/clubs/:clubId" component={Sidebar} />
           </Switch>
@@ -66,6 +66,11 @@ class Routes extends Component {
             {isLoggedIn && (
               <Switch>
                 {/* Routes placed here are only available after logging in */}
+                <Route
+                  exact
+                  path="/clubs/:clubId/messages"
+                  component={Messages}
+                />
                 <Route exact path="/clubs/:clubId" component={SingleClub} />
                 <Route
                   exact
