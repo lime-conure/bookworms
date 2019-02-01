@@ -17,6 +17,7 @@ import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogContent from '@material-ui/core/DialogContent'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import LinearProgress from '@material-ui/core/LinearProgress'
 
 const styles = theme => ({
   root: {
@@ -49,6 +50,7 @@ class BookList extends Component {
     super()
     this.state = {
       dialogOpen: false,
+      loadingDialog: false,
       dialogBook: {}
     }
     this.handleDialogOpen = this.handleDialogOpen.bind(this)
@@ -80,12 +82,14 @@ class BookList extends Component {
   }
 
   handleDialogOpen = async (e, book) => {
+    this.setState({loadingDialog: true})
     e.preventDefault()
     if (!this.state.dialogOpen) {
       const description = await this.getDescription(book.goodReadsId)
       const dialogBook = {...book, description}
       this.setState({
         dialogOpen: true,
+        loadingDialog: false,
         dialogBook
       })
     }
@@ -101,80 +105,86 @@ class BookList extends Component {
     const {books, removeBook, classes} = this.props
     if (books.length) {
       return (
-        <List className={classes.root}>
-          {books.map(book => (
-            <div key={book.goodReadsId}>
-              <ListItem button onClick={e => this.handleDialogOpen(e, book)}>
-                <Avatar className={classes.avatar}>
-                  <img
-                    className={classes.avatarImg}
-                    src={book.imageUrl}
-                    alt={book.title}
-                  />
-                </Avatar>
-                <ListItemText>
-                  <Typography variant="h6" component="h6" gutterBottom>
-                    {book.title}{' '}
-                    {book.authors.length ? `by ${book.authors[0].name}` : ''}
-                  </Typography>
-                  <Typography variant="body2" component="p">
-                    {book.description
-                      ? `${book.description.slice(0, 200)}...`
-                      : ''}
-                  </Typography>
-                </ListItemText>
-                <IconButton className={classes.removeIcon} onClick={removeBook}>
-                  <Tooltip placement="right" title="Remove This Book">
-                    <Icon>cancel</Icon>
-                  </Tooltip>
-                </IconButton>
-              </ListItem>
-              <Dialog
-                aria-labelledby="book-modal"
-                onClose={this.handleDialogClose}
-                open={this.state.dialogOpen}
-              >
-                <IconButton
-                  aria-label="Close"
-                  className={classes.closeButton}
-                  onClick={this.handleDialogClose}
+        <div>
+          {this.state.loadingDialog ? <LinearProgress color="primary" /> : ''}
+          <List className={classes.root}>
+            {books.map(book => (
+              <div key={book.goodReadsId}>
+                <ListItem button onClick={e => this.handleDialogOpen(e, book)}>
+                  <Avatar className={classes.avatar}>
+                    <img
+                      className={classes.avatarImg}
+                      src={book.imageUrl}
+                      alt={book.title}
+                    />
+                  </Avatar>
+                  <ListItemText>
+                    <Typography variant="h6" component="h6" gutterBottom>
+                      {book.title}{' '}
+                      {book.authors.length ? `by ${book.authors[0].name}` : ''}
+                    </Typography>
+                    <Typography variant="body2" component="p">
+                      {book.description
+                        ? `${book.description.slice(0, 200)}...`
+                        : ''}
+                    </Typography>
+                  </ListItemText>
+                  <IconButton
+                    className={classes.removeIcon}
+                    onClick={removeBook}
+                  >
+                    <Tooltip placement="right" title="Remove This Book">
+                      <Icon>cancel</Icon>
+                    </Tooltip>
+                  </IconButton>
+                </ListItem>
+                <Dialog
+                  aria-labelledby="book-modal"
+                  onClose={this.handleDialogClose}
+                  open={this.state.dialogOpen}
                 >
-                  <Icon>cancel</Icon>
-                </IconButton>
-                <DialogTitle id="book-modal">
-                  {this.state.dialogBook.title}
-                  {this.state.dialogBook.authors &&
-                  this.state.dialogBook.authors.length
-                    ? ` by ${this.state.dialogBook.authors[0].name}`
-                    : ''}
-                </DialogTitle>
-                <DialogContent>
-                  <img
-                    src={this.state.dialogBook.imageUrl}
-                    alt={this.state.dialogBook.title}
-                  />
-                  <Typography
-                    variant="body1"
-                    component="span"
-                    className={classes.description}
+                  <IconButton
+                    aria-label="Close"
+                    className={classes.closeButton}
+                    onClick={this.handleDialogClose}
                   >
-                    {this.state.dialogBook.description}
-                  </Typography>
-                  <Button
-                    target="_blank"
-                    href={`https://www.goodreads.com/book/show/${
-                      this.state.dialogBook.goodReadsId
-                    }`}
-                    variant="contained"
-                    color="primary"
-                  >
-                    View On Goodreads
-                  </Button>
-                </DialogContent>
-              </Dialog>
-            </div>
-          ))}
-        </List>
+                    <Icon>cancel</Icon>
+                  </IconButton>
+                  <DialogTitle id="book-modal">
+                    {this.state.dialogBook.title}
+                    {this.state.dialogBook.authors &&
+                    this.state.dialogBook.authors.length
+                      ? ` by ${this.state.dialogBook.authors[0].name}`
+                      : ''}
+                  </DialogTitle>
+                  <DialogContent>
+                    <img
+                      src={this.state.dialogBook.imageUrl}
+                      alt={this.state.dialogBook.title}
+                    />
+                    <Typography
+                      variant="body1"
+                      component="span"
+                      className={classes.description}
+                    >
+                      {this.state.dialogBook.description}
+                    </Typography>
+                    <Button
+                      target="_blank"
+                      href={`https://www.goodreads.com/book/show/${
+                        this.state.dialogBook.goodReadsId
+                      }`}
+                      variant="contained"
+                      color="primary"
+                    >
+                      View On Goodreads
+                    </Button>
+                  </DialogContent>
+                </Dialog>
+              </div>
+            ))}
+          </List>
+        </div>
       )
     } else {
       return (
