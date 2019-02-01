@@ -50,7 +50,6 @@ class Sidebar extends Component {
   render() {
     const {classes} = this.props
     const club = this.props.singleClub
-    console.log('club' + club.id + 'rendered')
 
     return (
       <Drawer
