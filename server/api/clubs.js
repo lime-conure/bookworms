@@ -437,13 +437,11 @@ router.get('/:clubId/join/:hash', async (req, res, next) => {
   try {
     const club = await Club.findOne({
       where: {
-        inviteLink: `http://localhost:8080/clubs/${req.params.clubId}/join/${
-          req.params.hash
-        }`
+        inviteLink: `/clubs/${req.params.clubId}/join/${req.params.hash}`
       }
     })
     if (!club) res.status(403).send('Invalid link')
-    res.send(club.name)
+    else res.send(club.name)
   } catch (err) {
     next(err)
   }
@@ -453,9 +451,7 @@ router.get('/:clubId/join/:hash', async (req, res, next) => {
 router.post('/:clubId/join/:hash', async (req, res, next) => {
   try {
     if (req.user && req.user.id) {
-      const inviteLink = `http://localhost:8080/clubs/${
-        req.params.clubId
-      }/join/${req.params.hash}`
+      const inviteLink = `/clubs/${req.params.clubId}/join/${req.params.hash}`
       const club = await Club.findOne({
         where: {
           inviteLink
