@@ -1,7 +1,10 @@
 import React, {Component} from 'react'
+import axios from 'axios'
+const apiKey = 'jrAzhFY1JP1FdDk1vp7Zg'
 
 // Material UI
 import {withStyles} from '@material-ui/core/styles'
+import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import Icon from '@material-ui/core/Icon'
 import Tooltip from '@material-ui/core/Tooltip'
@@ -10,6 +13,10 @@ import List from '@material-ui/core/List'
 import Avatar from '@material-ui/core/Avatar'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
+import Dialog from '@material-ui/core/Dialog'
+import DialogTitle from '@material-ui/core/DialogTitle'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogContentText from '@material-ui/core/DialogContentText'
 
 const styles = theme => ({
   root: {
@@ -25,21 +32,73 @@ const styles = theme => ({
   },
   removeIcon: {
     opacity: 0.25
+  },
+  closeButton: {
+    position: 'absolute',
+    right: theme.spacing.unit,
+    top: theme.spacing.unit,
+    color: theme.palette.grey[500]
   }
 })
 
 class BookList extends Component {
+  constructor() {
+    super()
+    this.state = {
+      dialogOpen: false,
+      dialogBook: {}
+    }
+    this.handleDialogOpen = this.handleDialogOpen.bind(this)
+    this.handleDialogClose = this.handleDialogClose.bind(this)
+  }
+
+  getDescription = async bookId => {
+    const requestUri =
+      `https://cors-anywhere.herokuapp.com/` +
+      `https://www.goodreads.com/book/show/${bookId}?key=${apiKey}`
+    let description = 'loading...'
+    try {
+      const {data} = await axios.get(requestUri)
+      const parser = new DOMParser()
+      const XMLResponse = parser.parseFromString(data, 'application/xml')
+      description = XMLResponse.getElementsByTagName('description')[0]
+        .textContent
+      if (!description) {
+        return 'No description found.'
+      }
+      // remove html tags
+      const shorterDescWithoutHTML = description
+        .replace(/<\/?[^>]+(>|$)/g, '')
+        .substr(0, 500)
+      console.log('got description: ', shorterDescWithoutHTML)
+      return `${shorterDescWithoutHTML}...`
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  handleDialogOpen = async (e, book) => {
+    e.preventDefault()
+    const description = await this.getDescription(book.goodReadsId)
+    const dialogBook = {...book, description}
+    this.setState({
+      dialogOpen: true,
+      dialogBook
+    })
+  }
+
+  handleDialogClose = () => {
+    this.setState({dialogOpen: false, dialogBook: {}})
+  }
+
   render() {
-    const {books, classes} = this.props
+    const {books, removeBook, classes} = this.props
     if (books.length) {
       return (
         <List className={classes.root}>
-          {books.map((book, idx) => (
+          {books.map(book => (
             <div key={book.goodReadsId}>
-              <ListItem
-                button
-                onClick={e => this.handleClickOpen(e, book.goodReadsId)}
-              >
+              <ListItem button onClick={e => this.handleDialogOpen(e, book)}>
                 <Avatar className={classes.avatar}>
                   <img
                     className={classes.avatarImg}
@@ -49,7 +108,8 @@ class BookList extends Component {
                 </Avatar>
                 <ListItemText>
                   <Typography variant="h6" component="h6" gutterBottom>
-                    {book.title}
+                    {book.title}{' '}
+                    {book.authors.length ? `by ${book.authors[0].name}` : ''}
                   </Typography>
                   <Typography variant="body2" component="p">
                     {book.description
@@ -57,15 +117,55 @@ class BookList extends Component {
                       : ''}
                   </Typography>
                 </ListItemText>
-                <IconButton
-                  className={classes.removeIcon}
-                  onClick={e => this.deleteOption(idx, 'book', e)}
-                >
+                <IconButton className={classes.removeIcon} onClick={removeBook}>
                   <Tooltip placement="right" title="Remove This Book">
                     <Icon>cancel</Icon>
                   </Tooltip>
                 </IconButton>
               </ListItem>
+              <Dialog
+                aria-labelledby="book-modal"
+                onClose={this.handleDialogClose}
+                open={this.state.dialogOpen}
+              >
+                <IconButton
+                  aria-label="Close"
+                  className={classes.closeButton}
+                  onClick={this.handleDialogClose}
+                >
+                  <Icon>cancel</Icon>
+                </IconButton>
+                <DialogTitle id="book-modal">
+                  {this.state.dialogBook.title}
+                  {this.state.dialogBook.authors &&
+                  this.state.dialogBook.authors.length
+                    ? ` by ${this.state.dialogBook.authors[0].name}`
+                    : ''}
+                </DialogTitle>
+                <DialogContent>
+                  <img
+                    src={this.state.dialogBook.imageUrl}
+                    alt={this.state.dialogBook.title}
+                  />
+                  <Typography
+                    variant="body1"
+                    component="span"
+                    className={classes.description}
+                  >
+                    {this.state.dialogBook.description}
+                  </Typography>
+                  <Button
+                    target="_blank"
+                    href={`https://www.goodreads.com/book/show/${
+                      this.state.dialogBook.goodReadsId
+                    }`}
+                    variant="contained"
+                    color="primary"
+                  >
+                    View On Goodreads
+                  </Button>
+                </DialogContent>
+              </Dialog>
             </div>
           ))}
         </List>

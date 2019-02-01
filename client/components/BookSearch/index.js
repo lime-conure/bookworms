@@ -17,22 +17,26 @@ const styles = theme => ({
 class BookSearch extends Component {
   constructor() {
     super()
-    this.state = {}
+    this.state = {
+      results: []
+    }
     this.setResults = this.setResults.bind(this)
-    this.addBook = this.addBook.bind(this)
+    // this.addBook = this.addBook.bind(this)
   }
 
-  setResults() {}
-  addBook() {}
+  setResults = results => {
+    this.setState({results})
+  }
+  // addBook() {}
 
   render() {
-    const {books, classes} = this.props
+    const {books, addBook, removeBook, classes} = this.props
 
     return (
       <div className={classes.root}>
-        <BookList books={books} />
+        <BookList books={books} removeBook={removeBook} />
         <Search setResults={this.setResults} />
-        <BookResults results={[]} addBook={this.addBook} />
+        <BookResults results={this.state.results} addBook={addBook} />
       </div>
     )
   }

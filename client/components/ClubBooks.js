@@ -34,6 +34,7 @@ export class ClubBooks extends Component {
     }
     this.setResults = this.setResults.bind(this)
     this.handleAddBook = this.handleAddBook.bind(this)
+    this.handleRemoveBook = this.handleRemoveBook.bind(this)
   }
 
   componentDidMount() {
@@ -70,6 +71,10 @@ export class ClubBooks extends Component {
     })
   }
 
+  handleRemoveBook(e) {
+    e.preventDefault()
+  }
+
   renderBookSection(books, type, classes) {
     return (
       <div className={classes.bookSection}>
@@ -78,7 +83,15 @@ export class ClubBooks extends Component {
             ? `Books We're Reading`
             : type === 'future' ? `Books We Want To Read` : `Books We've Read`}
         </Typography>
-        {books.length ? <BookSearch books={books} /> : ''}
+        {books.length ? (
+          <BookSearch
+            books={books}
+            addBook={(e, book) => this.handleAddBook(e, book, type)}
+            removeBook={this.handleRemoveBook}
+          />
+        ) : (
+          ''
+        )}
         {/* {books.length ? <BookList books={books} /> : ''}
         <Search setResults={results => this.setResults(results, type)} />
         <BookResults
