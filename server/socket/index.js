@@ -11,23 +11,23 @@ module.exports = io => {
 
     socket.on('LOGIN', async userId => {
       const clubs = await UserClub.findAll({where: {userId}})
-      console.log(`LOGIN: Clubs for user ${userId}:`, clubs)
-      clubs.forEach(club => socket.join(`${club.id}`))
+      clubs.forEach(club => {
+        socket.join(`${club.clubId}`)
+      })
     })
 
     socket.on('LOGOUT', async userId => {
-      console.log('LOGOUT:', userId)
       const clubs = await UserClub.findAll({where: {userId}})
-      console.log(`LOGOUT: Clubs for user ${userId}:`, clubs)
-      clubs.forEach(club => socket.leave(`${club.id}`))
+      clubs.forEach(club => {
+        socket.leave(`${club.clubId}`)
+      })
     })
 
     socket.on('JOIN', clubId => {
-      socket.join(clubId)
+      socket.join(`${clubId}`)
     })
 
     socket.on('NEW_MESSAGE', message => {
-      console.log('server gets a new message', message)
       socket.broadcast.in(`${message.clubId}`).emit('NEW_MESSAGE', message)
     })
   })

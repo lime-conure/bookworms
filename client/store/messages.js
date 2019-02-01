@@ -8,7 +8,7 @@ const getMessages = messages => ({
   messages
 })
 
-const writeMessage = message => ({
+export const writeMessage = message => ({
   type: WRITE_MESSAGE,
   message
 })
