@@ -35,10 +35,6 @@ class DropDownClubs extends React.Component {
           onClick={this.handleClick}
         >
           Clubs
-          {/* <IconButton color="inherit" aria-label="Menu">
-            <MenuIcon />
-            Clubs
-          </IconButton> */}
           <Icon>keyboard_arrow_down</Icon>
         </Button>
         <Menu
