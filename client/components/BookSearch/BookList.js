@@ -16,7 +16,6 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogContent from '@material-ui/core/DialogContent'
-import CircularProgress from '@material-ui/core/CircularProgress'
 import LinearProgress from '@material-ui/core/LinearProgress'
 
 const styles = theme => ({
@@ -42,6 +41,10 @@ const styles = theme => ({
   },
   progress: {
     margin: theme.spacing.unit * 2
+  },
+  description: {
+    marginTop: theme.spacing.unit * 3,
+    marginBottom: theme.spacing.unit * 3
   }
 })
 
