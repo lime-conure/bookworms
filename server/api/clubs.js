@@ -17,31 +17,6 @@ router.use('/', require('./books'))
 
 //****** ROUTES FOR CLUBS ******//
 
-//GET /api/clubs/:clubId/invitelink
-router.get('/:clubId/invitelink', async (req, res, next) => {
-  try {
-    if (!req.user) res.status(403).send(`Not authorized`)
-    else {
-      const clubId = req.params.clubId
-      const club = await Club.findById(clubId)
-      if (!club) {
-        res.status(404).send(`Club does not exist!`)
-      } else {
-        const check = await club.hasUser(req.user.id)
-        if (!check) res.status(403).send('Not authorized')
-        else {
-          const hostName = process.env.HOST_NAME || 'http://localhost:8080'
-          const inviteLink = hostName + club.inviteLink
-          console.log(inviteLink)
-          res.send(inviteLink)
-        }
-      }
-    }
-  } catch (err) {
-    next(err)
-  }
-})
-
 //GET /api/clubs - to get all clubs by user
 router.get('/', async (req, res, next) => {
   try {
@@ -65,7 +40,6 @@ router.post('/create', async (req, res, next) => {
       const club = await Club.create({name})
       const clubId = club.id
       await club.addUser(req.user.id)
-      //await UserClub.create({userId: req.user.id, clubId})
       const hash = Math.floor(Math.random() * 100000000)
       const inviteLink = `/clubs/${clubId}/join/${hash}`
       const newClub = await club.update({inviteLink})
@@ -112,6 +86,10 @@ router.get('/:clubId', async (req, res, next) => {
         const check = await club.hasUser(req.user.id)
         if (!check) res.status(403).send(`Not authorized`)
         else {
+          const hostName = process.env.HOST_NAME || 'http://localhost:8080'
+          const inviteLink = hostName + club.inviteLink
+          console.log(inviteLink)
+          club.inviteLink = inviteLink
           res.json(club)
         }
       }

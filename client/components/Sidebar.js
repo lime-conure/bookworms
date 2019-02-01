@@ -10,8 +10,14 @@ import {
   List,
   ListItem,
   ListItemText,
+  ListItemIcon,
   Typography
 } from '@material-ui/core'
+import SendIcon from '@material-ui/icons/Send'
+import TextField from '@material-ui/core/TextField'
+import Collapse from '@material-ui/core/Collapse'
+import ExpandLess from '@material-ui/icons/ExpandLess'
+import ExpandMore from '@material-ui/icons/ExpandMore'
 
 const drawerWidth = 240
 
@@ -35,7 +41,9 @@ const styles = theme => ({
 })
 
 class Sidebar extends Component {
-  state = {}
+  state = {
+    open: true
+  }
   componentDidMount() {
     const clubId = Number(this.props.match.params.clubId)
     this.props.fetchSingleClub(clubId)
@@ -45,6 +53,10 @@ class Sidebar extends Component {
     const prevClubId = prevProps.match.params.clubId
     const clubId = this.props.match.params.clubId
     if (prevClubId !== clubId) this.props.fetchSingleClub(clubId)
+  }
+
+  handleClick = () => {
+    this.setState(state => ({open: !state.open}))
   }
 
   render() {
@@ -100,6 +112,24 @@ class Sidebar extends Component {
           >
             <ListItemText>Members</ListItemText>
           </ListItem>
+
+          <ListItem button onClick={this.handleClick}>
+            <ListItemText>Invite Link</ListItemText>
+            {this.state.open ? <ExpandLess /> : <ExpandMore />}
+          </ListItem>
+          <Collapse in={!this.state.open} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <ListItem button className={classes.nested}>
+                <TextField
+                  id="outlined-bare"
+                  className={classes.textField}
+                  defaultValue={club.inviteLink}
+                  margin="normal"
+                  variant="outlined"
+                />
+              </ListItem>
+            </List>
+          </Collapse>
         </List>
       </Drawer>
     )
