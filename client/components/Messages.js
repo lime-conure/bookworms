@@ -13,9 +13,6 @@ import Send from '@material-ui/icons/Send'
 class Messages extends Component {
   constructor() {
     super()
-    // this.state = {
-    //   messages: [],
-    // }
     this.handleChangeInput = this.handleChangeInput.bind(this)
     this.handleInput = this.handleInput.bind(this)
   }
