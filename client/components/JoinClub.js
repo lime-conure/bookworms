@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom'
 
 import Axios from 'axios'
 import {inviteUser} from '../store'
+import socket from '../socket'
 
 import {withStyles} from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
@@ -43,6 +44,7 @@ class JoinClub extends Component {
         this.props.match.params.hash
       }`
     )
+    socket.emit('join', this.props.match.params.clubId)
     this.props.inviteUser('')
     this.props.history.push(`/clubs/${this.props.match.params.clubId}`)
   }

@@ -9,6 +9,7 @@ import TextField from '@material-ui/core/TextField'
 import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
 import Send from '@material-ui/icons/Send'
+import socket from '../socket'
 
 class Messages extends Component {
   constructor() {
@@ -149,7 +150,8 @@ const mapState = state => ({
 })
 
 const mapDispatch = dispatch => ({
-  postMessage: (message, clubId) => dispatch(postMessage(message, clubId)),
+  postMessage: (message, clubId) =>
+    dispatch(postMessage(message, clubId, socket)),
   writeInputMessage: (message, clubId) =>
     dispatch(writeInputMessage(message, clubId)),
   fetchMessages: () => dispatch(fetchMessages())

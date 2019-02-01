@@ -14,7 +14,6 @@ import clubBooks from './clubBooks'
 import clubMembers from './clubMembers'
 
 const reducer = combineReducers({
-  user,
   polls,
   search,
   singlePoll,
@@ -23,7 +22,8 @@ const reducer = combineReducers({
   threads,
   messageEntry,
   clubBooks,
-  clubMembers
+  clubMembers,
+  user
 })
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))

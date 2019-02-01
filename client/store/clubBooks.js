@@ -4,6 +4,7 @@ import axios from 'axios'
  */
 const GET_CLUB_BOOKS = 'GET_CLUB_BOOKS'
 const ADD_CLUB_BOOK = 'ADD_CLUB_BOOK'
+const REMOVE_CLUB_BOOK = 'REMOVE_CLUB_BOOK'
 
 /**
  * INITIAL STATE
@@ -21,6 +22,11 @@ const getClubBooks = books => ({
 const addClubBook = book => ({
   type: ADD_CLUB_BOOK,
   book
+})
+
+const removeClubBook = bookId => ({
+  type: REMOVE_CLUB_BOOK,
+  bookId
 })
 
 /**
@@ -42,7 +48,24 @@ export const postClubBook = (book, type, clubId) => async dispatch => {
       book,
       type
     })
-    dispatch(addClubBook({...data, clubs_books: {type}}))
+    dispatch(
+      addClubBook({
+        ...data,
+        clubs_books: {type},
+        authors: [book.author]
+      })
+    )
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export const deleteClubBook = (bookId, clubId) => async dispatch => {
+  try {
+    await axios.put(`/api/clubs/${clubId}/books/delete`, {
+      bookId
+    })
+    dispatch(removeClubBook(bookId))
   } catch (err) {
     console.log(err)
   }
@@ -54,6 +77,13 @@ export default function(state = clubBooks, action) {
       return action.books
     case ADD_CLUB_BOOK:
       return [...state, action.book]
+    case REMOVE_CLUB_BOOK: {
+      const clubBooksCopy = [...state]
+      const clubBooksIds = clubBooksCopy.map(book => book.id)
+      const indexToRemove = clubBooksIds.indexOf(action.bookId)
+      clubBooksCopy.splice(indexToRemove, 1)
+      return clubBooksCopy
+    }
     default:
       return state
   }

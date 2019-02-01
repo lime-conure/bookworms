@@ -8,7 +8,7 @@ const getMessages = messages => ({
   messages
 })
 
-const writeMessage = message => ({
+export const writeMessage = message => ({
   type: WRITE_MESSAGE,
   message
 })
@@ -33,11 +33,12 @@ export const fetchMessages = () => {
   }
 }
 
-export const postMessage = (message, clubId) => {
+export const postMessage = (message, clubId, socket) => {
   return async dispatch => {
     try {
       const {data} = await axios.post(`/api/clubs/${clubId}/threads`, message)
       dispatch(writeMessage(data))
+      socket.emit('NEW_MESSAGE', data)
       dispatch(writeInputMessage('', clubId))
     } catch (err) {
       console.error(err)
