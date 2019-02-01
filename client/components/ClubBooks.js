@@ -101,20 +101,14 @@ export class ClubBooks extends Component {
         <Typography variant="h3" gutterBottom color="primary">
           Books
         </Typography>
-        {books.length ? (
-          <div>
-            <Divider />
-            {this.renderBookSection(currentBooks, 'now', classes)}
-            <Divider />
-            {this.renderBookSection(futureBooks, 'future', classes)}
-            <Divider />
-            {this.renderBookSection(pastBooks, 'past', classes)}
-          </div>
-        ) : (
-          <div>
-            <CircularProgress color="primary" />
-          </div>
-        )}
+        <div>
+          <Divider />
+          {this.renderBookSection(currentBooks, 'now', classes)}
+          <Divider />
+          {this.renderBookSection(futureBooks, 'future', classes)}
+          <Divider />
+          {this.renderBookSection(pastBooks, 'past', classes)}
+        </div>
       </div>
     )
   }
