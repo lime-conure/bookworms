@@ -1,5 +1,5 @@
 import io from 'socket.io-client'
-//import store, {gotNewMessage} from './store'
+import store, {writeMessage} from './store'
 import push from 'push.js'
 
 const socket = io(window.location.origin)
@@ -9,7 +9,8 @@ socket.on('connect', () => {
 })
 
 socket.on('NEW_MESSAGE', message => {
-  //store.dispatch(gotNewMessage(message))
+  console.log('get new message')
+  store.dispatch(writeMessage(message))
   push.create('New Message!', {
     body: `You have a new message from ${message.userId} in Club ${
       message.clubId

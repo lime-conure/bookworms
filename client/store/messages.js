@@ -1,4 +1,5 @@
 import axios from 'axios'
+import socket from '../socket'
 
 const GET_MESSAGES = 'GET_MESSAGES'
 const WRITE_MESSAGE = 'WRITE_MESSAGE'
@@ -28,6 +29,7 @@ export const postMessage = (message, clubId) => {
     try {
       const {data} = await axios.post(`/api/clubs/${clubId}/messages`, message)
       dispatch(writeMessage(data))
+      socket.emit('NEW_MESSAGE', data)
     } catch (err) {
       console.error(err)
     }
