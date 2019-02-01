@@ -301,32 +301,7 @@ router.put('/:clubId/polls/:pollId', async (req, res, next) => {
     next(err)
   }
 })
-//GET /api/clubs/:clubId/messages
-router.get('/:clubId/messages', async (req, res, next) => {
-  try {
-    if (!req.user) res.status(403).send(`Not authorized`)
-    else {
-      const clubId = Number(req.params.clubId)
-      const club = await Club.findById(clubId)
-      if (!club) res.send('Club does not exist!')
-      else {
-        const check = await club.hasUser(req.user.id)
-        if (!check) res.status(403).send(`Not authorized`)
-        else {
-          const messages = await Message.findAll({
-            where: {
-              clubId,
-              main: true
-            }
-          })
-          res.send(messages)
-        }
-      }
-    }
-  } catch (err) {
-    next(err)
-  }
-})
+
 // POST a message  /api/clubs/:clubId/messages
 router.post('/:clubId/messages', async (req, res, next) => {
   try {
@@ -339,19 +314,14 @@ router.post('/:clubId/messages', async (req, res, next) => {
         const check = await club.hasUser(req.user.id)
         if (!check) res.status(403).send(`Not authorized`)
         else {
-          await Message.create({
+          const message = await Message.create({
             text: req.body.text,
             userId: req.user.id,
             clubId,
             main: true
           })
-          const messages = await Message.findAll({
-            where: {
-              clubId,
-              main: true
-            }
-          })
-          res.send(messages)
+          message.setDataValue('user', await message.getUser())
+          res.send(message)
         }
       }
     }
