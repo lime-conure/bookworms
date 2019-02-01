@@ -440,7 +440,6 @@ router.get('/:clubId/join/:hash', async (req, res, next) => {
         inviteLink: `/clubs/${req.params.clubId}/join/${req.params.hash}`
       }
     })
-    console.log(club)
     if (!club) res.status(403).send('Invalid link')
     else res.send(club.name)
   } catch (err) {
