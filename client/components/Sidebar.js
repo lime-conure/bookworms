@@ -91,18 +91,18 @@ class Sidebar extends Component {
           <ListItem
             button
             component={Link}
-            key="polls"
-            to={`/clubs/${club.id}/polls`}
-          >
-            <ListItemText>Polls</ListItemText>
-          </ListItem>
-          <ListItem
-            button
-            component={Link}
             key="meetings"
             to={`/clubs/${club.id}/meetings`}
           >
             <ListItemText>Meetings</ListItemText>
+          </ListItem>
+          <ListItem
+            button
+            component={Link}
+            key="polls"
+            to={`/clubs/${club.id}/polls`}
+          >
+            <ListItemText>Polls</ListItemText>
           </ListItem>
           <ListItem
             button

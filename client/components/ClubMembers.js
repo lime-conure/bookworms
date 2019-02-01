@@ -28,7 +28,7 @@ export class ClubMembers extends Component {
                 <ListItem button key={member.userId}>
                   {/* TODO: link these to user profiles */}
                   <ListItemText>
-                    <Typography key={member.userId} variant="h5">
+                    <Typography variant="h5">
                       {member.firstName} {member.lastName}
                     </Typography>
                   </ListItemText>
