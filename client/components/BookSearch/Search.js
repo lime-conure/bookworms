@@ -111,7 +111,11 @@ class Search extends Component {
             color="secondary"
           >
             {this.state.fetchingData ? (
-              <CircularProgress size={20} className={classes.spinner} />
+              <CircularProgress
+                size={20}
+                color="inherit"
+                className={classes.spinner}
+              />
             ) : (
               ''
             )}Search for Books

@@ -102,13 +102,13 @@ class BookList extends Component {
   }
 
   render() {
-    const {books, removeBook, classes} = this.props
-    if (books.length) {
+    const {bookList, removeBook, classes} = this.props
+    if (bookList.length) {
       return (
         <div>
           {this.state.loadingDialog ? <LinearProgress color="primary" /> : ''}
           <List className={classes.root}>
-            {books.map(book => (
+            {bookList.map(book => (
               <div key={book.goodReadsId}>
                 <ListItem button onClick={e => this.handleDialogOpen(e, book)}>
                   <Avatar className={classes.avatar}>
@@ -189,11 +189,7 @@ class BookList extends Component {
         </div>
       )
     } else {
-      return (
-        <div>
-          <CircularProgress className={classes.progress} color="primary" />
-        </div>
-      )
+      return <div />
     }
   }
 }

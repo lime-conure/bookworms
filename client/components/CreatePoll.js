@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import axios from 'axios'
 import {Search, BookResults} from './index'
+import BookSearch from './BookSearch'
 
 // Material UI
 import {withStyles} from '@material-ui/core/styles'
@@ -277,7 +278,14 @@ class CreatePoll extends Component {
             <Typography variant="h5" color="secondary" gutterBottom>
               Add Book Options
             </Typography>
-            <Search setResults={this.setResults} />
+            <BookSearch
+              bookList={this.state.selectedBooks}
+              results={this.state.searchResults}
+              setResults={this.setResults}
+              addBook={this.addBook}
+              removeBook={this.deleteOption}
+            />
+            {/* <Search setResults={this.setResults} />
             <br />
             {this.state.selectedBooks.length ? (
               <List>
@@ -330,7 +338,7 @@ class CreatePoll extends Component {
             <BookResults
               books={this.state.searchResults}
               addBook={this.addBook}
-            />
+            /> */}
           </div>
           {/* select dates */}
 

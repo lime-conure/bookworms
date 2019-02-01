@@ -77,17 +77,14 @@ export class ClubBooks extends Component {
             ? `Books We're Reading`
             : type === 'future' ? `Books We Want To Read` : `Books We've Read`}
         </Typography>
-        {books.length ? (
-          <BookSearch
-            books={books}
-            results={this.state[`${type}Results`]}
-            setResults={results => this.setResults(results, type)}
-            addBook={(e, book) => this.handleAddBook(e, book, type)}
-            removeBook={this.handleRemoveBook}
-          />
-        ) : (
-          <div />
-        )}
+
+        <BookSearch
+          bookList={books}
+          results={this.state[`${type}Results`]}
+          setResults={results => this.setResults(results, type)}
+          addBook={(e, book) => this.handleAddBook(e, book, type)}
+          removeBook={this.handleRemoveBook}
+        />
       </div>
     )
   }
