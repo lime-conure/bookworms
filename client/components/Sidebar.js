@@ -1,19 +1,17 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {fetchSingleClub} from '../store/singleClub'
-
 import {Link} from 'react-router-dom'
+
+// Material UI
 import {withStyles} from '@material-ui/core/styles'
-import {
-  Drawer,
-  Divider,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemIcon,
-  Typography
-} from '@material-ui/core'
-import SendIcon from '@material-ui/icons/Send'
+import Typography from '@material-ui/core/Typography'
+import Drawer from '@material-ui/core/Drawer'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import Icon from '@material-ui/core/Icon'
 import TextField from '@material-ui/core/TextField'
 import Collapse from '@material-ui/core/Collapse'
 import ExpandLess from '@material-ui/icons/ExpandLess'
@@ -86,6 +84,9 @@ class Sidebar extends Component {
             key="books"
             to={`/clubs/${club.id}/books`}
           >
+            <ListItemIcon>
+              <Icon>book</Icon>
+            </ListItemIcon>
             <ListItemText>Books</ListItemText>
           </ListItem>
           <ListItem
@@ -102,6 +103,9 @@ class Sidebar extends Component {
             key="polls"
             to={`/clubs/${club.id}/polls`}
           >
+            <ListItemIcon>
+              <Icon>poll</Icon>
+            </ListItemIcon>
             <ListItemText>Polls</ListItemText>
           </ListItem>
           <ListItem
@@ -110,6 +114,9 @@ class Sidebar extends Component {
             key="messages"
             to={`/clubs/${club.id}/messages`}
           >
+            <ListItemIcon>
+              <Icon>message</Icon>
+            </ListItemIcon>
             <ListItemText>Messages</ListItemText>
           </ListItem>
           <ListItem
@@ -118,10 +125,16 @@ class Sidebar extends Component {
             key="members"
             to={`/clubs/${club.id}/members`}
           >
+            <ListItemIcon>
+              <Icon>person</Icon>
+            </ListItemIcon>
             <ListItemText>Members</ListItemText>
           </ListItem>
 
           <ListItem button onClick={this.handleClick}>
+            <ListItemIcon>
+              <Icon>group_add</Icon>
+            </ListItemIcon>
             <ListItemText>Invite Link</ListItemText>
             {this.state.open ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
