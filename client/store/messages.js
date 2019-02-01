@@ -1,5 +1,4 @@
 import axios from 'axios'
-import socket from '../socket'
 import {writeInputMessage} from './messageEntry'
 
 const GET_MESSAGES = 'GET_MESSAGES'
@@ -33,7 +32,7 @@ export const fetchMessages = () => {
   }
 }
 
-export const postMessage = (message, clubId) => {
+export const postMessage = (message, clubId, socket) => {
   return async dispatch => {
     try {
       const {data} = await axios.post(`/api/clubs/${clubId}/messages`, message)
