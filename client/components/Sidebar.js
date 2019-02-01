@@ -99,6 +99,14 @@ class Sidebar extends Component {
           <ListItem
             button
             component={Link}
+            key="meetings"
+            to={`/clubs/${club.id}/meetings`}
+          >
+            <ListItemText>Meetings</ListItemText>
+          </ListItem>
+          <ListItem
+            button
+            component={Link}
             key="messages"
             to={`/clubs/${club.id}/messages`}
           >
@@ -130,14 +138,6 @@ class Sidebar extends Component {
               </ListItem>
             </List>
           </Collapse>
-          <ListItem
-            button
-            component={Link}
-            key="meetings"
-            to={`/clubs/${club.id}/meetings`}
-          >
-            <ListItemText>Meetings</ListItemText>
-          </ListItem>
         </List>
       </Drawer>
     )
