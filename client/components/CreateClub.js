@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {createNewClub, fetchClubs} from '../store/clubs'
 import axios from 'axios'
+import socket from '../socket'
 
 import {withStyles} from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
@@ -50,6 +51,7 @@ export class CreateClub extends Component {
       const newClub = {name, userId: this.props.userId}
       const club = await axios.post('/api/clubs/create', newClub)
       this.props.fetchClubs()
+      socket.emit('JOIN', club.data.id)
       this.props.history.push(`/clubs/${club.data.id}`)
     } catch (err) {
       console.log(err)
