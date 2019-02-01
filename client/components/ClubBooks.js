@@ -64,8 +64,8 @@ export class ClubBooks extends Component {
     })
   }
 
-  handleRemoveBook(e) {
-    // TODO: handle removing books
+  handleRemoveBook(e, book, type) {
+    // TODO: thunk for removing books (type might not be necessary?)
     e.preventDefault()
   }
 
@@ -83,7 +83,7 @@ export class ClubBooks extends Component {
           results={this.state[`${type}Results`]}
           setResults={results => this.setResults(results, type)}
           addBook={(e, book) => this.handleAddBook(e, book, type)}
-          removeBook={this.handleRemoveBook}
+          removeBook={(e, book) => this.handleRemoveBook(e, book, type)}
         />
       </div>
     )

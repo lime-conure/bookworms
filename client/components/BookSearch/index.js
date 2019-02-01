@@ -27,7 +27,6 @@ class BookSearch extends Component {
   setResults = results => {
     this.setState({results})
   }
-  // addBook() {}
 
   render() {
     const {bookList, addBook, removeBook, classes} = this.props

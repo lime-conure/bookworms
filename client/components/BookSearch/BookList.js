@@ -46,15 +46,17 @@ const styles = theme => ({
 })
 
 class BookList extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       dialogOpen: false,
       loadingDialog: false,
-      dialogBook: {}
+      dialogBook: {},
+      bookList: props.bookList
     }
     this.handleDialogOpen = this.handleDialogOpen.bind(this)
     this.handleDialogClose = this.handleDialogClose.bind(this)
+    this.handleRemoveBook = this.handleRemoveBook.bind(this)
   }
 
   getDescription = async bookId => {
@@ -101,14 +103,26 @@ class BookList extends Component {
     }
   }
 
+  handleRemoveBook = (e, book) => {
+    e.preventDefault()
+    console.log('removing book: ', book)
+    const bookIds = this.state.bookList.map(b => b.goodReadsId)
+    const indexToRemove = bookIds.indexOf(book.goodReadsId)
+    this.setState({
+      bookList: this.state.bookList.filter(
+        b => b !== this.state.bookList[indexToRemove]
+      )
+    })
+  }
+
   render() {
-    const {bookList, removeBook, classes} = this.props
+    const {bookList, classes} = this.props
     if (bookList.length) {
       return (
         <div>
           {this.state.loadingDialog ? <LinearProgress color="primary" /> : ''}
           <List className={classes.root}>
-            {bookList.map(book => (
+            {bookList.map((book, idx) => (
               <div key={book.goodReadsId}>
                 <ListItem button onClick={e => this.handleDialogOpen(e, book)}>
                   <Avatar className={classes.avatar}>
@@ -133,7 +147,8 @@ class BookList extends Component {
                   </ListItemText>
                   <IconButton
                     className={classes.removeIcon}
-                    onClick={removeBook}
+                    // onClick={e => this.handleRemoveBook(e, book)}
+                    onClick={e => this.props.removeBook(e, idx, 'book')}
                   >
                     <Tooltip placement="right" title="Remove This Book">
                       <Icon>cancel</Icon>
