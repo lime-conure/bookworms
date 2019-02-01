@@ -51,12 +51,10 @@ class BookList extends Component {
     this.state = {
       dialogOpen: false,
       loadingDialog: false,
-      dialogBook: {},
-      bookList: props.bookList
+      dialogBook: {}
     }
     this.handleDialogOpen = this.handleDialogOpen.bind(this)
     this.handleDialogClose = this.handleDialogClose.bind(this)
-    this.handleRemoveBook = this.handleRemoveBook.bind(this)
   }
 
   getDescription = async bookId => {
@@ -103,18 +101,6 @@ class BookList extends Component {
     }
   }
 
-  handleRemoveBook = (e, book) => {
-    e.preventDefault()
-    console.log('removing book: ', book)
-    const bookIds = this.state.bookList.map(b => b.goodReadsId)
-    const indexToRemove = bookIds.indexOf(book.goodReadsId)
-    this.setState({
-      bookList: this.state.bookList.filter(
-        b => b !== this.state.bookList[indexToRemove]
-      )
-    })
-  }
-
   render() {
     const {bookList, classes} = this.props
     if (bookList.length) {
@@ -147,8 +133,8 @@ class BookList extends Component {
                   </ListItemText>
                   <IconButton
                     className={classes.removeIcon}
-                    // onClick={e => this.handleRemoveBook(e, book)}
-                    onClick={e => this.props.removeBook(e, idx, 'book')}
+                    // onClick={e => this.props.removeBook(e, idx)}
+                    onClick={e => this.props.removeBook(e, idx, book.id)}
                   >
                     <Tooltip placement="right" title="Remove This Book">
                       <Icon>cancel</Icon>

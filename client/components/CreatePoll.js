@@ -219,6 +219,7 @@ class CreatePoll extends Component {
             variant="filled"
             fullWidth
           />
+
           {/* select books */}
           <div className={classes.optionsSection}>
             <Typography variant="h5" color="secondary" gutterBottom>
@@ -231,63 +232,9 @@ class CreatePoll extends Component {
               addBook={(e, book) => this.addBook(e, book)}
               removeBook={(e, idx) => this.deleteOption(e, idx, 'book')}
             />
-            {/* <Search setResults={this.setResults} />
-            <br />
-            {this.state.selectedBooks.length ? (
-              <List>
-                {this.state.selectedBooks.map((book, idx) => (
-                  <div key={idx}>
-                    <ListItem
-                      button
-                      onClick={e => this.handleClickOpen(e, book.goodReadsId)}
-                    >
-                      <ListItemText>{book.title}</ListItemText>
-
-                      <IconButton
-                        onClick={e => this.deleteOption(idx, 'book', e)}
-                      >
-                        <Icon>cancel</Icon>
-                      </IconButton>
-                    </ListItem>
-                    <Dialog
-                      aria-labelledby="book-modal"
-                      onClose={this.handleClose}
-                      open={this.state.open}
-                    >
-                      <DialogTitle id="book-modal">{book.title}</DialogTitle>
-                      <DialogContent>
-                        <img src={book.imageUrl} alt={book.title} />
-                        <DialogContentText>
-                          <Typography
-                            variant="body1"
-                            className={classes.description}
-                          >
-                            {this.state.description}
-                          </Typography>
-                        </DialogContentText>
-                        <Button
-                          target="_blank"
-                          href={`https://www.goodreads.com/book/show/${
-                            book.goodReadsId
-                          }`}
-                          variant="contained"
-                          color="primary"
-                        >
-                          View On Goodreads
-                        </Button>
-                      </DialogContent>
-                    </Dialog>
-                  </div>
-                ))}
-              </List>
-            ) : null}
-            <BookResults
-              books={this.state.searchResults}
-              addBook={this.addBook}
-            /> */}
           </div>
-          {/* select dates */}
 
+          {/* select dates */}
           <div className={classes.optionsSection}>
             <Typography variant="h5" color="secondary" gutterBottom>
               Add Date/Time Options
@@ -355,6 +302,7 @@ class CreatePoll extends Component {
                 : null}
             </List>
           </div>
+
           {/* select location */}
           <div className={classes.optionsSection}>
             <Typography variant="h5" color="secondary" gutterBottom>

@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {fetchClubBooks, postClubBook} from '../store'
+import {fetchClubBooks, postClubBook, deleteClubBook} from '../store'
 import BookSearch from './BookSearch'
 
 // Material UI
@@ -64,9 +64,31 @@ export class ClubBooks extends Component {
     })
   }
 
-  handleRemoveBook(e, book, type) {
+  handleRemoveBook(e, idx, bookId) {
     // TODO: thunk for removing books (type might not be necessary?)
     e.preventDefault()
+    // e.stopPropogation()
+    console.log('removing book at ', idx)
+    // const book = this.props.books[idx]
+    console.log('bookId to remove: ', bookId)
+    this.props.deleteClubBook(bookId, this.props.clubId)
+    // console.log(`${type}Results`)
+    // const newResults = this.state[`${type}Results`].filter(
+    //   book => book !== this.state[`${type}Results`][idx]
+    // )
+    // console.log(newResults)
+    // this.setState({
+    //   [`${type}Results`]: this.state[`${type}Results`].filter(
+    //     book => book !== this.state[`${type}Results`][idx]
+    //   )
+    // })
+    // const bookIds = this.state.bookList.map(b => b.goodReadsId)
+    // const indexToRemove = bookIds.indexOf(book.goodReadsId)
+    // this.setState({
+    //   bookList: this.state.bookList.filter(
+    //     b => b !== this.state.bookList[indexToRemove]
+    //   )
+    // })
   }
 
   renderBookSection(books, type, classes) {
@@ -83,7 +105,7 @@ export class ClubBooks extends Component {
           results={this.state[`${type}Results`]}
           setResults={results => this.setResults(results, type)}
           addBook={(e, book) => this.handleAddBook(e, book, type)}
-          removeBook={(e, book) => this.handleRemoveBook(e, book, type)}
+          removeBook={(e, idx, bookId) => this.handleRemoveBook(e, idx, bookId)}
         />
       </div>
     )
@@ -130,7 +152,8 @@ const mapState = state => ({
 const mapDispatch = dispatch => ({
   fetchClubBooks: clubId => dispatch(fetchClubBooks(clubId)),
   postClubBook: (book, type, clubId) =>
-    dispatch(postClubBook(book, type, clubId))
+    dispatch(postClubBook(book, type, clubId)),
+  deleteClubBook: (bookId, clubId) => dispatch(deleteClubBook(bookId, clubId))
 })
 
 export default connect(mapState, mapDispatch)(StyledClubBooks)
