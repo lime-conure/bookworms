@@ -15,7 +15,6 @@ import clubMembers from './clubMembers'
 import meetings from './meetings'
 
 const reducer = combineReducers({
-  user,
   polls,
   search,
   singlePoll,
@@ -25,6 +24,7 @@ const reducer = combineReducers({
   messageEntry,
   clubBooks,
   clubMembers,
+  user,
   meetings
 })
 const middleware = composeWithDevTools(

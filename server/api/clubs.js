@@ -35,12 +35,17 @@ router.get('/', async (req, res, next) => {
 //POST api/clubs/create - to create a new club
 router.post('/create', async (req, res, next) => {
   try {
-    const {name, userId} = req.body
-    const newClub = await Club.create({name})
-    const clubId = newClub.id
-    await UserClub.create({userId, clubId})
-    // TODO: generate random invite link and display it
-    res.json(newClub)
+    if (!req.user) res.status(403).send(`Not authorized`)
+    else {
+      const {name} = req.body
+      const club = await Club.create({name})
+      const clubId = club.id
+      await club.addUser(req.user.id)
+      const hash = Math.floor(Math.random() * 100000000)
+      const inviteLink = `/clubs/${clubId}/join/${hash}`
+      const newClub = await club.update({inviteLink})
+      res.json(newClub)
+    }
   } catch (err) {
     next(err)
   }
@@ -82,6 +87,9 @@ router.get('/:clubId', async (req, res, next) => {
         const check = await club.hasUser(req.user.id)
         if (!check) res.status(403).send(`Not authorized`)
         else {
+          const hostName = process.env.HOST_NAME || 'http://localhost:8080'
+          const inviteLink = hostName + club.inviteLink
+          club.inviteLink = inviteLink
           res.json(club)
         }
       }
@@ -430,13 +438,11 @@ router.get('/:clubId/join/:hash', async (req, res, next) => {
   try {
     const club = await Club.findOne({
       where: {
-        inviteLink: `http://localhost:8080/clubs/${req.params.clubId}/join/${
-          req.params.hash
-        }`
+        inviteLink: `/clubs/${req.params.clubId}/join/${req.params.hash}`
       }
     })
     if (!club) res.status(403).send('Invalid link')
-    res.send(club.name)
+    else res.send(club.name)
   } catch (err) {
     next(err)
   }
@@ -446,9 +452,7 @@ router.get('/:clubId/join/:hash', async (req, res, next) => {
 router.post('/:clubId/join/:hash', async (req, res, next) => {
   try {
     if (req.user && req.user.id) {
-      const inviteLink = `http://localhost:8080/clubs/${
-        req.params.clubId
-      }/join/${req.params.hash}`
+      const inviteLink = `/clubs/${req.params.clubId}/join/${req.params.hash}`
       const club = await Club.findOne({
         where: {
           inviteLink

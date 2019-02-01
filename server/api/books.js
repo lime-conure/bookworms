@@ -15,7 +15,7 @@ router.get('/:clubId/books', async (req, res, next) => {
         const isUser = await club.hasUser(req.user.id)
         if (!isUser) res.status(403).send(`Not authorized`)
         else {
-          const books = await club.getBooks()
+          const books = await club.getBooks({include: [{model: Author}]})
           res.send(books)
         }
       }
@@ -64,7 +64,7 @@ router.post('/:clubId/books/add', async (req, res, next) => {
   }
 })
 
-// PUT /api/clubs/:clubId/books/delete - delete a book from club
+// PUT /api/clubs/:clubId/books/delete - delete a book from club, given its id
 router.put('/:clubId/books/delete', async (req, res, next) => {
   try {
     if (!req.user) res.status(403).send(`Not authorized`)
@@ -76,18 +76,14 @@ router.put('/:clubId/books/delete', async (req, res, next) => {
         const isUser = await club.hasUser(req.user.id)
         if (!isUser) res.status(403).send(`Not authorized`)
         else {
-          const {book, type} = req.body
-          let existingBook = await Book.findOne({
-            where: {goodReadsId: book.goodReadsId}
-          })
-          if (existingBook) {
-            const clubBooks = await club.getBooks({where: {type}})
-            if (!clubBooks.includes(clubBook => clubBook.id == book.id))
-              res.send(`${club.name} does not have ${book.title}`)
-            else {
-              await club.removeBook(book.id)
-              res.status(200).send()
-            }
+          const {bookId} = req.body
+          // make sure our club has this book before we remove it
+          const clubBooks = await club.getBooks({where: {id: bookId}})
+          if (!clubBooks.length) {
+            res.send(`${club.name} does not have that book`)
+          } else {
+            await club.removeBook(bookId)
+            res.status(200).send()
           }
         }
       }

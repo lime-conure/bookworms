@@ -34,7 +34,13 @@ export const me = () => async dispatch => {
   }
 }
 
-export const auth = (email, password, fullName, method) => async dispatch => {
+export const auth = (
+  email,
+  password,
+  fullName,
+  method,
+  socket
+) => async dispatch => {
   let res
   try {
     res = await axios.post(`/auth/${method}`, {email, password, fullName})
@@ -44,14 +50,16 @@ export const auth = (email, password, fullName, method) => async dispatch => {
 
   try {
     dispatch(getUser(res.data))
+    socket.emit('LOGIN', res.data.id) //user should join all existing clubRooms
   } catch (dispatchOrHistoryErr) {
     console.error(dispatchOrHistoryErr)
   }
 }
 
-export const logout = () => async dispatch => {
+export const logout = (userId, socket) => async dispatch => {
   try {
     await axios.post('/auth/logout')
+    socket && socket.emit('LOGOUT', userId) //user should be removed from all clubRooms
     dispatch(removeUser())
     history.push('/login')
   } catch (err) {

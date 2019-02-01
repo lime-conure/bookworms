@@ -1,18 +1,13 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {Link} from 'react-router-dom'
-import {fetchClubBooks, postClubBook} from '../store'
-import {Search, BookList} from './index'
+import {fetchClubBooks, postClubBook, deleteClubBook} from '../store'
+import BookSearch from './BookSearch'
 
 // Material UI
 import {withStyles} from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Divider from '@material-ui/core/Divider'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
-
-const apiKey = 'jrAzhFY1JP1FdDk1vp7Zg'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 const styles = theme => ({
   bookSection: {
@@ -45,6 +40,7 @@ export class ClubBooks extends Component {
 
   handleAddBook(e, bookResult, type) {
     e.preventDefault()
+    // TODO: fetch book description and save to db
     const newBook = {
       author: bookResult.best_book.author,
       goodReadsId: bookResult.best_book.id,
@@ -67,29 +63,26 @@ export class ClubBooks extends Component {
     })
   }
 
+  handleRemoveBook(e, idx, bookId) {
+    e.preventDefault()
+    this.props.deleteClubBook(bookId, this.props.clubId)
+  }
+
   renderBookSection(books, type, classes) {
     return (
       <div className={classes.bookSection}>
-        <Typography variant="h5" gutterBottom>
+        <Typography variant="h4" component="h4" gutterBottom>
           {type === 'now'
             ? `Books We're Reading`
             : type === 'future' ? `Books We Want To Read` : `Books We've Read`}
         </Typography>
-        {books.length ? (
-          <List>
-            {books.map(book => (
-              <ListItem button key={book.id}>
-                <ListItemText>{book.title}</ListItemText>
-              </ListItem>
-            ))}
-          </List>
-        ) : (
-          ''
-        )}
-        <Search setResults={results => this.setResults(results, type)} />
-        <BookList
-          books={this.state[`${type}Results`]}
+
+        <BookSearch
+          bookList={books}
+          results={this.state[`${type}Results`]}
+          setResults={results => this.setResults(results, type)}
           addBook={(e, book) => this.handleAddBook(e, book, type)}
+          removeBook={(e, idx, bookId) => this.handleRemoveBook(e, idx, bookId)}
         />
       </div>
     )
@@ -102,17 +95,20 @@ export class ClubBooks extends Component {
     const currentBooks = books.filter(book => book.clubs_books.type === 'now')
     const pastBooks = books.filter(book => book.clubs_books.type === 'past')
     const futureBooks = books.filter(book => book.clubs_books.type === 'future')
+
     return (
       <div>
         <Typography variant="h3" gutterBottom color="primary">
           Books
         </Typography>
-        <Divider />
-        {this.renderBookSection(currentBooks, 'now', classes)}
-        <Divider />
-        {this.renderBookSection(futureBooks, 'future', classes)}
-        <Divider />
-        {this.renderBookSection(pastBooks, 'past', classes)}
+        <div>
+          <Divider />
+          {this.renderBookSection(currentBooks, 'now', classes)}
+          <Divider />
+          {this.renderBookSection(futureBooks, 'future', classes)}
+          <Divider />
+          {this.renderBookSection(pastBooks, 'past', classes)}
+        </div>
       </div>
     )
   }
@@ -128,7 +124,8 @@ const mapState = state => ({
 const mapDispatch = dispatch => ({
   fetchClubBooks: clubId => dispatch(fetchClubBooks(clubId)),
   postClubBook: (book, type, clubId) =>
-    dispatch(postClubBook(book, type, clubId))
+    dispatch(postClubBook(book, type, clubId)),
+  deleteClubBook: (bookId, clubId) => dispatch(deleteClubBook(bookId, clubId))
 })
 
 export default connect(mapState, mapDispatch)(StyledClubBooks)

@@ -1,13 +1,20 @@
 import React, {Component} from 'react'
 import Axios from 'axios'
-import AllResults from './AllResults'
 import PropTypes from 'prop-types'
 import {withStyles} from '@material-ui/core/styles'
-import {TextField, Typography, Button, Grid} from '@material-ui/core'
+import TextField from '@material-ui/core/TextField'
+import Typography from '@material-ui/core/Typography'
+import Button from '@material-ui/core/Button'
+import Grid from '@material-ui/core/Grid'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 const apiKey = 'jrAzhFY1JP1FdDk1vp7Zg'
 
-const styles = theme => ({})
+const styles = theme => ({
+  spinner: {
+    marginRight: theme.spacing.unit
+  }
+})
 
 class Search extends Component {
   state = {
@@ -103,7 +110,15 @@ class Search extends Component {
             variant="contained"
             color="secondary"
           >
-            Search for Books
+            {this.state.fetchingData ? (
+              <CircularProgress
+                size={20}
+                color="inherit"
+                className={classes.spinner}
+              />
+            ) : (
+              ''
+            )}Search for Books
           </Button>
         </Grid>
       </Grid>

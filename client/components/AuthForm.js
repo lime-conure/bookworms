@@ -10,6 +10,7 @@ import Button from '@material-ui/core/Button'
 import Textfield from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
+import socket from '../socket'
 
 const styles = theme => ({
   root: {
@@ -154,7 +155,7 @@ const mapDispatch = dispatch => {
         fullName = evt.target.fullName.value
       }
 
-      dispatch(auth(email, password, fullName, formName))
+      dispatch(auth(email, password, fullName, formName, socket))
       if (props.inviteLink) props.history.push(props.inviteLink)
       else props.history.push('/clubs')
     }
