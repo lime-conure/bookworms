@@ -34,12 +34,18 @@ router.get('/', async (req, res, next) => {
 //POST api/clubs/create - to create a new club
 router.post('/create', async (req, res, next) => {
   try {
-    const {name, userId} = req.body
-    const newClub = await Club.create({name})
-    const clubId = newClub.id
-    await UserClub.create({userId, clubId})
-    // TODO: generate random invite link and display it
-    res.json(newClub)
+    if (!req.user) res.status(403).send(`Not authorized`)
+    else {
+      const {name} = req.body
+      const club = await Club.create({name})
+      const clubId = club.id
+      await club.addUser(req.user.id)
+      //await UserClub.create({userId: req.user.id, clubId})
+      const hash = Math.floor(Math.random() * 100000000)
+      const inviteLink = `http://localhost:8080/clubs/${clubId}/join/${hash}`
+      const newClub = await club.update({inviteLink})
+      res.json(newClub)
+    }
   } catch (err) {
     next(err)
   }

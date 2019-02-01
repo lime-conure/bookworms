@@ -1,6 +1,6 @@
 import axios from 'axios'
 import history from '../history'
-import socket from '../socket'
+//import socket from '../socket'
 
 /**
  * ACTION TYPES
@@ -35,7 +35,13 @@ export const me = () => async dispatch => {
   }
 }
 
-export const auth = (email, password, fullName, method) => async dispatch => {
+export const auth = (
+  email,
+  password,
+  fullName,
+  method,
+  socket
+) => async dispatch => {
   let res
   try {
     res = await axios.post(`/auth/${method}`, {email, password, fullName})
@@ -51,10 +57,10 @@ export const auth = (email, password, fullName, method) => async dispatch => {
   }
 }
 
-export const logout = userId => async dispatch => {
+export const logout = (userId, socket) => async dispatch => {
   try {
     await axios.post('/auth/logout')
-    socket.emit('LOGOUT', userId) //user should be removed from all clubRooms
+    socket && socket.emit('LOGOUT', userId) //user should be removed from all clubRooms
     dispatch(removeUser())
     history.push('/login')
   } catch (err) {

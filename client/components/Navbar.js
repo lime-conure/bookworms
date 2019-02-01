@@ -7,6 +7,7 @@ import {withStyles} from '@material-ui/core/styles'
 import {AppBar, Toolbar, Typography, Button} from '@material-ui/core'
 import {white} from '@material-ui/core/colors'
 import DropDownClubs from './DropDownClubs'
+import socket from '../socket'
 
 const styles = {
   root: {
@@ -71,7 +72,7 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     handleClick(userId) {
-      dispatch(logout(userId))
+      dispatch(logout(userId, socket))
     }
   }
 }
