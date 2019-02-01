@@ -95,12 +95,13 @@ export class ClubBooks extends Component {
     const currentBooks = books.filter(book => book.clubs_books.type === 'now')
     const pastBooks = books.filter(book => book.clubs_books.type === 'past')
     const futureBooks = books.filter(book => book.clubs_books.type === 'future')
-    if (books.length) {
-      return (
+
+    return (
+      <div>
+        <Typography variant="h3" gutterBottom color="primary">
+          Books
+        </Typography>
         <div>
-          <Typography variant="h3" gutterBottom color="primary">
-            Books
-          </Typography>
           <Divider />
           {this.renderBookSection(currentBooks, 'now', classes)}
           <Divider />
@@ -108,14 +109,8 @@ export class ClubBooks extends Component {
           <Divider />
           {this.renderBookSection(pastBooks, 'past', classes)}
         </div>
-      )
-    } else {
-      return (
-        <div>
-          <CircularProgress color="primary" />
-        </div>
-      )
-    }
+      </div>
+    )
   }
 }
 
