@@ -2,12 +2,11 @@ import React from 'react'
 import {connect} from 'react-redux'
 import Button from '@material-ui/core/Button'
 import Menu from '@material-ui/core/Menu'
-import IconButton from '@material-ui/core/IconButton'
+import Divider from '@material-ui/core/Divider'
 import MenuItem from '@material-ui/core/MenuItem'
-import MenuIcon from '@material-ui/icons/Menu'
+import Icon from '@material-ui/core/Icon'
 import {Link} from 'react-router-dom'
 import {fetchClubs} from '../store'
-import Axios from 'axios'
 
 class DropDownClubs extends React.Component {
   state = {
@@ -15,7 +14,7 @@ class DropDownClubs extends React.Component {
   }
 
   async componentDidMount() {
-    this.props.fetchClubs()
+    await this.props.fetchClubs()
   }
 
   handleClick = event => {
@@ -35,9 +34,8 @@ class DropDownClubs extends React.Component {
           aria-haspopup="true"
           onClick={this.handleClick}
         >
-          <IconButton color="inherit" aria-label="Menu">
-            <MenuIcon />
-          </IconButton>
+          Clubs
+          <Icon>keyboard_arrow_down</Icon>
         </Button>
         <Menu
           id="simple-menu"
@@ -45,23 +43,26 @@ class DropDownClubs extends React.Component {
           open={Boolean(anchorEl)}
           onClose={this.handleClose}
         >
+          <MenuItem onClick={this.handleClose} component={Link} to="/clubs">
+            All Clubs
+          </MenuItem>
           {this.props.clubs.map(club => (
-            <MenuItem key={club.id} onClick={this.handleClose}>
-              <Link
-                to={`/clubs/${club.id}`}
-                style={{textDecoration: 'none', color: 'black'}}
-              >
-                {club.name}
-              </Link>
+            <MenuItem
+              key={club.id}
+              onClick={this.handleClose}
+              component={Link}
+              to={`/clubs/${club.id}`}
+            >
+              {club.name}
             </MenuItem>
           ))}
-          <MenuItem onClick={this.handleClose}>
-            <Link
-              to="/createclub"
-              style={{textDecoration: 'none', color: 'black'}}
-            >
-              Create a new club
-            </Link>
+          <Divider />
+          <MenuItem
+            onClick={this.handleClose}
+            component={Link}
+            to="/createclub"
+          >
+            Create a new club
           </MenuItem>
         </Menu>
       </div>

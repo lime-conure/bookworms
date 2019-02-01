@@ -45,6 +45,7 @@ class Routes extends Component {
         {isLoggedIn && !invitePending ? (
           <Switch>
             <Route exact path="/createclub" component={CreateClub} />
+            <Route exact path="/clubs" component={Clubs} />
             {/* Sidebar is scoped to a single club */}
             <Route path="/clubs/:clubId" component={Sidebar} />
           </Switch>
