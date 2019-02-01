@@ -25,6 +25,7 @@ router.get('/', async (req, res, next) => {
 router.post('/create', async (req, res, next) => {
   try {
     if (!req.body.userId) res.status(403).send('Not authorized')
+    if (!req.body.clubId) res.status(403).send('Not authorized')
     const user = await User.findById(req.body.userId)
     const club = await Club.findById(req.body.clubId)
     const check = await club.hasUser(user.id)
