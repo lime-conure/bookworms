@@ -41,9 +41,16 @@ class Sidebar extends Component {
     this.props.fetchSingleClub(clubId)
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    const prevClubId = prevProps.match.params.clubId
+    const clubId = this.props.match.params.clubId
+    if (prevClubId !== clubId) this.props.fetchSingleClub(clubId)
+  }
+
   render() {
     const {classes} = this.props
     const club = this.props.singleClub
+    console.log('club' + club.id + 'rendered')
 
     return (
       <Drawer
