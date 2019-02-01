@@ -493,10 +493,10 @@ router.get('/:clubId/users', async (req, res, next) => {
 //GET api/clubs/clubId/meetings - to find all meetings in one club
 router.get('/:clubId/meetings', async (req, res, next) => {
   try {
-    if (!req.body.userId) res.status(403).send('Not authorized')
+    if (!req.user.id) res.status(403).send('Not authorized')
     if (!req.params.clubId) res.status(403).send('Not authorized')
     else {
-      const user = await User.findById(req.body.userId)
+      const user = await User.findById(req.user.id)
       const club = await Club.findById(req.params.clubId)
       const check = await club.hasUser(user.id)
       if (!check)

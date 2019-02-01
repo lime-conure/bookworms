@@ -100,6 +100,14 @@ class Sidebar extends Component {
           >
             <ListItemText>Members</ListItemText>
           </ListItem>
+          <ListItem
+            button
+            component={Link}
+            key="meetings"
+            to={`/clubs/${club.id}/meetings`}
+          >
+            <ListItemText>Meetings</ListItemText>
+          </ListItem>
         </List>
       </Drawer>
     )
