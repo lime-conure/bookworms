@@ -15,10 +15,23 @@ const styles = theme => ({
 })
 
 class BookSearch extends Component {
-  render() {
-    const {classes} = this.props
+  constructor() {
+    super()
+    this.state = {}
+    this.setResults = this.setResults.bind(this)
+  }
 
-    return <div />
+  setResults() {}
+  render() {
+    const {books, classes} = this.props
+
+    return (
+      <div className={classes.root}>
+        <BookList books={books} />
+        <Search setResults={this.setResults} />
+        <BookResults books={books} />
+      </div>
+    )
   }
 }
 

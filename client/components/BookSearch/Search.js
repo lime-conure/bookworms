@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import Axios from 'axios'
-import AllResults from './AllResults'
 import PropTypes from 'prop-types'
 import {withStyles} from '@material-ui/core/styles'
 import {TextField, Typography, Button, Grid} from '@material-ui/core'
