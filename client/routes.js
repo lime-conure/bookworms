@@ -59,6 +59,7 @@ class Routes extends Component {
               path="/clubs/:clubId/join/:hash"
               component={JoinClub}
             />
+            <Route component={Login} />
           </Switch>
         )}
         <main className={classes.root}>
