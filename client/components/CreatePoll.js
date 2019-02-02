@@ -60,10 +60,41 @@ class CreatePoll extends Component {
     this.setResults = this.setResults.bind(this)
   }
 
+  // converts YYYY-MM-DD into dates
+  formatDate(dateString) {
+    return new Date(
+      Number(dateString.slice(0, 4)),
+      Number(dateString.slice(5, 7)) - 1,
+      Number(dateString.slice(8, 10))
+    )
+  }
+
+  // converts dates into YYYY-MM-DD
+  formatDateString(date) {
+    return new Date(date.getTime() - date.getTimezoneOffset() * 60000)
+      .toISOString()
+      .split('T')[0]
+  }
+
   handleChange(e) {
-    this.setState({
-      [e.target.name]: e.target.value
-    })
+    if (e.target.name === 'date') {
+      const selectedDate = this.formatDate(e.target.value)
+      const today = new Date()
+      if (selectedDate < today) {
+        const todayString = this.formatDateString(today)
+        this.setState({
+          date: todayString
+        })
+      } else {
+        this.setState({
+          date: e.target.value
+        })
+      }
+    } else {
+      this.setState({
+        [e.target.name]: e.target.value
+      })
+    }
   }
 
   setResults = results => {
@@ -253,6 +284,7 @@ class CreatePoll extends Component {
                   label="yyyy/mm/dd"
                   value={this.state.date}
                   onChange={this.handleChange}
+                  mindate={0}
                   variant="filled"
                   fullWidth
                   InputLabelProps={{
