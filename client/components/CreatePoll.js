@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import axios from 'axios'
 import BookSearch from './BookSearch'
+import {formatDate, formatDateString, formatDateDisplay} from '../utils'
 
 // Material UI
 import {withStyles} from '@material-ui/core/styles'
@@ -40,6 +41,8 @@ const styles = theme => ({
 class CreatePoll extends Component {
   constructor() {
     super()
+    const today = new Date()
+    const defaultDateTime = new Date(today.setHours(today.getHours() + 1))
     this.state = {
       searchResults: [],
       selectedBooks: [],
@@ -48,8 +51,8 @@ class CreatePoll extends Component {
       title: '',
       notes: '',
       dueDate: null,
-      date: '',
-      time: '',
+      dateTime: formatDateString(defaultDateTime),
+      dateTimeMessage: '',
       place: ''
     }
     this.createPoll = this.createPoll.bind(this)
@@ -60,34 +63,22 @@ class CreatePoll extends Component {
     this.setResults = this.setResults.bind(this)
   }
 
-  // converts YYYY-MM-DD into dates
-  formatDate(dateString) {
-    return new Date(
-      Number(dateString.slice(0, 4)),
-      Number(dateString.slice(5, 7)) - 1,
-      Number(dateString.slice(8, 10))
-    )
-  }
-
-  // converts dates into YYYY-MM-DD
-  formatDateString(date) {
-    return new Date(date.getTime() - date.getTimezoneOffset() * 60000)
-      .toISOString()
-      .split('T')[0]
-  }
-
   handleChange(e) {
-    if (e.target.name === 'date') {
-      const selectedDate = this.formatDate(e.target.value)
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+    if (e.target.name === 'dueDate') {
+      // prevent users from selecting due dates in the past
+      const selectedDate = formatDate(e.target.value)
       const today = new Date()
       if (selectedDate < today) {
-        const todayString = this.formatDateString(today)
+        const todayString = formatDateString(today).slice(0, 10)
         this.setState({
-          date: todayString
+          dueDate: todayString
         })
       } else {
         this.setState({
-          date: e.target.value
+          dueDate: e.target.value
         })
       }
     } else {
@@ -132,20 +123,21 @@ class CreatePoll extends Component {
 
   addDateTime(e) {
     e.preventDefault()
-    const {time, date} = this.state
-
-    const dateTime = new Date(
-      Number(date.slice(0, 4)),
-      Number(date.slice(5, 7)) - 1,
-      Number(date.slice(8, 10)),
-      Number(time.slice(0, 2)),
-      Number(time.slice(3, 5))
-    )
-    this.setState({
-      selectedDates: [...this.state.selectedDates, dateTime],
-      date: '',
-      time: ''
-    })
+    const dateTime = formatDate(this.state.dateTime)
+    if (dateTime < new Date()) {
+      this.setState({
+        dateTimeMessage: 'Please select a date & time in the future'
+      })
+    } else {
+      this.setState({
+        selectedDates: [
+          ...this.state.selectedDates,
+          formatDateDisplay(dateTime)
+        ],
+        dateTime: '',
+        dateTimeMessage: ''
+      })
+    }
   }
 
   addPlaces(e) {
@@ -269,7 +261,7 @@ class CreatePoll extends Component {
           <div className={classes.optionsSection}>
             <Typography variant="h5" color="secondary" gutterBottom>
               <Icon className={classes.headerIcon}>date_range</Icon>
-              Add Date/Time Options
+              Add Date &amp; Time Options
             </Typography>
             <Grid
               container
@@ -277,12 +269,12 @@ class CreatePoll extends Component {
               justify="space-between"
               alignItems="center"
             >
-              <Grid item xs={4}>
+              <Grid item xs={8}>
                 <TextField
-                  name="date"
-                  type="date"
+                  name="dateTime"
+                  type="datetime-local"
                   label="yyyy/mm/dd"
-                  value={this.state.date}
+                  defaultValue={this.state.dateTime}
                   onChange={this.handleChange}
                   mindate={0}
                   variant="filled"
@@ -293,22 +285,8 @@ class CreatePoll extends Component {
                 />
               </Grid>
               <Grid item xs={4}>
-                <TextField
-                  name="time"
-                  type="time"
-                  label="hh:mm"
-                  value={this.state.time}
-                  onChange={this.handleChange}
-                  variant="filled"
-                  fullWidth
-                  InputLabelProps={{
-                    shrink: true
-                  }}
-                />
-              </Grid>
-              <Grid item xs={4}>
                 <Button
-                  disabled={!this.state.date || !this.state.time}
+                  disabled={!this.state.dateTime}
                   onClick={this.addDateTime}
                   type="submit"
                   variant="contained"
@@ -320,6 +298,9 @@ class CreatePoll extends Component {
             </Grid>
 
             <br />
+            <Typography variant="body2" component="p">
+              {this.state.dateTimeMessage}
+            </Typography>
             <List>
               {this.state.selectedDates.length
                 ? this.state.selectedDates.map((date, idx) => (
