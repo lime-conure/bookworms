@@ -49,6 +49,8 @@ class Routes extends Component {
             <Route exact path="/clubs" component={Clubs} />
             {/* Sidebar is scoped to a single club */}
             <Route path="/clubs/:clubId" component={Sidebar} />
+            {/* Display Clubs component as a fallback for any other logged in routes*/}
+            <Route component={Clubs} />
           </Switch>
         ) : (
           <Switch>
@@ -59,54 +61,54 @@ class Routes extends Component {
               path="/clubs/:clubId/join/:hash"
               component={JoinClub}
             />
+            {/* Display Login component as a fallback for any other looged out routes */}
             <Route component={Login} />
           </Switch>
         )}
-        <main className={classes.root}>
-          <Switch>
-            {/* Routes placed here are available to all visitors */}
 
-            {isLoggedIn && (
+        <Switch>
+          {isLoggedIn && (
+            <div>
               <Switch>
-                {/* Routes placed here are only available after logging in */}
-                <Route
-                  exact
-                  path="/clubs/:clubId/messages"
-                  component={Messages}
-                />
-                <Route exact path="/clubs/:clubId" component={SingleClub} />
-                <Route
-                  exact
-                  path="/clubs/:clubId/books"
-                  component={ClubBooks}
-                />
-                <Route exact path="/clubs/:clubId/polls" component={Polls} />
-                <Route
-                  exact
-                  path="/clubs/:clubId/members"
-                  component={ClubMembers}
-                />
-                <Route
-                  exact
-                  path="/clubs/:clubId/polls/create"
-                  component={CreatePoll}
-                />
-                <Route
-                  exact
-                  path="/clubs/:clubId/polls/:pollId"
-                  component={SinglePoll}
-                />
-                <Route
-                  exact
-                  path="/clubs/:clubId/meetings"
-                  component={Meetings}
-                />
+                {/* Logged in routes that have sidebar */}
+                <main className={classes.root}>
+                  <Route
+                    exact
+                    path="/clubs/:clubId/messages"
+                    component={Messages}
+                  />
+                  <Route exact path="/clubs/:clubId" component={SingleClub} />
+                  <Route
+                    exact
+                    path="/clubs/:clubId/books"
+                    component={ClubBooks}
+                  />
+                  <Route exact path="/clubs/:clubId/polls" component={Polls} />
+                  <Route
+                    exact
+                    path="/clubs/:clubId/members"
+                    component={ClubMembers}
+                  />
+                  <Route
+                    exact
+                    path="/clubs/:clubId/polls/create"
+                    component={CreatePoll}
+                  />
+                  <Route
+                    exact
+                    path="/clubs/:clubId/polls/:pollId"
+                    component={SinglePoll}
+                  />
+                  <Route
+                    exact
+                    path="/clubs/:clubId/meetings"
+                    component={Meetings}
+                  />
+                </main>
               </Switch>
-            )}
-            {/* Displays our Login component as a fallback */}
-            {/* <Route component={Login} /> */}
-          </Switch>
-        </main>
+            </div>
+          )}
+        </Switch>
       </div>
     )
   }
