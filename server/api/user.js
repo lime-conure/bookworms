@@ -4,22 +4,6 @@ module.exports = router
 
 //********* ROUTES FOR USER **********//
 
-// GET /api/user - to get user profile
-// router.get('/', async (req, res, next) => {
-//   try {
-//     if (!req.user) res.status(403).send('Not authorized')
-//     else {
-//       const profile = await User.findOne({
-//         where: {id: req.user.id},
-//         attribute: ['id', 'fullName', 'email', 'imageUrl']
-//       })
-//       res.send(profile)
-//     }
-//   } catch (err) {
-//     next(err)
-//   }
-// })
-
 // GET /api/user/books - to get user books
 router.get('/books', async (req, res, next) => {
   try {
