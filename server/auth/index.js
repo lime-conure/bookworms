@@ -27,7 +27,6 @@ router.post('/signup', async (req, res, next) => {
       firstName = fullName.split(' ')[0]
       lastName = fullName.split(' ')[1] ? fullName.split(' ')[1] : ''
     }
-
     const user = await User.create({firstName, lastName, email, password})
     req.login(user, err => (err ? next(err) : res.json(user)))
   } catch (err) {
