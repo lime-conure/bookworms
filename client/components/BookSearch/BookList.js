@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
-import axios from 'axios'
-const apiKey = 'jrAzhFY1JP1FdDk1vp7Zg'
+import {getBookDescription} from '../../utils'
 
 // Material UI
 import {withStyles} from '@material-ui/core/styles'
@@ -67,35 +66,11 @@ class BookList extends Component {
     this.handleDialogClose = this.handleDialogClose.bind(this)
   }
 
-  getDescription = async bookId => {
-    const requestUri =
-      `https://cors-anywhere.herokuapp.com/` +
-      `https://www.goodreads.com/book/show/${bookId}?key=${apiKey}`
-    let description = 'loading...'
-    try {
-      const {data} = await axios.get(requestUri)
-      const parser = new DOMParser()
-      const XMLResponse = parser.parseFromString(data, 'application/xml')
-      description = XMLResponse.getElementsByTagName('description')[0]
-        .textContent
-      if (!description) {
-        return 'No description found.'
-      }
-      // remove html tags
-      const shorterDescWithoutHTML = description
-        .replace(/<\/?[^>]+(>|$)/g, '')
-        .substr(0, 500)
-      return `${shorterDescWithoutHTML}...`
-    } catch (err) {
-      console.error(err)
-    }
-  }
-
   handleDialogOpen = async (e, book) => {
     this.setState({loadingDialog: true})
     e.preventDefault()
     if (!this.state.dialogOpen) {
-      const description = await this.getDescription(book.goodReadsId)
+      const description = await getBookDescription(book.goodReadsId)
       const dialogBook = {...book, description}
       this.setState({
         dialogOpen: true,
@@ -140,7 +115,7 @@ class BookList extends Component {
                     </Typography>
                     <Typography variant="body2" component="p">
                       {book.description
-                        ? `${book.description.slice(0, 200)}...`
+                        ? `${book.description.slice(0, 150)}...`
                         : ''}
                     </Typography>
                   </ListItemText>

@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {fetchClubBooks, postClubBook, deleteClubBook} from '../store'
-import BookSearch from './BookSearch'
+import {makeBookObject, renderBookSearch} from '../utils'
 
 // Material UI
 import {withStyles} from '@material-ui/core/styles'
@@ -12,7 +12,7 @@ const styles = theme => ({
   bookSection: {
     marginTop: theme.spacing.unit * 4,
     marginBottom: theme.spacing.unit * 4,
-    width: 660
+    width: 720
   }
 })
 
@@ -37,23 +37,9 @@ export class ClubBooks extends Component {
     this.setState({[`${type}Results`]: results})
   }
 
-  handleAddBook(e, bookResult, type) {
+  async handleAddBook(e, bookResult, type) {
     e.preventDefault()
-    // TODO: fetch book description and save to db
-    const newBook = {
-      author: bookResult.best_book.author,
-      goodReadsId: bookResult.best_book.id,
-      title: bookResult.best_book.title,
-      imageUrl: bookResult.best_book.image_url,
-      smallImageUrl: bookResult.best_book.small_image_url,
-      pubDate:
-        bookResult.original_publication_month +
-        '-' +
-        bookResult.original_publication_day +
-        '-' +
-        bookResult.original_publication_year,
-      rating: Math.round(bookResult.average_rating * 100)
-    }
+    const newBook = await makeBookObject(bookResult)
     this.props.postClubBook(newBook, type, this.props.clubId)
     this.setState({
       nowResults: [],
@@ -76,13 +62,7 @@ export class ClubBooks extends Component {
             : type === 'future' ? `Books We Want To Read` : `Books We've Read`}
         </Typography>
 
-        <BookSearch
-          bookList={books}
-          results={this.state[`${type}Results`]}
-          setResults={results => this.setResults(results, type)}
-          addBook={(e, book) => this.handleAddBook(e, book, type)}
-          removeBook={(e, idx, bookId) => this.handleRemoveBook(e, idx, bookId)}
-        />
+        {renderBookSearch(books, type, this)}
       </div>
     )
   }
