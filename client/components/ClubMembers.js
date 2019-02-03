@@ -27,8 +27,12 @@ export class ClubMembers extends Component {
         <List>
           {members.length
             ? members.map(member => (
-                <ListItem button key={member.userId}>
-                  {/* TODO: link these to user profiles */}
+                <ListItem
+                  button
+                  key={member.userId}
+                  component={Link}
+                  to="/profile"
+                >
                   <ListItemIcon>
                     <Icon>person</Icon>
                   </ListItemIcon>
