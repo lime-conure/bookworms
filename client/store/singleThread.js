@@ -57,6 +57,7 @@ const singleThread = (state = initState, action) => {
         ...state,
         thread: {
           ...state.thread,
+          name: action.message.text,
           messages: [...state.thread.messages, action.message]
         }
       }

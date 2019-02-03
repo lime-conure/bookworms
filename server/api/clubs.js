@@ -346,7 +346,7 @@ router.post('/:clubId/threads', async (req, res, next) => {
         if (!check) res.status(403).send(`Not authorized`)
         else {
           const thread = await Thread.create({
-            name: 'do we need a name?',
+            name: '',
             clubId
           })
           console.log('di i create a thread?', thread)
@@ -358,6 +358,9 @@ router.post('/:clubId/threads', async (req, res, next) => {
             threadId: thread.id
           })
           console.log('message created', message)
+          thread.name = message.text
+          await thread.save()
+
           const threaddy = await Thread.findOne({
             where: {
               id: thread.id
@@ -425,6 +428,8 @@ router.post('/:clubId/threads/:threadId', async (req, res, next) => {
               clubId: clubId,
               threadId: thread.id
             })
+            thread.name = message.text
+            await thread.save()
             const updatedMessage = await Message.findOne({
               where: {id: message.id},
               include: [{model: User}]

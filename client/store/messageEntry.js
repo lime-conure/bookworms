@@ -3,7 +3,6 @@ const initState = []
 const WRITE_INPUT_MESSAGE = 'WRITE_INPUT_MESSAGE'
 
 export const writeInputMessage = (message, clubId) => {
-  console.log('in write message')
   return {
     type: WRITE_INPUT_MESSAGE,
     message,
