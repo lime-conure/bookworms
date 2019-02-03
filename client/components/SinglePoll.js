@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {fetchSinglePoll, sendVotes} from '../store'
+import {formatDateDisplay} from '../utils'
 
 // Material UI
 import {withStyles} from '@material-ui/core/styles'
@@ -89,7 +90,7 @@ export class SinglePoll extends Component {
     const columnName =
       type === 'Book'
         ? 'bookName'
-        : type === 'Date/Time' ? 'dateTime' : 'location'
+        : type === 'Date & Time' ? 'dateTime' : 'location'
     if (options && options.length) {
       return (
         <Paper elevation={2} className={classes.poll}>
@@ -102,7 +103,11 @@ export class SinglePoll extends Component {
               <TableRow>
                 {options.map(optionObj => (
                   <TableCell key={optionObj.option.id}>
-                    <strong>{optionObj.option[columnName]}</strong>
+                    <strong>
+                      {columnName === 'dateTime'
+                        ? formatDateDisplay(optionObj.option[columnName])
+                        : optionObj.option[columnName]}
+                    </strong>
                   </TableCell>
                 ))}
               </TableRow>
@@ -168,7 +173,7 @@ export class SinglePoll extends Component {
 
           <form onSubmit={this.handleSubmit}>
             {this.renderPoll(bookOptions, 'Book', classes)}
-            {this.renderPoll(timeOptions, 'Date/Time', classes)}
+            {this.renderPoll(timeOptions, 'Date & Time', classes)}
             {this.renderPoll(locationOptions, 'Location', classes)}
             <br />
             {allOptions.length ? (
