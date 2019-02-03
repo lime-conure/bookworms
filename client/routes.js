@@ -16,6 +16,7 @@ import {
   ClubMembers,
   ClubBooks,
   CreateClub,
+  Profile,
   Meetings
 } from './components'
 import {me} from './store'
@@ -46,6 +47,7 @@ class Routes extends Component {
         {isLoggedIn && !invitePending ? (
           <Switch>
             <Route exact path="/createclub" component={CreateClub} />
+            <Route exact path="/profile" component={Profile} />
             <Route exact path="/clubs" component={Clubs} />
             {/* Sidebar is scoped to a single club */}
             <Route path="/clubs/:clubId" component={Sidebar} />

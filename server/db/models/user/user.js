@@ -12,7 +12,7 @@ const User = db.define('user', {
   },
   lastName: {
     type: Sequelize.STRING,
-    allowNull: true
+    allowNull: false
   },
   fullName: {
     type: Sequelize.VIRTUAL,
