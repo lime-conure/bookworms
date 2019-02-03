@@ -17,6 +17,7 @@ import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogContent from '@material-ui/core/DialogContent'
 import LinearProgress from '@material-ui/core/LinearProgress'
+import Grid from '@material-ui/core/Grid'
 
 const styles = theme => ({
   root: {
@@ -42,9 +43,15 @@ const styles = theme => ({
   progress: {
     margin: theme.spacing.unit * 2
   },
-  description: {
-    marginTop: theme.spacing.unit * 3,
-    marginBottom: theme.spacing.unit * 3
+  description: {},
+  dialogImage: {
+    width: '100%'
+  },
+  goodreadsButton: {
+    marginTop: theme.spacing.unit * 3
+  },
+  dialogAuthor: {
+    opacity: 0.6
   }
 })
 
@@ -161,23 +168,37 @@ class BookList extends Component {
                   </IconButton>
                   <DialogTitle id="book-modal">
                     {this.state.dialogBook.title}
-                    {this.state.dialogBook.authors &&
-                    this.state.dialogBook.authors.length
-                      ? ` by ${this.state.dialogBook.authors[0].name}`
-                      : ''}
+                    <span className={classes.dialogAuthor}>
+                      {this.state.dialogBook.authors &&
+                      this.state.dialogBook.authors.length
+                        ? ` by ${this.state.dialogBook.authors[0].name}`
+                        : ''}
+                    </span>
                   </DialogTitle>
                   <DialogContent>
-                    <img
-                      src={this.state.dialogBook.imageUrl}
-                      alt={this.state.dialogBook.title}
-                    />
-                    <Typography
-                      variant="body1"
-                      component="span"
-                      className={classes.description}
+                    <Grid
+                      container
+                      spacing={24}
+                      justify="flex-start"
+                      alignItems="flex-start"
                     >
-                      {this.state.dialogBook.description}
-                    </Typography>
+                      <Grid item xs={3}>
+                        <img
+                          className={classes.dialogImage}
+                          src={this.state.dialogBook.imageUrl}
+                          alt={this.state.dialogBook.title}
+                        />
+                      </Grid>
+                      <Grid item xs={9}>
+                        <Typography
+                          variant="body1"
+                          component="span"
+                          className={classes.description}
+                        >
+                          {this.state.dialogBook.description}
+                        </Typography>
+                      </Grid>
+                    </Grid>
                     <Button
                       target="_blank"
                       href={`https://www.goodreads.com/book/show/${
@@ -185,6 +206,7 @@ class BookList extends Component {
                       }`}
                       variant="contained"
                       color="primary"
+                      className={classes.goodreadsButton}
                     >
                       View On Goodreads
                     </Button>
