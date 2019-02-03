@@ -48,7 +48,7 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     padding: '0 8px',
-
+    ...theme.mixins.toolbar,
     justifyContent: 'flex-start'
   },
   drawerPaper: {
@@ -56,7 +56,7 @@ const styles = theme => ({
   },
 
   content: {
-    flexGrow: 1,
+    // flexGrow: 1,
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
@@ -171,80 +171,75 @@ class Messages extends Component {
             [classes.contentShift]: open
           })}
         >
-          <Grid xs={12}>
-            {threads[0] && threads[0].id ? (
-              <div>
-                {threads.map(t => (
-                  <div key={t.id}>
-                    <List>
-                      <ListItem>
-                        <Avatar
-                          alt="userImg"
-                          src={t.messages[0].user.imageUrl}
-                        />
-                        <ListItemText
-                          primary={t.messages[0].user.fullName}
-                          secondary={`${new Date(
-                            t.messages[0].createdAt
-                          ).toLocaleString('en-us', {
-                            month: 'short',
-                            day: 'numeric',
-                            hour: 'numeric',
-                            minute: 'numeric'
-                          })}`}
-                        />
-                      </ListItem>
-                      <ListItemText>{t.messages[0].text}</ListItemText>
-                    </List>
-                    {t.messages[1] ? (
-                      <div>
-                        {t.messages.length - 1 === 1 ? (
-                          <ListItemText>
-                            {t.messages.length - 1} reply
-                          </ListItemText>
-                        ) : (
-                          <ListItemText>
-                            {t.messages.length - 1} replies
-                          </ListItemText>
-                        )}
-                        <Button
-                          variant="outlined"
-                          size="small"
-                          color="secondary"
-                          onClick={() => this.handleDrawerOpen(t.id)}
-                        >
-                          View thread
-                        </Button>
-                      </div>
-                    ) : (
+          {threads[0] && threads[0].id ? (
+            <div>
+              {threads.map(t => (
+                <div key={t.id}>
+                  <List>
+                    <ListItem>
+                      <Avatar alt="userImg" src={t.messages[0].user.imageUrl} />
+                      <ListItemText
+                        primary={t.messages[0].user.fullName}
+                        secondary={`${new Date(
+                          t.messages[0].createdAt
+                        ).toLocaleString('en-us', {
+                          month: 'short',
+                          day: 'numeric',
+                          hour: 'numeric',
+                          minute: 'numeric'
+                        })}`}
+                      />
+                    </ListItem>
+                    <ListItemText>{t.messages[0].text}</ListItemText>
+                  </List>
+                  {t.messages[1] ? (
+                    <div>
+                      {t.messages.length - 1 === 1 ? (
+                        <ListItemText>
+                          {t.messages.length - 1} reply
+                        </ListItemText>
+                      ) : (
+                        <ListItemText>
+                          {t.messages.length - 1} replies
+                        </ListItemText>
+                      )}
                       <Button
                         variant="outlined"
                         size="small"
                         color="secondary"
                         onClick={() => this.handleDrawerOpen(t.id)}
                       >
-                        Start a thread
+                        View thread
                       </Button>
-                    )}
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <Typography>No messages in this book Club </Typography>
-            )}
-            <TextField
-              id="outlined-bare"
-              value={inputValue}
-              margin="normal"
-              variant="outlined"
-              fullWidth
-              placeholder="Type your message ..."
-              onChange={this.handleChangeInput}
-            />
-            <IconButton onClick={this.handleInput}>
-              <Send />
-            </IconButton>
-          </Grid>
+                    </div>
+                  ) : (
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      color="secondary"
+                      onClick={() => this.handleDrawerOpen(t.id)}
+                    >
+                      Start a thread
+                    </Button>
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <Typography>No messages in this book Club </Typography>
+          )}
+          <TextField
+            id="outlined-bare"
+            value={inputValue}
+            margin="normal"
+            variant="outlined"
+            // fullWidth
+            placeholder="Type your message ..."
+            onChange={this.handleChangeInput}
+          />
+          <IconButton onClick={this.handleInput}>
+            <Send />
+          </IconButton>
         </main>
         {thread.id ? (
           <Drawer
@@ -309,10 +304,10 @@ class Messages extends Component {
 }
 
 const mapState = state => ({
-  threads: state.threads,
+  threads: state.threads.threads,
   messageEntry: state.messageEntry,
-  open: state.singleThread.open,
-  thread: state.singleThread.thread,
+  open: state.threads.open,
+  thread: state.threads.singleThread,
   threadMessageEntry: state.threadMessageEntry
 })
 

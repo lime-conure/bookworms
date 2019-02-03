@@ -177,9 +177,7 @@ router.post('/:clubId/polls', async (req, res, next) => {
 
           await Promise.all(
             selectedDates.map(date => {
-              console.log('date:', date)
               const dateTime = new Date(date)
-              console.log('dateTime:', dateTime)
               return Option.create({
                 type: 'time',
                 dateTime: dateTime,
@@ -349,17 +347,12 @@ router.post('/:clubId/threads', async (req, res, next) => {
             name: '',
             clubId
           })
-          console.log('di i create a thread?', thread)
-
-          const message = await Message.create({
+          await Message.create({
             text: req.body.text,
             userId: req.user.id,
             clubId,
             threadId: thread.id
           })
-          console.log('message created', message)
-          thread.name = message.text
-          await thread.save()
 
           const threaddy = await Thread.findOne({
             where: {
@@ -367,8 +360,6 @@ router.post('/:clubId/threads', async (req, res, next) => {
             },
             include: [{model: Message, include: [{model: User}]}]
           })
-          console.log('posted message')
-
           res.send(threaddy)
         }
       }
@@ -428,8 +419,6 @@ router.post('/:clubId/threads/:threadId', async (req, res, next) => {
               clubId: clubId,
               threadId: thread.id
             })
-            thread.name = message.text
-            await thread.save()
             const updatedMessage = await Message.findOne({
               where: {id: message.id},
               include: [{model: User}]

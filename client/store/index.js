@@ -13,7 +13,6 @@ import messageEntry from './messageEntry'
 import clubBooks from './clubBooks'
 import clubMembers from './clubMembers'
 import meetings from './meetings'
-import singleThread from './singleThread'
 import threadMessageEntry from './threadMessageEntry'
 
 const reducer = combineReducers({
@@ -28,7 +27,6 @@ const reducer = combineReducers({
   clubMembers,
   user,
   meetings,
-  singleThread,
   threadMessageEntry
 })
 const middleware = composeWithDevTools(
@@ -48,5 +46,4 @@ export * from './messageEntry'
 export * from './clubBooks'
 export * from './clubMembers'
 export * from './meetings'
-export * from './singleThread'
 export * from './threadMessageEntry'
