@@ -15,6 +15,8 @@ import TableRow from '@material-ui/core/TableRow'
 import Checkbox from '@material-ui/core/Checkbox'
 import Button from '@material-ui/core/Button'
 import Tooltip from '@material-ui/core/Tooltip'
+import Icon from '@material-ui/core/Icon'
+import Grid from '@material-ui/core/Grid'
 
 const styles = theme => ({
   poll: {
@@ -28,6 +30,9 @@ const styles = theme => ({
   },
   bookImage: {
     width: 80
+  },
+  checkmark: {
+    marginRight: theme.spacing.unit
   }
 })
 
@@ -36,7 +41,8 @@ export class SinglePoll extends Component {
     super(props)
     // local state for keeping track of which checkbox options are selected
     this.state = {
-      votes: []
+      votes: [],
+      justVoted: false
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleCheck = this.handleCheck.bind(this)
@@ -80,6 +86,7 @@ export class SinglePoll extends Component {
       votes: this.state.votes
     }
     this.props.sendVotes(payload)
+    this.setState({justVoted: true})
   }
 
   optionIsChecked(optionObj) {
@@ -200,14 +207,42 @@ export class SinglePoll extends Component {
             {this.renderPoll(locationOptions, 'Location', classes)}
             <br />
             {allOptions.length ? (
-              <Button
-                size="large"
-                color="secondary"
-                variant="contained"
-                type="submit"
+              <Grid
+                container
+                className={classes.root}
+                spacing={24}
+                justify="flex-start"
+                alignItems="center"
               >
-                Vote
-              </Button>
+                <Grid item>
+                  <Button
+                    size="large"
+                    color="secondary"
+                    variant="contained"
+                    type="submit"
+                  >
+                    {this.state.justVoted && (
+                      <Icon color="inherit" className={classes.checkmark}>
+                        check_circle
+                      </Icon>
+                    )}
+                    Vote
+                  </Button>
+                </Grid>
+                {this.state.justVoted && (
+                  <Typography variant="body2" component="p" color="secondary">
+                    <Grid
+                      container
+                      item
+                      spacing={8}
+                      justify="flex-end"
+                      alignItems="stretch"
+                    >
+                      <Grid item>You voted!</Grid>
+                    </Grid>
+                  </Typography>
+                )}
+              </Grid>
             ) : (
               ''
             )}
