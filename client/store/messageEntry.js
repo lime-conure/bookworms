@@ -1,6 +1,5 @@
 import axios from 'axios'
 const initState = []
-
 const WRITE_INPUT_MESSAGE = 'WRITE_INPUT_MESSAGE'
 
 export const writeInputMessage = (message, clubId) => {
@@ -20,8 +19,7 @@ const messageEntry = (state = initState, action) => {
           if (entry.clubId === action.clubId) entry.message = action.message
           return entry
         })
-      }
-      return [...state, {message: action.message, clubId: action.clubId}]
+      } else return [...state, {message: action.message, clubId: action.clubId}]
 
     default:
       return state

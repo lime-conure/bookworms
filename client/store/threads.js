@@ -37,9 +37,9 @@ export const postMessage = (message, clubId, socket) => {
   return async dispatch => {
     try {
       const {data} = await axios.post(`/api/clubs/${clubId}/threads`, message)
+      dispatch(await writeInputMessage('', clubId))
       dispatch(writeMessage(data))
       socket.emit('NEW_MESSAGE', data)
-      dispatch(writeInputMessage('', clubId))
     } catch (err) {
       console.error(err)
     }
