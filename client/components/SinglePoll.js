@@ -14,6 +14,7 @@ import TableBody from '@material-ui/core/TableBody'
 import TableRow from '@material-ui/core/TableRow'
 import Checkbox from '@material-ui/core/Checkbox'
 import Button from '@material-ui/core/Button'
+import Tooltip from '@material-ui/core/Tooltip'
 
 const styles = theme => ({
   poll: {
@@ -24,6 +25,9 @@ const styles = theme => ({
   },
   headerIcon: {
     marginRight: theme.spacing.unit
+  },
+  bookImage: {
+    width: 80
   }
 })
 
@@ -104,9 +108,28 @@ export class SinglePoll extends Component {
                 {options.map(optionObj => (
                   <TableCell key={optionObj.option.id}>
                     <strong>
-                      {columnName === 'dateTime'
-                        ? formatDateDisplay(optionObj.option[columnName])
-                        : optionObj.option[columnName]}
+                      {type === 'Book' ? (
+                        <Button
+                          target="_blank"
+                          href={`https://www.goodreads.com/book/show/${
+                            optionObj.option.book.goodReadsId
+                          }`}
+                        >
+                          <Tooltip title="View on Goodreads" placement="right">
+                            <img
+                              src={optionObj.option.book.imageUrl}
+                              alt={optionObj.option.book.title}
+                              className={classes.bookImage}
+                            />
+                          </Tooltip>
+                        </Button>
+                      ) : (
+                        ''
+                      )}
+
+                      {type === 'Date & Time' &&
+                        formatDateDisplay(optionObj.option[columnName])}
+                      {type === 'Location' && optionObj.option[columnName]}
                     </strong>
                   </TableCell>
                 ))}
