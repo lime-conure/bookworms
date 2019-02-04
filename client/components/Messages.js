@@ -26,6 +26,7 @@ import Button from '@material-ui/core/Button'
 import Send from '@material-ui/icons/Send'
 import Mood from '@material-ui/icons/Mood'
 import Close from '@material-ui/icons/Close'
+import Chat from '@material-ui/icons/Chat'
 import socket from '../socket'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import EmojiPicker from 'emoji-picker-react'
@@ -192,6 +193,7 @@ class Messages extends Component {
   async handleInput(e) {
     e.preventDefault()
     const clubId = Number(this.props.match.params.clubId)
+    if (this.state.emojiShown) this.toggleEmojiState()
     this.filterInput(clubId)
     const newMessage = {
       text: this.state.inputValue
@@ -234,38 +236,44 @@ class Messages extends Component {
                         })}`}
                       />
                     </ListItem>
-                    <ListItemText>{t.messages[0].text}</ListItemText>
-                  </List>
-                  {t.messages[1] ? (
-                    <div>
-                      {t.messages.length - 1 === 1 ? (
-                        <ListItemText>
-                          {t.messages.length - 1} reply
-                        </ListItemText>
+                    <ListItemText>
+                      {t.messages[0].text}
+                      {t.messages[1] ? (
+                        <div>
+                          {t.messages.length - 1 === 1 ? (
+                            <Button
+                              variant="text"
+                              size="small"
+                              color="secondary"
+                              onClick={() => this.handleDrawerOpen(t.id)}
+                            >
+                              {t.messages.length - 1} reply <Chat />
+                            </Button>
+                          ) : (
+                            <Button
+                              variant="text"
+                              size="small"
+                              color="secondary"
+                              onClick={() => this.handleDrawerOpen(t.id)}
+                            >
+                              {t.messages.length - 1} replies <Chat />
+                            </Button>
+                          )}
+                        </div>
                       ) : (
-                        <ListItemText>
-                          {t.messages.length - 1} replies
-                        </ListItemText>
+                        <div>
+                          <Button
+                            variant="text"
+                            size="small"
+                            color="secondary"
+                            onClick={() => this.handleDrawerOpen(t.id)}
+                          >
+                            reply
+                          </Button>
+                        </div>
                       )}
-                      <Button
-                        variant="outlined"
-                        size="small"
-                        color="secondary"
-                        onClick={() => this.handleDrawerOpen(t.id)}
-                      >
-                        View thread
-                      </Button>
-                    </div>
-                  ) : (
-                    <Button
-                      variant="outlined"
-                      size="small"
-                      color="secondary"
-                      onClick={() => this.handleDrawerOpen(t.id)}
-                    >
-                      Start a thread
-                    </Button>
-                  )}
+                    </ListItemText>
+                  </List>
                 </div>
               ))}
             </div>
@@ -357,7 +365,7 @@ class Messages extends Component {
               value={this.state.threadInputValue}
               style={{margin: 10}}
               variant="outlined"
-              placeholder="Type your message ..."
+              placeholder="Reply ..."
               onChange={e => this.handleThreadChange(e, thread.id)}
               InputProps={{
                 endAdornment: (
