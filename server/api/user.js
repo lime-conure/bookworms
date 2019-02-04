@@ -1,5 +1,6 @@
 const router = require('express').Router()
-const {Book, User, Author} = require('../db/models')
+const {Book, UserBook, Author} = require('../db/models')
+const Op = require('sequelize').Op
 module.exports = router
 
 //********* ROUTES FOR USER **********//
@@ -39,7 +40,19 @@ router.post('/books/add', async (req, res, next) => {
         }
         existingBook.setAuthors([existingAuthor])
       }
-      existingBook.addUser(req.user, {through: {type}})
+      // type === 'now' or type === 'future', no duplicated row allowed in users_books table
+      if (type === 'now' || type === 'future') {
+        const existingRow = await UserBook.findOne({
+          where: {
+            BookId: existingBook.id,
+            UserId: req.user.id,
+            type: {
+              [Op.or]: ['now', 'future']
+            }
+          }
+        })
+        if (!existingRow) existingBook.addUser(req.user, {through: {type}})
+      } else existingBook.addUser(req.user, {through: {type}})
       res.json(existingBook)
     }
   } catch (err) {
