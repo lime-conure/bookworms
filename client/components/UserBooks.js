@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {fetchClubBooks, postClubBook, deleteClubBook} from '../store'
+import {fetchUserBooks, postUserBook, deleteUserBook} from '../store'
 import {makeBookObject, renderBookSearch} from '../utils'
 
 // Material UI
@@ -16,7 +16,7 @@ const styles = theme => ({
   }
 })
 
-export class ClubBooks extends Component {
+class UserBooks extends Component {
   constructor() {
     super()
     this.state = {
@@ -29,8 +29,7 @@ export class ClubBooks extends Component {
   }
 
   componentDidMount() {
-    const clubId = Number(this.props.match.params.clubId)
-    this.props.fetchClubBooks(clubId)
+    this.props.fetchUserBooks()
   }
 
   setResults = (results, type) => {
@@ -40,7 +39,7 @@ export class ClubBooks extends Component {
   async handleAddBook(e, bookResult, type) {
     e.preventDefault()
     const newBook = await makeBookObject(bookResult)
-    this.props.postClubBook(newBook, type, this.props.clubId)
+    this.props.postUserBook(newBook, type)
     this.setState({
       nowResults: [],
       futureResults: [],
@@ -50,7 +49,7 @@ export class ClubBooks extends Component {
 
   handleRemoveBook(e, idx, bookId) {
     e.preventDefault()
-    this.props.deleteClubBook(bookId, this.props.clubId)
+    this.props.deleteUserBook(bookId)
   }
 
   renderBookSection(books, type, classes) {
@@ -58,8 +57,8 @@ export class ClubBooks extends Component {
       <div className={classes.bookSection}>
         <Typography variant="h4" component="h4" gutterBottom>
           {type === 'now'
-            ? `Books We're Reading`
-            : type === 'future' ? `Books We Want To Read` : `Books We've Read`}
+            ? `Books I'm Reading`
+            : type === 'future' ? `Books I Want To Read` : `Books I've Read`}
         </Typography>
 
         {renderBookSearch(books, type, this)}
@@ -69,42 +68,33 @@ export class ClubBooks extends Component {
 
   render() {
     const {classes} = this.props
-
     const books = this.props.books
-    const currentBooks = books.filter(book => book.clubs_books.type === 'now')
-    const pastBooks = books.filter(book => book.clubs_books.type === 'past')
-    const futureBooks = books.filter(book => book.clubs_books.type === 'future')
+    const currentBooks = books.filter(book => book.users_books.type === 'now')
+    const pastBooks = books.filter(book => book.users_books.type === 'past')
+    const futureBooks = books.filter(book => book.users_books.type === 'future')
 
     return (
       <div>
-        <Typography variant="h3" gutterBottom color="primary">
-          Books
-        </Typography>
-        <div>
-          <Divider />
-          {this.renderBookSection(currentBooks, 'now', classes)}
-          <Divider />
-          {this.renderBookSection(futureBooks, 'future', classes)}
-          <Divider />
-          {this.renderBookSection(pastBooks, 'past', classes)}
-        </div>
+        {this.renderBookSection(currentBooks, 'now', this, classes)}
+        <Divider />
+        {this.renderBookSection(futureBooks, 'future', this, classes)}
+        <Divider />
+        {this.renderBookSection(pastBooks, 'past', this, classes)}
       </div>
     )
   }
 }
 
-const StyledClubBooks = withStyles(styles)(ClubBooks)
+const StyledUserBooks = withStyles(styles)(UserBooks)
 
 const mapState = state => ({
-  books: state.clubBooks,
-  clubId: state.singleClub.id
+  books: state.user.books
 })
 
 const mapDispatch = dispatch => ({
-  fetchClubBooks: clubId => dispatch(fetchClubBooks(clubId)),
-  postClubBook: (book, type, clubId) =>
-    dispatch(postClubBook(book, type, clubId)),
-  deleteClubBook: (bookId, clubId) => dispatch(deleteClubBook(bookId, clubId))
+  fetchUserBooks: () => dispatch(fetchUserBooks()),
+  postUserBook: (book, type) => dispatch(postUserBook(book, type)),
+  deleteUserBook: bookId => dispatch(deleteUserBook(bookId))
 })
 
-export default connect(mapState, mapDispatch)(StyledClubBooks)
+export default connect(mapState, mapDispatch)(StyledUserBooks)

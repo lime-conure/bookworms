@@ -7,7 +7,6 @@ const Option = require('./option/option.js')
 const Poll = require('./poll/poll.js')
 const Thread = require('./thread/thread.js')
 const User = require('./user/user.js')
-// const Vote = require('./vote/vote.js')
 const db = require('../db')
 
 /**
@@ -48,10 +47,10 @@ Option.belongsTo(Poll)
  * Many-to-Many Associations
  */
 const BookAuthor = db.define('books_authors')
-const UserBook = db.define('users_books')
 const UserClub = db.define('users_clubs')
-const Vote = db.define('vote')
+const Vote = require('./vote/vote.js')
 const ClubBook = require('./clubBook/clubBook.js')
+const UserBook = require('./userBook/userBook.js')
 
 // clubs_books association table columns: clubId, bookId, type = ['past', 'now', 'future']
 Club.belongsToMany(Book, {through: ClubBook})
