@@ -17,12 +17,11 @@ const styles = theme => ({
     justifyContent: 'space-around',
     overflow: 'hidden',
     backgroundColor: theme.palette.background.paper,
-    marginTop: theme.spacing.unit * 2
-  },
-  gridList: {
+    marginTop: theme.spacing.unit * 2,
     width: 720,
     height: 350
   },
+  gridList: {},
   gridListTile: {
     cursor: 'pointer'
   }
@@ -32,7 +31,6 @@ class BookResults extends Component {
   render() {
     const {results, loadingNewBook, classes} = this.props
     if (results.length) {
-      console.log('loading new book: ', loadingNewBook)
       return (
         <div>
           <div className={classes.root}>

@@ -288,6 +288,11 @@ class Messages extends Component {
             fullWidth
             placeholder="Type your message ..."
             onChange={this.handleChangeInput}
+            onKeyPress={e => {
+              if (e.key === 'Enter') {
+                this.handleInput(e) // send on enter
+              }
+            }}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
