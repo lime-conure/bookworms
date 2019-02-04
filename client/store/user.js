@@ -88,13 +88,15 @@ export const postUserBook = (book, type) => async dispatch => {
       book,
       type
     })
-    dispatch(
-      addUserBook({
-        ...data,
-        users_books: {type},
-        authors: [book.author]
-      })
-    )
+    if (data.id) {
+      dispatch(
+        addUserBook({
+          ...data,
+          users_books: {type},
+          authors: [book.author]
+        })
+      )
+    }
   } catch (err) {
     console.log(err)
   }
