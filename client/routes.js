@@ -93,7 +93,7 @@ class Routes extends Component {
                   />
                   <Route
                     exact
-                    path="/clubs/:clubId/polls/create"
+                    path="/clubs/:clubId/createpoll"
                     component={CreatePoll}
                   />
                   <Route
