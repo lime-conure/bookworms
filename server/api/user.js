@@ -41,19 +41,27 @@ router.post('/books/add', async (req, res, next) => {
         existingBook.setAuthors([existingAuthor])
       }
       // type === 'now' or type === 'future', no duplicated row allowed in users_books table
+
       if (type === 'now' || type === 'future') {
         const existingRow = await UserBook.findOne({
           where: {
-            BookId: existingBook.id,
-            UserId: req.user.id,
+            bookId: existingBook.id,
+            userId: req.user.id,
             type: {
               [Op.or]: ['now', 'future']
             }
           }
         })
-        if (!existingRow) existingBook.addUser(req.user, {through: {type}})
-      } else existingBook.addUser(req.user, {through: {type}})
-      res.json(existingBook)
+
+        if (existingRow) res.json({})
+        else {
+          existingBook.addUser(req.user, {through: {type}})
+          res.json(existingBook)
+        }
+      } else {
+        existingBook.addUser(req.user, {through: {type}})
+        res.json(existingBook)
+      }
     }
   } catch (err) {
     next(err)

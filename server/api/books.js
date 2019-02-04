@@ -59,16 +59,23 @@ router.post('/:clubId/books/add', async (req, res, next) => {
           if (type === 'now' || type === 'future') {
             const existingRow = await ClubBook.findOne({
               where: {
-                BookId: existingBook.id,
+                bookId: existingBook.id,
                 clubId,
                 type: {
                   [Op.or]: ['now', 'future']
                 }
               }
             })
-            if (!existingRow) existingBook.addClub(club, {through: {type}})
-          } else existingBook.addClub(club, {through: {type}})
-          res.json(existingBook)
+
+            if (existingRow) res.json({})
+            else {
+              existingBook.addClub(club, {through: {type}})
+              res.json(existingBook)
+            }
+          } else {
+            existingBook.addClub(club, {through: {type}})
+            res.json(existingBook)
+          }
         }
       }
     }
