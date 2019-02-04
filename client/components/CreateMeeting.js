@@ -36,7 +36,6 @@ export class CreateMeeting extends Component {
         `/api/clubs/${this.props.match.params.clubId}/meetings/create`,
         newMeeting
       )
-      this.props.createMeeting(this.props.match.params.clubId)
     } catch (err) {
       console.log(err)
     }
