@@ -24,6 +24,7 @@ import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import Send from '@material-ui/icons/Send'
+import Mood from '@material-ui/icons/Mood'
 import Close from '@material-ui/icons/Close'
 import socket from '../socket'
 import InputAdornment from '@material-ui/core/InputAdornment'
@@ -85,29 +86,93 @@ class Messages extends Component {
   constructor() {
     super()
     this.state = {
-      emojiShown: false
+      inputValue: '',
+      threadInputValue: '',
+      emojiShown: false,
+      emojiShownThread: false
     }
     this.handleChangeInput = this.handleChangeInput.bind(this)
     this.handleInput = this.handleInput.bind(this)
+    this.handleThreadChange = this.handleThreadChange.bind(this)
+    this.handleThreadInput = this.handleThreadInput.bind(this)
   }
   async componentDidMount() {
+    const clubId = Number(this.props.match.params.clubId)
     await this.props.fetchMessages()
+    this.filterInput(clubId)
+    this.filterThreadInput(clubId, this.props.thread.id)
+    console.log(this.state, 'state')
+  }
+
+  filterInput(clubId) {
+    if (this.props.messageEntry.length) {
+      const input = this.props.messageEntry.filter(
+        message => message.clubId === clubId
+      )
+      if (input.length) {
+        this.setState({
+          inputValue: input[0].message
+        })
+      }
+    }
+  }
+  filterThreadInput(clubId, threadId) {
+    const input = this.props.threadMessageEntry.filter(
+      message => message.clubId === clubId && message.threadId === threadId
+    )
+    if (input.length) {
+      this.setState({threadInputValue: input[0].message})
+    }
   }
 
   //displays emoji inside the input window
-  handleEmojiClick = (e, threadInputValue) => {
-    console.log('handle emojiClick')
-    console.log(e, 'e')
-    console.log(e.name)
+  handleEmojiClick = (n, e) => {
     const clubId = Number(this.props.match.params.clubId)
+    // let inputValue = ''
+    // this.filterInput(clubId)
+    // if (this.props.messageEntry.length) {
+    //   const input = this.props.messageEntry.filter(
+    //     message => message.clubId === clubId
+    //   )
+    //   if (input.length) {
+    //     inputValue = input[0].message
+    //   }
+    // }
     let emoji = jsemoji.replace_colons(`:${e.name}:`)
-    this.props.writeInputMessage(threadInputValue + emoji, clubId)
+    this.props.writeInputMessage(this.state.inputValue + emoji, clubId)
+    this.setState({inputValue: this.state.inputValue + emoji})
+  }
+  handleThreadEmojiClick = (n, e) => {
+    const clubId = Number(this.props.match.params.clubId)
+    // let inputValue = ''
+    // this.filterInput(clubId)
+    // if (this.props.messageEntry.length) {
+    //   const input = this.props.messageEntry.filter(
+    //     message => message.clubId === clubId
+    //   )
+    //   if (input.length) {
+    //     inputValue = input[0].message
+    //   }
+    // }
+    let emoji = jsemoji.replace_colons(`:${e.name}:`)
+    this.props.writeThreadMessage(
+      this.state.threadInputValue + emoji,
+      clubId,
+      this.props.thread.id
+    )
+    this.setState({threadInputValue: this.state.threadInputValue + emoji})
   }
 
-  toogleEmojiState = () => {
+  toggleEmojiState = () => {
     this.setState({
       emojiShown: !this.state.emojiShown
     })
+  }
+  toggleEmojiThreadState = async () => {
+    await this.setState({
+      emojiShownThread: !this.state.emojiShownThread
+    })
+    console.log('in toggle emoji thread', this.state)
   }
 
   handleDrawerOpen = async threadId => {
@@ -120,48 +185,60 @@ class Messages extends Component {
     this.props.toggleOpen(false)
   }
 
+  async handleThreadChange(e, threadId) {
+    const clubId = Number(this.props.match.params.clubId)
+    if (this.state.emojiShownThread) this.toggleEmojiThreadState()
+    console.log(e.target.value, 'inputValue, target')
+    await this.setState({threadInputValue: e.target.value})
+    this.props.writeThreadMessage(this.state.threadInputValue, clubId, threadId)
+  }
+
   async handleThreadInput(e, threadId) {
     e.preventDefault()
     const clubId = Number(this.props.match.params.clubId)
-    let threadInputValue = ''
-    const input = this.props.threadMessageEntry.filter(
-      message => message.clubId === clubId && message.threadId === threadId
-    )
-    if (input.length) {
-      threadInputValue = input[0].message
-    }
+    // let threadInputValue = ''
+    // const input = this.props.threadMessageEntry.filter(
+    //   message => message.clubId === clubId && message.threadId === threadId
+    // )
+    // if (input.length) {
+    //   threadInputValue = input[0].message
+    // }
+    this.filterThreadInput(clubId, threadId)
     const newMessage = {
-      text: threadInputValue
+      text: this.state.threadInputValue
     }
-
-    await this.props.postToThread(newMessage, clubId, threadId)
-    this.props.writeThreadMessage('', clubId, threadId)
+    console.log('message to be posted', newMessage)
+    this.props.postToThread(newMessage, clubId, threadId)
+    await this.setState({threadInputValue: ''})
+    this.props.writeThreadMessage(this.state.threadInputValue, clubId, threadId)
   }
-
-  handleThreadChange(e, threadId) {
+  async handleChangeInput(e) {
     const clubId = Number(this.props.match.params.clubId)
-    this.props.writeThreadMessage(e.target.value, clubId, threadId)
+    if (this.state.emojiShown) this.toggleEmojiState()
+    console.log(e.target.value, 'inputValue, target')
+    await this.setState({inputValue: e.target.value})
+    this.props.writeInputMessage(this.state.inputValue, clubId)
+    console.log(this.state.inputValue, 'inputValue')
   }
 
   async handleInput(e) {
     e.preventDefault()
     const clubId = Number(this.props.match.params.clubId)
-    let inputValue = ''
-    const input = this.props.messageEntry.filter(
-      message => message.clubId === clubId
-    )
-    if (input.length) {
-      inputValue = input[0].message
-    }
-    const newMessage = {
-      text: inputValue
-    }
-    await this.props.postMessage(newMessage, clubId)
-  }
+    this.filterInput(clubId)
 
-  handleChangeInput(e) {
-    const clubId = Number(this.props.match.params.clubId)
-    this.props.writeInputMessage(e.target.value, clubId)
+    // let inputValue = ''
+    // this.filterInput(inputValue, clubId)
+    // const input = this.props.messageEntry.filter(
+    //   message => message.clubId === clubId
+    // )
+    // if (input.length) {
+    //   inputValue = input[0].message
+    // }
+    const newMessage = {
+      text: this.state.inputValue
+    }
+    this.setState({inputValue: ''})
+    await this.props.postMessage(newMessage, clubId)
   }
 
   render() {
@@ -171,26 +248,27 @@ class Messages extends Component {
     if (this.props.threads.length) {
       threads = this.props.threads.filter(t => t.clubId === clubId)
     }
-
-    let inputValue = ''
-    if (this.props.messageEntry.length) {
-      const input = this.props.messageEntry.filter(
-        message => message.clubId === clubId
-      )
-      if (input.length) {
-        inputValue = input[0].message
-      }
-    }
-    let threadInputValue = ''
-    if (this.props.threadMessageEntry.length && this.props.thread) {
-      const input = this.props.threadMessageEntry.filter(
-        message =>
-          message.clubId === clubId && message.threadId === this.props.thread.id
-      )
-      if (input.length) {
-        threadInputValue = input[0].message
-      }
-    }
+    // this.filterInput(clubId)
+    // let inputValue = ''
+    // this.filterInput(inputValue, clubId)
+    // if (this.props.messageEntry.length) {
+    //   const input = this.props.messageEntry.filter(
+    //     message => message.clubId === clubId
+    //   )
+    //   if (input.length) {
+    //     inputValue = input[0].message
+    //   }
+    // }
+    // let threadInputValue = ''
+    // if (this.props.threadMessageEntry.length && this.props.thread) {
+    //   const input = this.props.threadMessageEntry.filter(
+    //     message =>
+    //       message.clubId === clubId && message.threadId === this.props.thread.id
+    //   )
+    //   if (input.length) {
+    //     threadInputValue = input[0].message
+    //   }
+    // }
 
     return (
       <div className={classes.root}>
@@ -258,7 +336,7 @@ class Messages extends Component {
           )}
           <TextField
             id="outlined-bare"
-            value={inputValue}
+            value={this.state.inputValue}
             margin="normal"
             variant="outlined"
             fullWidth
@@ -267,13 +345,24 @@ class Messages extends Component {
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton onClick={this.handleInput} disabled={!inputValue}>
+                  <IconButton onClick={this.toggleEmojiState}>
+                    <Mood />
+                  </IconButton>
+                  <IconButton
+                    onClick={this.handleInput}
+                    disabled={!this.state.inputValue}
+                  >
                     <Send />
                   </IconButton>
                 </InputAdornment>
               )
             }}
           />
+          {this.state.emojiShown ? (
+            <div>
+              <EmojiPicker onEmojiClick={this.handleEmojiClick} />
+            </div>
+          ) : null}
         </main>
         {thread.id ? (
           <Drawer
@@ -320,7 +409,7 @@ class Messages extends Component {
             </List>
             <TextField
               id="outlined-bare"
-              value={threadInputValue}
+              value={this.state.threadInputValue}
               style={{margin: 10}}
               variant="outlined"
               placeholder="Type your message ..."
@@ -328,12 +417,12 @@ class Messages extends Component {
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <IconButton onClick={this.toggleEmojiState}>
-                      <Send />
+                    <IconButton onClick={this.toggleEmojiThreadState}>
+                      <Mood />
                     </IconButton>
                     <IconButton
-                      onClick={this.handleInput}
-                      disabled={!threadInputValue}
+                      onClick={e => this.handleThreadInput(e, thread.id)}
+                      disabled={!this.state.threadInputValue}
                     >
                       <Send />
                     </IconButton>
@@ -341,11 +430,11 @@ class Messages extends Component {
                 )
               }}
             />
-            <div>
-              <EmojiPicker
-                onEmojiClick={e => this.handleEmojiClick(e, threadInputValue)}
-              />
-            </div>
+            {this.state.emojiShownThread ? (
+              <div>
+                <EmojiPicker onEmojiClick={this.handleThreadEmojiClick} />
+              </div>
+            ) : null}
           </Drawer>
         ) : null}
       </div>
