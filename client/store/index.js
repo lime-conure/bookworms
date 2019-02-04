@@ -8,11 +8,12 @@ import search from './search'
 import singlePoll from './singlePoll'
 import clubs from './clubs'
 import singleClub from './singleClub'
-import messages from './messages'
+import threads from './threads'
 import messageEntry from './messageEntry'
 import clubBooks from './clubBooks'
 import clubMembers from './clubMembers'
 import meetings from './meetings'
+import threadMessageEntry from './threadMessageEntry'
 
 const reducer = combineReducers({
   polls,
@@ -20,12 +21,13 @@ const reducer = combineReducers({
   singlePoll,
   clubs,
   singleClub,
-  messages,
+  threads,
   messageEntry,
   clubBooks,
   clubMembers,
   user,
-  meetings
+  meetings,
+  threadMessageEntry
 })
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
@@ -39,8 +41,9 @@ export * from './search'
 export * from './singlePoll'
 export * from './clubs'
 export * from './singleClub'
-export * from './messages'
+export * from './threads'
 export * from './messageEntry'
 export * from './clubBooks'
 export * from './clubMembers'
 export * from './meetings'
+export * from './threadMessageEntry'

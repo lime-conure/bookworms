@@ -331,8 +331,8 @@ router.get('/:clubId/messages', async (req, res, next) => {
   }
 })
 
-// POST a message  /api/clubs/:clubId/messages
-router.post('/:clubId/messages', async (req, res, next) => {
+// POST a message  /api/clubs/:clubId/threads
+router.post('/:clubId/threads', async (req, res, next) => {
   try {
     if (!req.user) res.status(403).send(`Not authorized`)
     else {
@@ -343,86 +343,88 @@ router.post('/:clubId/messages', async (req, res, next) => {
         const check = await club.hasUser(req.user.id)
         if (!check) res.status(403).send(`Not authorized`)
         else {
-          const message = await Message.create({
-            text: req.body.text,
-            userId: req.user.id,
-            clubId,
-            main: true
+          const thread = await Thread.create({
+            name: '',
+            clubId
           })
-          message.setDataValue('user', await message.getUser())
-          res.send(message)
-        }
-      }
-    }
-  } catch (err) {
-    next(err)
-  }
-})
-
-//GET thread /api/clubs/:clubId/messages/:id
-router.get('/:clubId/messages/:id', async (req, res, next) => {
-  try {
-    if (!req.user) res.status(403).send(`Not authorized`)
-    else {
-      const clubId = Number(req.params.clubId)
-      const club = await Club.findById(clubId)
-      if (!club) res.send('Club does not exist!')
-      else {
-        const check = await club.hasUser(req.user.id)
-        if (!check) res.status(403).send(`Not authorized`)
-        else {
-          const message = await Message.findOne({
-            where: {id: req.params.id, main: true}
-          })
-          if (!message) res.status(404).send(`Message does not exist!`)
-          else if (message.threadId) {
-            const threadMessages = await Message.findAll({
-              where: {threadId: message.threadId}
-            })
-            res.send(threadMessages)
-          } else res.send(message)
-        }
-      }
-    }
-  } catch (err) {
-    next(err)
-  }
-})
-
-//POST message to the thread /api/clubs/:clubId/messages/:id
-router.post('/:clubId/messages/:id', async (req, res, next) => {
-  try {
-    if (!req.user) res.status(403).send(`Not authorized`)
-    else {
-      const clubId = Number(req.params.clubId)
-      const club = await Club.findById(clubId)
-      if (!club) res.send('Club does not exist!')
-      else {
-        const check = await club.hasUser(req.user.id)
-        if (!check) res.status(403).send(`Not authorized`)
-        else {
-          const message = await Message.findOne({where: {id: req.params.id}})
-          if (!message) res.status(404).send(`Message does not exist!`)
-          let thread = await Thread.findOne({where: {id: message.threadId}})
-          if (!thread) {
-            thread = await Thread.create({
-              name: message.text,
-              clubId: req.params.clubId
-            })
-            await message.setThread(thread.id)
-          }
           await Message.create({
             text: req.body.text,
             userId: req.user.id,
-            clubId: message.clubId,
-            threadId: message.threadId,
-            main: false
+            clubId,
+            threadId: thread.id
           })
-          const updatedThread = await Thread.findOne({
-            where: {id: thread.id},
-            include: [{model: Message, where: {main: false}}]
+
+          const threaddy = await Thread.findOne({
+            where: {
+              id: thread.id
+            },
+            include: [{model: Message, include: [{model: User}]}]
           })
-          res.send(updatedThread)
+          res.send(threaddy)
+        }
+      }
+    }
+  } catch (err) {
+    next(err)
+  }
+})
+
+//GET thread /api/clubs/:clubId/threads/:id
+router.get('/:clubId/threads/:threadId', async (req, res, next) => {
+  try {
+    if (!req.user) res.status(403).send(`Not authorized`)
+    else {
+      const clubId = Number(req.params.clubId)
+      const club = await Club.findById(clubId)
+      if (!club) res.send('Club does not exist!')
+      else {
+        const check = await club.hasUser(req.user.id)
+        if (!check) res.status(403).send(`Not authorized`)
+        else {
+          const thread = await Thread.findOne({
+            where: {id: req.params.threadId},
+            include: [{model: Message, include: User}]
+          })
+
+          if (!thread) res.status(404).send(`Thread does not exist!`)
+          else res.send(thread)
+        }
+      }
+    }
+  } catch (err) {
+    next(err)
+  }
+})
+
+//POST message to the thread /api/clubs/:clubId/threads/:threadId
+router.post('/:clubId/threads/:threadId', async (req, res, next) => {
+  try {
+    if (!req.user) res.status(403).send(`Not authorized`)
+    else {
+      const clubId = Number(req.params.clubId)
+      const club = await Club.findById(clubId)
+      if (!club) res.send('Club does not exist!')
+      else {
+        const check = await club.hasUser(req.user.id)
+        if (!check) res.status(403).send(`Not authorized`)
+        else {
+          const thread = await Thread.findOne({
+            where: {id: req.params.threadId}
+          })
+          if (!thread) res.send('Thread does not exist')
+          else {
+            const message = await Message.create({
+              text: req.body.text,
+              userId: req.user.id,
+              clubId: clubId,
+              threadId: thread.id
+            })
+            const updatedMessage = await Message.findOne({
+              where: {id: message.id},
+              include: [{model: User}]
+            })
+            res.send(updatedMessage)
+          }
         }
       }
     }

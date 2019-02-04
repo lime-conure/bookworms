@@ -1,25 +1,25 @@
 const router = require('express').Router()
-const {Club, User, Message} = require('../db/models')
+const {Club, User, Message, Thread} = require('../db/models')
 
 module.exports = router
 
-//GET /api/messages
+//GET /api/threads
 router.get('/', async (req, res, next) => {
   try {
     if (!req.user) res.status(403).send(`Not authorized`)
     else {
       const clubs = await req.user.getClubs()
-      const clubsMessages = await Promise.all(
+      const clubsThreads = await Promise.all(
         clubs.map(club =>
-          Message.findAll({
+          Thread.findAll({
             where: {
               clubId: club.id
             },
-            include: [{all: true}]
+            include: [{model: Message, include: User}]
           })
         )
       )
-      const merged = [].concat.apply([], clubsMessages)
+      const merged = [].concat.apply([], clubsThreads)
       res.send(merged)
     }
   } catch (err) {

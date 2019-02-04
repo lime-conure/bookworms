@@ -18,6 +18,7 @@ User.hasMany(Message)
 Message.belongsTo(User)
 Club.hasMany(Message)
 Message.belongsTo(Club)
+Club.hasMany(Thread)
 Thread.hasMany(Message)
 Message.belongsTo(Thread)
 // Meetings have a bookId and clubId
