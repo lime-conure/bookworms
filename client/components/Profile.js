@@ -32,13 +32,19 @@ class Profile extends Component {
     const user = this.props.user
     return (
       <Paper className={classes.root} elevation={2}>
-        <Grid container spacing={40} justify="center" alignItems="center">
-          <Avatar
-            alt={user.fullName}
-            src={user.imageUrl}
-            className={classes.bigAvatar}
-          />
-          <Grid item>
+        <Grid
+          container
+          spacing={32}
+          justify="space-between"
+          alignItems="flex-start"
+        >
+          <Grid item xs={4}>
+            <Avatar
+              alt={user.fullName}
+              src={user.imageUrl}
+              className={classes.bigAvatar}
+            />
+
             <Typography gutterBottom variant="h5">
               {user.fullName}
             </Typography>
@@ -46,9 +52,10 @@ class Profile extends Component {
               {user.email}
             </Typography>
           </Grid>
+          <Grid item xs={8}>
+            <UserBooks />
+          </Grid>
         </Grid>
-        <Divider />
-        <UserBooks />
       </Paper>
     )
   }

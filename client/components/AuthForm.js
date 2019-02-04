@@ -98,12 +98,11 @@ const AuthForm = props => {
           </Grid>
           <Grid item>
             <Button
-              type="button"
+              type="submit"
               color="primary"
               variant="contained"
               size="large"
-              component={Link}
-              to="/auth/google"
+              href="/auth/google"
               className={classes.button}
             >
               {displayName} with Google
@@ -118,7 +117,6 @@ const AuthForm = props => {
           </Grid>
         </Grid>
       </form>
-      {/* <a href="/auth/google">{displayName} with Google</a> */}
     </Paper>
   )
 }

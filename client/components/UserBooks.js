@@ -75,17 +75,11 @@ class UserBooks extends Component {
 
     return (
       <div>
-        <Typography variant="h4" align="center" gutterBottom color="primary">
-          My Books
-        </Typography>
-        <div>
-          <Divider />
-          {this.renderBookSection(currentBooks, 'now', this, classes)}
-          <Divider />
-          {this.renderBookSection(futureBooks, 'future', this, classes)}
-          <Divider />
-          {this.renderBookSection(pastBooks, 'past', this, classes)}
-        </div>
+        {this.renderBookSection(currentBooks, 'now', this, classes)}
+        <Divider />
+        {this.renderBookSection(futureBooks, 'future', this, classes)}
+        <Divider />
+        {this.renderBookSection(pastBooks, 'past', this, classes)}
       </div>
     )
   }
