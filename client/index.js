@@ -6,7 +6,7 @@ import history from './history'
 import store from './store'
 import App from './app'
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles'
-import {lime} from '@material-ui/core/colors'
+import {lime, grey} from '@material-ui/core/colors'
 const theme = createMuiTheme({
   palette: {
     type: 'dark',
@@ -28,7 +28,8 @@ const theme = createMuiTheme({
       tooltip: {
         fontFamily: 'Roboto',
         fontSize: '12px',
-        maxWidth: 200
+        maxWidth: 200,
+        backgroundColor: grey[900]
       }
     }
   }

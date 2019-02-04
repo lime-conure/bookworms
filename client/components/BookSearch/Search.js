@@ -94,7 +94,7 @@ class Search extends Component {
         <Grid item xs={8}>
           <TextField
             type="text"
-            label="Search Books By title, author, or ISBN..."
+            label="Search for a book to add..."
             name="searchText"
             className={classes.search}
             onChange={this.onTextChange}

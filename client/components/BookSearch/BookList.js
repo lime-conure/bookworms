@@ -20,7 +20,11 @@ import Grid from '@material-ui/core/Grid'
 
 const styles = theme => ({
   root: {
-    marginBottom: theme.spacing.unit * 4
+    marginBottom: theme.spacing.unit * 4,
+    maxHeight: 375,
+    overflow: 'scroll',
+    backgroundColor: theme.palette.grey[800],
+    borderRadius: '5px'
   },
   avatar: {
     width: 'auto',
@@ -42,14 +46,17 @@ const styles = theme => ({
   progress: {
     margin: theme.spacing.unit * 2
   },
-  description: {},
+  description: {
+    maxWidth: 560,
+    opacity: 0.6
+  },
   dialogImage: {
     width: '100%'
   },
   goodreadsButton: {
     marginTop: theme.spacing.unit * 3
   },
-  dialogAuthor: {
+  author: {
     opacity: 0.6
   }
 })
@@ -94,100 +101,110 @@ class BookList extends Component {
           {this.state.loadingDialog ? <LinearProgress color="primary" /> : ''}
           <List className={classes.root}>
             {bookList.map((book, idx) => (
-              <div key={book.goodReadsId}>
-                <ListItem button>
-                  <Avatar
-                    onClick={e => this.handleDialogOpen(e, book)}
-                    className={classes.avatar}
-                  >
-                    <img
-                      className={classes.avatarImg}
-                      src={book.imageUrl}
-                      alt={book.title}
-                    />
-                  </Avatar>
-                  <ListItemText onClick={e => this.handleDialogOpen(e, book)}>
-                    <Typography variant="h6" component="h6" gutterBottom>
-                      {book.title}{' '}
-                      {book.authors && book.authors.length
-                        ? `by ${book.authors[0].name}`
-                        : ''}
-                    </Typography>
-                    <Typography variant="body2" component="p">
-                      {book.description
-                        ? `${book.description.slice(0, 150)}...`
-                        : ''}
-                    </Typography>
-                  </ListItemText>
-                  <IconButton
-                    className={classes.removeIcon}
-                    onClick={e => removeBook(e, idx, book.id)}
-                  >
-                    <Tooltip placement="right" title="Remove This Book">
+              <Tooltip
+                key={book.goodReadsId}
+                placement="right"
+                title="Click to view more about this book"
+              >
+                <div>
+                  <ListItem button>
+                    <Avatar
+                      onClick={e => this.handleDialogOpen(e, book)}
+                      className={classes.avatar}
+                    >
+                      <img
+                        className={classes.avatarImg}
+                        src={book.imageUrl}
+                        alt={book.title}
+                      />
+                    </Avatar>
+                    <ListItemText onClick={e => this.handleDialogOpen(e, book)}>
+                      <Typography variant="h6" component="h6" gutterBottom>
+                        {book.title}{' '}
+                        <span className={classes.author}>
+                          {book.authors && book.authors.length
+                            ? `by ${book.authors[0].name}`
+                            : ''}
+                        </span>
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        component="p"
+                        className={classes.description}
+                      >
+                        {book.description
+                          ? `${book.description.slice(0, 150)}...`
+                          : ''}
+                      </Typography>
+                    </ListItemText>
+                    <IconButton
+                      className={classes.removeIcon}
+                      onClick={e => removeBook(e, idx, book.id)}
+                    >
                       <Icon>cancel</Icon>
-                    </Tooltip>
-                  </IconButton>
-                </ListItem>
+                    </IconButton>
+                  </ListItem>
 
-                <Dialog
-                  aria-labelledby="book-modal"
-                  onClose={this.handleDialogClose}
-                  open={this.state.dialogOpen}
-                >
-                  <IconButton
-                    aria-label="Close"
-                    className={classes.closeButton}
-                    onClick={this.handleDialogClose}
+                  <Dialog
+                    aria-labelledby="book-modal"
+                    onClose={this.handleDialogClose}
+                    open={this.state.dialogOpen}
                   >
-                    <Icon>cancel</Icon>
-                  </IconButton>
-                  <DialogTitle id="book-modal">
-                    {this.state.dialogBook.title}
-                    <span className={classes.dialogAuthor}>
-                      {this.state.dialogBook.authors &&
-                      this.state.dialogBook.authors.length
-                        ? ` by ${this.state.dialogBook.authors[0].name}`
-                        : ''}
-                    </span>
-                  </DialogTitle>
-                  <DialogContent>
-                    <Grid
-                      container
-                      spacing={24}
-                      justify="flex-start"
-                      alignItems="flex-start"
+                    <IconButton
+                      aria-label="Close"
+                      className={classes.closeButton}
+                      onClick={this.handleDialogClose}
                     >
-                      <Grid item xs={3}>
-                        <img
-                          className={classes.dialogImage}
-                          src={this.state.dialogBook.imageUrl}
-                          alt={this.state.dialogBook.title}
-                        />
+                      <Icon>cancel</Icon>
+                    </IconButton>
+                    <DialogTitle id="book-modal">
+                      {this.state.dialogBook.title}
+                      <span className={classes.author}>
+                        {this.state.dialogBook.authors &&
+                        this.state.dialogBook.authors.length
+                          ? ` by ${this.state.dialogBook.authors[0].name}`
+                          : ''}
+                      </span>
+                    </DialogTitle>
+                    <DialogContent>
+                      <Grid
+                        container
+                        spacing={24}
+                        justify="flex-start"
+                        alignItems="flex-start"
+                      >
+                        <Grid item xs={3}>
+                          <img
+                            className={classes.dialogImage}
+                            src={this.state.dialogBook.imageUrl}
+                            alt={this.state.dialogBook.title}
+                          />
+                        </Grid>
+                        <Grid item xs={9}>
+                          <Typography
+                            variant="body1"
+                            component="span"
+                            className={classes.description}
+                          >
+                            {this.state.dialogBook.description}
+                          </Typography>
+                        </Grid>
                       </Grid>
-                      <Grid item xs={9}>
-                        <Typography
-                          variant="body1"
-                          component="span"
-                          className={classes.description}
-                        >
-                          {this.state.dialogBook.description}
-                        </Typography>
-                      </Grid>
-                    </Grid>
-                    <Button
-                      target="_blank"
-                      href={`https://www.goodreads.com/book/show/${
-                        this.state.dialogBook.goodReadsId
-                      }`}
-                      variant="contained"
-                      color="primary"
-                      className={classes.goodreadsButton}
-                    >
-                      View On Goodreads
-                    </Button>
-                  </DialogContent>
-                </Dialog>
-              </div>
+                      <Button
+                        target="_blank"
+                        href={`https://www.goodreads.com/book/show/${
+                          this.state.dialogBook.goodReadsId
+                        }`}
+                        variant="contained"
+                        color="primary"
+                        className={classes.goodreadsButton}
+                      >
+                        View On Goodreads
+                      </Button>
+                    </DialogContent>
+                  </Dialog>
+                </div>
+              </Tooltip>
             ))}
           </List>
         </div>

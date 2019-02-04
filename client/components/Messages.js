@@ -71,8 +71,8 @@ const styles = theme => ({
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
-    })
-    // marginRight: -drawerWidth
+    }),
+    width: 720
   },
   contentShift: {
     transition: theme.transitions.create('margin', {
@@ -288,6 +288,11 @@ class Messages extends Component {
             fullWidth
             placeholder="Type your message ..."
             onChange={this.handleChangeInput}
+            onKeyPress={e => {
+              if (e.key === 'Enter') {
+                this.handleInput(e) // send on enter
+              }
+            }}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -367,6 +372,11 @@ class Messages extends Component {
               variant="outlined"
               placeholder="Reply ..."
               onChange={e => this.handleThreadChange(e, thread.id)}
+              onKeyPress={e => {
+                if (e.key === 'Enter') {
+                  this.handleThreadInput(e, thread.id) // send on enter
+                }
+              }}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
