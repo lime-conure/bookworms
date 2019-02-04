@@ -59,7 +59,11 @@ const AuthForm = props => {
                 variant="filled"
                 type="text"
                 fullWidth
+                autoFocus={name === 'signup'}
                 required
+                InputLabelProps={{
+                  shrink: true
+                }}
               />
             </Grid>
           ) : (
@@ -72,6 +76,10 @@ const AuthForm = props => {
               variant="filled"
               type="text"
               fullWidth
+              autoFocus={name === 'login'}
+              InputLabelProps={{
+                shrink: true
+              }}
               required
             />
           </Grid>
@@ -83,6 +91,10 @@ const AuthForm = props => {
               type="password"
               fullWidth
               required
+              autoComplete="current-password"
+              InputLabelProps={{
+                shrink: true
+              }}
             />
           </Grid>
           <Grid item>
