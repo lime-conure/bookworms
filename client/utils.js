@@ -52,6 +52,7 @@ export const makeBookObject = async bookResult => {
 export const renderBookSearch = (books, type, component) => {
   return (
     <BookSearch
+      type={type}
       bookList={books}
       results={component.state[`${type}Results`]}
       setResults={results => component.setResults(results, type)}

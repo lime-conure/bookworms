@@ -87,7 +87,7 @@ class BookList extends Component {
   }
 
   render() {
-    const {bookList, classes} = this.props
+    const {bookList, removeBook, addBook, classes} = this.props
     if (bookList.length) {
       return (
         <div>
@@ -121,7 +121,7 @@ class BookList extends Component {
                   </ListItemText>
                   <IconButton
                     className={classes.removeIcon}
-                    onClick={e => this.props.removeBook(e, idx, book.id)}
+                    onClick={e => removeBook(e, idx, book.id)}
                   >
                     <Tooltip placement="right" title="Remove This Book">
                       <Icon>cancel</Icon>
