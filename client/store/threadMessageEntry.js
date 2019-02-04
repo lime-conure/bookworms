@@ -19,7 +19,6 @@ const threadMessageEntry = (state = initState, action) => {
             entry.clubId === action.clubId && entry.threadId === action.threadId
         )
       ) {
-        console.log('inside thread message entry')
         return state.filter(entry => {
           if (
             entry.clubId === action.clubId &&

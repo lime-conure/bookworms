@@ -81,7 +81,7 @@ export const postToThread = (message, clubId, threadId, socket) => {
       )
       dispatch(addMessageToThread(data, threadId))
       //need Jing's advice
-      // socket.emit('NEW_MESSAGE', data)
+      socket.emit('NEW_THREAD', {data, threadId})
     } catch (err) {
       console.error(err)
     }
