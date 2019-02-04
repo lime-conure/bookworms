@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {fetchSingleClub} from '../store/singleClub'
 import {Link} from 'react-router-dom'
+import {CopyToClipboard} from 'react-copy-to-clipboard'
 
 // Material UI
 import {withStyles} from '@material-ui/core/styles'
@@ -12,18 +13,19 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import Icon from '@material-ui/core/Icon'
-import TextField from '@material-ui/core/TextField'
+import IconButton from '@material-ui/core/IconButton'
+import Button from '@material-ui/core/Button'
 import Collapse from '@material-ui/core/Collapse'
 import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
+import Tooltip from '@material-ui/core/Tooltip'
 
-const drawerWidth = 240
+const drawerWidth = 290
 
 const styles = theme => ({
   root: {
     display: 'flex'
   },
-
   drawerPaper: {
     width: drawerWidth,
     top: 64 // Navbar height
@@ -35,6 +37,16 @@ const styles = theme => ({
   },
   drawerList: {
     fontFamily: 'Roboto'
+  },
+  inviteLink: {
+    color: '#fff'
+  },
+  inviteLinkText: {
+    wordBreak: 'break-word',
+    marginLeft: theme.spacing.unit * 2,
+    marginRight: theme.spacing.unit * 2,
+    textTransform: 'initial',
+    lineHeight: 1.25
   }
 })
 
@@ -139,20 +151,29 @@ class Sidebar extends Component {
               <Icon>group_add</Icon>
             </ListItemIcon>
             <ListItemText>Invite Link</ListItemText>
-            {this.state.open ? <ExpandLess /> : <ExpandMore />}
+            {this.state.open ? (
+              <ExpandMore className={classes.inviteLink} />
+            ) : (
+              <ExpandLess className={classes.inviteLink} />
+            )}
           </ListItem>
           <Collapse in={!this.state.open} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              <ListItem button className={classes.nested}>
-                <TextField
-                  id="outlined-bare"
-                  className={classes.textField}
-                  defaultValue={club.inviteLink}
-                  margin="normal"
-                  variant="outlined"
-                />
-              </ListItem>
-            </List>
+            <CopyToClipboard
+              text={club.inviteLink}
+              // onCopy={() => this.setState({copied: true})}
+            >
+              <Button>
+                <Typography variant="body2" className={classes.inviteLinkText}>
+                  <small>{club.inviteLink}</small>
+                </Typography>
+
+                <Tooltip placement="top" title="Copy Link to Clipboard">
+                  <IconButton>
+                    <Icon>file_copy</Icon>
+                  </IconButton>
+                </Tooltip>
+              </Button>
+            </CopyToClipboard>
           </Collapse>
         </List>
       </Drawer>
