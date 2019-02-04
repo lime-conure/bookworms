@@ -20,7 +20,7 @@ const getThread = thread => ({
   type: GET_THREAD,
   thread
 })
-const addMessageToThread = (message, threadId) => ({
+export const addMessageToThread = (message, threadId) => ({
   type: ADD_MESSAGE_TO_THREAD,
   message,
   threadId
@@ -81,6 +81,7 @@ export const postToThread = (message, clubId, threadId, socket) => {
       )
       dispatch(addMessageToThread(data, threadId))
       //need Jing's advice
+      console.log('sending a new thread:', data, threadId)
       socket.emit('NEW_THREAD', {data, threadId})
     } catch (err) {
       console.error(err)
@@ -106,10 +107,12 @@ const threads = (state = initState, action) => {
             thread.messages = [...thread.messages, action.message]
           return thread
         }),
-        singleThread: {
-          ...state.singleThread,
-          messages: [...state.singleThread.messages, action.message]
-        }
+        singleThread: state.singleThread.id
+          ? {
+              ...state.singleThread,
+              messages: [...state.singleThread.messages, action.message]
+            }
+          : {}
       }
     default:
       return state
