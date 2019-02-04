@@ -20,6 +20,10 @@ const theme = createMuiTheme({
       lineHeight: 1.7
     },
     h2: {
+      // fontWeight: 300,
+      // letterSpacing: 0.6,
+      // textTransform: 'uppercase',
+      // lineHeight: '5.625rem'
       fontFamily: 'Cutive'
     },
     h3: {
@@ -30,7 +34,7 @@ const theme = createMuiTheme({
       lineHeight: 'normal'
     },
     h5: {
-      fontFamily: 'Cutive'
+      // fontFamily: 'Cutive'
     },
     h6: {
       fontFamily: 'Cutive'
@@ -47,6 +51,11 @@ const theme = createMuiTheme({
         fontSize: '12px',
         maxWidth: 200,
         backgroundColor: grey[900]
+      }
+    },
+    MuiListItemIcon: {
+      root: {
+        marginRight: 0
       }
     }
   }

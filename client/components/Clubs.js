@@ -17,11 +17,11 @@ import Icon from '@material-ui/core/Icon'
 
 const styles = theme => ({
   root: {
-    ...theme.mixins.gutters(),
-    padding: theme.spacing.unit * 4,
+    // ...theme.mixins.gutters(),
+    padding: theme.spacing.unit * 8,
     marginTop: theme.spacing.unit * 16,
-    marginLeft: theme.spacing.unit * 24,
-    marginRight: theme.spacing.unit * 24
+    marginLeft: theme.spacing.unit * 36,
+    marginRight: theme.spacing.unit * 36
   },
   button: {
     marginTop: theme.spacing.unit * 4
@@ -50,8 +50,9 @@ class Clubs extends Component {
           <Typography variant="h2" component="h2" gutterBottom>
             Your Clubs
           </Typography>
-          <Divider />
+
           <List>
+            <Divider />
             {clubs.map(club => (
               <ListItem
                 button
@@ -63,7 +64,9 @@ class Clubs extends Component {
                   <Icon>group</Icon>
                 </ListItemIcon>
                 <ListItemText>
-                  <Typography variant="h5">{club.name}</Typography>
+                  <Typography variant="h5" component="h5">
+                    {club.name}
+                  </Typography>
                 </ListItemText>
 
                 <Button
@@ -77,6 +80,7 @@ class Clubs extends Component {
                 </Button>
               </ListItem>
             ))}
+            <Divider />
           </List>
         </div>
 
