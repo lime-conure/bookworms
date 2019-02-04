@@ -74,6 +74,7 @@ export const fetchThread = (clubId, threadId) => {
 }
 export const postToThread = (message, clubId, threadId, socket) => {
   return async dispatch => {
+    console.log('socket', socket)
     try {
       const {data} = await axios.post(
         `/api/clubs/${clubId}/threads/${threadId}`,

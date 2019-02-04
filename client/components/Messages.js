@@ -179,7 +179,7 @@ class Messages extends Component {
     const newMessage = {
       text: this.state.threadInputValue
     }
-    this.props.postToThread(newMessage, clubId, threadId)
+    this.props.postToThread(newMessage, clubId, threadId, socket)
     await this.setState({threadInputValue: ''})
     this.props.writeThreadMessage(this.state.threadInputValue, clubId, threadId)
   }
@@ -417,7 +417,7 @@ const mapDispatch = dispatch => ({
   fetchThread: (clubId, threadId) => dispatch(fetchThread(clubId, threadId)),
   toggleOpen: isOpen => dispatch(toggleOpen(isOpen)),
   postToThread: (message, clubId, threadId) =>
-    dispatch(postToThread(message, clubId, threadId)),
+    dispatch(postToThread(message, clubId, threadId, socket)),
   writeThreadMessage: (message, clubId, threadId) =>
     dispatch(writeThreadMessage(message, clubId, threadId))
 })
