@@ -28,7 +28,8 @@ const styles = theme => ({
   },
   errorMessage: {
     marginTop: 0,
-    color: red.A200
+    color: red.A200,
+    fontSize: '14px'
   }
 })
 
@@ -121,11 +122,11 @@ const AuthForm = props => {
             </Button>
           </Grid>
           <Grid item>
-            <FormHelperText className={classes.errorMessage}>
-              <Typography variant="subtitle2" component="p" color="inherit">
-                {error && error.response && <div> {error.response.data} </div>}
-              </Typography>
-            </FormHelperText>
+            <Typography variant="subtitle2" component="p" color="inherit">
+              <FormHelperText component="span" className={classes.errorMessage}>
+                {error && error.response && error.response.data}
+              </FormHelperText>
+            </Typography>
           </Grid>
         </Grid>
       </form>
