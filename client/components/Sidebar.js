@@ -43,8 +43,8 @@ const styles = theme => ({
   },
   inviteLinkText: {
     wordBreak: 'break-word',
-    marginLeft: theme.spacing.unit * 2,
-    marginRight: theme.spacing.unit * 2,
+    marginLeft: theme.spacing.unit * 4,
+    marginRight: theme.spacing.unit * 4,
     textTransform: 'initial',
     lineHeight: 1.25
   }
@@ -158,21 +158,18 @@ class Sidebar extends Component {
             )}
           </ListItem>
           <Collapse in={!this.state.open} timeout="auto" unmountOnExit>
-            <CopyToClipboard
-              text={club.inviteLink}
-              // onCopy={() => this.setState({copied: true})}
-            >
-              <Button>
-                <Typography variant="body2" className={classes.inviteLinkText}>
-                  <small>{club.inviteLink}</small>
-                </Typography>
-
-                <Tooltip placement="top" title="Copy Link to Clipboard">
-                  <IconButton>
-                    <Icon>file_copy</Icon>
-                  </IconButton>
-                </Tooltip>
-              </Button>
+            <CopyToClipboard text={club.inviteLink}>
+              <Tooltip placement="right" title="Copy Link to Clipboard">
+                <Button>
+                  <Typography
+                    variant="body2"
+                    className={classes.inviteLinkText}
+                  >
+                    <small>{club.inviteLink}</small>
+                  </Typography>
+                  <Icon fontSize="small">file_copy</Icon>
+                </Button>
+              </Tooltip>
             </CopyToClipboard>
           </Collapse>
         </List>
