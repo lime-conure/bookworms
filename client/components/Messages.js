@@ -26,7 +26,17 @@ import Button from '@material-ui/core/Button'
 import Send from '@material-ui/icons/Send'
 import Close from '@material-ui/icons/Close'
 import socket from '../socket'
-import Grid from '@material-ui/core/Grid'
+import InputAdornment from '@material-ui/core/InputAdornment'
+import EmojiPicker from 'emoji-picker-react'
+import JSEMOJI from 'emoji-js'
+//emoji set up
+let jsemoji = new JSEMOJI()
+// set the style to emojione (default - apple)
+jsemoji.img_set = 'emojione'
+// set the storage location for all emojis
+jsemoji.img_sets.emojione.path =
+  'https://cdn.jsdelivr.net/emojione/assets/3.0/png/32/'
+
 const drawerWidth = 360
 
 const styles = theme => ({
@@ -56,12 +66,11 @@ const styles = theme => ({
   },
 
   content: {
-    // flexGrow: 1,
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
-    }),
-    marginRight: -drawerWidth
+    })
+    // marginRight: -drawerWidth
   },
   contentShift: {
     transition: theme.transitions.create('margin', {
@@ -75,11 +84,30 @@ const styles = theme => ({
 class Messages extends Component {
   constructor() {
     super()
+    this.state = {
+      emojiShown: false
+    }
     this.handleChangeInput = this.handleChangeInput.bind(this)
     this.handleInput = this.handleInput.bind(this)
   }
   async componentDidMount() {
     await this.props.fetchMessages()
+  }
+
+  //displays emoji inside the input window
+  handleEmojiClick = (e, threadInputValue) => {
+    console.log('handle emojiClick')
+    console.log(e, 'e')
+    console.log(e.name)
+    const clubId = Number(this.props.match.params.clubId)
+    let emoji = jsemoji.replace_colons(`:${e.name}:`)
+    this.props.writeInputMessage(threadInputValue + emoji, clubId)
+  }
+
+  toogleEmojiState = () => {
+    this.setState({
+      emojiShown: !this.state.emojiShown
+    })
   }
 
   handleDrawerOpen = async threadId => {
@@ -233,13 +261,19 @@ class Messages extends Component {
             value={inputValue}
             margin="normal"
             variant="outlined"
-            // fullWidth
+            fullWidth
             placeholder="Type your message ..."
             onChange={this.handleChangeInput}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={this.handleInput} disabled={!inputValue}>
+                    <Send />
+                  </IconButton>
+                </InputAdornment>
+              )
+            }}
           />
-          <IconButton onClick={this.handleInput}>
-            <Send />
-          </IconButton>
         </main>
         {thread.id ? (
           <Drawer
@@ -287,15 +321,31 @@ class Messages extends Component {
             <TextField
               id="outlined-bare"
               value={threadInputValue}
-              margin="normal"
+              style={{margin: 10}}
               variant="outlined"
-              fullWidth
               placeholder="Type your message ..."
               onChange={e => this.handleThreadChange(e, thread.id)}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={this.toggleEmojiState}>
+                      <Send />
+                    </IconButton>
+                    <IconButton
+                      onClick={this.handleInput}
+                      disabled={!threadInputValue}
+                    >
+                      <Send />
+                    </IconButton>
+                  </InputAdornment>
+                )
+              }}
             />
-            <IconButton onClick={e => this.handleThreadInput(e, thread.id)}>
-              <Send />
-            </IconButton>
+            <div>
+              <EmojiPicker
+                onEmojiClick={e => this.handleEmojiClick(e, threadInputValue)}
+              />
+            </div>
           </Drawer>
         ) : null}
       </div>
