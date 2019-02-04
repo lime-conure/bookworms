@@ -213,6 +213,8 @@ class CreatePoll extends Component {
             margin="normal"
             variant="filled"
             fullWidth
+            autoFocus={true}
+            required
           />
           <br />
           <TextField

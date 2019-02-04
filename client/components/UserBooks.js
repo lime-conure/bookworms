@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {fetchUserBooks, postUserBook, deleteUserBook} from '../store'
-import BookSearch from './BookSearch'
+import {makeBookObject, renderBookSearch} from '../utils'
 
 // Material UI
 import {withStyles} from '@material-ui/core/styles'
@@ -12,7 +12,7 @@ const styles = theme => ({
   bookSection: {
     marginTop: theme.spacing.unit * 4,
     marginBottom: theme.spacing.unit * 4,
-    width: 660
+    width: 720
   }
 })
 
@@ -36,23 +36,9 @@ class UserBooks extends Component {
     this.setState({[`${type}Results`]: results})
   }
 
-  handleAddBook(e, bookResult, type) {
+  async handleAddBook(e, bookResult, type) {
     e.preventDefault()
-    // TODO: fetch book description and save to db
-    const newBook = {
-      author: bookResult.best_book.author,
-      goodReadsId: bookResult.best_book.id,
-      title: bookResult.best_book.title,
-      imageUrl: bookResult.best_book.image_url,
-      smallImageUrl: bookResult.best_book.small_image_url,
-      pubDate:
-        bookResult.original_publication_month +
-        '-' +
-        bookResult.original_publication_day +
-        '-' +
-        bookResult.original_publication_year,
-      rating: Math.round(bookResult.average_rating * 100)
-    }
+    const newBook = await makeBookObject(bookResult)
     this.props.postUserBook(newBook, type)
     this.setState({
       nowResults: [],
@@ -75,13 +61,7 @@ class UserBooks extends Component {
             : type === 'future' ? `Books I Want To Read` : `Books I've Read`}
         </Typography>
 
-        <BookSearch
-          bookList={books}
-          results={this.state[`${type}Results`]}
-          setResults={results => this.setResults(results, type)}
-          addBook={(e, book) => this.handleAddBook(e, book, type)}
-          removeBook={(e, idx, bookId) => this.handleRemoveBook(e, idx, bookId)}
-        />
+        {renderBookSearch(books, type, this)}
       </div>
     )
   }
@@ -95,17 +75,11 @@ class UserBooks extends Component {
 
     return (
       <div>
-        <Typography variant="h4" align="center" gutterBottom color="primary">
-          My Books
-        </Typography>
-        <div>
-          <Divider />
-          {this.renderBookSection(currentBooks, 'now', classes)}
-          <Divider />
-          {this.renderBookSection(futureBooks, 'future', classes)}
-          <Divider />
-          {this.renderBookSection(pastBooks, 'past', classes)}
-        </div>
+        {this.renderBookSection(currentBooks, 'now', this, classes)}
+        <Divider />
+        {this.renderBookSection(futureBooks, 'future', this, classes)}
+        <Divider />
+        {this.renderBookSection(pastBooks, 'past', this, classes)}
       </div>
     )
   }

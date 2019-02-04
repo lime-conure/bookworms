@@ -14,6 +14,9 @@ import TableBody from '@material-ui/core/TableBody'
 import TableRow from '@material-ui/core/TableRow'
 import Checkbox from '@material-ui/core/Checkbox'
 import Button from '@material-ui/core/Button'
+import Tooltip from '@material-ui/core/Tooltip'
+import Icon from '@material-ui/core/Icon'
+import Grid from '@material-ui/core/Grid'
 
 const styles = theme => ({
   poll: {
@@ -24,6 +27,12 @@ const styles = theme => ({
   },
   headerIcon: {
     marginRight: theme.spacing.unit
+  },
+  bookImage: {
+    width: 80
+  },
+  checkmark: {
+    marginRight: theme.spacing.unit
   }
 })
 
@@ -32,7 +41,8 @@ export class SinglePoll extends Component {
     super(props)
     // local state for keeping track of which checkbox options are selected
     this.state = {
-      votes: []
+      votes: [],
+      justVoted: false
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleCheck = this.handleCheck.bind(this)
@@ -76,6 +86,7 @@ export class SinglePoll extends Component {
       votes: this.state.votes
     }
     this.props.sendVotes(payload)
+    this.setState({justVoted: true})
   }
 
   optionIsChecked(optionObj) {
@@ -104,9 +115,28 @@ export class SinglePoll extends Component {
                 {options.map(optionObj => (
                   <TableCell key={optionObj.option.id}>
                     <strong>
-                      {columnName === 'dateTime'
-                        ? formatDateDisplay(optionObj.option[columnName])
-                        : optionObj.option[columnName]}
+                      {type === 'Book' ? (
+                        <Button
+                          target="_blank"
+                          href={`https://www.goodreads.com/book/show/${
+                            optionObj.option.book.goodReadsId
+                          }`}
+                        >
+                          <Tooltip title="View on Goodreads" placement="right">
+                            <img
+                              src={optionObj.option.book.imageUrl}
+                              alt={optionObj.option.book.title}
+                              className={classes.bookImage}
+                            />
+                          </Tooltip>
+                        </Button>
+                      ) : (
+                        ''
+                      )}
+
+                      {type === 'Date & Time' &&
+                        formatDateDisplay(optionObj.option[columnName])}
+                      {type === 'Location' && optionObj.option[columnName]}
                     </strong>
                   </TableCell>
                 ))}
@@ -177,14 +207,42 @@ export class SinglePoll extends Component {
             {this.renderPoll(locationOptions, 'Location', classes)}
             <br />
             {allOptions.length ? (
-              <Button
-                size="large"
-                color="secondary"
-                variant="contained"
-                type="submit"
+              <Grid
+                container
+                className={classes.root}
+                spacing={24}
+                justify="flex-start"
+                alignItems="center"
               >
-                Vote
-              </Button>
+                <Grid item>
+                  <Button
+                    size="large"
+                    color="secondary"
+                    variant="contained"
+                    type="submit"
+                  >
+                    {this.state.justVoted && (
+                      <Icon color="inherit" className={classes.checkmark}>
+                        check_circle
+                      </Icon>
+                    )}
+                    Vote
+                  </Button>
+                </Grid>
+                {this.state.justVoted && (
+                  <Typography variant="body2" component="p" color="secondary">
+                    <Grid
+                      container
+                      item
+                      spacing={8}
+                      justify="flex-end"
+                      alignItems="stretch"
+                    >
+                      <Grid item>You voted!</Grid>
+                    </Grid>
+                  </Typography>
+                )}
+              </Grid>
             ) : (
               ''
             )}

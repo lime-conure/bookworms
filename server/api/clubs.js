@@ -112,7 +112,7 @@ router.get('/:clubId/polls', async (req, res, next) => {
         const check = await club.hasUser(req.user.id)
         if (!check) res.status(403).send(`Not authorized`)
         else {
-          const polls = await Poll.findAll({where: {clubId: clubId}})
+          const polls = await Poll.findAll({where: {clubId}})
           res.send(polls)
         }
       }
@@ -177,9 +177,7 @@ router.post('/:clubId/polls', async (req, res, next) => {
 
           await Promise.all(
             selectedDates.map(date => {
-              console.log('date:', date)
               const dateTime = new Date(date)
-              console.log('dateTime:', dateTime)
               return Option.create({
                 type: 'time',
                 dateTime: dateTime,
@@ -227,7 +225,7 @@ router.get('/:clubId/polls/:pollId', async (req, res, next) => {
             const clubIdOfPoll = poll.getClubId()
             if (clubId === clubIdOfPoll) {
               // load poll options
-              const options = await poll.getOptions()
+              const options = await poll.getOptions({include: [{model: Book}]})
 
               // count votes for each option
               const allOptions = await Promise.all(

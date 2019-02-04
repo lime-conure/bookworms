@@ -55,7 +55,7 @@ class Polls extends Component {
             </ListItem>
           ))}
         </List>
-        <Link to={`/clubs/${this.props.match.params.clubId}/polls/create`}>
+        <Link to={`/clubs/${this.props.match.params.clubId}/createpoll`}>
           <Button
             type="button"
             variant="contained"
