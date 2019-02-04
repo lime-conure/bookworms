@@ -17,8 +17,7 @@ import red from '@material-ui/core/colors/red'
 
 const styles = theme => ({
   root: {
-    ...theme.mixins.gutters(),
-    padding: theme.spacing.unit * 4,
+    padding: theme.spacing.unit * 8,
     marginTop: theme.spacing.unit * 16,
     marginLeft: theme.spacing.unit * 36,
     marginRight: theme.spacing.unit * 36

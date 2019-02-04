@@ -14,19 +14,22 @@ const theme = createMuiTheme({
   },
   typography: {
     fontFamily: ['Lato', 'Arial', 'sans-serif'].join(','),
-    // button: {
-    //   fontFamily: 'Roboto',
-    //   fontWeight: 500
-    // },
+    button: {
+      fontWeight: 700,
+      letterSpacing: 0.6
+    },
     h2: {
       fontFamily: 'Cutive'
     },
     h3: {
       fontFamily: 'Cutive'
     },
-    h5: {
+    h4: {
       fontFamily: 'Cutive',
       lineHeight: 'normal'
+    },
+    h5: {
+      fontFamily: 'Cutive'
     },
     h6: {
       fontFamily: 'Cutive'
