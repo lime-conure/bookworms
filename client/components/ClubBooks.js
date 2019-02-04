@@ -22,7 +22,8 @@ export class ClubBooks extends Component {
     this.state = {
       nowResults: [],
       futureResults: [],
-      pastResults: []
+      pastResults: [],
+      loadingNewBooks: false
     }
     this.setResults = this.setResults.bind(this)
     this.handleAddBook = this.handleAddBook.bind(this)
@@ -38,13 +39,15 @@ export class ClubBooks extends Component {
   }
 
   async handleAddBook(e, bookResult, type) {
+    this.setState({loadingNewBook: true})
     e.preventDefault()
     const newBook = await makeBookObject(bookResult)
     this.props.postClubBook(newBook, type, this.props.clubId)
     this.setState({
       nowResults: [],
       futureResults: [],
-      pastResults: []
+      pastResults: [],
+      loadingNewBook: false
     })
   }
 
