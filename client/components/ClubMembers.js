@@ -30,11 +30,13 @@ export class ClubMembers extends Component {
                 <ListItem button key={member.userId}>
                   {/* TODO: link these to user profiles */}
                   <ListItemIcon>
-                    <Icon>person</Icon>
+                    <img className="profile-picture" src={member.imageUrl} />
                   </ListItemIcon>
                   <ListItemText>
                     <Typography variant="h5">
                       {member.firstName} {member.lastName}
+                      <br />
+                      {member.email}
                     </Typography>
                   </ListItemText>
                 </ListItem>
