@@ -23,7 +23,7 @@ export class ClubBooks extends Component {
       nowResults: [],
       futureResults: [],
       pastResults: [],
-      loadingNewBooks: false
+      loadingNewBook: false
     }
     this.setResults = this.setResults.bind(this)
     this.handleAddBook = this.handleAddBook.bind(this)
