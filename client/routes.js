@@ -17,7 +17,8 @@ import {
   ClubBooks,
   CreateClub,
   Profile,
-  Meetings
+  Meetings,
+  CreateMeeting
 } from './components'
 import {me} from './store'
 import {withStyles} from '@material-ui/core/styles'
@@ -105,6 +106,11 @@ class Routes extends Component {
                     exact
                     path="/clubs/:clubId/meetings"
                     component={Meetings}
+                  />
+                  <Route
+                    exact
+                    path="/clubs/:clubId/meetings/create"
+                    component={CreateMeeting}
                   />
                 </main>
               </Switch>

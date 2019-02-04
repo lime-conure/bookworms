@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {fetchMeetings} from '../store/meetings'
+import {Link} from 'react-router-dom'
 
 import {withStyles} from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
@@ -10,6 +11,20 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
+import Button from '@material-ui/core/Button'
+
+const styles = theme => ({
+  root: {
+    ...theme.mixins.gutters(),
+    padding: theme.spacing.unit * 4,
+    marginTop: theme.spacing.unit * 16,
+    marginLeft: theme.spacing.unit * 24,
+    marginRight: theme.spacing.unit * 24
+  },
+  button: {
+    marginTop: theme.spacing.unit * 4
+  }
+})
 
 class Meetings extends Component {
   componentDidMount() {
@@ -17,6 +32,7 @@ class Meetings extends Component {
     this.props.fetchMeetings(clubId)
   }
   render() {
+    const {classes} = this.props
     const meetings = this.props.meetings
     return (
       <div>
@@ -53,11 +69,23 @@ class Meetings extends Component {
             </Grid>
           </Grid>
         </Paper>
+        <Link to={`/clubs/${this.props.match.params.clubId}/meetings/create`}>
+          <Button
+            type="button"
+            color="secondary"
+            variant="contained"
+            size="large"
+            className={classes.button}
+          >
+            Create meeting
+          </Button>
+        </Link>
       </div>
     )
   }
 }
 
+const StyledMeetings = withStyles(styles)(Meetings)
 const mapState = state => ({
   meetings: state.meetings,
   userId: state.user.id
@@ -67,4 +95,4 @@ const mapDispatch = dispatch => ({
   fetchMeetings: clubId => dispatch(fetchMeetings(clubId))
 })
 
-export default connect(mapState, mapDispatch)(Meetings)
+export default connect(mapState, mapDispatch)(StyledMeetings)
