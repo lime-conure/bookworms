@@ -1,5 +1,5 @@
 import io from 'socket.io-client'
-import store, {writeMessage} from './store'
+import store, {writeMessage, addMessageToThread} from './store'
 import push from 'push.js'
 
 const socket = io(window.location.origin)
@@ -13,6 +13,20 @@ socket.on('NEW_MESSAGE', message => {
   push.create('New Message!', {
     body: `You have a new message from ${message.userId} in Club ${
       message.clubId
+    }`,
+    icon: '',
+    timeout: 4000,
+    onClick: () => {
+      window.focus()
+      this.close()
+    }
+  })
+})
+socket.on('NEW_THREAD', message => {
+  store.dispatch(addMessageToThread(...message))
+  push.create('New Message!', {
+    body: `You have a new message from ${message.data.userId} in Club ${
+      message.data.clubId
     }`,
     icon: '',
     timeout: 4000,
