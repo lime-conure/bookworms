@@ -75,11 +75,11 @@ class UserBooks extends Component {
 
     return (
       <div>
-        {this.renderBookSection(currentBooks, 'now', this, classes)}
+        {this.renderBookSection(currentBooks, 'now', classes)}
         <Divider />
-        {this.renderBookSection(futureBooks, 'future', this, classes)}
+        {this.renderBookSection(futureBooks, 'future', classes)}
         <Divider />
-        {this.renderBookSection(pastBooks, 'past', this, classes)}
+        {this.renderBookSection(pastBooks, 'past', classes)}
       </div>
     )
   }
