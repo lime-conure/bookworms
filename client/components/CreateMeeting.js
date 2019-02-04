@@ -9,6 +9,32 @@ import Button from '@material-ui/core/Button'
 import Textfield from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
+
+const styles = theme => ({
+  form: {
+    maxWidth: 660
+  },
+  optionsSection: {
+    marginTop: theme.spacing.unit * 3,
+    marginBottom: theme.spacing.unit * 3
+  },
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    overflow: 'hidden',
+    backgroundColor: theme.palette.background.paper
+  },
+  icon: {
+    color: 'rgba(255, 255, 255, 0.54)'
+  },
+  headerIcon: {
+    marginRight: theme.spacing.unit
+  }
+})
 
 export class CreateMeeting extends Component {
   constructor(props) {
@@ -36,43 +62,76 @@ export class CreateMeeting extends Component {
         `/api/clubs/${this.props.match.params.clubId}/meetings/create`,
         newMeeting
       )
+      this.props.history.push(
+        `/clubs/${this.props.match.params.clubId}/meetings`
+      )
     } catch (err) {
       console.log(err)
     }
   }
 
   render() {
+    const {classes} = this.props
     return (
       <div>
-        <h3>Create Meeting</h3>
-        <label> name </label>
-        <input
-          name="name"
-          type="text"
-          value={this.state.name}
-          onChange={this.handleChange}
-        />
-        <label> location </label>
-        <input
-          name="location"
-          type="text"
-          value={this.state.location}
-          onChange={this.handleChange}
-        />
-        <label> date </label>
-        <input
-          name="date"
-          type="text"
-          value={this.state.date}
-          onChange={this.handleChange}
-        />
-        <button onClick={this.createMeeting} type="submit">
-          Create meeting
-        </button>
+        <form className={classes.form}>
+          <Typography variant="h2" gutterBottom color="primary">
+            Create Meeting
+          </Typography>
+
+          <Textfield
+            label="Name of your Meeting"
+            name="name"
+            value={this.state.name}
+            onChange={this.handleChange}
+            margin="normal"
+            variant="filled"
+            fullWidth
+            autoFocus={true}
+          />
+          <br />
+          <Textfield
+            label="Location of your Meeting"
+            name="location"
+            value={this.state.location}
+            onChange={this.handleChange}
+            margin="normal"
+            variant="filled"
+            fullWidth
+          />
+          <br />
+          <Textfield
+            label="Date of your Meeting"
+            type="date"
+            name="date"
+            value={this.state.date}
+            onChange={this.handleChange}
+            margin="normal"
+            InputLabelProps={{
+              shrink: true
+            }}
+            variant="filled"
+            fullWidth
+          />
+          <br />
+
+          <Button
+            type="submit"
+            onClick={this.createMeeting}
+            disable={!this.state.name}
+            variant="contained"
+            color="primary"
+            size="large"
+          >
+            Create Meeting
+          </Button>
+        </form>
       </div>
     )
   }
 }
+
+const StyledCreateMeeting = withStyles(styles)(CreateMeeting)
 
 const mapState = state => ({
   user: state.user
@@ -82,4 +141,4 @@ const mapDispatch = dispatch => ({
   createMeeting: userId => dispatch(createMeeting(userId))
 })
 
-export default connect(mapState, mapDispatch)(CreateMeeting)
+export default connect(mapState, mapDispatch)(StyledCreateMeeting)

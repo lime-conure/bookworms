@@ -72,7 +72,7 @@ class Meetings extends Component {
         <Link to={`/clubs/${this.props.match.params.clubId}/meetings/create`}>
           <Button
             type="button"
-            color="secondary"
+            color="primary"
             variant="contained"
             size="large"
             className={classes.button}
