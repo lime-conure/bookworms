@@ -138,10 +138,12 @@ async function seed() {
   // associate user 1 with both books
   await Promise.all([
     UserBook.create({
+      type: 'now',
       userId: 1,
       bookId: 1
     }),
     UserBook.create({
+      type: 'past',
       userId: 1,
       bookId: 2
     })

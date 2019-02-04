@@ -51,11 +51,11 @@ class Meetings extends Component {
                       <br />
                     </Typography>
                     <Typography variant="h6">
-                      <Icon> location</Icon> Location: {meeting.location}
+                      <Icon>location</Icon> Location: {meeting.location}
                       <br />
                       Date: {meeting.date.slice(0, 10)}
                       <br />
-                      Time: {meeting.date.slice(11, 19)}
+                      Time: {meeting.date.slice(11, 16)}
                       <br />
                     </Typography>
                   </ListItemText>

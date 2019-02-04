@@ -25,7 +25,7 @@ router.post('/signup', async (req, res, next) => {
     let firstName, lastName
     if (fullName) {
       firstName = fullName.split(' ')[0]
-      lastName = fullName.split(' ')[1] ? fullName.split(' ')[1] : null
+      lastName = fullName.split(' ')[1] ? fullName.split(' ')[1] : ''
     }
 
     const user = await User.create({firstName, lastName, email, password})
