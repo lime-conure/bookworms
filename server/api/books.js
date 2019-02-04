@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const {Book, ClubBook, Club, Author} = require('../db/models')
+const Op = require('sequelize').Op
 module.exports = router
 
 /****** ROUTES FOR ClubBook ******/
@@ -54,7 +55,19 @@ router.post('/:clubId/books/add', async (req, res, next) => {
             }
             existingBook.setAuthors([existingAuthor])
           }
-          existingBook.addClub(club, {through: {type}})
+          // type === 'now' or type === 'future', no duplicated row allowed in clubs_books table
+          if (type === 'now' || type === 'future') {
+            const existingRow = await ClubBook.findOne({
+              where: {
+                BookId: existingBook.id,
+                clubId,
+                type: {
+                  [Op.or]: ['now', 'future']
+                }
+              }
+            })
+            if (!existingRow) existingBook.addClub(club, {through: {type}})
+          } else existingBook.addClub(club, {through: {type}})
           res.json(existingBook)
         }
       }
