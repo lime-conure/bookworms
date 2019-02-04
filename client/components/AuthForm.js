@@ -1,16 +1,19 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import {Link} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {auth} from '../store'
-import {Link} from 'react-router-dom'
+import socket from '../socket'
 
+// Material UI
 import {withStyles} from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Button from '@material-ui/core/Button'
 import Textfield from '@material-ui/core/TextField'
+import FormHelperText from '@material-ui/core/FormHelperText'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
-import socket from '../socket'
+import red from '@material-ui/core/colors/red'
 
 const styles = theme => ({
   root: {
@@ -20,12 +23,13 @@ const styles = theme => ({
     marginLeft: theme.spacing.unit * 36,
     marginRight: theme.spacing.unit * 36
   },
-  button: {
-    marginTop: theme.spacing.unit * 4,
-    marginRight: theme.spacing.unit * 2
-  },
   form: {
     marginTop: theme.spacing.unit * 4
+  },
+  errorMessage: {
+    marginTop: 0,
+    color: red.A200,
+    fontSize: '14px'
   }
 })
 
@@ -46,12 +50,7 @@ const AuthForm = props => {
         name={name}
         className={classes.form}
       >
-        <Grid
-          container
-          spacing={24}
-          justify="space-between"
-          alignItems="center"
-        >
+        <Grid container spacing={24} justify="flex-start" alignItems="center">
           {name === 'signup' ? (
             <Grid item xs={12}>
               {' '}
@@ -61,7 +60,11 @@ const AuthForm = props => {
                 variant="filled"
                 type="text"
                 fullWidth
+                autoFocus={name === 'signup'}
                 required
+                InputLabelProps={{
+                  shrink: true
+                }}
               />
             </Grid>
           ) : (
@@ -74,6 +77,10 @@ const AuthForm = props => {
               variant="filled"
               type="text"
               fullWidth
+              autoFocus={name === 'login'}
+              InputLabelProps={{
+                shrink: true
+              }}
               required
             />
           </Grid>
@@ -85,33 +92,44 @@ const AuthForm = props => {
               type="password"
               fullWidth
               required
+              autoComplete="current-password"
+              InputLabelProps={{
+                shrink: true
+              }}
             />
           </Grid>
+          <Grid item>
+            <Button
+              type="submit"
+              color="secondary"
+              variant="contained"
+              size="large"
+              className={classes.button}
+            >
+              {displayName}
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              type="submit"
+              color="primary"
+              variant="contained"
+              size="large"
+              href="/auth/google"
+              className={classes.button}
+            >
+              {displayName} with Google
+            </Button>
+          </Grid>
+          <Grid item>
+            <Typography variant="subtitle2" component="p" color="inherit">
+              <FormHelperText component="span" className={classes.errorMessage}>
+                {error && error.response && error.response.data}
+              </FormHelperText>
+            </Typography>
+          </Grid>
         </Grid>
-        <Button
-          type="submit"
-          color="secondary"
-          variant="contained"
-          size="large"
-          className={classes.button}
-        >
-          {displayName}
-        </Button>
-        <Button
-          type="button"
-          color="primary"
-          variant="contained"
-          size="large"
-          component={Link}
-          to="/auth/google"
-          className={classes.button}
-        >
-          {displayName} with Google
-        </Button>
-
-        {error && error.response && <div> {error.response.data} </div>}
       </form>
-      {/* <a href="/auth/google">{displayName} with Google</a> */}
     </Paper>
   )
 }

@@ -12,14 +12,14 @@ import Tooltip from '@material-ui/core/Tooltip'
 const styles = theme => ({
   root: {
     display: 'flex',
-    flexWrap: 'wrap',
+    flexWap: 'wrap',
     justifyContent: 'space-around',
     overflow: 'hidden',
     backgroundColor: theme.palette.background.paper,
     marginTop: theme.spacing.unit * 2
   },
   gridList: {
-    width: 660,
+    width: 720,
     height: 350
   }
 })
