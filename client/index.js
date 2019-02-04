@@ -39,7 +39,9 @@ const theme = createMuiTheme({
   overrides: {
     MuiTooltip: {
       tooltip: {
-        fontFamily: 'Roboto'
+        fontFamily: 'Roboto',
+        fontSize: '12px',
+        maxWidth: 200
       }
     }
   }

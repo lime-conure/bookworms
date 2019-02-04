@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
-import axios from 'axios'
-const apiKey = 'jrAzhFY1JP1FdDk1vp7Zg'
+import {getBookDescription} from '../../utils'
 
 // Material UI
 import {withStyles} from '@material-ui/core/styles'
@@ -17,6 +16,7 @@ import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogContent from '@material-ui/core/DialogContent'
 import LinearProgress from '@material-ui/core/LinearProgress'
+import Grid from '@material-ui/core/Grid'
 
 const styles = theme => ({
   root: {
@@ -42,9 +42,15 @@ const styles = theme => ({
   progress: {
     margin: theme.spacing.unit * 2
   },
-  description: {
-    marginTop: theme.spacing.unit * 3,
-    marginBottom: theme.spacing.unit * 3
+  description: {},
+  dialogImage: {
+    width: '100%'
+  },
+  goodreadsButton: {
+    marginTop: theme.spacing.unit * 3
+  },
+  dialogAuthor: {
+    opacity: 0.6
   }
 })
 
@@ -60,35 +66,11 @@ class BookList extends Component {
     this.handleDialogClose = this.handleDialogClose.bind(this)
   }
 
-  getDescription = async bookId => {
-    const requestUri =
-      `https://cors-anywhere.herokuapp.com/` +
-      `https://www.goodreads.com/book/show/${bookId}?key=${apiKey}`
-    let description = 'loading...'
-    try {
-      const {data} = await axios.get(requestUri)
-      const parser = new DOMParser()
-      const XMLResponse = parser.parseFromString(data, 'application/xml')
-      description = XMLResponse.getElementsByTagName('description')[0]
-        .textContent
-      if (!description) {
-        return 'No description found.'
-      }
-      // remove html tags
-      const shorterDescWithoutHTML = description
-        .replace(/<\/?[^>]+(>|$)/g, '')
-        .substr(0, 500)
-      return `${shorterDescWithoutHTML}...`
-    } catch (err) {
-      console.error(err)
-    }
-  }
-
   handleDialogOpen = async (e, book) => {
     this.setState({loadingDialog: true})
     e.preventDefault()
     if (!this.state.dialogOpen) {
-      const description = await this.getDescription(book.goodReadsId)
+      const description = await getBookDescription(book.goodReadsId)
       const dialogBook = {...book, description}
       this.setState({
         dialogOpen: true,
@@ -133,7 +115,7 @@ class BookList extends Component {
                     </Typography>
                     <Typography variant="body2" component="p">
                       {book.description
-                        ? `${book.description.slice(0, 200)}...`
+                        ? `${book.description.slice(0, 150)}...`
                         : ''}
                     </Typography>
                   </ListItemText>
@@ -160,26 +142,38 @@ class BookList extends Component {
                     <Icon>cancel</Icon>
                   </IconButton>
                   <DialogTitle id="book-modal">
-                    <Typography variant="h6" component="h6">
-                      {this.state.dialogBook.title}
+                    {this.state.dialogBook.title}
+                    <span className={classes.dialogAuthor}>
                       {this.state.dialogBook.authors &&
                       this.state.dialogBook.authors.length
                         ? ` by ${this.state.dialogBook.authors[0].name}`
                         : ''}
-                    </Typography>
+                    </span>
                   </DialogTitle>
                   <DialogContent>
-                    <img
-                      src={this.state.dialogBook.imageUrl}
-                      alt={this.state.dialogBook.title}
-                    />
-                    <Typography
-                      variant="body1"
-                      component="span"
-                      className={classes.description}
+                    <Grid
+                      container
+                      spacing={24}
+                      justify="flex-start"
+                      alignItems="flex-start"
                     >
-                      {this.state.dialogBook.description}
-                    </Typography>
+                      <Grid item xs={3}>
+                        <img
+                          className={classes.dialogImage}
+                          src={this.state.dialogBook.imageUrl}
+                          alt={this.state.dialogBook.title}
+                        />
+                      </Grid>
+                      <Grid item xs={9}>
+                        <Typography
+                          variant="body1"
+                          component="span"
+                          className={classes.description}
+                        >
+                          {this.state.dialogBook.description}
+                        </Typography>
+                      </Grid>
+                    </Grid>
                     <Button
                       target="_blank"
                       href={`https://www.goodreads.com/book/show/${
@@ -187,6 +181,7 @@ class BookList extends Component {
                       }`}
                       variant="contained"
                       color="primary"
+                      className={classes.goodreadsButton}
                     >
                       View On Goodreads
                     </Button>
