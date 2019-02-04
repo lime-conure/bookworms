@@ -19,12 +19,8 @@ const styles = theme => ({
   },
   logo: {
     color: '#fff',
-    opacity: 0.75,
     paddingLeft: theme.spacing.unit,
-    paddingRight: theme.spacing.unit,
-    '&:hover': {
-      opacity: 1.0
-    }
+    paddingRight: theme.spacing.unit
   },
   grow: {
     flexGrow: 1,

@@ -16,7 +16,8 @@ const theme = createMuiTheme({
     fontFamily: ['Lato', 'Arial', 'sans-serif'].join(','),
     button: {
       fontWeight: 700,
-      letterSpacing: 0.6
+      letterSpacing: 0.6,
+      lineHeight: 1.7
     },
     h2: {
       fontFamily: 'Cutive'

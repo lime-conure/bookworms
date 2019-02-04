@@ -28,7 +28,7 @@ const styles = theme => ({
   errorMessage: {
     marginTop: 0,
     color: red.A200,
-    fontSize: '14px'
+    fontSize: '16px'
   }
 })
 
@@ -40,10 +40,25 @@ const AuthForm = props => {
 
   return (
     <Paper className={classes.root} elevation={2}>
-      <Typography variant="h3" component="h3" gutterBottom>
-        {/* Log In To Bookworms or Sign Up For Bookworms */}
-        {displayName} {name === 'login' ? 'To' : 'For'} Bookworms
-      </Typography>
+      <Grid container spacing={8} justify="space-between" alignItems="baseline">
+        <Grid item>
+          <Typography variant="h3" component="h3" gutterBottom>
+            {/* Log In To Bookworms or Sign Up For Bookworms */}
+            {displayName} {name === 'login' ? 'To' : 'For'} Bookworms
+          </Typography>
+        </Grid>
+        <Grid item>
+          {name === 'login' ? (
+            <Button component={Link} to="/signup">
+              Sign Up Instead
+            </Button>
+          ) : (
+            <Button component={Link} to="/login">
+              Log In Instead
+            </Button>
+          )}
+        </Grid>
+      </Grid>
       <form
         onSubmit={evt => handleSubmit(evt, props)}
         name={name}
