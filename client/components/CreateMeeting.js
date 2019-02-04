@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {createMeeting} from '../store/meetings'
 import axios from 'axios'
-import socket from '../socket'
 
 import {withStyles} from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
@@ -17,7 +16,7 @@ export class CreateMeeting extends Component {
     this.state = {
       name: '',
       location: '',
-      time: ''
+      date: ''
     }
     this.handleChange = this.handleChange.bind(this)
     this.createMeeting = this.createMeeting.bind(this)
@@ -31,10 +30,11 @@ export class CreateMeeting extends Component {
   async createMeeting(evt) {
     evt.preventDefault()
     try {
-      const {name, location, time} = this.state
-      const newMeeting = {name, location, time, userId: this.props.userId}
+      const {name, location, date} = this.state
+      const newMeeting = {name, location, date}
       const meeting = await axios.post(
-        `/api/clubs/${this.props.match.params.clubId}/meetings/create`
+        `/api/clubs/${this.props.match.params.clubId}/meetings/create`,
+        newMeeting
       )
       this.props.createMeeting(this.props.match.params.clubId)
     } catch (err) {
@@ -43,16 +43,44 @@ export class CreateMeeting extends Component {
   }
 
   render() {
-    return <h3>component working</h3>
+    return (
+      <div>
+        <h3>Create Meeting</h3>
+        <label> name </label>
+        <input
+          name="name"
+          type="text"
+          value={this.state.name}
+          onChange={this.handleChange}
+        />
+        <label> location </label>
+        <input
+          name="location"
+          type="text"
+          value={this.state.location}
+          onChange={this.handleChange}
+        />
+        <label> date </label>
+        <input
+          name="date"
+          type="text"
+          value={this.state.date}
+          onChange={this.handleChange}
+        />
+        <button onClick={this.createMeeting} type="submit">
+          Create meeting
+        </button>
+      </div>
+    )
   }
 }
 
 const mapState = state => ({
-  userId: state.user.id
+  user: state.user
 })
 
 const mapDispatch = dispatch => ({
-  createMeeting: clubId => dispatch(createMeeting(clubId))
+  createMeeting: userId => dispatch(createMeeting(userId))
 })
 
 export default connect(mapState, mapDispatch)(CreateMeeting)

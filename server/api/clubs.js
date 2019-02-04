@@ -518,9 +518,10 @@ router.get('/:clubId/meetings', async (req, res, next) => {
 //POST api/meetings/create - to create a meeting
 router.post('/:clubId/meetings/create', async (req, res, next) => {
   try {
-    if (!req.body.userId) res.status(403).send('Not authorized')
-    if (!req.params.clubId) res.status(403).send('Not authorized')
-    const user = await User.findById(req.body.userId)
+    console.log(req.body, ' *** req.body ****')
+    if (!req.user.id) res.status(403).send('Not authorized')
+    if (!req.params.clubId) res.status(403).send('Not authorized no club id')
+    const user = await User.findById(req.user.id)
     const club = await Club.findById(req.params.clubId)
     const check = await club.hasUser(user.id)
     if (!check)
