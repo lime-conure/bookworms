@@ -13,11 +13,11 @@ import Grid from '@material-ui/core/Grid'
 
 const styles = theme => ({
   root: {
-    ...theme.mixins.gutters(),
-    padding: theme.spacing.unit * 4,
+    // ...theme.mixins.gutters(),
+    padding: theme.spacing.unit * 8,
     marginTop: theme.spacing.unit * 16,
-    marginLeft: theme.spacing.unit * 24,
-    marginRight: theme.spacing.unit * 24
+    marginLeft: theme.spacing.unit * 36,
+    marginRight: theme.spacing.unit * 36
   },
   button: {
     marginTop: theme.spacing.unit * 4
