@@ -34,7 +34,6 @@ export const makeBookObject = async bookResult => {
   if (bookResult.description)
     //this book is already added, now is being moved
     return bookResult
-  // const description = await getBookDescription(bookResult.best_book.id)
   return {
     author: bookResult.best_book.author,
     goodReadsId: bookResult.best_book.id,
@@ -48,7 +47,6 @@ export const makeBookObject = async bookResult => {
       '-' +
       bookResult.original_publication_year,
     rating: Math.round(bookResult.average_rating * 100)
-    // description
   }
 }
 
