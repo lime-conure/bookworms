@@ -44,7 +44,6 @@ const theme = createMuiTheme({
   overrides: {
     MuiTooltip: {
       tooltip: {
-        fontFamily: 'Roboto',
         fontSize: '12px',
         maxWidth: 200,
         backgroundColor: grey[900]
@@ -52,7 +51,19 @@ const theme = createMuiTheme({
     },
     MuiListItemIcon: {
       root: {
-        marginRight: 0
+        marginRight: 0,
+        color: 'inherit',
+        '&:hover': {
+          color: 'inherit'
+        }
+      }
+    },
+    MuiListItemText: {
+      primary: {
+        color: 'inherit',
+        '&:hover': {
+          color: 'inherit'
+        }
       }
     }
   }

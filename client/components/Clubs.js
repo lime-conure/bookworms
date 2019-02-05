@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {fetchClubs, fetchMessages} from '../store'
-import {leaveClub} from '../store/clubs'
+import {fetchClubs, fetchMessages, leaveClub} from '../store'
 import {Link} from 'react-router-dom'
 
 import {withStyles} from '@material-ui/core/styles'
