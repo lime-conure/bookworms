@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {fetchClubs, fetchMessages} from '../store'
-import {leaveClub} from '../store/clubs'
+import {fetchClubs, fetchMessages, leaveClub} from '../store'
 import {Link} from 'react-router-dom'
 
 import {withStyles} from '@material-ui/core/styles'
@@ -17,14 +16,16 @@ import Icon from '@material-ui/core/Icon'
 
 const styles = theme => ({
   root: {
-    ...theme.mixins.gutters(),
-    padding: theme.spacing.unit * 4,
+    padding: theme.spacing.unit * 8,
     marginTop: theme.spacing.unit * 16,
-    marginLeft: theme.spacing.unit * 24,
-    marginRight: theme.spacing.unit * 24
+    marginLeft: theme.spacing.unit * 36,
+    marginRight: theme.spacing.unit * 36
   },
   button: {
     marginTop: theme.spacing.unit * 4
+  },
+  icon: {
+    color: '#fff'
   }
 })
 
@@ -48,10 +49,11 @@ class Clubs extends Component {
       <Paper className={classes.root} elevation={2}>
         <div>
           <Typography variant="h2" component="h2" gutterBottom>
-            Your Clubs
+            Your Book Clubs
           </Typography>
-          <Divider />
+
           <List>
+            <Divider />
             {clubs.map(club => (
               <ListItem
                 button
@@ -59,11 +61,13 @@ class Clubs extends Component {
                 key={club.id}
                 to={`/clubs/${club.id}`}
               >
-                <ListItemIcon>
+                <ListItemIcon className={classes.icon}>
                   <Icon>group</Icon>
                 </ListItemIcon>
                 <ListItemText>
-                  <Typography variant="h5">{club.name}</Typography>
+                  <Typography variant="h5" component="h5">
+                    {club.name}
+                  </Typography>
                 </ListItemText>
 
                 <Button
@@ -77,6 +81,7 @@ class Clubs extends Component {
                 </Button>
               </ListItem>
             ))}
+            <Divider />
           </List>
         </div>
 

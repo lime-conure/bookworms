@@ -108,7 +108,7 @@ class Search extends Component {
             disabled={!this.state.searchText}
             onClick={e => this.onButtonClick(e)}
             variant="contained"
-            color="secondary"
+            color="primary"
             size="large"
           >
             {this.state.fetchingData ? (

@@ -13,7 +13,6 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import Icon from '@material-ui/core/Icon'
-import IconButton from '@material-ui/core/IconButton'
 import Button from '@material-ui/core/Button'
 import Collapse from '@material-ui/core/Collapse'
 import ExpandLess from '@material-ui/icons/ExpandLess'
@@ -28,25 +27,36 @@ const styles = theme => ({
   },
   drawerPaper: {
     width: drawerWidth,
-    top: 64 // Navbar height
+    top: 80 // Navbar height
   },
   drawerHeader: {
     padding: theme.spacing.unit * 2,
-    marginTop: theme.spacing.unit * 4,
-    fontFamily: 'Roboto'
+    marginTop: theme.spacing.unit * 4
   },
-  drawerList: {
-    fontFamily: 'Roboto'
+  navItem: {
+    color: '#fff',
+    '&:hover': {
+      color: '#c6ff00'
+    }
   },
   inviteLink: {
     color: '#fff'
   },
+  inviteButton: {
+    padding: theme.spacing.unit * 2,
+    paddingRight: theme.spacing.unit * 3
+  },
   inviteLinkText: {
     wordBreak: 'break-word',
-    marginLeft: theme.spacing.unit * 4,
-    marginRight: theme.spacing.unit * 4,
+    marginLeft: 0,
+    marginRight: theme.spacing.unit * 2,
     textTransform: 'initial',
-    lineHeight: 1.25
+    textAlign: 'left',
+    lineHeight: 1.25,
+    letterSpacing: 'normal',
+    '&:hover': {
+      color: '#c6ff00'
+    }
   }
 })
 
@@ -81,13 +91,15 @@ class Sidebar extends Component {
           paper: classes.drawerPaper
         }}
       >
-        <Typography
-          color="secondary"
-          variant="h5"
-          className={classes.drawerHeader}
-        >
-          {club.name}
-        </Typography>
+        <Link to={`/clubs/${club.id}`}>
+          <Typography
+            variant="h5"
+            component="h5"
+            className={classes.drawerHeader}
+          >
+            {club.name}
+          </Typography>
+        </Link>
 
         <List className={classes.drawerList}>
           <ListItem
@@ -95,6 +107,7 @@ class Sidebar extends Component {
             component={Link}
             key="books"
             to={`/clubs/${club.id}/books`}
+            className={classes.navItem}
           >
             <ListItemIcon>
               <Icon>book</Icon>
@@ -106,6 +119,7 @@ class Sidebar extends Component {
             component={Link}
             key="meetings"
             to={`/clubs/${club.id}/meetings`}
+            className={classes.navItem}
           >
             <ListItemIcon>
               <Icon>event</Icon>
@@ -117,6 +131,7 @@ class Sidebar extends Component {
             component={Link}
             key="polls"
             to={`/clubs/${club.id}/polls`}
+            className={classes.navItem}
           >
             <ListItemIcon>
               <Icon>poll</Icon>
@@ -128,6 +143,7 @@ class Sidebar extends Component {
             component={Link}
             key="messages"
             to={`/clubs/${club.id}/messages`}
+            className={classes.navItem}
           >
             <ListItemIcon>
               <Icon>message</Icon>
@@ -139,6 +155,7 @@ class Sidebar extends Component {
             component={Link}
             key="members"
             to={`/clubs/${club.id}/members`}
+            className={classes.navItem}
           >
             <ListItemIcon>
               <Icon>group</Icon>
@@ -146,7 +163,12 @@ class Sidebar extends Component {
             <ListItemText>Members</ListItemText>
           </ListItem>
 
-          <ListItem button onClick={this.handleClick}>
+          <ListItem
+            button
+            key="inviteLink"
+            onClick={this.handleClick}
+            className={classes.navItem}
+          >
             <ListItemIcon>
               <Icon>group_add</Icon>
             </ListItemIcon>
@@ -158,14 +180,14 @@ class Sidebar extends Component {
             )}
           </ListItem>
           <Collapse in={!this.state.open} timeout="auto" unmountOnExit>
-            <CopyToClipboard text={club.inviteLink}>
+            <CopyToClipboard text={club.inviteLink} className={classes.navItem}>
               <Tooltip placement="right" title="Copy Link to Clipboard">
-                <Button>
+                <Button className={classes.inviteButton}>
                   <Typography
                     variant="body2"
                     className={classes.inviteLinkText}
                   >
-                    <small>{club.inviteLink}</small>
+                    {club.inviteLink}
                   </Typography>
                   <Icon fontSize="small">file_copy</Icon>
                 </Button>

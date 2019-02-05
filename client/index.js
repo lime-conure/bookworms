@@ -13,10 +13,29 @@ const theme = createMuiTheme({
     secondary: lime
   },
   typography: {
-    fontFamily: ['Roboto Slab', 'Roboto', 'Arial', 'sans-serif'].join(','),
+    fontFamily: ['Lato', 'Arial', 'sans-serif'].join(','),
     button: {
-      fontFamily: 'Roboto',
-      fontWeight: 500
+      fontWeight: 700,
+      letterSpacing: 0.6,
+      lineHeight: 1.7 // fontSize is 0.875rem
+    },
+    h2: {
+      fontFamily: 'Cutive'
+    },
+    h3: {
+      fontFamily: 'Cutive',
+      lineHeight: '4.5rem' // fontSize is 3rem
+    },
+    h4: {
+      fontFamily: 'Cutive',
+      lineHeight: 'normal'
+    },
+    h6: {
+      fontFamily: 'Cutive'
+    },
+    subtitle1: {
+      fontWeight: 300,
+      fontSize: '18px'
     }
   },
 
@@ -26,10 +45,26 @@ const theme = createMuiTheme({
   overrides: {
     MuiTooltip: {
       tooltip: {
-        fontFamily: 'Roboto',
-        fontSize: '12px',
+        fontSize: '13px',
         maxWidth: 200,
         backgroundColor: grey[900]
+      }
+    },
+    MuiListItemIcon: {
+      root: {
+        marginRight: 0,
+        color: 'inherit',
+        '&:hover': {
+          color: 'inherit'
+        }
+      }
+    },
+    MuiListItemText: {
+      primary: {
+        color: 'inherit',
+        '&:hover': {
+          color: 'inherit'
+        }
       }
     }
   }

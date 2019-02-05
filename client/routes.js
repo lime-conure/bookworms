@@ -26,7 +26,7 @@ import {withStyles} from '@material-ui/core/styles'
 
 const styles = theme => ({
   root: {
-    paddingTop: 96, // Navbar height + 32
+    paddingTop: 128, // Navbar height (80) + 48
     paddingBottom: theme.spacing.unit * 4,
     paddingLeft: 322, // Sidebar width + 32,
     paddingRight: theme.spacing.unit * 4

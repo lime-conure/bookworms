@@ -12,7 +12,10 @@ const styles = theme => ({
   bookSection: {
     marginTop: theme.spacing.unit * 4,
     marginBottom: theme.spacing.unit * 4,
-    width: 860
+    width: 720
+  },
+  sectionHeader: {
+    marginBottom: theme.spacing.unit * 3
   }
 })
 
@@ -59,12 +62,16 @@ export class ClubBooks extends Component {
   renderBookSection(books, type, classes) {
     return (
       <div className={classes.bookSection}>
-        <Typography variant="h4" component="h4" gutterBottom>
+        <Typography
+          variant="h5"
+          component="h5"
+          gutterBottom
+          className={classes.sectionHeader}
+        >
           {type === 'now'
             ? `Books We're Reading`
             : type === 'future' ? `Books We Want To Read` : `Books We've Read`}
         </Typography>
-
         {renderBookSearch(books, type, this)}
       </div>
     )
@@ -80,7 +87,7 @@ export class ClubBooks extends Component {
 
     return (
       <div>
-        <Typography variant="h3" gutterBottom color="primary">
+        <Typography variant="h3" component="h3">
           Books
         </Typography>
         <div>
