@@ -171,7 +171,8 @@ async function seed() {
       notes:
         'A poll to decide our next book and meeting time for club Lime Conure',
       dueDate: new Date(),
-      clubId: 1
+      clubId: 1,
+      creatorId: 1
     })
   ])
 

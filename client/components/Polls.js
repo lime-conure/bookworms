@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {fetchPolls} from '../store'
+import {fetchPolls, deletePoll} from '../store'
 import {Link} from 'react-router-dom'
 import {formatDateDisplay} from '../utils'
 
@@ -14,6 +14,7 @@ import ListItemText from '@material-ui/core/ListItemText'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import Icon from '@material-ui/core/Icon'
 import Divider from '@material-ui/core/Divider'
+import Tooltip from '@material-ui/core/Tooltip'
 
 const styles = theme => ({
   button: {
@@ -70,6 +71,17 @@ class Polls extends Component {
                   )}
                 </Typography>
               </ListItemText>
+              {this.props.userId === poll.creatorId && (
+                <Tooltip placement="left" title="Delete this Poll">
+                  <ListItemIcon
+                    onClick={() =>
+                      this.props.deleteMeeting(this.props.clubId, poll.id)
+                    }
+                  >
+                    <Icon className={classes.icon}>cancel</Icon>
+                  </ListItemIcon>
+                </Tooltip>
+              )}
             </ListItem>
           ))}
         </List>
@@ -92,11 +104,14 @@ class Polls extends Component {
 const StyledPolls = withStyles(styles)(Polls)
 
 const mapState = state => ({
-  polls: state.polls
+  polls: state.polls,
+  userId: state.user.id,
+  clubId: state.singleClub.id
 })
 
 const mapDispatch = dispatch => ({
-  fetchPolls: clubId => dispatch(fetchPolls(clubId))
+  fetchPolls: clubId => dispatch(fetchPolls(clubId)),
+  deletePoll: (clubId, pollId) => dispatch(deletePoll(clubId, pollId))
 })
 
 export default connect(mapState, mapDispatch)(StyledPolls)
