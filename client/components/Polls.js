@@ -74,8 +74,8 @@ class Polls extends Component {
               {this.props.userId === poll.creatorId && (
                 <Tooltip placement="left" title="Delete this Poll">
                   <ListItemIcon
-                    onClick={() =>
-                      this.props.deleteMeeting(this.props.clubId, poll.id)
+                    onClick={e =>
+                      this.props.deletePoll(e, this.props.clubId, poll.id)
                     }
                   >
                     <Icon className={classes.icon}>cancel</Icon>
@@ -111,7 +111,7 @@ const mapState = state => ({
 
 const mapDispatch = dispatch => ({
   fetchPolls: clubId => dispatch(fetchPolls(clubId)),
-  deletePoll: (clubId, pollId) => dispatch(deletePoll(clubId, pollId))
+  deletePoll: (e, clubId, pollId) => dispatch(deletePoll(e, clubId, pollId))
 })
 
 export default connect(mapState, mapDispatch)(StyledPolls)

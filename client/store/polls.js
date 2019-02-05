@@ -1,4 +1,5 @@
 import axios from 'axios'
+import history from '../history'
 
 /**
  * ACTION TYPES
@@ -36,11 +37,12 @@ export const fetchPolls = clubId => async dispatch => {
   }
 }
 
-export const deletePoll = (clubId, pollId) => async dispatch => {
+export const deletePoll = (e, clubId, pollId) => async dispatch => {
   try {
-    await axios.put(`/api/clubs/${clubId}/polls/delete`, {
-      pollId
-    })
+    e.preventDefault()
+    // await axios.put(`/api/clubs/${clubId}/polls/delete`, {
+    //   pollId
+    // })
     dispatch(removePoll(pollId))
   } catch (err) {
     console.error(err)
