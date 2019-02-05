@@ -27,7 +27,11 @@ const removeUser = () => ({type: REMOVE_USER})
 export const inviteUser = inviteLink => ({type: INVITE_USER, inviteLink})
 const getUserBooks = books => ({type: GET_USER_BOOKS, books})
 const addUserBook = book => ({type: ADD_USER_BOOK, book})
-const removeUserBook = bookId => ({type: REMOVE_USER_BOOK, bookId})
+const removeUserBook = (bookId, bookType) => ({
+  type: REMOVE_USER_BOOK,
+  bookId,
+  bookType
+})
 /**
  * THUNK CREATORS
  */
@@ -76,6 +80,10 @@ export const logout = (userId, socket) => async dispatch => {
 export const fetchUserBooks = () => async dispatch => {
   try {
     const {data} = await axios.get(`/api/user/books`)
+    const formatedData = data.map(book => ({
+      ...book.book,
+      users_books: book.users_books
+    }))
     dispatch(getUserBooks(data))
   } catch (err) {
     console.log(err)
@@ -93,7 +101,7 @@ export const postUserBook = (book, type) => async dispatch => {
         addUserBook({
           ...data,
           users_books: {type},
-          authors: [book.author]
+          authors: book.authors || [book.author]
         })
       )
     }
@@ -102,12 +110,13 @@ export const postUserBook = (book, type) => async dispatch => {
   }
 }
 
-export const deleteUserBook = bookId => async dispatch => {
+export const deleteUserBook = (bookId, type) => async dispatch => {
   try {
     await axios.put(`/api/user/books/delete`, {
-      bookId
+      bookId,
+      type
     })
-    dispatch(removeUserBook(bookId))
+    dispatch(removeUserBook(bookId, type))
   } catch (err) {
     console.log(err)
   }
@@ -131,7 +140,15 @@ export default function(state = defaultUser, action) {
     case REMOVE_USER_BOOK:
       return {
         ...state,
-        ...{books: state.books.filter(book => book.id !== action.bookId)}
+        ...{
+          books: state.books.filter(
+            book =>
+              !(
+                book.id === action.bookId &&
+                book.users_books.type === action.bookType
+              )
+          )
+        }
       }
     default:
       return state

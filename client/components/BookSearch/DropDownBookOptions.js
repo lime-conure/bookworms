@@ -26,11 +26,12 @@ class DropDownBookOptions extends React.Component {
     const moveTo = this.options[this.props.type][idx]
     console.log('book: ', this.props.book)
     console.log('move to: ', moveTo)
+    console.log('type: ', this.props.type)
     if (moveTo === 'remove') {
-      this.props.removeBook(e, idx, this.props.book.id)
+      this.props.removeBook(e, idx, this.props.book.id, this.props.type)
     } else {
       if (this.props.type === 'now' || this.props.type === 'future') {
-        await this.props.removeBook(e, idx, this.props.book.id)
+        await this.props.removeBook(e, idx, this.props.book.id, this.props.type)
       }
       await this.props.addBook(e, this.props.book, moveTo)
     }

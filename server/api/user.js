@@ -10,8 +10,29 @@ router.get('/books', async (req, res, next) => {
   try {
     if (!req.user) res.status(403).send('Not authorized')
     else {
-      const books = await req.user.getBooks({include: [{model: Author}]})
-      res.send(books)
+      const rowsWithUserId = await UserBook.findAll({
+        where: {
+          userId: req.user.id
+        }
+      })
+
+      console.log('rows: ', rowsWithUserId)
+      let books = await Promise.all(
+        rowsWithUserId.map(row =>
+          Book.findOne({
+            where: {id: row.bookId},
+            include: [{model: Author}]
+          })
+        )
+      )
+
+      console.log('books: ', books)
+      const newBooks = books.map((book, idx) => {
+        return {book, users_books: {type: rowsWithUserId[idx].type}}
+      })
+
+      console.log('newBooks: ', newBooks)
+      res.send(newBooks)
     }
   } catch (err) {
     next(err)
@@ -55,11 +76,13 @@ router.post('/books/add', async (req, res, next) => {
 
         if (existingRow) res.json({})
         else {
-          existingBook.addUser(req.user, {through: {type}})
+          //existingBook.addUser(req.user, {through: {type}})
+          UserBook.create({type, userId: req.user.id, bookId: existingBook.id})
           res.json(existingBook)
         }
       } else {
-        existingBook.addUser(req.user, {through: {type}})
+        //existingBook.addUser(req.user, {through: {type}})
+        UserBook.create({type, userId: req.user.id, bookId: existingBook.id})
         res.json(existingBook)
       }
     }
@@ -73,13 +96,15 @@ router.put('/books/delete', async (req, res, next) => {
   try {
     if (!req.user) res.status(403).send(`Not authorized`)
     else {
-      const {bookId} = req.body
+      const {bookId, type} = req.body
       // make sure user has this book before we remove it
-      const userBooks = await req.user.getBooks({where: {id: bookId}})
-      if (!userBooks.length) {
+      const book = await UserBook.findOne({
+        where: {bookId, type, userId: req.user.id}
+      })
+      if (!book) {
         res.send(`${req.user.fullName} does not have that book`)
       } else {
-        await req.user.removeBook(bookId)
+        await book.destroy()
         res.status(200).send()
       }
     }

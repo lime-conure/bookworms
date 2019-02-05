@@ -55,9 +55,11 @@ export class ClubBooks extends Component {
     })
   }
 
-  handleRemoveBook(e, idx, bookId) {
+  handleRemoveBook(e, idx, bookId, type) {
     e.preventDefault()
-    this.props.deleteClubBook(bookId, this.props.clubId)
+    console.log('clubId: ', this.props.clubId)
+    console.log('type: ', type)
+    this.props.deleteClubBook(bookId, type, this.props.clubId)
   }
 
   renderBookSection(books, type, classes) {
@@ -115,7 +117,8 @@ const mapDispatch = dispatch => ({
   fetchClubBooks: clubId => dispatch(fetchClubBooks(clubId)),
   postClubBook: (book, type, clubId) =>
     dispatch(postClubBook(book, type, clubId)),
-  deleteClubBook: (bookId, clubId) => dispatch(deleteClubBook(bookId, clubId))
+  deleteClubBook: (bookId, type, clubId) =>
+    dispatch(deleteClubBook(bookId, type, clubId))
 })
 
 export default connect(mapState, mapDispatch)(StyledClubBooks)

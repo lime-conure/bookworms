@@ -24,9 +24,10 @@ const addClubBook = book => ({
   book
 })
 
-const removeClubBook = bookId => ({
+const removeClubBook = (bookId, bookType) => ({
   type: REMOVE_CLUB_BOOK,
-  bookId
+  bookId,
+  bookType
 })
 
 /**
@@ -36,7 +37,11 @@ const removeClubBook = bookId => ({
 export const fetchClubBooks = clubId => async dispatch => {
   try {
     const {data} = await axios.get(`/api/clubs/${clubId}/books`)
-    dispatch(getClubBooks(data))
+    const formatedData = data.map(book => ({
+      ...book.book,
+      clubs_books: book.clubs_books
+    }))
+    dispatch(getClubBooks(formatedData))
   } catch (err) {
     console.log(err)
   }
@@ -62,12 +67,13 @@ export const postClubBook = (book, type, clubId) => async dispatch => {
   }
 }
 
-export const deleteClubBook = (bookId, clubId) => async dispatch => {
+export const deleteClubBook = (bookId, type, clubId) => async dispatch => {
   try {
     await axios.put(`/api/clubs/${clubId}/books/delete`, {
-      bookId
+      bookId,
+      type
     })
-    dispatch(removeClubBook(bookId))
+    dispatch(removeClubBook(bookId, type))
   } catch (err) {
     console.log(err)
   }
@@ -79,13 +85,21 @@ export default function(state = clubBooks, action) {
       return action.books
     case ADD_CLUB_BOOK:
       return [...state, action.book]
-    case REMOVE_CLUB_BOOK: {
-      const clubBooksCopy = [...state]
-      const clubBooksIds = clubBooksCopy.map(book => book.id)
-      const indexToRemove = clubBooksIds.indexOf(action.bookId)
-      clubBooksCopy.splice(indexToRemove, 1)
-      return clubBooksCopy
-    }
+    case REMOVE_CLUB_BOOK:
+      // const clubBooksCopy = [...state]
+      // const clubBooksIds = clubBooksCopy.map(book => book.id)
+      // const indexToRemove = clubBooksIds.indexOf(action.bookId)
+      // clubBooksCopy.splice(indexToRemove, 1)
+      // return clubBooksCopy
+
+      return state.filter(
+        book =>
+          !(
+            book.id === action.bookId &&
+            book.clubs_books.type === action.bookType
+          )
+      )
+
     default:
       return state
   }

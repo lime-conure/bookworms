@@ -53,16 +53,18 @@ const ClubBook = require('./clubBook/clubBook.js')
 const UserBook = require('./userBook/userBook.js')
 
 // clubs_books association table columns: clubId, bookId, type = ['past', 'now', 'future']
-Club.belongsToMany(Book, {through: ClubBook})
-Book.belongsToMany(Club, {through: ClubBook})
+// because club-book is not unique, this won't work
+// for example: club(1) has book(1) with types 'now' and 'past'
+// Club.belongsToMany(Book, {through: ClubBook})
+// Book.belongsToMany(Club, {through: ClubBook})
 
 // books_authors association table columns: bookId, authorId
 Book.belongsToMany(Author, {through: BookAuthor})
 Author.belongsToMany(Book, {through: BookAuthor})
 
 // users_books association table columns: userId, bookId
-User.belongsToMany(Book, {through: UserBook})
-Book.belongsToMany(User, {through: UserBook})
+// User.belongsToMany(Book, {through: UserBook})
+// Book.belongsToMany(User, {through: UserBook})
 
 // users_clubs association table columns: userId, clubId
 User.belongsToMany(Club, {through: UserClub})

@@ -58,8 +58,8 @@ export const renderBookSearch = (books, type, component) => {
       results={component.state[`${type}Results`]}
       setResults={results => component.setResults(results, type)}
       addBook={(e, book, addType) => component.handleAddBook(e, book, addType)}
-      removeBook={(e, idx, bookId) =>
-        component.handleRemoveBook(e, idx, bookId)
+      removeBook={(e, idx, bookId, clubId) =>
+        component.handleRemoveBook(e, idx, bookId, clubId)
       }
       loadingNewBook={component.state.loadingNewBook}
     />
