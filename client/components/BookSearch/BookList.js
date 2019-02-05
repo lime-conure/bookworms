@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {getBookDescription} from '../../utils'
+import {getBookDescription, renderBookRating} from '../../utils'
 import DropDownBookOptions from './DropDownBookOptions'
 
 // Material UI
@@ -47,11 +47,11 @@ const styles = theme => ({
   progress: {
     margin: theme.spacing.unit * 2
   },
-  description: {
-    maxWidth: 560,
-    opacity: 0.9,
-    fontSize: '0.925rem',
-    lineHeight: '1.38rem'
+  rating: {
+    color: '#fff',
+    fontSize: '1rem',
+    lineHeight: '1.5rem',
+    opacity: 0.8
   },
   dialogImage: {
     width: '100%'
@@ -128,24 +128,23 @@ class BookList extends Component {
                   </Tooltip>
 
                   <ListItemText onClick={e => this.handleDialogOpen(e, book)}>
-                    <Typography variant="h6" component="h6" gutterBottom>
-                      {book.title}
-                      <br />
+                    <Typography variant="h6" component="h6">
+                      {book.title}{' '}
                       <span className={classes.author}>
                         {book.authors && book.authors.length
-                          ? `By ${book.authors[0].name}`
+                          ? `by ${book.authors[0].name}`
                           : ''}
                       </span>
                     </Typography>
-                    {/* <Typography
+
+                    <Typography
                       variant="body1"
-                      component="p"
-                      className={classes.description}
+                      component="span"
+                      inline
+                      className={classes.rating}
                     >
-                      {book.description
-                        ? `${book.description.slice(0, 160)}...`
-                        : ''}
-                    </Typography> */}
+                      {renderBookRating(book.rating)}
+                    </Typography>
                   </ListItemText>
 
                   <DropDownBookOptions
