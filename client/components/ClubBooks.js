@@ -12,7 +12,7 @@ const styles = theme => ({
   bookSection: {
     marginTop: theme.spacing.unit * 4,
     marginBottom: theme.spacing.unit * 4,
-    width: 720
+    width: '70%'
   },
   sectionHeader: {
     marginBottom: theme.spacing.unit * 3
@@ -25,16 +25,15 @@ export class ClubBooks extends Component {
     this.state = {
       nowResults: [],
       futureResults: [],
-      pastResults: [],
-      loadingNewBook: false
+      pastResults: []
     }
     this.setResults = this.setResults.bind(this)
     this.handleAddBook = this.handleAddBook.bind(this)
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const clubId = Number(this.props.match.params.clubId)
-    this.props.fetchClubBooks(clubId)
+    await this.props.fetchClubBooks(clubId)
   }
 
   setResults = (results, type) => {
@@ -42,15 +41,13 @@ export class ClubBooks extends Component {
   }
 
   async handleAddBook(e, bookResult, type) {
-    this.setState({loadingNewBook: true})
     e.preventDefault()
     const newBook = await makeBookObject(bookResult)
     this.props.postClubBook(newBook, type, this.props.clubId)
     this.setState({
       nowResults: [],
       futureResults: [],
-      pastResults: [],
-      loadingNewBook: false
+      pastResults: []
     })
   }
 
@@ -85,7 +82,7 @@ export class ClubBooks extends Component {
     const pastBooks = books.filter(book => book.clubs_books.type === 'past')
     const futureBooks = books.filter(book => book.clubs_books.type === 'future')
 
-    return (
+    return this.props.books ? (
       <div>
         <Typography variant="h3" component="h3">
           Books
@@ -99,6 +96,8 @@ export class ClubBooks extends Component {
           {this.renderBookSection(pastBooks, 'past', classes)}
         </div>
       </div>
+    ) : (
+      <div>Loading...</div>
     )
   }
 }

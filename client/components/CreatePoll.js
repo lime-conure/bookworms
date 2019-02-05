@@ -255,7 +255,7 @@ class CreatePoll extends Component {
               setResults={this.setResults}
               addBook={(e, book) => this.addBook(e, book)}
               removeBook={(e, idx) => this.deleteOption(e, idx, 'book')}
-              loadingNewBook={this.state.loadingNewBook}
+              hideBookActions={true}
             />
           </div>
           {/* select dates */}

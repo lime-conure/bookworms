@@ -47,7 +47,8 @@ const theme = createMuiTheme({
       tooltip: {
         fontSize: '13px',
         maxWidth: 200,
-        backgroundColor: grey[900]
+        backgroundColor: grey[900],
+        textAlign: 'center'
       }
     },
     MuiListItemIcon: {
