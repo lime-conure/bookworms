@@ -1,6 +1,10 @@
 import React from 'react'
 import BookSearch from './components/BookSearch'
 import axios from 'axios'
+
+// Material UI
+import Icon from '@material-ui/core/Icon'
+
 const apiKey = 'jrAzhFY1JP1FdDk1vp7Zg'
 
 // fetches book descriptions from goodreads
@@ -30,7 +34,6 @@ export const makeBookObject = async bookResult => {
   if (bookResult.description)
     //this book is already added, now is being moved
     return bookResult
-  const description = await getBookDescription(bookResult.best_book.id)
   return {
     author: bookResult.best_book.author,
     goodReadsId: bookResult.best_book.id,
@@ -45,9 +48,22 @@ export const makeBookObject = async bookResult => {
       bookResult.original_publication_day +
       '-' +
       bookResult.original_publication_year,
-    rating: Math.round(bookResult.average_rating * 100),
-    description
+    rating: Math.round(bookResult.average_rating * 100)
   }
+}
+
+export const renderBookRating = rating => {
+  const stars = Array(Math.floor(rating / 100)).fill(0)
+  return (
+    <span style={{verticalAlign: 'top'}}>
+      {stars.map((star, idx) => (
+        <Icon key={idx} fontSize="small">
+          star
+        </Icon>
+      ))}{' '}
+      {rating / 100}
+    </span>
+  )
 }
 
 export const renderBookSearch = (books, type, component) => {
@@ -61,7 +77,6 @@ export const renderBookSearch = (books, type, component) => {
       removeBook={(e, idx, bookId, clubId) =>
         component.handleRemoveBook(e, idx, bookId, clubId)
       }
-      loadingNewBook={component.state.loadingNewBook}
     />
   )
 }

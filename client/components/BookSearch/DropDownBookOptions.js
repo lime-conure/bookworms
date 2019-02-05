@@ -24,7 +24,6 @@ class DropDownBookOptions extends React.Component {
 
   handleMenuClick = async (e, idx) => {
     const {removeBook, addBook, type, book} = this.props
-    console.log('book: ', book)
     const moveTo = this.options[type][idx]
     if (moveTo === 'remove') {
       removeBook(e, idx, book.id, type)
@@ -40,7 +39,6 @@ class DropDownBookOptions extends React.Component {
               : book.users_books.startTime,
             endTime: new Date()
           }
-          console.log('updatedBook: ', updatedBook)
         } else {
           //moveto === 'future'
           updatedBook = {...book, startTime: null, endTime: null}
@@ -80,6 +78,19 @@ class DropDownBookOptions extends React.Component {
     this.setState({anchorEl: null})
   }
 
+  renderActionText(moveToKey) {
+    switch (moveToKey) {
+      case 'now':
+        return 'Move to Reading'
+      case 'past':
+        return 'Move to Read'
+      case 'future':
+        return 'Move to Want to Read'
+      default:
+        return 'Remove Book'
+    }
+  }
+
   render() {
     const {anchorEl} = this.state
     return (
@@ -89,8 +100,7 @@ class DropDownBookOptions extends React.Component {
           aria-haspopup="true"
           onClick={this.handleButtonClick}
         >
-          Actions
-          <Icon>keyboard_arrow_down</Icon>
+          <Icon color="secondary">launch</Icon>
         </Button>
         <Menu
           id="simple-menu"
@@ -98,10 +108,9 @@ class DropDownBookOptions extends React.Component {
           open={Boolean(anchorEl)}
           onClose={this.handleClose}
         >
-          <MenuItem onClick={this.handleClose}>Options</MenuItem>
           {this.options[this.props.type].map((moveTo, idx) => (
             <MenuItem key={moveTo} onClick={e => this.handleMenuClick(e, idx)}>
-              {moveTo === 'remove' ? 'remove' : `Move to ${moveTo}`}
+              {this.renderActionText(moveTo)}
             </MenuItem>
           ))}
         </Menu>
