@@ -25,8 +25,7 @@ class UserBooks extends Component {
     this.state = {
       nowResults: [],
       futureResults: [],
-      pastResults: [],
-      loadingNewBook: false
+      pastResults: []
     }
     this.setResults = this.setResults.bind(this)
     this.handleAddBook = this.handleAddBook.bind(this)
@@ -41,15 +40,13 @@ class UserBooks extends Component {
   }
 
   async handleAddBook(e, bookResult, type) {
-    this.setState({loadingNewBook: true})
     e.preventDefault()
     const newBook = await makeBookObject(bookResult)
     this.props.postUserBook(newBook, type)
     this.setState({
       nowResults: [],
       futureResults: [],
-      pastResults: [],
-      loadingNewBook: false
+      pastResults: []
     })
   }
 

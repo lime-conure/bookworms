@@ -29,7 +29,7 @@ const styles = theme => ({
 
 class BookResults extends Component {
   render() {
-    const {type, results, loadingNewBook, classes} = this.props
+    const {type, results, classes} = this.props
     if (results.length) {
       return (
         <div className={classes.root}>
@@ -59,15 +59,7 @@ class BookResults extends Component {
                   subtitle={<span>by: {bookResult.best_book.author.name}</span>}
                   actionIcon={
                     <IconButton>
-                      {loadingNewBook ? (
-                        <CircularProgress
-                          size={20}
-                          color="inherit"
-                          className={classes.spinner}
-                        />
-                      ) : (
-                        <Icon>add_circle</Icon>
-                      )}
+                      <Icon>add_circle</Icon>
                     </IconButton>
                   }
                 />
