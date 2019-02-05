@@ -54,7 +54,6 @@ export const createMeeting = clubId => async dispatch => {
 
 export const deleteMeeting = (clubId, meetingId) => async dispatch => {
   try {
-    console.log(`about to delete meeting ${meetingId} for club ${clubId}`)
     await axios.put(`/api/clubs/${clubId}/meetings/delete`, {
       meetingId
     })
