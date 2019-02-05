@@ -103,7 +103,14 @@ router.post('/:clubId/books/add', async (req, res, next) => {
                 startTime: book.startTime,
                 endTime: book.endTime
               })
-              res.json(existingBook)
+              res.json({
+                book: existingBook,
+                clubs_books: {
+                  type,
+                  startTime: book.startTime,
+                  endTIme: book.endTime
+                }
+              })
             }
           } else {
             ClubBook.create({
@@ -113,7 +120,14 @@ router.post('/:clubId/books/add', async (req, res, next) => {
               startTime: book.startTime,
               endTime: book.endTime
             })
-            res.json(existingBook)
+            res.json({
+              book: existingBook,
+              clubs_books: {
+                type,
+                starttime: book.startTime,
+                endTime: book.endTime
+              }
+            })
           }
         }
       }
