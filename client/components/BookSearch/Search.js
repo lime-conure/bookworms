@@ -64,7 +64,7 @@ class Search extends Component {
     } else {
       const XMLresults = new Array(...XMLResponse.getElementsByTagName('work'))
       const searchResults = XMLresults.map(result => this.XMLToJson(result))
-      this.setState({fetchingData: false}, () => {
+      this.setState({fetchingData: false, searchText: ''}, () => {
         this.props.setResults(searchResults)
       })
     }
