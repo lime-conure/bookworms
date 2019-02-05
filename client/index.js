@@ -35,6 +35,10 @@ const theme = createMuiTheme({
     },
     h6: {
       fontFamily: 'Cutive'
+    },
+    subtitle1: {
+      fontWeight: 300,
+      fontSize: '18px'
     }
   },
 

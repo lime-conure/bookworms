@@ -51,7 +51,7 @@ class DropDownClubs extends React.Component {
               key={club.id}
               onClick={this.handleClose}
               component={Link}
-              to={`/clubs/${club.id}`}
+              to={`/clubs/${club.id}/books`}
             >
               {club.name}
             </MenuItem>
