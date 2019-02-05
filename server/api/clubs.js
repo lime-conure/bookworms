@@ -142,7 +142,12 @@ router.post('/:clubId/polls', async (req, res, next) => {
             dueDate,
             notes
           } = req.body
-          const newPoll = await Poll.create({title, dueDate, notes})
+          const newPoll = await Poll.create({
+            title,
+            dueDate,
+            notes,
+            creatorId: req.user.id
+          })
           const books = []
           for (let i = 0; i < selectedBooks.length; i++) {
             const book = selectedBooks[i]
