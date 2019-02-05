@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {withStyles} from '@material-ui/core/styles'
 import {
   postMessage,
   writeInputMessage,
@@ -12,10 +11,13 @@ import {
 } from '../store'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
+
+// Material UI
+import {withStyles} from '@material-ui/core/styles'
+import Icon from '@material-ui/core/Icon'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
 import Divider from '@material-ui/core/Divider'
 import Drawer from '@material-ui/core/Drawer'
 import Avatar from '@material-ui/core/Avatar'
@@ -25,7 +27,6 @@ import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import Send from '@material-ui/icons/Send'
 import Mood from '@material-ui/icons/Mood'
-import Close from '@material-ui/icons/Close'
 import Chat from '@material-ui/icons/Chat'
 import socket from '../socket'
 import InputAdornment from '@material-ui/core/InputAdornment'
@@ -64,7 +65,9 @@ const styles = theme => ({
     justifyContent: 'flex-start'
   },
   drawerPaper: {
-    width: drawerWidth
+    width: drawerWidth,
+    top: 80,
+    paddingTop: theme.spacing.unit * 4
   },
 
   content: {
@@ -72,7 +75,7 @@ const styles = theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
     }),
-    width: 720
+    width: 840
   },
   contentShift: {
     transition: theme.transitions.create('margin', {
@@ -80,6 +83,29 @@ const styles = theme => ({
       duration: theme.transitions.duration.enteringScreen
     }),
     marginRight: 0
+  },
+  messageUsername: {
+    color: '#fff',
+    '&:hover': {
+      cursor: 'pointer',
+      color: '#fff'
+    }
+  },
+  messageTimestamp: {
+    color: '#fff',
+    fontWeight: 300
+  },
+  messageContent: {
+    marginLeft: 72,
+    paddingBottom: theme.spacing.unit * 2
+  },
+  messageText: {
+    color: '#fff',
+    fontFamily: 'Cutive',
+    marginBottom: theme.spacing.unit
+  },
+  chatIcon: {
+    marginRight: theme.spacing.unit
   }
 })
 
@@ -222,71 +248,79 @@ class Messages extends Component {
           </Typography>
           <Divider />
           {threads[0] && threads[0].id ? (
-            <div>
+            <List>
               {threads.map(t => (
                 <div key={t.id}>
-                  <List>
-                    <ListItem>
-                      <Avatar alt="userImg" src={t.messages[0].user.imageUrl} />
-                      <ListItemText
-                        primary={t.messages[0].user.fullName}
-                        secondary={`${new Date(
-                          t.messages[0].createdAt
-                        ).toLocaleString('en-us', {
-                          month: 'short',
-                          day: 'numeric',
-                          hour: 'numeric',
-                          minute: 'numeric'
-                        })}`}
-                      />
-                    </ListItem>
-                    <ListItemText>
+                  <ListItem>
+                    <Avatar alt="userImg" src={t.messages[0].user.imageUrl} />
+                    <ListItemText
+                      classes={{
+                        primary: classes.messageUsername,
+                        secondary: classes.messageTimestamp
+                      }}
+                      primary={t.messages[0].user.fullName}
+                      secondary={`${new Date(
+                        t.messages[0].createdAt
+                      ).toLocaleString('en-us', {
+                        month: 'short',
+                        day: 'numeric',
+                        hour: 'numeric',
+                        minute: 'numeric'
+                      })}`}
+                    />
+                  </ListItem>
+                  <div className={classes.messageContent}>
+                    <Typography className={classes.messageText}>
                       {t.messages[0].text}
-                      {t.messages[1] ? (
-                        <div>
-                          {t.messages.length - 1 === 1 ? (
-                            <Button
-                              variant="text"
-                              size="small"
-                              color="secondary"
-                              onClick={() => this.handleDrawerOpen(t.id)}
-                            >
-                              {t.messages.length - 1} reply <Chat />
-                            </Button>
-                          ) : (
-                            <Button
-                              variant="text"
-                              size="small"
-                              color="secondary"
-                              onClick={() => this.handleDrawerOpen(t.id)}
-                            >
-                              {t.messages.length - 1} replies <Chat />
-                            </Button>
-                          )}
-                        </div>
-                      ) : (
-                        <div>
+                    </Typography>
+                    {t.messages[1] ? (
+                      <div>
+                        {t.messages.length - 1 === 1 ? (
                           <Button
-                            variant="text"
+                            variant="outlined"
                             size="small"
                             color="secondary"
                             onClick={() => this.handleDrawerOpen(t.id)}
                           >
-                            reply
+                            <Chat className={classes.chatIcon} size="small" />
+                            {t.messages.length - 1} reply
                           </Button>
-                        </div>
-                      )}
-                    </ListItemText>
-                  </List>
+                        ) : (
+                          <Button
+                            variant="outlined"
+                            size="small"
+                            color="secondary"
+                            onClick={() => this.handleDrawerOpen(t.id)}
+                          >
+                            <Chat className={classes.chatIcon} size="small" />
+                            {t.messages.length - 1} replies
+                          </Button>
+                        )}
+                      </div>
+                    ) : (
+                      <div>
+                        <Button
+                          variant="outlined"
+                          size="small"
+                          color="secondary"
+                          onClick={() => this.handleDrawerOpen(t.id)}
+                        >
+                          reply
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                  <Divider />
                 </div>
               ))}
-            </div>
+            </List>
           ) : (
             <div />
           )}
           <TextField
             id="outlined-bare"
             value={this.state.inputValue}
+            autoFocus={true}
             margin="normal"
             variant="outlined"
             fullWidth
@@ -336,23 +370,16 @@ class Messages extends Component {
               paper: classes.drawerPaper
             }}
           >
-            <div style={{padding: theme.spacing.unit * 4}} />
-            <List>
-              <ListItem>
-                <ListItemIcon onClick={this.handleDrawerClose}>
-                  <Close />
-                </ListItemIcon>
-                <ListItemText>Thread</ListItemText>
-              </ListItem>
-            </List>
-
-            <Divider />
             <List>
               {thread.messages.map(message => (
                 <div key={message.id}>
                   <ListItem>
                     <Avatar alt="userImg" src={message.user.imageUrl} />
                     <ListItemText
+                      classes={{
+                        primary: classes.messageUsername,
+                        secondary: classes.messageTimestamp
+                      }}
                       primary={message.user.fullName}
                       secondary={`${new Date(message.createdAt).toLocaleString(
                         'en-us',
@@ -365,16 +392,21 @@ class Messages extends Component {
                       )}`}
                     />
                   </ListItem>
-                  <ListItemText>{message.text}</ListItemText>
+                  <div className={classes.messageContent}>
+                    <Typography className={classes.messageText}>
+                      {message.text}
+                    </Typography>
+                  </div>
                 </div>
               ))}
             </List>
             <TextField
               id="outlined-bare"
+              autoFocus={true}
               value={this.state.threadInputValue}
               style={{margin: 10}}
               variant="outlined"
-              placeholder="Reply ..."
+              placeholder="Send a reply..."
               onChange={e => this.handleThreadChange(e, thread.id)}
               onKeyPress={e => {
                 if (e.key === 'Enter') {
@@ -407,6 +439,13 @@ class Messages extends Component {
                 <EmojiPicker onEmojiClick={this.handleThreadEmojiClick} />
               </div>
             ) : null}
+            <Button
+              onClick={this.handleDrawerClose}
+              variant="text"
+              color="secondary"
+            >
+              Close Thread
+            </Button>
           </Drawer>
         ) : null}
       </div>
