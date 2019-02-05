@@ -29,6 +29,7 @@ class BookSearch extends Component {
         />
         <Search setResults={this.setResults} />
         <BookResults
+          type={type}
           results={this.state.results}
           addBook={addBook}
           loadingNewBook={loadingNewBook}

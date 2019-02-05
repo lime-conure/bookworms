@@ -29,7 +29,7 @@ const styles = theme => ({
 
 class BookResults extends Component {
   render() {
-    const {results, loadingNewBook, classes} = this.props
+    const {type, results, loadingNewBook, classes} = this.props
     if (results.length) {
       return (
         <div>
@@ -40,7 +40,7 @@ class BookResults extends Component {
                   cols={1}
                   key={bookResult.best_book.id}
                   className={classes.gridListTile}
-                  onClick={e => this.props.addBook(e, bookResult)}
+                  onClick={e => this.props.addBook(e, bookResult, type)}
                 >
                   <img
                     src={bookResult.best_book.image_url}
