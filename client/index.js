@@ -30,9 +30,6 @@ const theme = createMuiTheme({
       fontFamily: 'Cutive',
       lineHeight: 'normal'
     },
-    h5: {
-      // fontFamily: 'Cutive'
-    },
     h6: {
       fontFamily: 'Cutive'
     },
@@ -48,7 +45,7 @@ const theme = createMuiTheme({
   overrides: {
     MuiTooltip: {
       tooltip: {
-        fontSize: '12px',
+        fontSize: '13px',
         maxWidth: 200,
         backgroundColor: grey[900]
       }
