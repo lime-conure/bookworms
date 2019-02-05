@@ -564,7 +564,9 @@ router.put('/:clubId/meetings/delete', async (req, res, next) => {
             where: {clubId, id: meetingId}
           })
           if (!meeting) {
-            res.send(`${club.name} does not have that book`)
+            res.status(404).send(`${club.name} does not have that book`)
+          } else if (meeting.creatorId !== req.user.id) {
+            res.status(403).send(`Not authorized to delete meeting`)
           } else {
             await meeting.destroy()
             res.status(200).send()
