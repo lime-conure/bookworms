@@ -85,44 +85,6 @@ class Meetings extends Component {
             Create a New Meeting
           </Button>
         </Link>
-        {/* <Grid container spacing={40}>
-          <Grid item>
-            <List>
-              {meetings.length
-                ? meetings.map(meeting => (
-                    <ListItem key={meeting.id}>
-                      <ListItemText>
-                        <Typography variant="h6" color="secondary">
-                          {meeting.name.toUpperCase()}
-                          <br />
-                        </Typography>
-                        <Typography variant="subtitle1">
-                          Location: {meeting.location}
-                          <br />
-                          Date: {meeting.date.slice(0, 10)}
-                          <br />
-                          Time: {meeting.date.slice(11, 16)}
-                          <br />
-                        </Typography>
-                      </ListItemText>
-                    </ListItem>
-                  ))
-                : ''}
-            </List>
-          </Grid>
-        </Grid>
-
-        <Link to={`/clubs/${this.props.match.params.clubId}/meetings/create`}>
-          <Button
-            type="button"
-            color="primary"
-            variant="contained"
-            size="large"
-            className={classes.button}
-          >
-            Create a New Meeting
-          </Button>
-        </Link> */}
       </div>
     )
   }
