@@ -106,6 +106,9 @@ const styles = theme => ({
   },
   chatIcon: {
     marginRight: theme.spacing.unit
+  },
+  closeThreadButton: {
+    marginTop: theme.spacing.unit * 2
   }
 })
 
@@ -443,6 +446,7 @@ class Messages extends Component {
               onClick={this.handleDrawerClose}
               variant="text"
               color="secondary"
+              className={classes.closeThreadButton}
             >
               Close Thread
             </Button>
