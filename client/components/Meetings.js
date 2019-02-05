@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {fetchMeetings} from '../store/meetings'
+import {fetchMeetings} from '../store'
+import {formatDateDisplay} from '../utils'
 import {Link} from 'react-router-dom'
 
 import {withStyles} from '@material-ui/core/styles'
@@ -9,8 +10,8 @@ import Divider from '@material-ui/core/Divider'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
-import Paper from '@material-ui/core/Paper'
-import Grid from '@material-ui/core/Grid'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import Icon from '@material-ui/core/Icon'
 import Button from '@material-ui/core/Button'
 
 const styles = theme => ({
@@ -23,6 +24,13 @@ const styles = theme => ({
   },
   button: {
     marginTop: theme.spacing.unit * 4
+  },
+  icon: {
+    color: '#fff'
+  },
+  meetingMetadata: {
+    display: 'inline',
+    paddingLeft: theme.spacing.unit * 2
   }
 })
 
@@ -40,7 +48,44 @@ class Meetings extends Component {
           Meetings
         </Typography>
         <Divider />
-        <Grid container spacing={40}>
+        <List>
+          {meetings.map(meeting => (
+            <ListItem button key={meeting.id}>
+              <ListItemIcon>
+                <Icon className={classes.icon}>event</Icon>
+              </ListItemIcon>
+              <ListItemText component="div">
+                <Typography variant="h5">
+                  {meeting.name}
+                  {meeting.date ? (
+                    <Typography
+                      variant="subtitle1"
+                      component="span"
+                      className={classes.meetingMetadata}
+                    >
+                      {formatDateDisplay(meeting.date.slice(0, 10), false)} at{' '}
+                      {meeting.location}
+                    </Typography>
+                  ) : (
+                    ''
+                  )}
+                </Typography>
+              </ListItemText>
+            </ListItem>
+          ))}
+        </List>
+        <Link to={`/clubs/${this.props.match.params.clubId}/createmeeting`}>
+          <Button
+            type="button"
+            variant="contained"
+            color="primary"
+            size="large"
+            className={classes.button}
+          >
+            Create a New Meeting
+          </Button>
+        </Link>
+        {/* <Grid container spacing={40}>
           <Grid item>
             <List>
               {meetings.length
@@ -77,7 +122,7 @@ class Meetings extends Component {
           >
             Create a New Meeting
           </Button>
-        </Link>
+        </Link> */}
       </div>
     )
   }

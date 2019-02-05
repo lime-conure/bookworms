@@ -1,23 +1,19 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {createMeeting} from '../store/meetings'
+import {createMeeting} from '../store'
 import axios from 'axios'
 
 import {withStyles} from '@material-ui/core/styles'
-import Paper from '@material-ui/core/Paper'
+import Divider from '@material-ui/core/Divider'
 import Button from '@material-ui/core/Button'
 import Textfield from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import Grid from '@material-ui/core/Grid'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
 
 const styles = theme => ({
   form: {
     maxWidth: 660
   },
-  optionsSection: {
+  formSection: {
     marginTop: theme.spacing.unit * 3,
     marginBottom: theme.spacing.unit * 3
   },
@@ -75,45 +71,49 @@ export class CreateMeeting extends Component {
     return (
       <div>
         <form className={classes.form}>
-          <Typography variant="h2" gutterBottom color="primary">
-            Create Meeting
+          <Typography variant="h3" component="h3">
+            Create a New Meeting
           </Typography>
-
-          <Textfield
-            label="Name of your Meeting"
-            name="name"
-            value={this.state.name}
-            onChange={this.handleChange}
-            margin="normal"
-            variant="filled"
-            fullWidth
-            autoFocus={true}
-          />
-          <br />
-          <Textfield
-            label="Location of your Meeting"
-            name="location"
-            value={this.state.location}
-            onChange={this.handleChange}
-            margin="normal"
-            variant="filled"
-            fullWidth
-          />
-          <br />
-          <Textfield
-            label="Date of your Meeting"
-            type="date"
-            name="date"
-            value={this.state.date}
-            onChange={this.handleChange}
-            margin="normal"
-            InputLabelProps={{
-              shrink: true
-            }}
-            variant="filled"
-            fullWidth
-          />
-          <br />
+          <Divider />
+          <div className={classes.formSection}>
+            <Textfield
+              label="Name your meeting"
+              name="name"
+              value={this.state.name}
+              onChange={this.handleChange}
+              margin="normal"
+              variant="filled"
+              fullWidth
+              autoFocus={true}
+              required
+            />
+            <br />
+            <Textfield
+              label="Type a location"
+              name="location"
+              value={this.state.location}
+              onChange={this.handleChange}
+              margin="normal"
+              variant="filled"
+              fullWidth
+              required
+            />
+            <br />
+            <Textfield
+              label="Choose a date"
+              type="date"
+              name="date"
+              value={this.state.date}
+              onChange={this.handleChange}
+              margin="normal"
+              InputLabelProps={{
+                shrink: true
+              }}
+              variant="filled"
+              fullWidth
+              required
+            />
+          </div>
 
           <Button
             type="submit"
