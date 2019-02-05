@@ -23,14 +23,51 @@ class DropDownBookOptions extends React.Component {
   }
 
   handleMenuClick = async (e, idx) => {
-    const moveTo = this.options[this.props.type][idx]
+    const {removeBook, addBook, type, book} = this.props
+    const moveTo = this.options[type][idx]
     if (moveTo === 'remove') {
-      this.props.removeBook(e, idx, this.props.book.id, this.props.type)
+      removeBook(e, idx, book.id, type)
     } else {
-      if (this.props.type === 'now' || this.props.type === 'future') {
-        await this.props.removeBook(e, idx, this.props.book.id, this.props.type)
+      if (type === 'now') {
+        await removeBook(e, idx, book.id, type) // remove the 'now' book
+        let updatedBook // update startTime and endTime before adding
+        if (moveTo === 'past') {
+          updatedBook = {
+            ...book,
+            startTime: book.startTime,
+            endTime: new Date()
+          }
+        } else {
+          //moveto === 'future'
+          updatedBook = {...book, startTime: null, endTime: null}
+        }
+        await addBook(e, updatedBook, moveTo)
+      } else if (type === 'future') {
+        await removeBook(e, idx, book.id, type) // remove the 'future' book
+        let updatedBook // update startTime and endTime before adding
+        if (moveTo === 'past') {
+          updatedBook = {...book, startTime: null, endTime: new Date()}
+        } else {
+          //moveto === 'now'
+          updatedBook = {...book, startTime: new Date(), endTime: null}
+        }
+        await addBook(e, updatedBook, moveTo)
+      } else {
+        // type === 'past'
+        let updatedBook // update startTime and endTime before adding
+        if (moveTo === 'future') {
+          updatedBook = {...book, startTime: null, endTime: null}
+        } else {
+          //moveto === 'now'
+          updatedBook = {...book, startTime: new Date(), endTime: null}
+        }
+        await addBook(e, updatedBook, moveTo)
       }
-      await this.props.addBook(e, this.props.book, moveTo)
+
+      // if (this.props.type === 'now' || this.props.type === 'future') {
+      //   await this.props.removeBook(e, idx, this.props.book.id, this.props.type)
+      // }
+      // await this.props.addBook(e, this.props.book, moveTo)
     }
     this.setState({anchorEl: null})
   }

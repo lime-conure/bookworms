@@ -40,7 +40,20 @@ class BookResults extends Component {
                   cols={1}
                   key={bookResult.best_book.id}
                   className={classes.gridListTile}
-                  onClick={e => this.props.addBook(e, bookResult, type)}
+                  onClick={e => {
+                    const updatedBook = {...bookResult}
+                    if (type === 'now') {
+                      updatedBook.startTime = new Date()
+                      updatedBook.endTime = null
+                    } else if (type === 'future') {
+                      updatedBook.startTime = null
+                      updatedBook.endTime = null
+                    } else {
+                      updatedBook.startTime = null
+                      updatedBook.endTime = new Date()
+                    }
+                    return this.props.addBook(e, updatedBook, type)
+                  }}
                 >
                   <img
                     src={bookResult.best_book.image_url}
