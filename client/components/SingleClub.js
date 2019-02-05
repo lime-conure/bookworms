@@ -1,10 +1,18 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {Link} from 'react-router-dom'
-import {fetchSingleClub} from '../store/singleClub'
-import {leaveClub} from '../store/clubs'
-import {Button, Typography} from '@material-ui/core'
+import {fetchSingleClub, leaveClub} from '../store/'
 
+// Material UI
+import {withStyles} from '@material-ui/core/styles'
+import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
+import Divider from '@material-ui/core/Divider'
+
+const styles = theme => ({
+  button: {
+    marginTop: theme.spacing.unit * 4
+  }
+})
 export class SingleClub extends Component {
   constructor(props) {
     super(props)
@@ -18,16 +26,17 @@ export class SingleClub extends Component {
     this.props.leaveClub(this.props.singleClub.id)
   }
   render() {
+    const {classes} = this.props
     const club = this.props.singleClub
     return (
       <div>
-        <Typography variant="h3" gutterBottom>
-          {club.name}
-        </Typography>
+        <Typography variant="h3">{club.name}</Typography>
+        <Divider />
         <Button
           type="button"
+          className={classes.button}
           onClick={this.leaveClub}
-          color="secondary"
+          color="primary"
           size="large"
           variant="contained"
         >
@@ -38,6 +47,8 @@ export class SingleClub extends Component {
   }
 }
 
+const StyledSingleClub = withStyles(styles)(SingleClub)
+
 const mapState = state => ({
   singleClub: state.singleClub
 })
@@ -47,4 +58,4 @@ const mapDispatch = dispatch => ({
   leaveClub: id => dispatch(leaveClub(id))
 })
 
-export default connect(mapState, mapDispatch)(SingleClub)
+export default connect(mapState, mapDispatch)(StyledSingleClub)

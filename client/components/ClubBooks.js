@@ -10,8 +10,8 @@ import Divider from '@material-ui/core/Divider'
 
 const styles = theme => ({
   bookSection: {
-    marginTop: theme.spacing.unit * 4,
-    marginBottom: theme.spacing.unit * 4,
+    marginTop: theme.spacing.unit * 8,
+    marginBottom: theme.spacing.unit * 8,
     width: 860
   }
 })
@@ -80,7 +80,7 @@ export class ClubBooks extends Component {
 
     return (
       <div>
-        <Typography variant="h3" gutterBottom color="primary">
+        <Typography variant="h3" gutterBottom>
           Books
         </Typography>
         <div>

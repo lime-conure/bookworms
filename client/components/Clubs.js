@@ -47,7 +47,7 @@ class Clubs extends Component {
       <Paper className={classes.root} elevation={2}>
         <div>
           <Typography variant="h2" component="h2" gutterBottom>
-            Your Clubs
+            Your Book Clubs
           </Typography>
 
           <List>

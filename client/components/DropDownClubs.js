@@ -34,7 +34,7 @@ class DropDownClubs extends React.Component {
           aria-haspopup="true"
           onClick={this.handleClick}
         >
-          Clubs
+          Book Clubs
           <Icon>keyboard_arrow_down</Icon>
         </Button>
         <Menu
@@ -44,7 +44,7 @@ class DropDownClubs extends React.Component {
           onClose={this.handleClose}
         >
           <MenuItem onClick={this.handleClose} component={Link} to="/clubs">
-            All Clubs
+            All Book Clubs
           </MenuItem>
           {this.props.clubs.map(club => (
             <MenuItem

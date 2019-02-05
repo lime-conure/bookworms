@@ -17,17 +17,14 @@ const theme = createMuiTheme({
     button: {
       fontWeight: 700,
       letterSpacing: 0.6,
-      lineHeight: 1.7
+      lineHeight: 1.7 // fontSize is 0.875rem
     },
     h2: {
-      // fontWeight: 300,
-      // letterSpacing: 0.6,
-      // textTransform: 'uppercase',
-      // lineHeight: '5.625rem'
       fontFamily: 'Cutive'
     },
     h3: {
-      fontFamily: 'Cutive'
+      fontFamily: 'Cutive',
+      lineHeight: '4.5rem' // fontSize is 3rem
     },
     h4: {
       fontFamily: 'Cutive',
