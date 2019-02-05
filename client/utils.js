@@ -60,7 +60,6 @@ export const renderBookSearch = (books, type, component) => {
         component.handleRemoveBook(e, idx, bookId, clubId)
       }
       loadingNewBook={component.state.loadingNewBook}
-      showResults={component.state.showResults}
     />
   )
 }

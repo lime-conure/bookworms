@@ -28,15 +28,9 @@ const styles = theme => ({
 })
 
 class BookResults extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      showResults: true
-    }
-  }
   render() {
-    const {type, results, loadingNewBook, classes, showResults} = this.props
-    if (results.length && this.state.showResults) {
+    const {type, results, loadingNewBook, classes} = this.props
+    if (results.length) {
       return (
         <div className={classes.root}>
           <GridList cellHeight={240} cols={4} className={classes.gridList}>
@@ -47,7 +41,8 @@ class BookResults extends Component {
                 className={classes.gridListTile}
                 onClick={e => {
                   this.props.addBook(e, bookResult, type)
-                  this.setState({showResults: false})
+                  // set search results to a empty after adding book
+                  this.props.setResults([])
                 }}
               >
                 <img
