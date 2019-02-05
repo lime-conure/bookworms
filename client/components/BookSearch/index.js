@@ -26,6 +26,7 @@ class BookSearch extends Component {
           bookList={bookList}
           removeBook={removeBook}
           addBook={addBook}
+          loadingNewBook={loadingNewBook}
         />
         <Search setResults={this.setResults} />
         <BookResults

@@ -70,7 +70,8 @@ class BookList extends Component {
     this.state = {
       dialogOpen: false,
       loadingDialog: false,
-      dialogBook: {}
+      dialogBook: {},
+      loadingBook: false
     }
     this.handleDialogOpen = this.handleDialogOpen.bind(this)
     this.handleDialogClose = this.handleDialogClose.bind(this)
@@ -101,7 +102,11 @@ class BookList extends Component {
     if (bookList.length) {
       return (
         <div>
-          {this.state.loadingDialog ? <LinearProgress color="primary" /> : ''}
+          {this.state.loadingDialog || this.state.loadingBook ? (
+            <LinearProgress color="primary" />
+          ) : (
+            ''
+          )}
           <List className={classes.root}>
             {bookList.map((book, idx) => (
               <div key={book.goodReadsId}>
