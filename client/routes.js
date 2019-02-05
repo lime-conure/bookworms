@@ -20,6 +20,7 @@ import {
   Meetings,
   CreateMeeting
 } from './components'
+import Chart from './components/Chart'
 
 import {me} from './store'
 import {withStyles} from '@material-ui/core/styles'
@@ -113,6 +114,7 @@ class Routes extends Component {
                     path="/clubs/:clubId/createmeeting"
                     component={CreateMeeting}
                   />
+                  <Route exact path="/clubs/:clubId/chart" component={Chart} />
                 </main>
               </Switch>
             </div>
