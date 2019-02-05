@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {createMeeting} from '../store'
 import axios from 'axios'
+import {formatDateString, formatDate} from '../utils'
 
 import {withStyles} from '@material-ui/core/styles'
 import Divider from '@material-ui/core/Divider'
@@ -23,30 +24,48 @@ const styles = theme => ({
     justifyContent: 'space-around',
     overflow: 'hidden',
     backgroundColor: theme.palette.background.paper
-  },
-  icon: {
-    color: 'rgba(255, 255, 255, 0.54)'
-  },
-  headerIcon: {
-    marginRight: theme.spacing.unit
   }
 })
 
 export class CreateMeeting extends Component {
   constructor(props) {
     super(props)
+    // default date option is next week at the same time
+    const today = new Date()
+    const defaultDate = new Date(today.setDate(today.getDate() + 7))
+    // don't include the time
+    const defaultDateString = formatDateString(defaultDate).slice(0, 10)
     this.state = {
       name: '',
       location: '',
-      date: ''
+      date: defaultDateString
     }
     this.handleChange = this.handleChange.bind(this)
     this.createMeeting = this.createMeeting.bind(this)
   }
-  handleChange(evt) {
+  handleChange(e) {
     this.setState({
-      [evt.target.name]: evt.target.value
+      [e.target.name]: e.target.value
     })
+    if (e.target.name === 'date') {
+      // prevent users from selecting due dates in the past
+      const selectedDate = formatDate(e.target.value)
+      const today = new Date()
+      if (selectedDate < today) {
+        const todayString = formatDateString(today).slice(0, 10)
+        this.setState({
+          date: todayString
+        })
+      } else {
+        this.setState({
+          date: e.target.value
+        })
+      }
+    } else {
+      this.setState({
+        [e.target.name]: e.target.value
+      })
+    }
   }
 
   async createMeeting(evt) {
@@ -118,7 +137,7 @@ export class CreateMeeting extends Component {
           <Button
             type="submit"
             onClick={this.createMeeting}
-            disable={!this.state.name}
+            disabled={!this.state.name || !this.state.location}
             variant="contained"
             color="primary"
             size="large"

@@ -33,18 +33,15 @@ const styles = theme => ({
   },
   icon: {
     color: 'rgba(255, 255, 255, 0.54)'
-  },
-  headerIcon: {
-    marginRight: theme.spacing.unit
   }
 })
 
 class CreatePoll extends Component {
   constructor() {
     super()
+    // default date/time option is next week at the same time
     const today = new Date()
-    // default date/time option is tomorrow at the same time
-    const defaultDateTime = new Date(today.setDate(today.getDate() + 1))
+    const defaultDateTime = new Date(today.setDate(today.getDate() + 7))
     this.state = {
       searchResults: [],
       selectedBooks: [],
