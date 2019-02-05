@@ -230,7 +230,7 @@ async function seed() {
       name: 'February Meeting',
       location: 'Killarney Rose',
       date: new Date(),
-      creatorId: 1,
+      creatorId: 2,
       clubId: 1
     })
   ])

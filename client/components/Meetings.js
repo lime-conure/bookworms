@@ -13,6 +13,7 @@ import ListItemText from '@material-ui/core/ListItemText'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import Icon from '@material-ui/core/Icon'
 import Button from '@material-ui/core/Button'
+import Tooltip from '@material-ui/core/Tooltip'
 
 const styles = theme => ({
   root: {
@@ -72,9 +73,11 @@ class Meetings extends Component {
                 </Typography>
               </ListItemText>
               {this.props.userId === meeting.creatorId && (
-                <ListItemIcon>
-                  <Icon className={classes.icon}>cancel</Icon>
-                </ListItemIcon>
+                <Tooltip placement="left" title="Delete this Meeting">
+                  <ListItemIcon>
+                    <Icon className={classes.icon}>cancel</Icon>
+                  </ListItemIcon>
+                </Tooltip>
               )}
             </ListItem>
           ))}

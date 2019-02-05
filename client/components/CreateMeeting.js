@@ -72,8 +72,8 @@ export class CreateMeeting extends Component {
     evt.preventDefault()
     try {
       const {name, location, date} = this.state
-      const newMeeting = {name, location, date, creatorId: this.props.user.id}
-      const meeting = await axios.post(
+      const newMeeting = {name, location, date}
+      await axios.post(
         `/api/clubs/${this.props.match.params.clubId}/meetings/create`,
         newMeeting
       )
