@@ -22,8 +22,8 @@ const styles = theme => ({
     textAlign: 'center'
   },
   bigAvatar: {
-    width: 230,
-    height: 230,
+    width: 200,
+    height: 200,
     marginTop: theme.spacing.unit * 4,
     marginBottom: theme.spacing.unit * 4,
     marginRight: 'auto',
