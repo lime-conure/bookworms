@@ -41,7 +41,7 @@ export class CreateMeeting extends Component {
       date: defaultDateString
     }
     this.handleChange = this.handleChange.bind(this)
-    this.createMeeting = this.createMeeting.bind(this)
+    // this.createMeeting = this.createMeeting.bind(this)
   }
   handleChange(e) {
     this.setState({
@@ -68,22 +68,22 @@ export class CreateMeeting extends Component {
     }
   }
 
-  async createMeeting(evt) {
-    evt.preventDefault()
-    try {
-      const {name, location, date} = this.state
-      const newMeeting = {name, location, date}
-      await axios.post(
-        `/api/clubs/${this.props.match.params.clubId}/meetings/create`,
-        newMeeting
-      )
-      this.props.history.push(
-        `/clubs/${this.props.match.params.clubId}/meetings`
-      )
-    } catch (err) {
-      console.log(err)
-    }
-  }
+  // async createMeeting(evt) {
+  //   evt.preventDefault()
+  //   try {
+  //     const {name, location, date} = this.state
+  //     const newMeeting = {name, location, date}
+  //     await axios.post(
+  //       `/api/clubs/${this.props.match.params.clubId}/meetings/create`,
+  //       newMeeting
+  //     )
+  //     this.props.history.push(
+  //       `/clubs/${this.props.match.params.clubId}/meetings`
+  //     )
+  //   } catch (err) {
+  //     console.log(err)
+  //   }
+  // }
 
   render() {
     const {classes} = this.props
@@ -135,8 +135,14 @@ export class CreateMeeting extends Component {
           </div>
 
           <Button
-            type="submit"
-            onClick={() => this.props.postMeeting(this.props.clubId)}
+            type="button"
+            onClick={() =>
+              this.props.postMeeting(this.props.clubId, {
+                name: this.state.name,
+                location: this.state.location,
+                date: this.state.date
+              })
+            }
             disabled={!this.state.name || !this.state.location}
             variant="contained"
             color="primary"
@@ -158,7 +164,7 @@ const mapState = state => ({
 })
 
 const mapDispatch = dispatch => ({
-  postMeeting: userId => dispatch(postMeeting(userId))
+  postMeeting: (clubId, meeting) => dispatch(postMeeting(clubId, meeting))
 })
 
 export default connect(mapState, mapDispatch)(StyledCreateMeeting)

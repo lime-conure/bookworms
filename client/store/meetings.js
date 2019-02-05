@@ -43,9 +43,12 @@ export const fetchMeetings = clubId => async dispatch => {
   }
 }
 
-export const postMeeting = clubId => async dispatch => {
+export const postMeeting = (clubId, meeting) => async dispatch => {
   try {
-    const {data} = await axios.post(`/api/clubs/${clubId}/meetings/create`)
+    const {data} = await axios.post(
+      `/api/clubs/${clubId}/meetings/create`,
+      meeting
+    )
     dispatch(createMeeting(data))
     history.push(`/clubs/${clubId}/meetings`)
   } catch (err) {
