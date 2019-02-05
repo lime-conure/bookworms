@@ -5,7 +5,6 @@ import UserBooks from './UserBooks'
 
 import {withStyles} from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
-import Divider from '@material-ui/core/Divider'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 import Avatar from '@material-ui/core/Avatar'
@@ -19,10 +18,20 @@ const styles = theme => ({
     marginLeft: theme.spacing.unit * 24,
     marginRight: theme.spacing.unit * 24
   },
+  userInfo: {
+    textAlign: 'center'
+  },
   bigAvatar: {
-    margin: 60,
-    width: 150,
-    height: 150
+    width: 230,
+    height: 230,
+    marginTop: theme.spacing.unit * 4,
+    marginBottom: theme.spacing.unit * 4,
+    marginRight: 'auto',
+    marginLeft: 'auto'
+  },
+  userEmail: {
+    fontWeight: 300,
+    fontSize: '18px'
   }
 })
 
@@ -38,17 +47,21 @@ class Profile extends Component {
           justify="space-between"
           alignItems="flex-start"
         >
-          <Grid item xs={4}>
+          <Grid item xs={4} className={classes.userInfo}>
             <Avatar
               alt={user.fullName}
               src={user.imageUrl}
               className={classes.bigAvatar}
             />
 
-            <Typography gutterBottom variant="h5">
+            <Typography variant="h6" component="h6">
               {user.fullName}
             </Typography>
-            <Typography gutterBottom variant="h5">
+            <Typography
+              variant="subtitle1"
+              component="p"
+              className={classes.userEmail}
+            >
               {user.email}
             </Typography>
           </Grid>

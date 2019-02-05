@@ -35,7 +35,7 @@ module.exports = io => {
 
     socket.on('NEW_THREAD', message => {
       console.log('NEW_THREAD')
-      socket.broadcast.in(`${message.clubId}`).emit('NEW_THREAD', message)
+      socket.broadcast.in(`${message.data.clubId}`).emit('NEW_THREAD', message)
     })
   })
 }

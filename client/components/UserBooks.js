@@ -13,6 +13,9 @@ const styles = theme => ({
     marginTop: theme.spacing.unit * 4,
     marginBottom: theme.spacing.unit * 4,
     width: 720
+  },
+  sectionHeader: {
+    marginBottom: theme.spacing.unit * 3
   }
 })
 
@@ -22,7 +25,8 @@ class UserBooks extends Component {
     this.state = {
       nowResults: [],
       futureResults: [],
-      pastResults: []
+      pastResults: [],
+      loadingNewBook: false
     }
     this.setResults = this.setResults.bind(this)
     this.handleAddBook = this.handleAddBook.bind(this)
@@ -37,13 +41,15 @@ class UserBooks extends Component {
   }
 
   async handleAddBook(e, bookResult, type) {
+    this.setState({loadingNewBook: true})
     e.preventDefault()
     const newBook = await makeBookObject(bookResult)
     this.props.postUserBook(newBook, type)
     this.setState({
       nowResults: [],
       futureResults: [],
-      pastResults: []
+      pastResults: [],
+      loadingNewBook: false
     })
   }
 
@@ -55,7 +61,12 @@ class UserBooks extends Component {
   renderBookSection(books, type, classes) {
     return (
       <div className={classes.bookSection}>
-        <Typography variant="h4" component="h4" gutterBottom>
+        <Typography
+          variant="h5"
+          component="h5"
+          gutterBottom
+          className={classes.sectionHeader}
+        >
           {type === 'now'
             ? `Books I'm Reading`
             : type === 'future' ? `Books I Want To Read` : `Books I've Read`}

@@ -14,7 +14,18 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import Icon from '@material-ui/core/Icon'
 import Divider from '@material-ui/core/Divider'
 
-const styles = theme => ({})
+const styles = theme => ({
+  button: {
+    marginTop: theme.spacing.unit * 4
+  },
+  icon: {
+    color: '#fff'
+  },
+  dueDate: {
+    display: 'inline',
+    paddingLeft: theme.spacing.unit * 2
+  }
+})
 
 class Polls extends Component {
   componentDidMount() {
@@ -26,7 +37,7 @@ class Polls extends Component {
     const polls = this.props.polls
     return (
       <div>
-        <Typography variant="h3" gutterBottom color="primary">
+        <Typography variant="h3" component="h3">
           Polls
         </Typography>
         <Divider />
@@ -40,13 +51,19 @@ class Polls extends Component {
               to={`/clubs/${this.props.match.params.clubId}/polls/${poll.id}`}
             >
               <ListItemIcon>
-                <Icon>poll</Icon>
+                <Icon className={classes.icon}>poll</Icon>
               </ListItemIcon>
-              <ListItemText>
+              <ListItemText component="div">
                 <Typography variant="h5">
                   {poll.title}
                   {poll.dueDate ? (
-                    <em>&mdash;voting ends on {poll.dueDate}</em>
+                    <Typography
+                      variant="subtitle1"
+                      component="span"
+                      className={classes.dueDate}
+                    >
+                      Voting ends on {poll.dueDate}
+                    </Typography>
                   ) : (
                     ''
                   )}
@@ -59,8 +76,9 @@ class Polls extends Component {
           <Button
             type="button"
             variant="contained"
-            color="secondary"
+            color="primary"
             size="large"
+            className={classes.button}
           >
             Create a New Poll
           </Button>

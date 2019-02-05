@@ -25,7 +25,7 @@ socket.on('NEW_MESSAGE', message => {
 })
 socket.on('NEW_THREAD', message => {
   console.log('Received NEW_THREAD', message)
-  store.dispatch(addMessageToThread(...message))
+  store.dispatch(addMessageToThread(message.data, message.threadId))
   push.create('New Message!', {
     body: `You have a new message from ${message.data.userId} in Club ${
       message.data.clubId

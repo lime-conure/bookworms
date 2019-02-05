@@ -17,7 +17,8 @@ import {
   ClubBooks,
   CreateClub,
   Profile,
-  Meetings
+  Meetings,
+  CreateMeeting
 } from './components'
 
 import {me} from './store'
@@ -25,7 +26,7 @@ import {withStyles} from '@material-ui/core/styles'
 
 const styles = theme => ({
   root: {
-    paddingTop: 96, // Navbar height + 32
+    paddingTop: 128, // Navbar height (80) + 48
     paddingBottom: theme.spacing.unit * 4,
     paddingLeft: 322, // Sidebar width + 32,
     paddingRight: theme.spacing.unit * 4
@@ -106,6 +107,11 @@ class Routes extends Component {
                     exact
                     path="/clubs/:clubId/meetings"
                     component={Meetings}
+                  />
+                  <Route
+                    exact
+                    path="/clubs/:clubId/meetings/create"
+                    component={CreateMeeting}
                   />
                 </main>
               </Switch>

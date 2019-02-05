@@ -20,10 +20,8 @@ export const getBookDescription = async bookId => {
       return 'No description found.'
     }
     // remove html tags
-    const shorterDescWithoutHTML = description
-      .replace(/<\/?[^>]+(>|$)/g, '')
-      .substr(0, 500)
-    return `${shorterDescWithoutHTML}...`
+    const descWithoutHTML = description.replace(/<\/?[^>]+(>|$)/g, '')
+    return descWithoutHTML.slice(0, 480)
   } catch (err) {
     console.error(err)
   }
@@ -63,6 +61,7 @@ export const renderBookSearch = (books, type, component) => {
       removeBook={(e, idx, bookId) =>
         component.handleRemoveBook(e, idx, bookId)
       }
+      loadingNewBook={component.state.loadingNewBook}
     />
   )
 }

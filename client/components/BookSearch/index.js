@@ -17,7 +17,7 @@ class BookSearch extends Component {
   }
 
   render() {
-    const {type, bookList, addBook, removeBook} = this.props
+    const {type, bookList, addBook, removeBook, loadingNewBook} = this.props
 
     return (
       <div>
@@ -32,6 +32,7 @@ class BookSearch extends Component {
           type={type}
           results={this.state.results}
           addBook={addBook}
+          loadingNewBook={loadingNewBook}
         />
       </div>
     )

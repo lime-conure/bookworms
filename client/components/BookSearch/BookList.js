@@ -7,6 +7,7 @@ import {withStyles} from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import Icon from '@material-ui/core/Icon'
+import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import List from '@material-ui/core/List'
 import Avatar from '@material-ui/core/Avatar'
@@ -20,7 +21,11 @@ import Grid from '@material-ui/core/Grid'
 
 const styles = theme => ({
   root: {
-    marginBottom: theme.spacing.unit * 4
+    marginBottom: theme.spacing.unit * 4,
+    maxHeight: 375,
+    overflow: 'scroll',
+    backgroundColor: theme.palette.grey[800],
+    borderRadius: '5px'
   },
   avatar: {
     width: 'auto',
@@ -42,14 +47,19 @@ const styles = theme => ({
   progress: {
     margin: theme.spacing.unit * 2
   },
-  description: {},
+  description: {
+    maxWidth: 560,
+    opacity: 0.9,
+    fontSize: '0.925rem',
+    lineHeight: '1.38rem'
+  },
   dialogImage: {
     width: '100%'
   },
   goodreadsButton: {
     marginTop: theme.spacing.unit * 3
   },
-  dialogAuthor: {
+  author: {
     opacity: 0.6
   }
 })
@@ -95,37 +105,48 @@ class BookList extends Component {
           <List className={classes.root}>
             {bookList.map((book, idx) => (
               <div key={book.goodReadsId}>
-                <ListItem button>
-                  <Avatar
-                    onClick={e => this.handleDialogOpen(e, book)}
-                    className={classes.avatar}
-                  >
-                    <img
-                      className={classes.avatarImg}
-                      src={book.imageUrl}
-                      alt={book.title}
+                <Tooltip
+                  placement="right"
+                  title="Click to view more about this book"
+                >
+                  <ListItem button>
+                    <Avatar
+                      onClick={e => this.handleDialogOpen(e, book)}
+                      className={classes.avatar}
+                    >
+                      <img
+                        className={classes.avatarImg}
+                        src={book.imageUrl}
+                        alt={book.title}
+                      />
+                    </Avatar>
+                    <ListItemText onClick={e => this.handleDialogOpen(e, book)}>
+                      <Typography variant="h6" component="h6" gutterBottom>
+                        {book.title}{' '}
+                        <span className={classes.author}>
+                          {book.authors && book.authors.length
+                            ? `by ${book.authors[0].name}`
+                            : ''}
+                        </span>
+                      </Typography>
+                      <Typography
+                        variant="body1"
+                        component="p"
+                        className={classes.description}
+                      >
+                        {book.description
+                          ? `${book.description.slice(0, 160)}...`
+                          : ''}
+                      </Typography>
+                    </ListItemText>
+                    <DropDownBookOptions
+                      type={type}
+                      book={book}
+                      removeBook={removeBook}
+                      addBook={addBook}
                     />
-                  </Avatar>
-                  <ListItemText onClick={e => this.handleDialogOpen(e, book)}>
-                    <Typography variant="h6" component="h6" gutterBottom>
-                      {book.title}{' '}
-                      {book.authors && book.authors.length
-                        ? `by ${book.authors[0].name}`
-                        : ''}
-                    </Typography>
-                    <Typography variant="body2" component="p">
-                      {book.description
-                        ? `${book.description.slice(0, 150)}...`
-                        : ''}
-                    </Typography>
-                  </ListItemText>
-                  <DropDownBookOptions
-                    type={type}
-                    book={book}
-                    removeBook={removeBook}
-                    addBook={addBook}
-                  />
-                </ListItem>
+                  </ListItem>
+                </Tooltip>
 
                 <Dialog
                   aria-labelledby="book-modal"
@@ -140,13 +161,15 @@ class BookList extends Component {
                     <Icon>cancel</Icon>
                   </IconButton>
                   <DialogTitle id="book-modal">
-                    {this.state.dialogBook.title}
-                    <span className={classes.dialogAuthor}>
-                      {this.state.dialogBook.authors &&
-                      this.state.dialogBook.authors.length
-                        ? ` by ${this.state.dialogBook.authors[0].name}`
-                        : ''}
-                    </span>
+                    <Typography variant="h6" component="h6" gutterBottom>
+                      {this.state.dialogBook.title}
+                      <span className={classes.author}>
+                        {this.state.dialogBook.authors &&
+                        this.state.dialogBook.authors.length
+                          ? ` by ${this.state.dialogBook.authors[0].name}`
+                          : ''}
+                      </span>
+                    </Typography>
                   </DialogTitle>
                   <DialogContent>
                     <Grid
@@ -168,7 +191,7 @@ class BookList extends Component {
                           component="span"
                           className={classes.description}
                         >
-                          {this.state.dialogBook.description}
+                          {this.state.dialogBook.description}...
                         </Typography>
                       </Grid>
                     </Grid>

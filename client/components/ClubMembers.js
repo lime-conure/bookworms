@@ -12,7 +12,6 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import Icon from '@material-ui/core/Icon'
 import Avatar from '@material-ui/core/Avatar'
 import {withStyles} from '@material-ui/core/styles'
-import Paper from '@material-ui/core/Paper'
 
 const styles = theme => ({
   root: {
@@ -41,33 +40,35 @@ export class ClubMembers extends Component {
     const members = this.props.members
     return (
       <div>
-        <Typography variant="h3" gutterBottom color="primary">
+        <Typography variant="h3" component="h3">
           Members
         </Typography>
         <Divider />
         <List>
           {members.length
             ? members.map(member => (
-                <ListItem
-                  button
-                  key={member.userId}
-                  component={Link}
-                  to="/profile"
-                >
-                  <ListItemIcon>
-                    <Avatar
-                      src={member.imageUrl}
-                      className={classes.bigAvatar}
-                    />
-                  </ListItemIcon>
-                  <ListItemText>
-                    <Typography variant="h5">
-                      {member.firstName} {member.lastName}
-                      <br />
-                      {member.email}
-                    </Typography>
-                  </ListItemText>
-                </ListItem>
+                <div key={member.id}>
+                  <ListItem
+                    button
+                    component={Link}
+                    to={member.id === this.props.userId ? '/profile' : '#'}
+                  >
+                    <ListItemIcon>
+                      <Avatar
+                        src={member.imageUrl}
+                        className={classes.bigAvatar}
+                      />
+                    </ListItemIcon>
+                    <ListItemText>
+                      <Typography variant="h6" component="h6">
+                        {member.firstName} {member.lastName}
+                      </Typography>
+                      <Typography variant="subtitle1" component="p">
+                        {member.email}
+                      </Typography>
+                    </ListItemText>
+                  </ListItem>
+                </div>
               ))
             : ''}
         </List>
@@ -78,7 +79,8 @@ export class ClubMembers extends Component {
 
 const StyledClubMembers = withStyles(styles)(ClubMembers)
 const mapState = state => ({
-  members: state.clubMembers
+  members: state.clubMembers,
+  userId: state.user.id
 })
 
 const mapDispatch = dispatch => ({

@@ -14,14 +14,15 @@ import Icon from '@material-ui/core/Icon'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
+import Divider from '@material-ui/core/Divider'
 
 const styles = theme => ({
   form: {
     maxWidth: 660
   },
-  optionsSection: {
-    marginTop: theme.spacing.unit * 3,
-    marginBottom: theme.spacing.unit * 3
+  pollSection: {
+    marginTop: theme.spacing.unit * 4,
+    marginBottom: theme.spacing.unit * 4
   },
   root: {
     display: 'flex',
@@ -42,7 +43,8 @@ class CreatePoll extends Component {
   constructor() {
     super()
     const today = new Date()
-    const defaultDateTime = new Date(today.setHours(today.getHours() + 1))
+    // default date/time option is tomorrow at the same time
+    const defaultDateTime = new Date(today.setDate(today.getDate() + 1))
     this.state = {
       searchResults: [],
       selectedBooks: [],
@@ -201,53 +203,53 @@ class CreatePoll extends Component {
     return (
       <div>
         <form className={classes.form}>
-          <Typography variant="h2" gutterBottom color="primary">
+          <Typography variant="h3" component="h3">
             Create a New Poll
           </Typography>
-
-          <TextField
-            label="Title"
-            name="title"
-            value={this.state.title}
-            onChange={this.handleChange}
-            margin="normal"
-            variant="filled"
-            fullWidth
-            autoFocus={true}
-            required
-          />
-          <br />
-          <TextField
-            label="Notes"
-            name="notes"
-            value={this.state.notes}
-            onChange={this.handleChange}
-            margin="normal"
-            multiline
-            rows="3"
-            variant="filled"
-            fullWidth
-          />
-          <br />
-          {/* select dueDate */}
-          <TextField
-            label="When should voting end for this poll?"
-            type="date"
-            name="dueDate"
-            value={this.state.dueDate}
-            onChange={this.handleChange}
-            margin="normal"
-            InputLabelProps={{
-              shrink: true
-            }}
-            variant="filled"
-            fullWidth
-          />
-
+          <Divider />
+          <div className={classes.pollSection}>
+            <TextField
+              label="Title"
+              name="title"
+              value={this.state.title}
+              onChange={this.handleChange}
+              margin="normal"
+              variant="filled"
+              fullWidth
+              autoFocus={true}
+              required
+            />
+            <br />
+            <TextField
+              label="Notes"
+              name="notes"
+              value={this.state.notes}
+              onChange={this.handleChange}
+              margin="normal"
+              multiline
+              rows="3"
+              variant="filled"
+              fullWidth
+            />
+            <br />
+            {/* select dueDate */}
+            <TextField
+              label="When should voting end for this poll?"
+              type="date"
+              name="dueDate"
+              value={this.state.dueDate}
+              onChange={this.handleChange}
+              margin="normal"
+              InputLabelProps={{
+                shrink: true
+              }}
+              variant="filled"
+              fullWidth
+            />
+          </div>
           {/* select books */}
-          <div className={classes.optionsSection}>
-            <Typography variant="h5" color="secondary" gutterBottom>
-              <Icon className={classes.headerIcon}>book</Icon>
+          <div className={classes.pollSection}>
+            <Typography variant="h5" gutterBottom>
               Add Book Options
             </Typography>
             <BookSearch
@@ -256,13 +258,12 @@ class CreatePoll extends Component {
               setResults={this.setResults}
               addBook={(e, book) => this.addBook(e, book)}
               removeBook={(e, idx) => this.deleteOption(e, idx, 'book')}
+              loadingNewBook={this.state.loadingNewBook}
             />
           </div>
-
           {/* select dates */}
           <div className={classes.optionsSection}>
-            <Typography variant="h5" color="secondary" gutterBottom>
-              <Icon className={classes.headerIcon}>date_range</Icon>
+            <Typography variant="h5" gutterBottom>
               Add Date &amp; Time Options
             </Typography>
             <Grid
@@ -292,14 +293,13 @@ class CreatePoll extends Component {
                   onClick={this.addDateTime}
                   type="submit"
                   variant="contained"
-                  color="secondary"
+                  color="primary"
                 >
                   Add Date/Time
                 </Button>
               </Grid>
             </Grid>
 
-            <br />
             <Typography variant="body2" component="p">
               {this.state.dateTimeMessage}
             </Typography>
@@ -318,11 +318,9 @@ class CreatePoll extends Component {
                 : null}
             </List>
           </div>
-
           {/* select location */}
           <div className={classes.optionsSection}>
-            <Typography variant="h5" color="secondary" gutterBottom>
-              <Icon className={classes.headerIcon}>location_on</Icon>
+            <Typography variant="h5" gutterBottom>
               Add Location Options
             </Typography>
             <Grid
@@ -347,7 +345,7 @@ class CreatePoll extends Component {
                   onClick={this.addPlaces}
                   type="submit"
                   variant="contained"
-                  color="secondary"
+                  color="primary"
                 >
                   Add Location
                 </Button>
@@ -375,7 +373,7 @@ class CreatePoll extends Component {
             onClick={this.createPoll}
             disabled={!this.state.title}
             variant="contained"
-            color="primary"
+            color="secondary"
             size="large"
           >
             Create Poll

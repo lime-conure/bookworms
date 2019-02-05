@@ -9,9 +9,18 @@ import {white} from '@material-ui/core/colors'
 import DropDownClubs from './DropDownClubs'
 import socket from '../socket'
 
-const styles = {
+const styles = theme => ({
   root: {
     flexGrow: 1
+  },
+  navBar: {
+    paddingTop: theme.spacing.unit,
+    paddingBottom: theme.spacing.unit
+  },
+  logo: {
+    color: '#fff',
+    paddingLeft: theme.spacing.unit,
+    paddingRight: theme.spacing.unit
   },
   grow: {
     flexGrow: 1,
@@ -21,16 +30,21 @@ const styles = {
     marginLeft: -12,
     marginRight: 20
   }
-}
+})
 
 function Navbar({handleClick, isLoggedIn, userId, classes}) {
   return (
     <div className={classes.root}>
-      <AppBar>
+      <AppBar className={classes.navBar}>
         <Toolbar>
-          <Typography variant="h6" className={classes.grow}>
-            Bookworms &nbsp;&nbsp; 📖 🐛
+          <Typography variant="h4" component="h4" className={classes.grow}>
+            <span style={{transform: 'scale (1, -1)'}}>🐛</span>
+            <Link to="/" className={classes.logo}>
+              Bookworms
+            </Link>
+            🐛
           </Typography>
+
           {isLoggedIn && <DropDownClubs />}
           {isLoggedIn ? (
             <div>
