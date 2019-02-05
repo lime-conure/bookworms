@@ -13,7 +13,7 @@ const Poll = db.define('poll', {
     type: Sequelize.DATE,
     get() {
       if (this.getDataValue('dueDate')) {
-        return new Date(this.getDataValue('dueDate')).toLocaleDateString()
+        return new Date(this.getDataValue('dueDate')).toISOString()
       }
     }
   },

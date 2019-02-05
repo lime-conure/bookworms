@@ -63,9 +63,6 @@ class CreatePoll extends Component {
   }
 
   handleChange(e) {
-    this.setState({
-      [e.target.name]: e.target.value
-    })
     if (e.target.name === 'dueDate') {
       // prevent users from selecting due dates in the past
       const selectedDate = formatDate(e.target.value)
@@ -110,6 +107,7 @@ class CreatePoll extends Component {
         dueDate,
         notes
       }
+      console.log('new poll dueDate: ', dueDate)
       await axios.post(
         `/api/clubs/${this.props.match.params.clubId}/polls`,
         newPoll

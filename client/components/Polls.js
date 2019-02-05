@@ -64,7 +64,7 @@ class Polls extends Component {
                       component="span"
                       className={classes.dueDate}
                     >
-                      Voting ends on {formatDateDisplay(poll.dueDate, false)}
+                      Voting ends on {poll.dueDate.slice(0, 10)}
                     </Typography>
                   ) : (
                     ''

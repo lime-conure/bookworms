@@ -144,8 +144,8 @@ router.post('/:clubId/polls', async (req, res, next) => {
           } = req.body
           const newPoll = await Poll.create({
             title,
-            dueDate,
             notes,
+            dueDate: new Date(dueDate),
             creatorId: req.user.id
           })
           const books = []
@@ -555,7 +555,7 @@ router.get('/:clubId/meetings', async (req, res, next) => {
   }
 })
 
-//POST api/meetings/create - to create a meeting
+//POST api/:clubId/meetings - to create a meeting
 router.post('/:clubId/meetings', async (req, res, next) => {
   try {
     if (!req.user.id) res.status(403).send('Not authorized')
