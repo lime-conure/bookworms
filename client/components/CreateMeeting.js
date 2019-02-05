@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {createMeeting} from '../store'
+import {postMeeting} from '../store'
 import axios from 'axios'
 import {formatDateString, formatDate} from '../utils'
 
@@ -136,7 +136,7 @@ export class CreateMeeting extends Component {
 
           <Button
             type="submit"
-            onClick={this.createMeeting}
+            onClick={() => this.props.postMeeting(this.props.clubId)}
             disabled={!this.state.name || !this.state.location}
             variant="contained"
             color="primary"
@@ -153,11 +153,12 @@ export class CreateMeeting extends Component {
 const StyledCreateMeeting = withStyles(styles)(CreateMeeting)
 
 const mapState = state => ({
-  user: state.user
+  user: state.user,
+  clubId: state.singleClub.id
 })
 
 const mapDispatch = dispatch => ({
-  createMeeting: userId => dispatch(createMeeting(userId))
+  postMeeting: userId => dispatch(postMeeting(userId))
 })
 
 export default connect(mapState, mapDispatch)(StyledCreateMeeting)
