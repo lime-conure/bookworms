@@ -110,7 +110,7 @@ class Routes extends Component {
                   />
                   <Route
                     exact
-                    path="/clubs/:clubId/meetings/create"
+                    path="/clubs/:clubId/createmeeting"
                     component={CreateMeeting}
                   />
                 </main>

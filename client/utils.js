@@ -3,8 +3,6 @@ import BookSearch from './components/BookSearch'
 import axios from 'axios'
 const apiKey = 'jrAzhFY1JP1FdDk1vp7Zg'
 
-// Material UI
-
 // fetches book descriptions from goodreads
 export const getBookDescription = async bookId => {
   const requestUri =
@@ -84,16 +82,20 @@ export const formatDateString = date => {
     .slice(0, 16)
 }
 
-export const formatDateDisplay = dateString => {
+export const formatDateDisplay = (dateString, includeTime) => {
   const date = new Date(dateString)
-  var options = {
+  const dayOptions = {
     weekday: 'short',
     year: 'numeric',
     month: 'short',
-    day: 'numeric',
+    day: 'numeric'
+  }
+  const timeOptions = {
     hour: 'numeric',
     minute: 'numeric'
   }
-
+  const options = includeTime
+    ? {...dayOptions, ...timeOptions}
+    : {...dayOptions}
   return date.toLocaleDateString('en-US', options)
 }
