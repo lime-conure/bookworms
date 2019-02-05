@@ -545,3 +545,34 @@ router.post('/:clubId/meetings/create', async (req, res, next) => {
     next(err)
   }
 })
+
+// PUT /api/clubs/:clubId/meetings/delete - delete a meeting, given meetingId and clubId
+router.put('/:clubId/meetings/delete', async (req, res, next) => {
+  try {
+    if (!req.user) res.status(403).send(`Not authorized`)
+    else {
+      const clubId = req.params.clubId
+      const club = await Club.findById(clubId)
+      if (!club) res.status(403).send('Club does not exist!')
+      else {
+        const isUser = await club.hasUser(req.user.id)
+        if (!isUser) res.status(403).send(`Not authorized`)
+        else {
+          const {meetingId} = req.body
+          // make sure our club has this book before we remove it
+          const meeting = await Meeting.findOne({
+            where: {clubId, id: meetingId}
+          })
+          if (!meeting) {
+            res.send(`${club.name} does not have that book`)
+          } else {
+            await meeting.destroy()
+            res.status(200).send()
+          }
+        }
+      }
+    }
+  } catch (err) {
+    next(err)
+  }
+})
