@@ -26,7 +26,7 @@ const styles = theme => ({
 
 class BookResults extends Component {
   render() {
-    const {results, classes} = this.props
+    const {type, results, classes} = this.props
     if (results.length) {
       return (
         <div>
@@ -53,7 +53,7 @@ class BookResults extends Component {
                     }
                     actionIcon={
                       <IconButton
-                        onClick={e => this.props.addBook(e, bookResult)}
+                        onClick={e => this.props.addBook(e, bookResult, type)}
                       >
                         <Icon>add_circle</Icon>
                       </IconButton>

@@ -53,7 +53,7 @@ export const postClubBook = (book, type, clubId) => async dispatch => {
         addClubBook({
           ...data,
           clubs_books: {type},
-          authors: [book.author]
+          authors: book.authors || [book.author]
         })
       )
     }

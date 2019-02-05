@@ -39,6 +39,8 @@ router.post('/:clubId/books/add', async (req, res, next) => {
         if (!isUser) res.status(403).send(`Not authorized`)
         else {
           const {book, type} = req.body
+          console.log('book: ', book)
+          console.log('type: ', type)
           let existingBook = await Book.findOne({
             where: {goodReadsId: book.goodReadsId}
           })
@@ -67,9 +69,11 @@ router.post('/:clubId/books/add', async (req, res, next) => {
               }
             })
 
+            console.log('existingRow', existingRow)
             if (existingRow) res.json({})
             else {
-              existingBook.addClub(club, {through: {type}})
+              //existingBook.addClub(club, {through: {type}})
+              ClubBook.create({type, clubId: club.id, bookId: book.id})
               res.json(existingBook)
             }
           } else {

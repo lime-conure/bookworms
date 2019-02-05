@@ -1,12 +1,12 @@
 import React, {Component} from 'react'
 import {getBookDescription} from '../../utils'
+import DropDownBookOptions from './DropDownBookOptions'
 
 // Material UI
 import {withStyles} from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import Icon from '@material-ui/core/Icon'
-import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import List from '@material-ui/core/List'
 import Avatar from '@material-ui/core/Avatar'
@@ -87,7 +87,7 @@ class BookList extends Component {
   }
 
   render() {
-    const {bookList, removeBook, addBook, classes} = this.props
+    const {type, bookList, removeBook, addBook, classes} = this.props
     if (bookList.length) {
       return (
         <div>
@@ -119,14 +119,12 @@ class BookList extends Component {
                         : ''}
                     </Typography>
                   </ListItemText>
-                  <IconButton
-                    className={classes.removeIcon}
-                    onClick={e => removeBook(e, idx, book.id)}
-                  >
-                    <Tooltip placement="right" title="Remove This Book">
-                      <Icon>cancel</Icon>
-                    </Tooltip>
-                  </IconButton>
+                  <DropDownBookOptions
+                    type={type}
+                    book={book}
+                    removeBook={removeBook}
+                    addBook={addBook}
+                  />
                 </ListItem>
 
                 <Dialog

@@ -31,6 +31,9 @@ export const getBookDescription = async bookId => {
 
 // constructs book object with needed fields from goodreads api
 export const makeBookObject = async bookResult => {
+  if (bookResult.description)
+    //this book is already added, now is being moved
+    return bookResult
   const description = await getBookDescription(bookResult.best_book.id)
   return {
     author: bookResult.best_book.author,
@@ -56,7 +59,7 @@ export const renderBookSearch = (books, type, component) => {
       bookList={books}
       results={component.state[`${type}Results`]}
       setResults={results => component.setResults(results, type)}
-      addBook={(e, book) => component.handleAddBook(e, book, type)}
+      addBook={(e, book, addType) => component.handleAddBook(e, book, addType)}
       removeBook={(e, idx, bookId) =>
         component.handleRemoveBook(e, idx, bookId)
       }

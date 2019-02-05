@@ -38,6 +38,7 @@ export class ClubBooks extends Component {
   }
 
   async handleAddBook(e, bookResult, type) {
+    console.log('in handleAddBook: ', type)
     e.preventDefault()
     const newBook = await makeBookObject(bookResult)
     this.props.postClubBook(newBook, type, this.props.clubId)

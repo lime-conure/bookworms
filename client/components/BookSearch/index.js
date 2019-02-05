@@ -28,7 +28,11 @@ class BookSearch extends Component {
           addBook={addBook}
         />
         <Search setResults={this.setResults} />
-        <BookResults results={this.state.results} addBook={addBook} />
+        <BookResults
+          type={type}
+          results={this.state.results}
+          addBook={addBook}
+        />
       </div>
     )
   }
