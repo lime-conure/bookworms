@@ -24,9 +24,6 @@ class DropDownBookOptions extends React.Component {
 
   handleMenuClick = async (e, idx) => {
     const moveTo = this.options[this.props.type][idx]
-    console.log('book: ', this.props.book)
-    console.log('move to: ', moveTo)
-    console.log('type: ', this.props.type)
     if (moveTo === 'remove') {
       this.props.removeBook(e, idx, this.props.book.id, this.props.type)
     } else {
@@ -51,7 +48,7 @@ class DropDownBookOptions extends React.Component {
           aria-haspopup="true"
           onClick={this.handleButtonClick}
         >
-          Options
+          Actions
           <Icon>keyboard_arrow_down</Icon>
         </Button>
         <Menu

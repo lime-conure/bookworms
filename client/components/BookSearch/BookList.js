@@ -98,8 +98,6 @@ class BookList extends Component {
 
   render() {
     const {type, bookList, removeBook, addBook, classes} = this.props
-    console.log('booklist: ', bookList)
-    console.log('type: ', type)
     if (bookList.length) {
       return (
         <div>

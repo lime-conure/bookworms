@@ -42,7 +42,6 @@ export class ClubBooks extends Component {
   }
 
   async handleAddBook(e, bookResult, type) {
-    console.log('in handleAddBook: ', type)
     this.setState({loadingNewBook: true})
     e.preventDefault()
     const newBook = await makeBookObject(bookResult)
@@ -57,8 +56,6 @@ export class ClubBooks extends Component {
 
   handleRemoveBook(e, idx, bookId, type) {
     e.preventDefault()
-    console.log('clubId: ', this.props.clubId)
-    console.log('type: ', type)
     this.props.deleteClubBook(bookId, type, this.props.clubId)
   }
 

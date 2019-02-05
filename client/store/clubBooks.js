@@ -86,12 +86,6 @@ export default function(state = clubBooks, action) {
     case ADD_CLUB_BOOK:
       return [...state, action.book]
     case REMOVE_CLUB_BOOK:
-      // const clubBooksCopy = [...state]
-      // const clubBooksIds = clubBooksCopy.map(book => book.id)
-      // const indexToRemove = clubBooksIds.indexOf(action.bookId)
-      // clubBooksCopy.splice(indexToRemove, 1)
-      // return clubBooksCopy
-
       return state.filter(
         book =>
           !(

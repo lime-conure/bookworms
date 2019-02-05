@@ -16,14 +16,12 @@ router.get('/:clubId/books', async (req, res, next) => {
         const isUser = await club.hasUser(req.user.id)
         if (!isUser) res.status(403).send(`Not authorized`)
         else {
-          //const books = await club.getBooks({include: [{model: Author}]})
           const rowsWithClubId = await ClubBook.findAll({
             where: {
               clubId
             }
           })
 
-          console.log('rows: ', rowsWithClubId)
           let books = await Promise.all(
             rowsWithClubId.map(row =>
               Book.findOne({
@@ -33,12 +31,10 @@ router.get('/:clubId/books', async (req, res, next) => {
             )
           )
 
-          console.log('books: ', books)
           const newBooks = books.map((book, idx) => {
             return {book, clubs_books: {type: rowsWithClubId[idx].type}}
           })
 
-          console.log('newBooks: ', newBooks)
           res.send(newBooks)
         }
       }
@@ -61,8 +57,6 @@ router.post('/:clubId/books/add', async (req, res, next) => {
         if (!isUser) res.status(403).send(`Not authorized`)
         else {
           const {book, type} = req.body
-          console.log('book: ', book)
-          console.log('type: ', type)
           let existingBook = await Book.findOne({
             where: {goodReadsId: book.goodReadsId}
           })
@@ -91,15 +85,12 @@ router.post('/:clubId/books/add', async (req, res, next) => {
               }
             })
 
-            console.log('existingRow', existingRow)
             if (existingRow) res.json({})
             else {
-              //existingBook.addClub(club, {through: {type}})
               ClubBook.create({type, clubId: club.id, bookId: existingBook.id})
               res.json(existingBook)
             }
           } else {
-            //existingBook.addClub(club, {through: {type}})
             ClubBook.create({type, clubId: club.id, bookId: existingBook.id})
             res.json(existingBook)
           }
@@ -124,7 +115,6 @@ router.put('/:clubId/books/delete', async (req, res, next) => {
         if (!isUser) res.status(403).send(`Not authorized`)
         else {
           const {bookId, type} = req.body
-          console.log(bookId, type)
           // make sure our club has this book before we remove it
           const book = await ClubBook.findOne({where: {clubId, bookId, type}})
           if (!book) {

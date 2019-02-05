@@ -16,7 +16,6 @@ router.get('/books', async (req, res, next) => {
         }
       })
 
-      console.log('rows: ', rowsWithUserId)
       let books = await Promise.all(
         rowsWithUserId.map(row =>
           Book.findOne({
@@ -26,12 +25,10 @@ router.get('/books', async (req, res, next) => {
         )
       )
 
-      console.log('books: ', books)
       const newBooks = books.map((book, idx) => {
         return {book, users_books: {type: rowsWithUserId[idx].type}}
       })
 
-      console.log('newBooks: ', newBooks)
       res.send(newBooks)
     }
   } catch (err) {
@@ -62,7 +59,6 @@ router.post('/books/add', async (req, res, next) => {
         existingBook.setAuthors([existingAuthor])
       }
       // type === 'now' or type === 'future', no duplicated row allowed in users_books table
-
       if (type === 'now' || type === 'future') {
         const existingRow = await UserBook.findOne({
           where: {
@@ -76,12 +72,10 @@ router.post('/books/add', async (req, res, next) => {
 
         if (existingRow) res.json({})
         else {
-          //existingBook.addUser(req.user, {through: {type}})
           UserBook.create({type, userId: req.user.id, bookId: existingBook.id})
           res.json(existingBook)
         }
       } else {
-        //existingBook.addUser(req.user, {through: {type}})
         UserBook.create({type, userId: req.user.id, bookId: existingBook.id})
         res.json(existingBook)
       }
