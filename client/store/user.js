@@ -96,11 +96,11 @@ export const postUserBook = (book, type) => async dispatch => {
       book,
       type
     })
-    if (data.id) {
+    if (data.book) {
       dispatch(
         addUserBook({
-          ...data,
-          users_books: {type},
+          ...data.book,
+          users_books: data.users_books,
           authors: book.authors || [book.author]
         })
       )

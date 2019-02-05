@@ -26,7 +26,14 @@ router.get('/books', async (req, res, next) => {
       )
 
       const newBooks = books.map((book, idx) => {
-        return {book, users_books: {type: rowsWithUserId[idx].type}}
+        return {
+          book,
+          users_books: {
+            type: rowsWithUserId[idx].type,
+            startTime: rowsWithUserId[idx].startTime,
+            endTime: rowsWithUserId[idx].endTime
+          }
+        }
       })
 
       res.send(newBooks)
@@ -72,12 +79,38 @@ router.post('/books/add', async (req, res, next) => {
 
         if (existingRow) res.json({})
         else {
-          UserBook.create({type, userId: req.user.id, bookId: existingBook.id})
-          res.json(existingBook)
+          UserBook.create({
+            type,
+            userId: req.user.id,
+            bookId: existingBook.id,
+            startTime: book.startTime,
+            endTime: book.endTime
+          })
+          res.json({
+            book: existingBook,
+            users_books: {
+              type,
+              startTime: book.startTime,
+              endTIme: book.endTime
+            }
+          })
         }
       } else {
-        UserBook.create({type, userId: req.user.id, bookId: existingBook.id})
-        res.json(existingBook)
+        UserBook.create({
+          type,
+          userId: req.user.id,
+          bookId: existingBook.id,
+          startTime: book.startTime,
+          endTime: book.endTime
+        })
+        res.json({
+          book: existingBook,
+          users_books: {
+            type,
+            starttime: book.startTime,
+            endTime: book.endTime
+          }
+        })
       }
     }
   } catch (err) {

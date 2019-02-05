@@ -37,6 +37,8 @@ export const makeBookObject = async bookResult => {
     title: bookResult.best_book.title,
     imageUrl: bookResult.best_book.image_url,
     smallImageUrl: bookResult.best_book.small_image_url,
+    startTime: bookResult.startTime,
+    endTime: bookResult.endTime,
     pubDate:
       bookResult.original_publication_month +
       '-' +

@@ -52,6 +52,7 @@ class BookResults extends Component {
                       updatedBook.startTime = null
                       updatedBook.endTime = new Date()
                     }
+                    console.log('updatedBook:', updatedBook)
                     return this.props.addBook(e, updatedBook, type)
                   }}
                 >

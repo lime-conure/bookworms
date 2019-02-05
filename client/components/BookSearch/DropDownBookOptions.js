@@ -24,6 +24,7 @@ class DropDownBookOptions extends React.Component {
 
   handleMenuClick = async (e, idx) => {
     const {removeBook, addBook, type, book} = this.props
+    console.log('book: ', book)
     const moveTo = this.options[type][idx]
     if (moveTo === 'remove') {
       removeBook(e, idx, book.id, type)
@@ -34,9 +35,12 @@ class DropDownBookOptions extends React.Component {
         if (moveTo === 'past') {
           updatedBook = {
             ...book,
-            startTime: book.startTime,
+            startTime: book.clubs_book
+              ? book.clubs_books.startTime
+              : book.users_books.startTime,
             endTime: new Date()
           }
+          console.log('updatedBook: ', updatedBook)
         } else {
           //moveto === 'future'
           updatedBook = {...book, startTime: null, endTime: null}

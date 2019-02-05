@@ -49,11 +49,12 @@ export const fetchClubBooks = clubId => async dispatch => {
 
 export const postClubBook = (book, type, clubId) => async dispatch => {
   try {
+    console.log('in postClubBook', book, type)
     const {data} = await axios.post(`/api/clubs/${clubId}/books/add`, {
       book,
       type
     })
-    if (data.id) {
+    if (data.book) {
       dispatch(
         addClubBook({
           ...data.book,
