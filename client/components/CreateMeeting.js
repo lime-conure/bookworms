@@ -41,7 +41,6 @@ export class CreateMeeting extends Component {
       date: defaultDateString
     }
     this.handleChange = this.handleChange.bind(this)
-    // this.createMeeting = this.createMeeting.bind(this)
   }
   handleChange(e) {
     this.setState({
@@ -67,23 +66,6 @@ export class CreateMeeting extends Component {
       })
     }
   }
-
-  // async createMeeting(evt) {
-  //   evt.preventDefault()
-  //   try {
-  //     const {name, location, date} = this.state
-  //     const newMeeting = {name, location, date}
-  //     await axios.post(
-  //       `/api/clubs/${this.props.match.params.clubId}/meetings/create`,
-  //       newMeeting
-  //     )
-  //     this.props.history.push(
-  //       `/clubs/${this.props.match.params.clubId}/meetings`
-  //     )
-  //   } catch (err) {
-  //     console.log(err)
-  //   }
-  // }
 
   render() {
     const {classes} = this.props

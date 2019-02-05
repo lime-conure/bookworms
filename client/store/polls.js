@@ -40,9 +40,9 @@ export const fetchPolls = clubId => async dispatch => {
 export const deletePoll = (e, clubId, pollId) => async dispatch => {
   try {
     e.preventDefault()
-    // await axios.put(`/api/clubs/${clubId}/polls/delete`, {
-    //   pollId
-    // })
+    await axios.delete(`/api/clubs/${clubId}/polls`, {
+      pollId
+    })
     dispatch(removePoll(pollId))
   } catch (err) {
     console.error(err)

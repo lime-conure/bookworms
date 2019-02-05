@@ -205,6 +205,39 @@ router.post('/:clubId/polls', async (req, res, next) => {
   }
 })
 
+// DELETE /api/clubs/:clubId/polls - delete a poll, given pollId (in req.body) and clubId
+router.delete('/:clubId/polls', async (req, res, next) => {
+  try {
+    if (!req.user) res.status(403).send(`Not authorized`)
+    else {
+      const clubId = req.params.clubId
+      const club = await Club.findById(clubId)
+      if (!club) res.status(403).send('Club does not exist!')
+      else {
+        const isUser = await club.hasUser(req.user.id)
+        if (!isUser) res.status(403).send(`Not authorized`)
+        else {
+          const {pollId} = req.body
+          // make sure our club has this meeting before we remove it
+          const poll = await Poll.findOne({
+            where: {clubId, id: pollId}
+          })
+          if (!poll) {
+            res.status(404).send(`${club.name} does not have that poll`)
+          } else if (poll.creatorId !== req.user.id) {
+            res.status(403).send(`Not authorized to delete poll`)
+          } else {
+            await poll.destroy()
+            res.status(200).send()
+          }
+        }
+      }
+    }
+  } catch (err) {
+    next(err)
+  }
+})
+
 // GET /api/clubs/:clubId/polls/:pollId
 router.get('/:clubId/polls/:pollId', async (req, res, next) => {
   try {
@@ -517,6 +550,7 @@ router.get('/:clubId/meetings', async (req, res, next) => {
   }
 })
 
+// TODO: the RESTful version of this route is just POST api/meetings
 //POST api/meetings/create - to create a meeting
 router.post('/:clubId/meetings/create', async (req, res, next) => {
   try {
@@ -559,12 +593,12 @@ router.put('/:clubId/meetings/delete', async (req, res, next) => {
         if (!isUser) res.status(403).send(`Not authorized`)
         else {
           const {meetingId} = req.body
-          // make sure our club has this book before we remove it
+          // make sure our club has this meeting before we remove it
           const meeting = await Meeting.findOne({
             where: {clubId, id: meetingId}
           })
           if (!meeting) {
-            res.status(404).send(`${club.name} does not have that book`)
+            res.status(404).send(`${club.name} does not have that meeting`)
           } else if (meeting.creatorId !== req.user.id) {
             res.status(403).send(`Not authorized to delete meeting`)
           } else {
