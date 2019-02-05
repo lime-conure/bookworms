@@ -97,7 +97,14 @@ class BookList extends Component {
   }
 
   render() {
-    const {type, bookList, removeBook, addBook, classes} = this.props
+    const {
+      type,
+      bookList,
+      removeBook,
+      addBook,
+      hideBookActions,
+      classes
+    } = this.props
     if (bookList.length) {
       return (
         <div>
@@ -142,12 +149,22 @@ class BookList extends Component {
                     </Typography>
                   </ListItemText>
 
-                  <DropDownBookOptions
-                    type={type}
-                    book={book}
-                    removeBook={removeBook}
-                    addBook={addBook}
-                  />
+                  {/* create poll form doesn't have book actions dropdown */}
+                  {hideBookActions ? (
+                    <IconButton
+                      className={classes.removeIcon}
+                      onClick={e => removeBook(e, idx, book.id)}
+                    >
+                      <Icon>cancel</Icon>
+                    </IconButton>
+                  ) : (
+                    <DropDownBookOptions
+                      type={type}
+                      book={book}
+                      removeBook={removeBook}
+                      addBook={addBook}
+                    />
+                  )}
                 </ListItem>
 
                 <Dialog

@@ -17,7 +17,7 @@ class BookSearch extends Component {
   }
 
   render() {
-    const {type, bookList, addBook, removeBook} = this.props
+    const {type, bookList, addBook, removeBook, hideBookActions} = this.props
 
     return (
       <div>
@@ -26,6 +26,7 @@ class BookSearch extends Component {
           bookList={bookList}
           removeBook={removeBook}
           addBook={addBook}
+          hideBookActions={hideBookActions}
         />
         <Search setResults={this.setResults} />
         <BookResults
