@@ -61,8 +61,7 @@ class DropDownBookOptions extends React.Component {
           aria-haspopup="true"
           onClick={this.handleButtonClick}
         >
-          Actions
-          <Icon>keyboard_arrow_down</Icon>
+          <Icon color="secondary">launch</Icon>
         </Button>
         <Menu
           id="simple-menu"

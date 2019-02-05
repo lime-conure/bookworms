@@ -129,14 +129,15 @@ class BookList extends Component {
 
                   <ListItemText onClick={e => this.handleDialogOpen(e, book)}>
                     <Typography variant="h6" component="h6" gutterBottom>
-                      {book.title}{' '}
+                      {book.title}
+                      <br />
                       <span className={classes.author}>
                         {book.authors && book.authors.length
-                          ? `by ${book.authors[0].name}`
+                          ? `By ${book.authors[0].name}`
                           : ''}
                       </span>
                     </Typography>
-                    <Typography
+                    {/* <Typography
                       variant="body1"
                       component="p"
                       className={classes.description}
@@ -144,7 +145,7 @@ class BookList extends Component {
                       {book.description
                         ? `${book.description.slice(0, 160)}...`
                         : ''}
-                    </Typography>
+                    </Typography> */}
                   </ListItemText>
 
                   <DropDownBookOptions

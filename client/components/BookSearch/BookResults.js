@@ -18,10 +18,10 @@ const styles = theme => ({
     overflow: 'hidden',
     backgroundColor: theme.palette.background.paper,
     marginTop: theme.spacing.unit * 2,
-    width: 720,
+    width: '100%',
+    maxWidth: 720,
     height: 350
   },
-  gridList: {},
   gridListTile: {
     cursor: 'pointer'
   }

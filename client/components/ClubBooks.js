@@ -12,7 +12,7 @@ const styles = theme => ({
   bookSection: {
     marginTop: theme.spacing.unit * 4,
     marginBottom: theme.spacing.unit * 4,
-    width: '60%'
+    width: '70%'
   },
   sectionHeader: {
     marginBottom: theme.spacing.unit * 3
