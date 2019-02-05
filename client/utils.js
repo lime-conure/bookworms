@@ -112,5 +112,5 @@ export const formatDateDisplay = (dateString, includeTime) => {
   const options = includeTime
     ? {...dayOptions, ...timeOptions}
     : {...dayOptions}
-  return date.toLocaleString('en-US', options)
+  return date.toLocaleDateString('en-US', options)
 }

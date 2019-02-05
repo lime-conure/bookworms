@@ -107,7 +107,6 @@ class CreatePoll extends Component {
         dueDate,
         notes
       }
-      console.log('new poll dueDate: ', dueDate)
       await axios.post(
         `/api/clubs/${this.props.match.params.clubId}/polls`,
         newPoll
