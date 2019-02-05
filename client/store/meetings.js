@@ -5,11 +5,12 @@ import axios from 'axios'
  */
 const GET_MEETINGS = 'GET_MEETINGS'
 const CREATE_MEETING = 'CREATE_MEETING'
+const REMOVE_MEETING = 'REMOVE_MEETING'
 
 /**
  * INITIAL STATE
  */
-const meetings = []
+const defaultMeetings = []
 
 /**
  * ACTION CREATORS
@@ -23,6 +24,11 @@ const getMeetings = meetings => ({
 const createNewMeeting = newMeeting => ({
   type: CREATE_MEETING,
   newMeeting
+})
+
+const removeClubMeeting = meetingId => ({
+  type: REMOVE_MEETING,
+  meetingId
 })
 /**
  * THUNK CREATORS
@@ -46,16 +52,30 @@ export const createMeeting = clubId => async dispatch => {
   }
 }
 
+export const deleteMeeting = (clubId, meetingId) => async dispatch => {
+  try {
+    console.log(`about to delete meeting ${meetingId} for club ${clubId}`)
+    await axios.put(`/api/clubs/${clubId}/meetings/delete`, {
+      meetingId
+    })
+    dispatch(removeClubMeeting(meetingId))
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 /**
  * REDUCER
  */
 
-export default function(state = meetings, action) {
+export default function(state = defaultMeetings, action) {
   switch (action.type) {
     case GET_MEETINGS:
       return action.meetings
     case CREATE_MEETING:
       return [...state, action.newMeeting]
+    case REMOVE_MEETING:
+      return state.filter(meeting => meeting.id !== action.meetingId)
     default:
       return state
   }

@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {fetchMeetings} from '../store'
+import {fetchMeetings, deleteMeeting} from '../store'
 import {formatDateDisplay} from '../utils'
 import {Link} from 'react-router-dom'
 
@@ -74,7 +74,11 @@ class Meetings extends Component {
               </ListItemText>
               {this.props.userId === meeting.creatorId && (
                 <Tooltip placement="left" title="Delete this Meeting">
-                  <ListItemIcon>
+                  <ListItemIcon
+                    onClick={() =>
+                      this.props.deleteMeeting(this.props.clubId, meeting.id)
+                    }
+                  >
                     <Icon className={classes.icon}>cancel</Icon>
                   </ListItemIcon>
                 </Tooltip>
@@ -82,7 +86,7 @@ class Meetings extends Component {
             </ListItem>
           ))}
         </List>
-        <Link to={`/clubs/${this.props.match.params.clubId}/createmeeting`}>
+        <Link to={`/clubs/${this.props.clubId}/createmeeting`}>
           <Button
             type="button"
             variant="contained"
@@ -99,13 +103,17 @@ class Meetings extends Component {
 }
 
 const StyledMeetings = withStyles(styles)(Meetings)
+
 const mapState = state => ({
   meetings: state.meetings,
-  userId: state.user.id
+  userId: state.user.id,
+  clubId: state.singleClub.id
 })
 
 const mapDispatch = dispatch => ({
-  fetchMeetings: clubId => dispatch(fetchMeetings(clubId))
+  fetchMeetings: clubId => dispatch(fetchMeetings(clubId)),
+  deleteMeeting: (clubId, meetingId) =>
+    dispatch(deleteMeeting(clubId, meetingId))
 })
 
 export default connect(mapState, mapDispatch)(StyledMeetings)
