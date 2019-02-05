@@ -45,6 +45,10 @@ class CreatePoll extends Component {
     // default date/time option is next week at the same time
     const today = new Date()
     const defaultDateTime = new Date(today.setDate(today.getDate() + 7))
+
+    // default dueDate option is next month
+    const defaultDueDate = new Date(today.setDate(today.getDate() + 30))
+    const defaultDueDateString = formatDateString(defaultDueDate).slice(0, 10)
     this.state = {
       searchResults: [],
       selectedBooks: [],
@@ -52,7 +56,7 @@ class CreatePoll extends Component {
       selectedPlaces: [],
       title: '',
       notes: '',
-      dueDate: null,
+      dueDate: defaultDueDateString,
       dateTime: formatDateString(defaultDateTime),
       dateTimeMessage: '',
       place: ''
