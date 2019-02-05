@@ -555,9 +555,8 @@ router.get('/:clubId/meetings', async (req, res, next) => {
   }
 })
 
-// TODO: the RESTful version of this route is just POST api/meetings
 //POST api/meetings/create - to create a meeting
-router.post('/:clubId/meetings/create', async (req, res, next) => {
+router.post('/:clubId/meetings', async (req, res, next) => {
   try {
     if (!req.user.id) res.status(403).send('Not authorized')
     if (!req.params.clubId) res.status(403).send('Not authorized')
@@ -585,8 +584,8 @@ router.post('/:clubId/meetings/create', async (req, res, next) => {
   }
 })
 
-// PUT /api/clubs/:clubId/meetings/delete - delete a meeting, given meetingId and clubId
-router.put('/:clubId/meetings/delete', async (req, res, next) => {
+// PUT /api/clubs/:clubId/meetings - delete a meeting, given meetingId (in req.body) and clubId
+router.put('/:clubId/meetings', async (req, res, next) => {
   try {
     if (!req.user) res.status(403).send(`Not authorized`)
     else {

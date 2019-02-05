@@ -45,10 +45,7 @@ export const fetchMeetings = clubId => async dispatch => {
 
 export const postMeeting = (clubId, meeting) => async dispatch => {
   try {
-    const {data} = await axios.post(
-      `/api/clubs/${clubId}/meetings/create`,
-      meeting
-    )
+    const {data} = await axios.post(`/api/clubs/${clubId}/meetings`, meeting)
     dispatch(createMeeting(data))
     history.push(`/clubs/${clubId}/meetings`)
   } catch (err) {
@@ -58,7 +55,7 @@ export const postMeeting = (clubId, meeting) => async dispatch => {
 
 export const deleteMeeting = (clubId, meetingId) => async dispatch => {
   try {
-    await axios.put(`/api/clubs/${clubId}/meetings/delete`, {
+    await axios.put(`/api/clubs/${clubId}/meetings`, {
       meetingId
     })
     dispatch(removeMeeting(meetingId))
