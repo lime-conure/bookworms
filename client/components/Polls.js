@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {fetchPolls} from '../store'
 import {Link} from 'react-router-dom'
+import {formatDateDisplay} from '../utils'
 
 // Material UI
 import {withStyles} from '@material-ui/core/styles'
@@ -62,7 +63,7 @@ class Polls extends Component {
                       component="span"
                       className={classes.dueDate}
                     >
-                      Voting ends on {poll.dueDate}
+                      Voting ends on {formatDateDisplay(poll.dueDate, false)}
                     </Typography>
                   ) : (
                     ''

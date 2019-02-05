@@ -529,7 +529,12 @@ router.post('/:clubId/meetings/create', async (req, res, next) => {
       if (check) {
         const {clubId} = req.params
         const {name, location, date} = req.body
-        const newMeeting = await Meeting.create({name, location, date, clubId})
+        const newMeeting = await Meeting.create({
+          name,
+          location,
+          date: new Date(date),
+          clubId
+        })
         res.json(newMeeting)
       } else {
         res.status(403).send('Not authorized to create a meeting for this club')

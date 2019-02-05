@@ -20,7 +20,7 @@ const styles = theme => ({
   form: {
     maxWidth: 660
   },
-  pollSection: {
+  formSection: {
     marginTop: theme.spacing.unit * 4,
     marginBottom: theme.spacing.unit * 4
   },
@@ -33,18 +33,15 @@ const styles = theme => ({
   },
   icon: {
     color: 'rgba(255, 255, 255, 0.54)'
-  },
-  headerIcon: {
-    marginRight: theme.spacing.unit
   }
 })
 
 class CreatePoll extends Component {
   constructor() {
     super()
+    // default date/time option is next week at the same time
     const today = new Date()
-    // default date/time option is tomorrow at the same time
-    const defaultDateTime = new Date(today.setDate(today.getDate() + 1))
+    const defaultDateTime = new Date(today.setDate(today.getDate() + 7))
     this.state = {
       searchResults: [],
       selectedBooks: [],
@@ -207,7 +204,7 @@ class CreatePoll extends Component {
             Create a New Poll
           </Typography>
           <Divider />
-          <div className={classes.pollSection}>
+          <div className={classes.formSection}>
             <TextField
               label="Title"
               name="title"
@@ -248,7 +245,7 @@ class CreatePoll extends Component {
             />
           </div>
           {/* select books */}
-          <div className={classes.pollSection}>
+          <div className={classes.formSection}>
             <Typography variant="h5" gutterBottom>
               Add Book Options
             </Typography>
@@ -262,7 +259,7 @@ class CreatePoll extends Component {
             />
           </div>
           {/* select dates */}
-          <div className={classes.optionsSection}>
+          <div className={classes.formSection}>
             <Typography variant="h5" gutterBottom>
               Add Date &amp; Time Options
             </Typography>
@@ -319,7 +316,7 @@ class CreatePoll extends Component {
             </List>
           </div>
           {/* select location */}
-          <div className={classes.optionsSection}>
+          <div className={classes.formSection}>
             <Typography variant="h5" gutterBottom>
               Add Location Options
             </Typography>
