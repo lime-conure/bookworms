@@ -69,7 +69,6 @@ class DropDownBookOptions extends React.Component {
           open={Boolean(anchorEl)}
           onClose={this.handleClose}
         >
-          {/* <MenuItem onClick={this.handleClose}>Options</MenuItem> */}
           {this.options[this.props.type].map((moveTo, idx) => (
             <MenuItem key={moveTo} onClick={e => this.handleMenuClick(e, idx)}>
               {this.renderActionText(moveTo)}
