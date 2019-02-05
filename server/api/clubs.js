@@ -210,8 +210,8 @@ router.post('/:clubId/polls', async (req, res, next) => {
   }
 })
 
-// DELETE /api/clubs/:clubId/polls - delete a poll, given pollId (in req.body) and clubId
-router.delete('/:clubId/polls', async (req, res, next) => {
+// PUT /api/clubs/:clubId/polls - delete a poll, given pollId (in req.body) and clubId
+router.put('/:clubId/polls', async (req, res, next) => {
   try {
     if (!req.user) res.status(403).send(`Not authorized`)
     else {
