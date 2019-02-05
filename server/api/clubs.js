@@ -528,11 +528,12 @@ router.post('/:clubId/meetings/create', async (req, res, next) => {
       const check = await club.hasUser(user.id)
       if (check) {
         const {clubId} = req.params
-        const {name, location, date} = req.body
+        const {name, location, date, creatorId} = req.body
         const newMeeting = await Meeting.create({
           name,
           location,
           date: new Date(date),
+          creatorId,
           clubId
         })
         res.json(newMeeting)

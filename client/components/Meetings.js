@@ -71,6 +71,11 @@ class Meetings extends Component {
                   )}
                 </Typography>
               </ListItemText>
+              {this.props.userId === meeting.creatorId && (
+                <ListItemIcon>
+                  <Icon className={classes.icon}>cancel</Icon>
+                </ListItemIcon>
+              )}
             </ListItem>
           ))}
         </List>
