@@ -111,40 +111,42 @@ class BookList extends Component {
             {bookList.map((book, idx) => (
               <div key={book.goodReadsId}>
                 <ListItem button>
-                  <Avatar
-                    onClick={e => this.handleDialogOpen(e, book)}
-                    className={classes.avatar}
-                  >
-                    <img
-                      className={classes.avatarImg}
-                      src={book.imageUrl}
-                      alt={book.title}
-                    />
-                  </Avatar>
                   <Tooltip
-                    placement="left"
+                    placement="left-start"
                     title="Click to view more about this book"
                   >
-                    <ListItemText onClick={e => this.handleDialogOpen(e, book)}>
-                      <Typography variant="h6" component="h6" gutterBottom>
-                        {book.title}{' '}
-                        <span className={classes.author}>
-                          {book.authors && book.authors.length
-                            ? `by ${book.authors[0].name}`
-                            : ''}
-                        </span>
-                      </Typography>
-                      <Typography
-                        variant="body1"
-                        component="p"
-                        className={classes.description}
-                      >
-                        {book.description
-                          ? `${book.description.slice(0, 160)}...`
-                          : ''}
-                      </Typography>
-                    </ListItemText>
+                    <Avatar
+                      onClick={e => this.handleDialogOpen(e, book)}
+                      className={classes.avatar}
+                    >
+                      <img
+                        className={classes.avatarImg}
+                        src={book.imageUrl}
+                        alt={book.title}
+                      />
+                    </Avatar>
                   </Tooltip>
+
+                  <ListItemText onClick={e => this.handleDialogOpen(e, book)}>
+                    <Typography variant="h6" component="h6" gutterBottom>
+                      {book.title}{' '}
+                      <span className={classes.author}>
+                        {book.authors && book.authors.length
+                          ? `by ${book.authors[0].name}`
+                          : ''}
+                      </span>
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      component="p"
+                      className={classes.description}
+                    >
+                      {book.description
+                        ? `${book.description.slice(0, 160)}...`
+                        : ''}
+                    </Typography>
+                  </ListItemText>
+
                   <DropDownBookOptions
                     type={type}
                     book={book}

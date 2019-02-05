@@ -47,7 +47,7 @@ class Profile extends Component {
           justify="space-between"
           alignItems="flex-start"
         >
-          <Grid item xs={4} className={classes.userInfo}>
+          <Grid item xs={3} className={classes.userInfo}>
             <Avatar
               alt={user.fullName}
               src={user.imageUrl}
@@ -65,7 +65,7 @@ class Profile extends Component {
               {user.email}
             </Typography>
           </Grid>
-          <Grid item xs={8}>
+          <Grid item xs={9}>
             <UserBooks />
           </Grid>
         </Grid>

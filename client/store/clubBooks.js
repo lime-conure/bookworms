@@ -84,7 +84,7 @@ export default function(state = clubBooks, action) {
     case GET_CLUB_BOOKS:
       return action.books
     case ADD_CLUB_BOOK:
-      return [...state, action.book]
+      return [action.book, ...state]
     case REMOVE_CLUB_BOOK:
       return state.filter(
         book =>
