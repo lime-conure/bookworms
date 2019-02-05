@@ -14,7 +14,11 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import Icon from '@material-ui/core/Icon'
 import Divider from '@material-ui/core/Divider'
 
-const styles = theme => ({})
+const styles = theme => ({
+  button: {
+    marginTop: theme.spacing.unit * 4
+  }
+})
 
 class Polls extends Component {
   componentDidMount() {
@@ -26,7 +30,7 @@ class Polls extends Component {
     const polls = this.props.polls
     return (
       <div>
-        <Typography variant="h3" gutterBottom color="primary">
+        <Typography variant="h3" component="h3">
           Polls
         </Typography>
         <Divider />
@@ -59,8 +63,9 @@ class Polls extends Component {
           <Button
             type="button"
             variant="contained"
-            color="secondary"
+            color="primary"
             size="large"
+            className={classes.button}
           >
             Create a New Poll
           </Button>

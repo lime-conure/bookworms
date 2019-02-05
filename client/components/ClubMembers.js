@@ -41,7 +41,7 @@ export class ClubMembers extends Component {
     const members = this.props.members
     return (
       <div>
-        <Typography variant="h3" gutterBottom color="primary">
+        <Typography variant="h3" component="h3">
           Members
         </Typography>
         <Divider />

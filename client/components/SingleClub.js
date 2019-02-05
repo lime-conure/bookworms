@@ -30,7 +30,9 @@ export class SingleClub extends Component {
     const club = this.props.singleClub
     return (
       <div>
-        <Typography variant="h3">{club.name}</Typography>
+        <Typography variant="h3" component="h3">
+          {club.name}
+        </Typography>
         <Divider />
         <Button
           type="button"

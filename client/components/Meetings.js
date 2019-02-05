@@ -36,39 +36,37 @@ class Meetings extends Component {
     const meetings = this.props.meetings
     return (
       <div>
-        <Typography variant="h3" color="primary">
+        <Typography variant="h3" component="h3">
           Meetings
         </Typography>
-        <br />
-        <Paper elevation={2}>
-          <Divider />
-          <Grid container spacing={40}>
-            <Grid item>
-              <List>
-                {meetings.length
-                  ? meetings.map(meeting => (
-                      <ListItem key={meeting.id}>
-                        <ListItemText>
-                          <Typography variant="h6" color="secondary">
-                            {meeting.name.toUpperCase()}
-                            <br />
-                          </Typography>
-                          <Typography variant="subtitle1">
-                            Location: {meeting.location}
-                            <br />
-                            Date: {meeting.date.slice(0, 10)}
-                            <br />
-                            Time: {meeting.date.slice(11, 16)}
-                            <br />
-                          </Typography>
-                        </ListItemText>
-                      </ListItem>
-                    ))
-                  : ''}
-              </List>
-            </Grid>
+        <Divider />
+        <Grid container spacing={40}>
+          <Grid item>
+            <List>
+              {meetings.length
+                ? meetings.map(meeting => (
+                    <ListItem key={meeting.id}>
+                      <ListItemText>
+                        <Typography variant="h6" color="secondary">
+                          {meeting.name.toUpperCase()}
+                          <br />
+                        </Typography>
+                        <Typography variant="subtitle1">
+                          Location: {meeting.location}
+                          <br />
+                          Date: {meeting.date.slice(0, 10)}
+                          <br />
+                          Time: {meeting.date.slice(11, 16)}
+                          <br />
+                        </Typography>
+                      </ListItemText>
+                    </ListItem>
+                  ))
+                : ''}
+            </List>
           </Grid>
-        </Paper>
+        </Grid>
+
         <Link to={`/clubs/${this.props.match.params.clubId}/meetings/create`}>
           <Button
             type="button"
@@ -77,7 +75,7 @@ class Meetings extends Component {
             size="large"
             className={classes.button}
           >
-            Create meeting
+            Create a New Meeting
           </Button>
         </Link>
       </div>

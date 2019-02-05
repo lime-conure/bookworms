@@ -217,6 +217,10 @@ class Messages extends Component {
             [classes.contentShift]: open
           })}
         >
+          <Typography variant="h3" component="h3">
+            Messages
+          </Typography>
+          <Divider />
           {threads[0] && threads[0].id ? (
             <div>
               {threads.map(t => (
@@ -278,7 +282,7 @@ class Messages extends Component {
               ))}
             </div>
           ) : (
-            <Typography>No messages in this book Club </Typography>
+            <div />
           )}
           <TextField
             id="outlined-bare"
@@ -286,7 +290,7 @@ class Messages extends Component {
             margin="normal"
             variant="outlined"
             fullWidth
-            placeholder="Type your message ..."
+            placeholder="Send a message..."
             onChange={this.handleChangeInput}
             onKeyPress={e => {
               if (e.key === 'Enter') {

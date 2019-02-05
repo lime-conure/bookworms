@@ -91,13 +91,15 @@ class Sidebar extends Component {
           paper: classes.drawerPaper
         }}
       >
-        <Typography
-          variant="h5"
-          component="h5"
-          className={classes.drawerHeader}
-        >
-          {club.name}
-        </Typography>
+        <Link to={`/clubs/${club.id}`}>
+          <Typography
+            variant="h5"
+            component="h5"
+            className={classes.drawerHeader}
+          >
+            {club.name}
+          </Typography>
+        </Link>
 
         <List className={classes.drawerList}>
           <ListItem

@@ -23,6 +23,9 @@ const styles = theme => ({
   },
   button: {
     marginTop: theme.spacing.unit * 4
+  },
+  icon: {
+    color: '#fff'
   }
 })
 
@@ -58,7 +61,7 @@ class Clubs extends Component {
                 key={club.id}
                 to={`/clubs/${club.id}`}
               >
-                <ListItemIcon>
+                <ListItemIcon className={classes.icon}>
                   <Icon>group</Icon>
                 </ListItemIcon>
                 <ListItemText>
