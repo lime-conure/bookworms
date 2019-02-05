@@ -39,6 +39,19 @@ class DropDownBookOptions extends React.Component {
     this.setState({anchorEl: null})
   }
 
+  renderActionText(moveToKey) {
+    switch (moveToKey) {
+      case 'now':
+        return 'Move to Reading'
+      case 'past':
+        return 'Move to Read'
+      case 'future':
+        return 'Move to Want to Read'
+      default:
+        return 'Remove Book'
+    }
+  }
+
   render() {
     const {anchorEl} = this.state
     return (
@@ -48,8 +61,7 @@ class DropDownBookOptions extends React.Component {
           aria-haspopup="true"
           onClick={this.handleButtonClick}
         >
-          Actions
-          <Icon>keyboard_arrow_down</Icon>
+          <Icon color="secondary">launch</Icon>
         </Button>
         <Menu
           id="simple-menu"
@@ -57,10 +69,9 @@ class DropDownBookOptions extends React.Component {
           open={Boolean(anchorEl)}
           onClose={this.handleClose}
         >
-          <MenuItem onClick={this.handleClose}>Options</MenuItem>
           {this.options[this.props.type].map((moveTo, idx) => (
             <MenuItem key={moveTo} onClick={e => this.handleMenuClick(e, idx)}>
-              {moveTo === 'remove' ? 'remove' : `Move to ${moveTo}`}
+              {this.renderActionText(moveTo)}
             </MenuItem>
           ))}
         </Menu>

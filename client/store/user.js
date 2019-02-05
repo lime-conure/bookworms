@@ -136,7 +136,7 @@ export default function(state = defaultUser, action) {
     case GET_USER_BOOKS:
       return {...state, ...{books: action.books}}
     case ADD_USER_BOOK:
-      return {...state, ...{books: [...state.books, action.book]}}
+      return {...state, ...{books: [action.book, ...state.books]}}
     case REMOVE_USER_BOOK:
       return {
         ...state,
