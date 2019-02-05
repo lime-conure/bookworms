@@ -17,6 +17,13 @@ import Divider from '@material-ui/core/Divider'
 const styles = theme => ({
   button: {
     marginTop: theme.spacing.unit * 4
+  },
+  icon: {
+    color: '#fff'
+  },
+  dueDate: {
+    display: 'inline',
+    paddingLeft: theme.spacing.unit * 2
   }
 })
 
@@ -44,13 +51,19 @@ class Polls extends Component {
               to={`/clubs/${this.props.match.params.clubId}/polls/${poll.id}`}
             >
               <ListItemIcon>
-                <Icon>poll</Icon>
+                <Icon className={classes.icon}>poll</Icon>
               </ListItemIcon>
-              <ListItemText>
+              <ListItemText component="div">
                 <Typography variant="h5">
                   {poll.title}
                   {poll.dueDate ? (
-                    <em>&mdash;voting ends on {poll.dueDate}</em>
+                    <Typography
+                      variant="subtitle1"
+                      component="span"
+                      className={classes.dueDate}
+                    >
+                      Voting ends on {poll.dueDate}
+                    </Typography>
                   ) : (
                     ''
                   )}

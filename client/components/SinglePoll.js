@@ -17,6 +17,7 @@ import Button from '@material-ui/core/Button'
 import Tooltip from '@material-ui/core/Tooltip'
 import Icon from '@material-ui/core/Icon'
 import Grid from '@material-ui/core/Grid'
+import Divider from '@material-ui/core/Divider'
 
 const styles = theme => ({
   poll: {
@@ -33,6 +34,9 @@ const styles = theme => ({
   },
   checkmark: {
     marginRight: theme.spacing.unit
+  },
+  pollNotes: {
+    marginTop: theme.spacing.unit * 3
   }
 })
 
@@ -186,10 +190,16 @@ export class SinglePoll extends Component {
     if (poll) {
       return (
         <div>
-          <Typography variant="h2" gutterBottom>
+          <Typography variant="h3" component="h3">
             {poll.title}
           </Typography>
-          <Typography variant="subtitle1" gutterBottom>
+          <Divider />
+
+          <Typography
+            variant="subtitle1"
+            gutterBottom
+            className={classes.pollNotes}
+          >
             {poll.notes}
           </Typography>
 
