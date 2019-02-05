@@ -22,6 +22,9 @@ const Meeting = db.define('meeting', {
     get() {
       return new Date(this.getDataValue('date')).toLocaleDateString()
     }
+  },
+  creatorId: {
+    type: Sequelize.INTEGER
   }
 })
 
