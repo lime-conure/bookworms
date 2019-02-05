@@ -48,7 +48,9 @@ const styles = theme => ({
   },
   description: {
     maxWidth: 560,
-    opacity: 0.6
+    opacity: 0.9,
+    fontSize: '0.925rem',
+    lineHeight: '1.38rem'
   },
   dialogImage: {
     width: '100%'
@@ -128,12 +130,12 @@ class BookList extends Component {
                         </span>
                       </Typography>
                       <Typography
-                        variant="body2"
+                        variant="body1"
                         component="p"
                         className={classes.description}
                       >
                         {book.description
-                          ? `${book.description.slice(0, 150)}...`
+                          ? `${book.description.slice(0, 160)}...`
                           : ''}
                       </Typography>
                     </ListItemText>
@@ -158,13 +160,15 @@ class BookList extends Component {
                       <Icon>cancel</Icon>
                     </IconButton>
                     <DialogTitle id="book-modal">
-                      {this.state.dialogBook.title}
-                      <span className={classes.author}>
-                        {this.state.dialogBook.authors &&
-                        this.state.dialogBook.authors.length
-                          ? ` by ${this.state.dialogBook.authors[0].name}`
-                          : ''}
-                      </span>
+                      <Typography variant="h6" component="h6" gutterBottom>
+                        {this.state.dialogBook.title}
+                        <span className={classes.author}>
+                          {this.state.dialogBook.authors &&
+                          this.state.dialogBook.authors.length
+                            ? ` by ${this.state.dialogBook.authors[0].name}`
+                            : ''}
+                        </span>
+                      </Typography>
                     </DialogTitle>
                     <DialogContent>
                       <Grid
@@ -186,7 +190,7 @@ class BookList extends Component {
                             component="span"
                             className={classes.description}
                           >
-                            {this.state.dialogBook.description}
+                            {this.state.dialogBook.description}...
                           </Typography>
                         </Grid>
                       </Grid>
