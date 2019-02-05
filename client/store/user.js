@@ -80,11 +80,12 @@ export const logout = (userId, socket) => async dispatch => {
 export const fetchUserBooks = () => async dispatch => {
   try {
     const {data} = await axios.get(`/api/user/books`)
+    console.log(data)
     const formatedData = data.map(book => ({
       ...book.book,
       users_books: book.users_books
     }))
-    dispatch(getUserBooks(data))
+    dispatch(getUserBooks(formatedData))
   } catch (err) {
     console.log(err)
   }
