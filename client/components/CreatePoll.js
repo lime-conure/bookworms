@@ -33,6 +33,9 @@ const styles = theme => ({
   },
   icon: {
     color: 'rgba(255, 255, 255, 0.54)'
+  },
+  optionText: {
+    color: '#fff'
   }
 })
 
@@ -301,7 +304,10 @@ class CreatePoll extends Component {
               {this.state.selectedDates.length
                 ? this.state.selectedDates.map((date, idx) => (
                     <ListItem button key={date}>
-                      <ListItemText> {date.toString()}</ListItemText>
+                      <ListItemText className={classes.optionText}>
+                        {' '}
+                        {date.toString()}
+                      </ListItemText>
                       <IconButton
                         onClick={e => this.deleteOption(e, idx, 'date')}
                       >
@@ -350,7 +356,10 @@ class CreatePoll extends Component {
               {this.state.selectedPlaces.length
                 ? this.state.selectedPlaces.map((place, idx) => (
                     <ListItem button key={place}>
-                      <ListItemText> {place}</ListItemText>
+                      <ListItemText className={classes.optionText}>
+                        {' '}
+                        {place}
+                      </ListItemText>
                       <IconButton
                         onClick={e => this.deleteOption(e, idx, 'place')}
                       >
