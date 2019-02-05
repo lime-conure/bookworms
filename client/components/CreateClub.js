@@ -52,7 +52,7 @@ export class CreateClub extends Component {
       const club = await axios.post('/api/clubs/create', newClub)
       this.props.fetchClubs()
       socket.emit('JOIN', club.data.id)
-      this.props.history.push(`/clubs/${club.data.id}`)
+      this.props.history.push(`/clubs/${club.data.id}/books`)
     } catch (err) {
       console.log(err)
     }
