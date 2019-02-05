@@ -3,7 +3,6 @@ import Axios from 'axios'
 import PropTypes from 'prop-types'
 import {withStyles} from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import CircularProgress from '@material-ui/core/CircularProgress'
@@ -128,9 +127,7 @@ class Search extends Component {
 }
 
 Search.propTypes = {
-  //results: PropTypes.array,
   setResults: PropTypes.func
-  //expandBook: PropTypes.func
 }
 
 export default withStyles(styles)(Search)

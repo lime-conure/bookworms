@@ -28,55 +28,57 @@ const styles = theme => ({
 })
 
 class BookResults extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      showResults: true
+    }
+  }
   render() {
-    const {type, results, loadingNewBook, classes} = this.props
-    if (results.length) {
+    const {type, results, loadingNewBook, classes, showResults} = this.props
+    if (results.length && this.state.showResults) {
       return (
-        <div>
-          <div className={classes.root}>
-            <GridList cellHeight={240} cols={4} className={classes.gridList}>
-              {results.map(bookResult => (
-                <GridListTile
-                  cols={1}
-                  key={bookResult.best_book.id}
-                  className={classes.gridListTile}
-                  onClick={e => this.props.addBook(e, bookResult, type)}
-                >
-                  <img
-                    src={bookResult.best_book.image_url}
-                    alt={bookResult.best_book.title}
-                  />
+        <div className={classes.root}>
+          <GridList cellHeight={240} cols={4} className={classes.gridList}>
+            {results.map(bookResult => (
+              <GridListTile
+                cols={1}
+                key={bookResult.best_book.id}
+                className={classes.gridListTile}
+                onClick={e => {
+                  this.props.addBook(e, bookResult, type)
+                  this.setState({showResults: false})
+                }}
+              >
+                <img
+                  src={bookResult.best_book.image_url}
+                  alt={bookResult.best_book.title}
+                />
 
-                  <GridListTileBar
-                    title={
-                      <Tooltip
-                        placement="top"
-                        title={bookResult.best_book.title}
-                      >
-                        <div>{bookResult.best_book.title}</div>
-                      </Tooltip>
-                    }
-                    subtitle={
-                      <span>by: {bookResult.best_book.author.name}</span>
-                    }
-                    actionIcon={
-                      <IconButton>
-                        {loadingNewBook ? (
-                          <CircularProgress
-                            size={20}
-                            color="inherit"
-                            className={classes.spinner}
-                          />
-                        ) : (
-                          <Icon>add_circle</Icon>
-                        )}
-                      </IconButton>
-                    }
-                  />
-                </GridListTile>
-              ))}
-            </GridList>
-          </div>
+                <GridListTileBar
+                  title={
+                    <Tooltip placement="top" title={bookResult.best_book.title}>
+                      <div>{bookResult.best_book.title}</div>
+                    </Tooltip>
+                  }
+                  subtitle={<span>by: {bookResult.best_book.author.name}</span>}
+                  actionIcon={
+                    <IconButton>
+                      {loadingNewBook ? (
+                        <CircularProgress
+                          size={20}
+                          color="inherit"
+                          className={classes.spinner}
+                        />
+                      ) : (
+                        <Icon>add_circle</Icon>
+                      )}
+                    </IconButton>
+                  }
+                />
+              </GridListTile>
+            ))}
+          </GridList>
         </div>
       )
     } else {

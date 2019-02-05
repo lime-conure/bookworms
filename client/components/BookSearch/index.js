@@ -7,17 +7,30 @@ class BookSearch extends Component {
   constructor() {
     super()
     this.state = {
-      results: []
+      results: [],
+      showResults: false
     }
     this.setResults = this.setResults.bind(this)
   }
 
+  componentDidMount() {
+    this.setState({showResults: this.props.showResults})
+  }
+
   setResults = results => {
     this.setState({results})
+    this.setState({showResults: true})
   }
 
   render() {
-    const {type, bookList, addBook, removeBook, loadingNewBook} = this.props
+    const {
+      type,
+      bookList,
+      addBook,
+      removeBook,
+      loadingNewBook,
+      showResults
+    } = this.props
 
     return (
       <div>
@@ -33,6 +46,7 @@ class BookSearch extends Component {
           results={this.state.results}
           addBook={addBook}
           loadingNewBook={loadingNewBook}
+          showResults={this.state.showResults}
         />
       </div>
     )

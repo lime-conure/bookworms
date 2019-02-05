@@ -26,7 +26,8 @@ export class ClubBooks extends Component {
       nowResults: [],
       futureResults: [],
       pastResults: [],
-      loadingNewBook: false
+      loadingNewBook: false,
+      showResults: false
     }
     this.setResults = this.setResults.bind(this)
     this.handleAddBook = this.handleAddBook.bind(this)
@@ -38,6 +39,7 @@ export class ClubBooks extends Component {
   }
 
   setResults = (results, type) => {
+    // this.setState({showResults: true})
     this.setState({[`${type}Results`]: results})
   }
 
@@ -50,7 +52,8 @@ export class ClubBooks extends Component {
       nowResults: [],
       futureResults: [],
       pastResults: [],
-      loadingNewBook: false
+      loadingNewBook: false,
+      showResults: false
     })
   }
 
