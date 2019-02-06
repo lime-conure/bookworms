@@ -145,7 +145,7 @@ class BookList extends Component {
                       inline
                       className={classes.rating}
                     >
-                      {renderBookRating(book.rating)}
+                      {book.rating > 0 && renderBookRating(book.rating)}
                     </Typography>
                   </ListItemText>
 
