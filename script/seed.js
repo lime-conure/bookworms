@@ -12,7 +12,8 @@ const {
   BookAuthor,
   Poll,
   Option,
-  Vote
+  Vote,
+  Meeting
 } = require('../server/db/models')
 
 async function seed() {
@@ -171,7 +172,8 @@ async function seed() {
       notes:
         'A poll to decide our next book and meeting time for club Lime Conure',
       dueDate: new Date(),
-      clubId: 1
+      clubId: 1,
+      creatorId: 1
     })
   ])
 
@@ -224,6 +226,17 @@ async function seed() {
     })
   ])
 
+  // add a meeting
+  const meetings = await Promise.all([
+    Meeting.create({
+      name: 'February Meeting',
+      location: 'Killarney Rose',
+      date: new Date(),
+      creatorId: 2,
+      clubId: 1
+    })
+  ])
+
   console.log(`seeded ${users.length} users`)
   console.log(`seeded ${books.length} books`)
   console.log(`seeded ${clubs.length} club`)
@@ -231,6 +244,7 @@ async function seed() {
   console.log(`seeded ${polls.length} poll`)
   console.log(`seeded ${options.length} options`)
   console.log(`seeded ${votes.length} votes`)
+  console.log(`seeded ${meetings.length} meetings`)
   console.log(`seeded successfully`)
 }
 

@@ -5,7 +5,6 @@ import Menu from '@material-ui/core/Menu'
 import Divider from '@material-ui/core/Divider'
 import MenuItem from '@material-ui/core/MenuItem'
 import Icon from '@material-ui/core/Icon'
-import {Link} from 'react-router-dom'
 
 class DropDownBookOptions extends React.Component {
   state = {
@@ -100,11 +99,15 @@ class DropDownBookOptions extends React.Component {
           anchorEl={anchorEl}
           open={Boolean(anchorEl)}
           onClose={this.handleClose}
+          disableAutoFocusItem
         >
           {this.options[this.props.type].map((moveTo, idx) => (
-            <MenuItem key={moveTo} onClick={e => this.handleMenuClick(e, idx)}>
-              {this.renderActionText(moveTo)}
-            </MenuItem>
+            <span key={moveTo}>
+              {moveTo === 'remove' && <Divider />}
+              <MenuItem onClick={e => this.handleMenuClick(e, idx)}>
+                {this.renderActionText(moveTo)}
+              </MenuItem>
+            </span>
           ))}
         </Menu>
       </div>
