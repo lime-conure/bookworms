@@ -1,9 +1,10 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {postMeeting} from '../store'
-import axios from 'axios'
-import {formatDateString, formatDate} from '../utils'
+import BookSearch from './BookSearch'
+import {formatDateString, formatDate, makeBookObject} from '../utils'
 
+// Material UI
 import {withStyles} from '@material-ui/core/styles'
 import Divider from '@material-ui/core/Divider'
 import Button from '@material-ui/core/Button'
@@ -38,10 +39,14 @@ export class CreateMeeting extends Component {
     this.state = {
       name: '',
       location: '',
-      date: defaultDateString
+      date: defaultDateString,
+      selectedBooks: [],
+      searchResults: []
     }
     this.handleChange = this.handleChange.bind(this)
+    this.addBook = this.addBook.bind(this)
   }
+
   handleChange(e) {
     this.setState({
       [e.target.name]: e.target.value
@@ -65,6 +70,18 @@ export class CreateMeeting extends Component {
         [e.target.name]: e.target.value
       })
     }
+  }
+
+  addBook(e, book) {
+    e.preventDefault()
+    const newBook = makeBookObject(book)
+    this.setState({selectedBooks: [newBook]})
+  }
+
+  removeBook(e) {
+    e.preventDefault()
+    e.stopPropagation()
+    this.setState({selectedBooks: []})
   }
 
   render() {
@@ -115,6 +132,21 @@ export class CreateMeeting extends Component {
               required
             />
           </div>
+          {/* select book */}
+          <div className={classes.formSection}>
+            <Typography variant="h5" gutterBottom>
+              Book
+            </Typography>
+            <BookSearch
+              bookList={this.state.selectedBooks} // array of one book object
+              results={this.state.searchResults}
+              addBook={(e, book) => this.addBook(e, book)}
+              removeBook={e => this.removeBook(e)}
+              hideBookActions={true}
+              // meetings can only have one book, so disable search after selecting one
+              hideSearch={this.state.selectedBooks.length}
+            />
+          </div>
 
           <Button
             type="button"
@@ -122,7 +154,8 @@ export class CreateMeeting extends Component {
               this.props.postMeeting(this.props.clubId, {
                 name: this.state.name,
                 location: this.state.location,
-                date: this.state.date
+                date: this.state.date,
+                book: this.state.selectedBooks[0]
               })
             }
             disabled={!this.state.name || !this.state.location}

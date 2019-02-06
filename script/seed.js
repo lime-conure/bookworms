@@ -143,12 +143,14 @@ async function seed() {
     UserBook.create({
       type: 'now',
       userId: 1,
-      bookId: 1
+      bookId: 1,
+      startTime: new Date()
     }),
     UserBook.create({
       type: 'past',
       userId: 1,
-      bookId: 2
+      bookId: 2,
+      endTime: new Date()
     })
   ])
 
@@ -251,6 +253,8 @@ async function seed() {
       creatorId: 1
     })
   ])
+
+  await meetings[0].setBook(books[0])
 
   console.log(`seeded ${users.length} users`)
   console.log(`seeded ${books.length} books`)

@@ -1,7 +1,12 @@
 import React, {Component} from 'react'
 import axios from 'axios'
 import BookSearch from './BookSearch'
-import {formatDate, formatDateString, formatDateDisplay} from '../utils'
+import {
+  formatDate,
+  formatDateString,
+  formatDateDisplay,
+  makeBookObject
+} from '../utils'
 
 // Material UI
 import {withStyles} from '@material-ui/core/styles'
@@ -154,20 +159,7 @@ class CreatePoll extends Component {
   addBook(e, book) {
     e.preventDefault()
 
-    const newBook = {
-      author: book.best_book.author,
-      goodReadsId: book.best_book.id,
-      title: book.best_book.title,
-      imageUrl: book.best_book.image_url,
-      smallImageUrl: book.best_book.small_image_url,
-      pubDate:
-        book.original_publication_month +
-        '-' +
-        book.original_publication_day +
-        '-' +
-        book.original_publication_year,
-      rating: Math.round(book.average_rating * 100)
-    }
+    const newBook = makeBookObject(book)
     this.setState({
       selectedBooks: [...this.state.selectedBooks, newBook]
     })
