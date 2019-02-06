@@ -38,9 +38,12 @@ export class CreateMeeting extends Component {
     this.state = {
       name: '',
       location: '',
-      date: defaultDateString
+      date: defaultDateString,
+      selectedBook: [],
+      searchResults: []
     }
     this.handleChange = this.handleChange.bind(this)
+    this.addBook = this.addBook.bind(this)
   }
   handleChange(e) {
     this.setState({
@@ -65,6 +68,17 @@ export class CreateMeeting extends Component {
         [e.target.name]: e.target.value
       })
     }
+  }
+  addBook(e, book) {
+    e.preventDefault()
+    const newBook = makeBookObject(book)
+    this.setState({selectedBook: [newBook]})
+  }
+
+  removeBook(e) {
+    e.preventDefault()
+    e.stopPropagation()
+    this.setState({selectedBook: []})
   }
 
   render() {
@@ -118,14 +132,14 @@ export class CreateMeeting extends Component {
           {/* select book */}
           <div className={classes.formSection}>
             <Typography variant="h5" gutterBottom>
-              Add Book
+              Add a Book
             </Typography>
             <BookSearch
-              bookList={this.state.selectedBooks}
+              bookList={this.state.selectedBook} // array of one book object
               results={this.state.searchResults}
               setResults={this.setResults}
               addBook={(e, book) => this.addBook(e, book)}
-              removeBook={(e, idx) => this.deleteOption(e, idx, 'book')}
+              removeBook={e => this.removeBook(e)}
               hideBookActions={true}
             />
           </div>
