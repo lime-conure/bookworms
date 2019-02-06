@@ -6,6 +6,14 @@ const UserBook = db.define('users_books', {
     type: Sequelize.ENUM('past', 'now', 'future'),
     allowNull: false
   },
+  startTime: {
+    type: Sequelize.DATE,
+    allowNull: true
+  },
+  endTime: {
+    type: Sequelize.DATE,
+    allowNull: true
+  },
   userId: {
     type: Sequelize.INTEGER,
     allowNull: false

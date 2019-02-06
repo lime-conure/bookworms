@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {getBookDescription} from '../../utils'
+import {getBookDescription, renderBookRating} from '../../utils'
 import DropDownBookOptions from './DropDownBookOptions'
 
 // Material UI
@@ -47,11 +47,11 @@ const styles = theme => ({
   progress: {
     margin: theme.spacing.unit * 2
   },
-  description: {
-    maxWidth: 560,
-    opacity: 0.9,
-    fontSize: '0.925rem',
-    lineHeight: '1.38rem'
+  rating: {
+    color: '#fff',
+    fontSize: '1rem',
+    lineHeight: '1.5rem',
+    opacity: 0.9
   },
   dialogImage: {
     width: '100%'
@@ -61,6 +61,10 @@ const styles = theme => ({
   },
   author: {
     opacity: 0.6
+  },
+  description: {
+    marginTop: theme.spacing.unit * 1.5,
+    lineHeight: '1.614em'
   }
 })
 
@@ -97,19 +101,26 @@ class BookList extends Component {
   }
 
   render() {
-    const {type, bookList, removeBook, addBook, classes} = this.props
+    const {
+      type,
+      bookList,
+      removeBook,
+      addBook,
+      hideBookActions,
+      classes
+    } = this.props
     if (bookList.length) {
       return (
         <div>
           {this.state.loadingDialog ? <LinearProgress color="primary" /> : ''}
           <List className={classes.root}>
             {bookList.map((book, idx) => (
-              <div key={book.goodReadsId}>
-                <Tooltip
-                  placement="right"
-                  title="Click to view more about this book"
-                >
-                  <ListItem button>
+              <div key={idx}>
+                <ListItem button>
+                  <Tooltip
+                    placement="left-start"
+                    title="Click to view more about this book"
+                  >
                     <Avatar
                       onClick={e => this.handleDialogOpen(e, book)}
                       className={classes.avatar}
@@ -120,33 +131,45 @@ class BookList extends Component {
                         alt={book.title}
                       />
                     </Avatar>
-                    <ListItemText onClick={e => this.handleDialogOpen(e, book)}>
-                      <Typography variant="h6" component="h6" gutterBottom>
-                        {book.title}{' '}
-                        <span className={classes.author}>
-                          {book.authors && book.authors.length
-                            ? `by ${book.authors[0].name}`
-                            : ''}
-                        </span>
-                      </Typography>
-                      <Typography
-                        variant="body1"
-                        component="p"
-                        className={classes.description}
-                      >
-                        {book.description
-                          ? `${book.description.slice(0, 160)}...`
+                  </Tooltip>
+
+                  <ListItemText onClick={e => this.handleDialogOpen(e, book)}>
+                    <Typography variant="h6" component="h6">
+                      {book.title}{' '}
+                      <span className={classes.author}>
+                        {book.authors && book.authors.length
+                          ? `by ${book.authors[0].name}`
                           : ''}
-                      </Typography>
-                    </ListItemText>
+                      </span>
+                    </Typography>
+
+                    <Typography
+                      variant="body1"
+                      component="span"
+                      inline
+                      className={classes.rating}
+                    >
+                      {book.rating > 0 && renderBookRating(book.rating)}
+                    </Typography>
+                  </ListItemText>
+
+                  {/* create poll form doesn't have book actions dropdown */}
+                  {hideBookActions ? (
+                    <IconButton
+                      className={classes.removeIcon}
+                      onClick={e => removeBook(e, idx, book.id)}
+                    >
+                      <Icon>cancel</Icon>
+                    </IconButton>
+                  ) : (
                     <DropDownBookOptions
                       type={type}
                       book={book}
                       removeBook={removeBook}
                       addBook={addBook}
                     />
-                  </ListItem>
-                </Tooltip>
+                  )}
+                </ListItem>
 
                 <Dialog
                   aria-labelledby="book-modal"
@@ -161,7 +184,7 @@ class BookList extends Component {
                     <Icon>cancel</Icon>
                   </IconButton>
                   <DialogTitle id="book-modal">
-                    <Typography variant="h6" component="h6" gutterBottom>
+                    <Typography variant="h6" component="h6">
                       {this.state.dialogBook.title}
                       <span className={classes.author}>
                         {this.state.dialogBook.authors &&
@@ -170,11 +193,19 @@ class BookList extends Component {
                           : ''}
                       </span>
                     </Typography>
+                    <Typography
+                      variant="body1"
+                      component="p"
+                      inline
+                      className={classes.rating}
+                    >
+                      {book.rating > 0 && renderBookRating(book.rating)}
+                    </Typography>
                   </DialogTitle>
                   <DialogContent>
                     <Grid
                       container
-                      spacing={24}
+                      spacing={16}
                       justify="flex-start"
                       alignItems="flex-start"
                     >
@@ -187,11 +218,11 @@ class BookList extends Component {
                       </Grid>
                       <Grid item xs={9}>
                         <Typography
-                          variant="body1"
+                          variant="body2"
                           component="span"
                           className={classes.description}
                         >
-                          {this.state.dialogBook.description}...
+                          {this.state.dialogBook.description}
                         </Typography>
                       </Grid>
                     </Grid>

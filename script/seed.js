@@ -12,7 +12,8 @@ const {
   BookAuthor,
   Poll,
   Option,
-  Vote
+  Vote,
+  Meeting
 } = require('../server/db/models')
 
 async function seed() {
@@ -156,23 +157,31 @@ async function seed() {
     ClubBook.create({
       clubId: 1,
       bookId: 1,
+      startTime: new Date(),
       type: 'now'
     }),
     ClubBook.create({
       clubId: 1,
       bookId: 2,
-      type: 'past'
+      type: 'future'
     })
   ])
 
   // make a poll for our club
   const polls = await Promise.all([
     Poll.create({
-      title: 'February 2019 Meeting',
-      notes:
-        'A poll to decide our next book and meeting time for club Lime Conure',
-      dueDate: new Date(),
-      clubId: 1
+      title: 'January 2019 Meeting',
+      notes: 'A poll in the past',
+      dueDate: new Date('01-01-2019'),
+      clubId: 1,
+      creatorId: 1
+    }),
+    Poll.create({
+      title: 'Figuring out next meeting',
+      notes: 'A poll in the future',
+      dueDate: new Date('03-07-2019'),
+      clubId: 1,
+      creatorId: 1
     })
   ])
 
@@ -199,17 +208,17 @@ async function seed() {
     Option.create({
       type: 'location',
       location: 'Sweetgreen',
-      pollId: 1
+      pollId: 2
     }),
     Option.create({
       type: 'location',
       location: 'Killarney Rose',
-      pollId: 1
+      pollId: 2
     }),
     Option.create({
       type: 'location',
       location: 'Grace Hopper Campus',
-      pollId: 1
+      pollId: 2
     })
   ])
 
@@ -225,6 +234,24 @@ async function seed() {
     })
   ])
 
+  // add meetings
+  const meetings = await Promise.all([
+    Meeting.create({
+      name: 'February Meeting',
+      location: 'Killarney Rose',
+      date: new Date('02-01-2019'),
+      clubId: 1,
+      creatorId: 1
+    }),
+    Meeting.create({
+      name: 'April Meeting',
+      location: 'Niu Noodle House',
+      date: new Date('04-20-2019'),
+      clubId: 1,
+      creatorId: 1
+    })
+  ])
+
   console.log(`seeded ${users.length} users`)
   console.log(`seeded ${books.length} books`)
   console.log(`seeded ${clubs.length} club`)
@@ -232,6 +259,7 @@ async function seed() {
   console.log(`seeded ${polls.length} poll`)
   console.log(`seeded ${options.length} options`)
   console.log(`seeded ${votes.length} votes`)
+  console.log(`seeded ${meetings.length} meetings`)
   console.log(`seeded successfully`)
 }
 

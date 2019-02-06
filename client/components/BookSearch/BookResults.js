@@ -18,10 +18,10 @@ const styles = theme => ({
     overflow: 'hidden',
     backgroundColor: theme.palette.background.paper,
     marginTop: theme.spacing.unit * 2,
-    width: 720,
+    width: '100%',
+    maxWidth: 720,
     height: 350
   },
-  gridList: {},
   gridListTile: {
     cursor: 'pointer'
   }
@@ -29,54 +29,55 @@ const styles = theme => ({
 
 class BookResults extends Component {
   render() {
-    const {type, results, loadingNewBook, classes} = this.props
+    const {type, results, classes} = this.props
     if (results.length) {
       return (
-        <div>
-          <div className={classes.root}>
-            <GridList cellHeight={240} cols={4} className={classes.gridList}>
-              {results.map(bookResult => (
-                <GridListTile
-                  cols={1}
-                  key={bookResult.best_book.id}
-                  className={classes.gridListTile}
-                  onClick={e => this.props.addBook(e, bookResult, type)}
-                >
-                  <img
-                    src={bookResult.best_book.image_url}
-                    alt={bookResult.best_book.title}
-                  />
+        <div className={classes.root}>
+          <GridList cellHeight={240} cols={4} className={classes.gridList}>
+            {results.map(bookResult => (
+              <GridListTile
+                cols={1}
+                key={bookResult.best_book.id}
+                className={classes.gridListTile}
+                onClick={e => {
+                  const updatedBook = {...bookResult}
+                  if (type === 'now') {
+                    updatedBook.startTime = new Date()
+                    updatedBook.endTime = null
+                  } else if (type === 'future') {
+                    updatedBook.startTime = null
+                    updatedBook.endTime = null
+                  } else {
+                    updatedBook.startTime = null
+                    updatedBook.endTime = new Date()
+                  }
 
-                  <GridListTileBar
-                    title={
-                      <Tooltip
-                        placement="top"
-                        title={bookResult.best_book.title}
-                      >
-                        <div>{bookResult.best_book.title}</div>
-                      </Tooltip>
-                    }
-                    subtitle={
-                      <span>by: {bookResult.best_book.author.name}</span>
-                    }
-                    actionIcon={
-                      <IconButton>
-                        {loadingNewBook ? (
-                          <CircularProgress
-                            size={20}
-                            color="inherit"
-                            className={classes.spinner}
-                          />
-                        ) : (
-                          <Icon>add_circle</Icon>
-                        )}
-                      </IconButton>
-                    }
-                  />
-                </GridListTile>
-              ))}
-            </GridList>
-          </div>
+                  this.props.addBook(e, updatedBook, type)
+                  // set search results to a empty after adding book
+                  this.props.setResults([])
+                }}
+              >
+                <img
+                  src={bookResult.best_book.image_url}
+                  alt={bookResult.best_book.title}
+                />
+
+                <GridListTileBar
+                  title={
+                    <Tooltip placement="top" title={bookResult.best_book.title}>
+                      <div>{bookResult.best_book.title}</div>
+                    </Tooltip>
+                  }
+                  subtitle={<span>by: {bookResult.best_book.author.name}</span>}
+                  actionIcon={
+                    <IconButton>
+                      <Icon>add_circle</Icon>
+                    </IconButton>
+                  }
+                />
+              </GridListTile>
+            ))}
+          </GridList>
         </div>
       )
     } else {

@@ -24,6 +24,7 @@ import {
 import NewChart from './components/NewChart'
 
 import {me} from './store'
+import socket from './socket'
 import {withStyles} from '@material-ui/core/styles'
 
 const styles = theme => ({
@@ -147,7 +148,7 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     loadInitialData() {
-      dispatch(me())
+      dispatch(me(socket))
     }
   }
 }

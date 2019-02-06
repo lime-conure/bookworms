@@ -142,7 +142,12 @@ router.post('/:clubId/polls', async (req, res, next) => {
             dueDate,
             notes
           } = req.body
-          const newPoll = await Poll.create({title, dueDate, notes})
+          const newPoll = await Poll.create({
+            title,
+            notes,
+            dueDate: new Date(dueDate),
+            creatorId: req.user.id
+          })
           const books = []
           for (let i = 0; i < selectedBooks.length; i++) {
             const book = selectedBooks[i]
@@ -197,6 +202,39 @@ router.post('/:clubId/polls', async (req, res, next) => {
           )
           newPoll.setClub(club)
           res.send(newPoll)
+        }
+      }
+    }
+  } catch (err) {
+    next(err)
+  }
+})
+
+// PUT /api/clubs/:clubId/polls - delete a poll, given pollId (in req.body) and clubId
+router.put('/:clubId/polls', async (req, res, next) => {
+  try {
+    if (!req.user) res.status(403).send(`Not authorized`)
+    else {
+      const clubId = req.params.clubId
+      const club = await Club.findById(clubId)
+      if (!club) res.status(403).send('Club does not exist!')
+      else {
+        const isUser = await club.hasUser(req.user.id)
+        if (!isUser) res.status(403).send(`Not authorized`)
+        else {
+          const {pollId} = req.body
+          // make sure our club has this meeting before we remove it
+          const poll = await Poll.findOne({
+            where: {clubId, id: pollId}
+          })
+          if (!poll) {
+            res.status(404).send(`${club.name} does not have that poll`)
+          } else if (poll.creatorId !== req.user.id) {
+            res.status(403).send(`Not authorized to delete poll`)
+          } else {
+            await poll.destroy()
+            res.status(200).send()
+          }
         }
       }
     }
@@ -517,8 +555,8 @@ router.get('/:clubId/meetings', async (req, res, next) => {
   }
 })
 
-//POST api/meetings/create - to create a meeting
-router.post('/:clubId/meetings/create', async (req, res, next) => {
+//POST api/:clubId/meetings - to create a meeting
+router.post('/:clubId/meetings', async (req, res, next) => {
   try {
     if (!req.user.id) res.status(403).send('Not authorized')
     if (!req.params.clubId) res.status(403).send('Not authorized')
@@ -533,11 +571,45 @@ router.post('/:clubId/meetings/create', async (req, res, next) => {
           name,
           location,
           date: new Date(date),
+          creatorId: req.user.id,
           clubId
         })
         res.json(newMeeting)
       } else {
         res.status(403).send('Not authorized to create a meeting for this club')
+      }
+    }
+  } catch (err) {
+    next(err)
+  }
+})
+
+// PUT /api/clubs/:clubId/meetings - delete a meeting, given meetingId (in req.body) and clubId
+router.put('/:clubId/meetings', async (req, res, next) => {
+  try {
+    if (!req.user) res.status(403).send(`Not authorized`)
+    else {
+      const clubId = req.params.clubId
+      const club = await Club.findById(clubId)
+      if (!club) res.status(403).send('Club does not exist!')
+      else {
+        const isUser = await club.hasUser(req.user.id)
+        if (!isUser) res.status(403).send(`Not authorized`)
+        else {
+          const {meetingId} = req.body
+          // make sure our club has this meeting before we remove it
+          const meeting = await Meeting.findOne({
+            where: {clubId, id: meetingId}
+          })
+          if (!meeting) {
+            res.status(404).send(`${club.name} does not have that meeting`)
+          } else if (meeting.creatorId !== req.user.id) {
+            res.status(403).send(`Not authorized to delete meeting`)
+          } else {
+            await meeting.destroy()
+            res.status(200).send()
+          }
+        }
       }
     }
   } catch (err) {

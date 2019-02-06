@@ -31,7 +31,15 @@ const styles = theme => ({
   },
   drawerHeader: {
     padding: theme.spacing.unit * 2,
-    marginTop: theme.spacing.unit * 4
+    marginTop: theme.spacing.unit * 4,
+    textTransform: 'uppercase',
+    fontWeight: 700,
+    letterSpacing: '0.6px',
+    fontSize: '1.25rem',
+    lineHeight: '1.875rem',
+    '&:hover': {
+      color: '#c6ff00'
+    }
   },
   navItem: {
     color: '#fff',

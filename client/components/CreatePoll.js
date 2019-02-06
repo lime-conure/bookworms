@@ -33,6 +33,9 @@ const styles = theme => ({
   },
   icon: {
     color: 'rgba(255, 255, 255, 0.54)'
+  },
+  optionText: {
+    color: '#fff'
   }
 })
 
@@ -42,6 +45,10 @@ class CreatePoll extends Component {
     // default date/time option is next week at the same time
     const today = new Date()
     const defaultDateTime = new Date(today.setDate(today.getDate() + 7))
+
+    // default dueDate option is next month
+    const defaultDueDate = new Date(today.setDate(today.getDate() + 30))
+    const defaultDueDateString = formatDateString(defaultDueDate).slice(0, 10)
     this.state = {
       searchResults: [],
       selectedBooks: [],
@@ -49,7 +56,7 @@ class CreatePoll extends Component {
       selectedPlaces: [],
       title: '',
       notes: '',
-      dueDate: null,
+      dueDate: defaultDueDateString,
       dateTime: formatDateString(defaultDateTime),
       dateTimeMessage: '',
       place: ''
@@ -63,9 +70,6 @@ class CreatePoll extends Component {
   }
 
   handleChange(e) {
-    this.setState({
-      [e.target.name]: e.target.value
-    })
     if (e.target.name === 'dueDate') {
       // prevent users from selecting due dates in the past
       const selectedDate = formatDate(e.target.value)
@@ -255,7 +259,7 @@ class CreatePoll extends Component {
               setResults={this.setResults}
               addBook={(e, book) => this.addBook(e, book)}
               removeBook={(e, idx) => this.deleteOption(e, idx, 'book')}
-              loadingNewBook={this.state.loadingNewBook}
+              hideBookActions={true}
             />
           </div>
           {/* select dates */}
@@ -304,7 +308,10 @@ class CreatePoll extends Component {
               {this.state.selectedDates.length
                 ? this.state.selectedDates.map((date, idx) => (
                     <ListItem button key={date}>
-                      <ListItemText> {date.toString()}</ListItemText>
+                      <ListItemText className={classes.optionText}>
+                        {' '}
+                        {date.toString()}
+                      </ListItemText>
                       <IconButton
                         onClick={e => this.deleteOption(e, idx, 'date')}
                       >
@@ -353,7 +360,10 @@ class CreatePoll extends Component {
               {this.state.selectedPlaces.length
                 ? this.state.selectedPlaces.map((place, idx) => (
                     <ListItem button key={place}>
-                      <ListItemText> {place}</ListItemText>
+                      <ListItemText className={classes.optionText}>
+                        {' '}
+                        {place}
+                      </ListItemText>
                       <IconButton
                         onClick={e => this.deleteOption(e, idx, 'place')}
                       >

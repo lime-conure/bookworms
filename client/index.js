@@ -47,7 +47,8 @@ const theme = createMuiTheme({
       tooltip: {
         fontSize: '13px',
         maxWidth: 200,
-        backgroundColor: grey[900]
+        backgroundColor: grey[900],
+        textAlign: 'center'
       }
     },
     MuiListItemIcon: {
@@ -65,6 +66,14 @@ const theme = createMuiTheme({
         '&:hover': {
           color: 'inherit'
         }
+      }
+    },
+    MuiDialog: {
+      paper: {
+        padding: 18
+      },
+      paperWidthSm: {
+        maxWidth: 736
       }
     }
   }

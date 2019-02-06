@@ -12,7 +12,7 @@ const styles = theme => ({
   bookSection: {
     marginTop: theme.spacing.unit * 4,
     marginBottom: theme.spacing.unit * 4,
-    width: 720
+    width: '100%'
   },
   sectionHeader: {
     marginBottom: theme.spacing.unit * 3
@@ -25,8 +25,7 @@ class UserBooks extends Component {
     this.state = {
       nowResults: [],
       futureResults: [],
-      pastResults: [],
-      loadingNewBook: false
+      pastResults: []
     }
     this.setResults = this.setResults.bind(this)
     this.handleAddBook = this.handleAddBook.bind(this)
@@ -41,21 +40,19 @@ class UserBooks extends Component {
   }
 
   async handleAddBook(e, bookResult, type) {
-    this.setState({loadingNewBook: true})
     e.preventDefault()
     const newBook = await makeBookObject(bookResult)
     this.props.postUserBook(newBook, type)
     this.setState({
       nowResults: [],
       futureResults: [],
-      pastResults: [],
-      loadingNewBook: false
+      pastResults: []
     })
   }
 
-  handleRemoveBook(e, idx, bookId, type) {
+  handleRemoveBook(e, idx, book) {
     e.preventDefault()
-    this.props.deleteUserBook(bookId, type)
+    this.props.deleteUserBook(book)
   }
 
   renderBookSection(books, type, classes) {
@@ -105,7 +102,7 @@ const mapState = state => ({
 const mapDispatch = dispatch => ({
   fetchUserBooks: () => dispatch(fetchUserBooks()),
   postUserBook: (book, type) => dispatch(postUserBook(book, type)),
-  deleteUserBook: (bookId, type) => dispatch(deleteUserBook(bookId, type))
+  deleteUserBook: book => dispatch(deleteUserBook(book))
 })
 
 export default connect(mapState, mapDispatch)(StyledUserBooks)

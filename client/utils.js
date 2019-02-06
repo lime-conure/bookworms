@@ -1,6 +1,10 @@
 import React from 'react'
 import BookSearch from './components/BookSearch'
 import axios from 'axios'
+
+// Material UI
+import Icon from '@material-ui/core/Icon'
+
 const apiKey = 'jrAzhFY1JP1FdDk1vp7Zg'
 
 // fetches book descriptions from goodreads
@@ -15,11 +19,14 @@ export const getBookDescription = async bookId => {
     const XMLResponse = parser.parseFromString(data, 'application/xml')
     description = XMLResponse.getElementsByTagName('description')[0].textContent
     if (!description) {
-      return 'No description found.'
+      return 'No description found'
     }
     // remove html tags
-    const descWithoutHTML = description.replace(/<\/?[^>]+(>|$)/g, '')
-    return descWithoutHTML.slice(0, 480)
+    const descWithoutHTML = description
+      .replace(/<\/?[^>](>|$)/g, '')
+      // replace <br /><br /> with a space, to maintain space between periods
+      .replace(/<\/?[^>]+(>|$)/g, '  ')
+    return `${descWithoutHTML.slice(0, 680).trim()}...`
   } catch (err) {
     console.error(err)
   }
@@ -27,25 +34,39 @@ export const getBookDescription = async bookId => {
 
 // constructs book object with needed fields from goodreads api
 export const makeBookObject = async bookResult => {
-  if (bookResult.description)
+  if (!bookResult.best_book)
     //this book is already added, now is being moved
     return bookResult
-  const description = await getBookDescription(bookResult.best_book.id)
   return {
     author: bookResult.best_book.author,
     goodReadsId: bookResult.best_book.id,
     title: bookResult.best_book.title,
     imageUrl: bookResult.best_book.image_url,
     smallImageUrl: bookResult.best_book.small_image_url,
+    startTime: bookResult.startTime,
+    endTime: bookResult.endTime,
     pubDate:
       bookResult.original_publication_month +
       '-' +
       bookResult.original_publication_day +
       '-' +
       bookResult.original_publication_year,
-    rating: Math.round(bookResult.average_rating * 100),
-    description
+    rating: Math.round(bookResult.average_rating * 100)
   }
+}
+
+export const renderBookRating = rating => {
+  const stars = Array(Math.floor(rating / 100)).fill(0)
+  return (
+    <span style={{display: 'flex', alignItems: 'center'}}>
+      {stars.map((star, idx) => (
+        <Icon key={idx} fontSize="small">
+          star
+        </Icon>
+      ))}
+      <span style={{paddingLeft: '5px'}}>{rating / 100}</span>
+    </span>
+  )
 }
 
 export const renderBookSearch = (books, type, component) => {
@@ -59,7 +80,6 @@ export const renderBookSearch = (books, type, component) => {
       removeBook={(e, idx, bookId, clubId) =>
         component.handleRemoveBook(e, idx, bookId, clubId)
       }
-      loadingNewBook={component.state.loadingNewBook}
     />
   )
 }
