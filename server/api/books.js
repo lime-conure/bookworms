@@ -148,7 +148,6 @@ router.put('/:clubId/books/delete', async (req, res, next) => {
         if (!isUser) res.status(403).send(`Not authorized`)
         else {
           const {book} = req.body
-          console.log(book)
           // make sure our club has this book before we remove it
           let bookToDel
           if (book.clubs_books.type === 'past') {

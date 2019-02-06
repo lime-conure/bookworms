@@ -124,7 +124,6 @@ router.put('/books/delete', async (req, res, next) => {
     if (!req.user) res.status(403).send(`Not authorized`)
     else {
       const {book} = req.body
-      console.log('book: ', book)
       // make sure user has this book before we remove it
       let bookToDel
       if (book.users_books.type === 'past') {

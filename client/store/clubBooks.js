@@ -48,12 +48,10 @@ export const fetchClubBooks = clubId => async dispatch => {
 
 export const postClubBook = (book, type, clubId) => async dispatch => {
   try {
-    console.log('in postClubBook', book, type)
     const {data} = await axios.post(`/api/clubs/${clubId}/books/add`, {
       book,
       type
     })
-    console.log('data: ', data)
     if (data.book) {
       dispatch(
         addClubBook({
@@ -87,7 +85,6 @@ export default function(state = clubBooks, action) {
       return [action.book, ...state]
     case REMOVE_CLUB_BOOK:
       return state.filter((book, idx) => {
-        //console.log(idx, ': ', book, action.book)
         return !(
           book.id === action.book.id &&
           book.clubs_books.type === action.book.clubs_books.type &&
