@@ -101,7 +101,7 @@ export class SinglePoll extends Component {
       return true
     } else return false
   }
-  renderPoll(options, type, classes) {
+  renderPoll(options, type, classes, poll) {
     const columnName =
       type === 'Book'
         ? 'bookName'
@@ -160,6 +160,8 @@ export class SinglePoll extends Component {
                       value={optionObj.option.id}
                       defaultChecked={this.optionIsChecked(optionObj)}
                       onChange={this.handleCheck}
+                      // can't vote on past polls
+                      disabled={new Date(poll.dueDate) < new Date()}
                     />
                   </TableCell>
                 ))}
@@ -205,16 +207,17 @@ export class SinglePoll extends Component {
 
           {poll.dueDate ? (
             <Typography variant="subtitle2" gutterBottom color="secondary">
-              Voting ends on {poll.dueDate.slice(0, 10)}
+              Voting {new Date(poll.dueDate) < new Date() ? 'ended' : 'ends'} on{' '}
+              {poll.dueDate.slice(0, 10)}
             </Typography>
           ) : (
             ''
           )}
 
           <form onSubmit={this.handleSubmit}>
-            {this.renderPoll(bookOptions, 'Book', classes)}
-            {this.renderPoll(timeOptions, 'Date & Time', classes)}
-            {this.renderPoll(locationOptions, 'Location', classes)}
+            {this.renderPoll(bookOptions, 'Book', classes, poll)}
+            {this.renderPoll(timeOptions, 'Date & Time', classes, poll)}
+            {this.renderPoll(locationOptions, 'Location', classes, poll)}
             <br />
             {allOptions.length ? (
               <Grid
@@ -230,6 +233,8 @@ export class SinglePoll extends Component {
                     color="secondary"
                     variant="contained"
                     type="submit"
+                    // can't vote on past polls
+                    disabled={new Date(poll.dueDate) < new Date()}
                   >
                     {this.state.justVoted && (
                       <Icon color="inherit" className={classes.checkmark}>

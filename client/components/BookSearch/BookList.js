@@ -51,7 +51,7 @@ const styles = theme => ({
     color: '#fff',
     fontSize: '1rem',
     lineHeight: '1.5rem',
-    opacity: 0.8
+    opacity: 0.9
   },
   dialogImage: {
     width: '100%'
@@ -61,6 +61,10 @@ const styles = theme => ({
   },
   author: {
     opacity: 0.6
+  },
+  description: {
+    marginTop: theme.spacing.unit * 1.5,
+    lineHeight: '1.614em'
   }
 })
 
@@ -145,7 +149,7 @@ class BookList extends Component {
                       inline
                       className={classes.rating}
                     >
-                      {renderBookRating(book.rating)}
+                      {book.rating > 0 && renderBookRating(book.rating)}
                     </Typography>
                   </ListItemText>
 
@@ -180,7 +184,7 @@ class BookList extends Component {
                     <Icon>cancel</Icon>
                   </IconButton>
                   <DialogTitle id="book-modal">
-                    <Typography variant="h6" component="h6" gutterBottom>
+                    <Typography variant="h6" component="h6">
                       {this.state.dialogBook.title}
                       <span className={classes.author}>
                         {this.state.dialogBook.authors &&
@@ -189,11 +193,19 @@ class BookList extends Component {
                           : ''}
                       </span>
                     </Typography>
+                    <Typography
+                      variant="body1"
+                      component="p"
+                      inline
+                      className={classes.rating}
+                    >
+                      {book.rating > 0 && renderBookRating(book.rating)}
+                    </Typography>
                   </DialogTitle>
                   <DialogContent>
                     <Grid
                       container
-                      spacing={24}
+                      spacing={16}
                       justify="flex-start"
                       alignItems="flex-start"
                     >
@@ -206,11 +218,11 @@ class BookList extends Component {
                       </Grid>
                       <Grid item xs={9}>
                         <Typography
-                          variant="body1"
+                          variant="body2"
                           component="span"
                           className={classes.description}
                         >
-                          {this.state.dialogBook.description}...
+                          {this.state.dialogBook.description}
                         </Typography>
                       </Grid>
                     </Grid>

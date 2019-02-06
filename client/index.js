@@ -67,6 +67,14 @@ const theme = createMuiTheme({
           color: 'inherit'
         }
       }
+    },
+    MuiDialog: {
+      paper: {
+        padding: 18
+      },
+      paperWidthSm: {
+        maxWidth: 736
+      }
     }
   }
 })
