@@ -23,7 +23,7 @@ class BookSearch extends Component {
       addBook,
       removeBook,
       hideBookActions,
-      disabled
+      hideSearch
     } = this.props
 
     return (
@@ -35,7 +35,7 @@ class BookSearch extends Component {
           addBook={addBook}
           hideBookActions={hideBookActions}
         />
-        <Search setResults={this.setResults} disabled={disabled} />
+        {!hideSearch && <Search setResults={this.setResults} />}
         <BookResults
           type={type}
           results={this.state.results}

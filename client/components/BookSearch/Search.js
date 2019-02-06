@@ -87,7 +87,7 @@ class Search extends Component {
   }
 
   render() {
-    const {classes, disabled} = this.props
+    const {classes} = this.props
     return (
       <Grid container spacing={24} justify="space-between" alignItems="center">
         <Grid item xs={8}>
@@ -109,7 +109,7 @@ class Search extends Component {
         </Grid>
         <Grid item xs={4}>
           <Button
-            disabled={!this.state.searchText || disabled}
+            disabled={!this.state.searchText}
             onClick={e => this.onButtonClick(e)}
             variant="contained"
             color="primary"

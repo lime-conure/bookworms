@@ -144,7 +144,7 @@ export class CreateMeeting extends Component {
               removeBook={e => this.removeBook(e)}
               hideBookActions={true}
               // meetings can only have one book, so disable search after selecting one
-              disabled={this.state.selectedBooks.length}
+              hideSearch={this.state.selectedBooks.length}
             />
           </div>
 
