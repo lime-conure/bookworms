@@ -101,7 +101,6 @@ class CreatePoll extends Component {
   }
 
   handleCheck(e) {
-    console.log('event: ', e.target.checked)
     this.setState({autoGenerateMeeting: e.target.checked})
   }
 
