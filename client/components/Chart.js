@@ -37,8 +37,8 @@ const results = [
     clubBooks: {
       type: 'past',
       clubId: 1,
-      startTime: 2,
-      finishTime: 4
+      startTime: '2019-01-05 12:10:39.15-05',
+      finishTime: '2019-02-05 12:10:39.15-05'
     }
   },
   {
