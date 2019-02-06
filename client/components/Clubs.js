@@ -59,7 +59,7 @@ class Clubs extends Component {
                 button
                 component={Link}
                 key={club.id}
-                to={`/clubs/${club.id}`}
+                to={`/clubs/${club.id}/books`}
               >
                 <ListItemIcon className={classes.icon}>
                   <Icon>group</Icon>
