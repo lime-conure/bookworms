@@ -40,7 +40,7 @@ class Polls extends Component {
     this.props.fetchPolls(this.props.match.params.clubId)
   }
 
-  renderPollList(polls, classes, isActive) {
+  renderPollList(polls, classes, isPast) {
     return (
       <List>
         {polls.map(poll => (
@@ -52,7 +52,7 @@ class Polls extends Component {
           >
             <ListItemIcon>
               <Icon
-                fontSize={isActive ? 'large' : 'medium'}
+                fontSize={isPast ? 'medium' : 'large'}
                 className={classes.icon}
               >
                 poll
@@ -67,7 +67,7 @@ class Polls extends Component {
                     component="span"
                     className={classes.dueDate}
                   >
-                    Voting {isActive ? 'ends' : 'ended'} on{' '}
+                    Voting {isPast ? 'ended' : 'ends'} on{' '}
                     {formatDateDisplay(poll.dueDate, false)}
                   </Typography>
                 ) : (
@@ -93,7 +93,7 @@ class Polls extends Component {
             Active Polls
           </Typography>
           <Divider />
-          {this.renderPollList(activePolls, classes, true)}
+          {this.renderPollList(activePolls, classes, false)}
           <Link to={`/clubs/${this.props.match.params.clubId}/createpoll`}>
             <Button
               type="button"
@@ -115,7 +115,7 @@ class Polls extends Component {
             Past Polls
           </Typography>
           <Divider />
-          {this.renderPollList(pastPolls, classes, false)}
+          {this.renderPollList(pastPolls, classes, true)}
         </Grid>
       </Grid>
     )

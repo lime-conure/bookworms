@@ -46,13 +46,18 @@ class Meetings extends Component {
     const clubId = this.props.match.params.clubId
     this.props.fetchMeetings(clubId)
   }
-  renderMeetingList(meetings, classes) {
+  renderMeetingList(meetings, classes, isPast) {
     return (
       <List>
         {meetings.map(meeting => (
           <ListItem button key={meeting.id}>
             <ListItemIcon>
-              <Icon className={classes.icon}>event</Icon>
+              <Icon
+                fontSize={isPast ? 'medium' : 'large'}
+                className={classes.icon}
+              >
+                event
+              </Icon>
             </ListItemIcon>
             <ListItemText component="div">
               <Typography variant="h5">
@@ -89,7 +94,7 @@ class Meetings extends Component {
           </Typography>
           <Divider />
           {upcomingMeetings.length
-            ? this.renderMeetingList(upcomingMeetings, classes)
+            ? this.renderMeetingList(upcomingMeetings, classes, false)
             : ''}
           <Link to={`/clubs/${this.props.match.params.clubId}/createmeeting`}>
             <Button
@@ -114,7 +119,7 @@ class Meetings extends Component {
               Past Meetings
             </Typography>
             <Divider />
-            {this.renderMeetingList(pastMeetings, classes)}
+            {this.renderMeetingList(pastMeetings, classes, true)}
           </Grid>
         ) : (
           ''
