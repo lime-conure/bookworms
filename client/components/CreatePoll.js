@@ -12,6 +12,7 @@ import {
 import {withStyles} from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton'
@@ -20,6 +21,7 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import Divider from '@material-ui/core/Divider'
+import Checkbox from '@material-ui/core/Checkbox'
 
 const styles = theme => ({
   form: {
@@ -64,10 +66,12 @@ class CreatePoll extends Component {
       dueDate: defaultDueDateString,
       dateTime: formatDateString(defaultDateTime),
       dateTimeMessage: '',
-      place: ''
+      place: '',
+      autoGenerateMeeting: true
     }
     this.createPoll = this.createPoll.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.handleCheck = this.handleCheck.bind(this)
     this.addBook = this.addBook.bind(this)
     this.addDateTime = this.addDateTime.bind(this)
     this.addPlaces = this.addPlaces.bind(this)
@@ -94,6 +98,11 @@ class CreatePoll extends Component {
         [e.target.name]: e.target.value
       })
     }
+  }
+
+  handleCheck(e) {
+    console.log('event: ', e.target.checked)
+    this.setState({autoGenerateMeeting: e.target.checked})
   }
 
   setResults = results => {
@@ -240,6 +249,7 @@ class CreatePoll extends Component {
               fullWidth
             />
           </div>
+
           {/* select books */}
           <div className={classes.formSection}>
             <Typography variant="h5" gutterBottom>
@@ -365,8 +375,18 @@ class CreatePoll extends Component {
                   ))
                 : null}
             </List>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={this.state.autoGenerateMeeting}
+                  onChange={this.handleCheck}
+                  color="secondary"
+                />
+              }
+              label="When voting ends, automatically generate a meeting with the winning options from this poll"
+            />
           </div>
-          <br />
+
           <Button
             type="submit"
             onClick={this.createPoll}
