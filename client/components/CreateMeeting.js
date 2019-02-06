@@ -4,6 +4,7 @@ import {postMeeting} from '../store'
 import BookSearch from './BookSearch'
 import {formatDateString, formatDate, makeBookObject} from '../utils'
 
+// Material UI
 import {withStyles} from '@material-ui/core/styles'
 import Divider from '@material-ui/core/Divider'
 import Button from '@material-ui/core/Button'
@@ -39,12 +40,13 @@ export class CreateMeeting extends Component {
       name: '',
       location: '',
       date: defaultDateString,
-      selectedBook: [],
+      selectedBooks: [],
       searchResults: []
     }
     this.handleChange = this.handleChange.bind(this)
     this.addBook = this.addBook.bind(this)
   }
+
   handleChange(e) {
     this.setState({
       [e.target.name]: e.target.value
@@ -69,16 +71,17 @@ export class CreateMeeting extends Component {
       })
     }
   }
+
   addBook(e, book) {
     e.preventDefault()
     const newBook = makeBookObject(book)
-    this.setState({selectedBook: [newBook]})
+    this.setState({selectedBooks: [newBook]})
   }
 
   removeBook(e) {
     e.preventDefault()
     e.stopPropagation()
-    this.setState({selectedBook: []})
+    this.setState({selectedBooks: []})
   }
 
   render() {
@@ -135,12 +138,14 @@ export class CreateMeeting extends Component {
               Add a Book
             </Typography>
             <BookSearch
-              bookList={this.state.selectedBook} // array of one book object
+              bookList={this.state.selectedBooks} // array of one book object
               results={this.state.searchResults}
               setResults={this.setResults}
               addBook={(e, book) => this.addBook(e, book)}
               removeBook={e => this.removeBook(e)}
               hideBookActions={true}
+              // meetings can only have one book, so disable search after selecting one
+              disabled={this.state.selectedBooks.length}
             />
           </div>
 
