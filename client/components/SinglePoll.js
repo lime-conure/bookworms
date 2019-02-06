@@ -139,7 +139,7 @@ export class SinglePoll extends Component {
                       )}
 
                       {type === 'Date & Time' &&
-                        formatDateDisplay(optionObj.option[columnName])}
+                        formatDateDisplay(optionObj.option[columnName], true)}
                       {type === 'Location' && optionObj.option[columnName]}
                     </strong>
                   </TableCell>
@@ -208,7 +208,7 @@ export class SinglePoll extends Component {
           {poll.dueDate ? (
             <Typography variant="subtitle2" gutterBottom color="secondary">
               Voting {new Date(poll.dueDate) < new Date() ? 'ended' : 'ends'} on{' '}
-              {poll.dueDate.slice(0, 10)}
+              {formatDateDisplay(poll.dueDate)}
             </Typography>
           ) : (
             ''
