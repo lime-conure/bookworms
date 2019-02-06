@@ -31,7 +31,7 @@ export const getBookDescription = async bookId => {
 
 // constructs book object with needed fields from goodreads api
 export const makeBookObject = async bookResult => {
-  if (bookResult.description)
+  if (!bookResult.best_book)
     //this book is already added, now is being moved
     return bookResult
   return {

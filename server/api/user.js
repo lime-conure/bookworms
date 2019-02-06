@@ -123,16 +123,33 @@ router.put('/books/delete', async (req, res, next) => {
   try {
     if (!req.user) res.status(403).send(`Not authorized`)
     else {
-      const {bookId, type} = req.body
+      const {book} = req.body
+      console.log('book: ', book)
       // make sure user has this book before we remove it
-      const book = await UserBook.findOne({
-        where: {bookId, type, userId: req.user.id}
-      })
-      if (!book) {
+      let bookToDel
+      if (book.users_books.type === 'past') {
+        bookToDel = await UserBook.findOne({
+          where: {
+            userId: req.user.id,
+            bookId: book.id,
+            type: 'past',
+            endTime: book.users_books.endTime
+          }
+        })
+      } else {
+        bookToDel = await UserBook.findOne({
+          where: {
+            userId: req.user.id,
+            bookId: book.id,
+            type: book.users_books.type
+          }
+        })
+      }
+      if (!bookToDel) {
         res.send(`${req.user.fullName} does not have that book`)
       } else {
-        await book.destroy()
-        res.status(200).send()
+        await bookToDel.destroy()
+        res.status(200).json()
       }
     }
   } catch (err) {

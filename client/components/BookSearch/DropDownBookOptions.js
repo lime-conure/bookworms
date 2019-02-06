@@ -26,15 +26,15 @@ class DropDownBookOptions extends React.Component {
     const {removeBook, addBook, type, book} = this.props
     const moveTo = this.options[type][idx]
     if (moveTo === 'remove') {
-      removeBook(e, idx, book.id, type)
+      removeBook(e, idx, book)
     } else {
       if (type === 'now') {
-        await removeBook(e, idx, book.id, type) // remove the 'now' book
+        await removeBook(e, idx, book) // remove the 'now' book
         let updatedBook // update startTime and endTime before adding
         if (moveTo === 'past') {
           updatedBook = {
             ...book,
-            startTime: book.clubs_book
+            startTime: book.clubs_books
               ? book.clubs_books.startTime
               : book.users_books.startTime,
             endTime: new Date()
@@ -45,7 +45,7 @@ class DropDownBookOptions extends React.Component {
         }
         await addBook(e, updatedBook, moveTo)
       } else if (type === 'future') {
-        await removeBook(e, idx, book.id, type) // remove the 'future' book
+        await removeBook(e, idx, book) // remove the 'future' book
         let updatedBook // update startTime and endTime before adding
         if (moveTo === 'past') {
           updatedBook = {...book, startTime: null, endTime: new Date()}
@@ -65,11 +65,6 @@ class DropDownBookOptions extends React.Component {
         }
         await addBook(e, updatedBook, moveTo)
       }
-
-      // if (this.props.type === 'now' || this.props.type === 'future') {
-      //   await this.props.removeBook(e, idx, this.props.book.id, this.props.type)
-      // }
-      // await this.props.addBook(e, this.props.book, moveTo)
     }
     this.setState({anchorEl: null})
   }

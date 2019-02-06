@@ -111,7 +111,7 @@ class BookList extends Component {
           {this.state.loadingDialog ? <LinearProgress color="primary" /> : ''}
           <List className={classes.root}>
             {bookList.map((book, idx) => (
-              <div key={book.goodReadsId}>
+              <div key={idx}>
                 <ListItem button>
                   <Tooltip
                     placement="left-start"
