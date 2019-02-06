@@ -26,7 +26,7 @@ export const getBookDescription = async bookId => {
       .replace(/<\/?[^>](>|$)/g, '')
       // replace <br /><br /> with a space, to maintain space between periods
       .replace(/<\/?[^>]+(>|$)/g, '  ')
-    return `${descWithoutHTML.slice(0, 580).trim()}...`
+    return `${descWithoutHTML.slice(0, 680).trim()}...`
   } catch (err) {
     console.error(err)
   }

@@ -61,6 +61,10 @@ const styles = theme => ({
   },
   author: {
     opacity: 0.6
+  },
+  description: {
+    marginTop: theme.spacing.unit * 1.5,
+    lineHeight: '1.61429em'
   }
 })
 
@@ -179,7 +183,7 @@ class BookList extends Component {
                   >
                     <Icon>cancel</Icon>
                   </IconButton>
-                  <DialogTitle id="book-modal">
+                  <DialogTitle id="book-modal" className={classes.bookModal}>
                     <Typography variant="h6" component="h6">
                       {this.state.dialogBook.title}
                       <span className={classes.author}>
@@ -198,10 +202,10 @@ class BookList extends Component {
                       {book.rating > 0 && renderBookRating(book.rating)}
                     </Typography>
                   </DialogTitle>
-                  <DialogContent>
+                  <DialogContent className={classes.bookModal}>
                     <Grid
                       container
-                      spacing={24}
+                      spacing={16}
                       justify="flex-start"
                       alignItems="flex-start"
                     >
@@ -214,7 +218,7 @@ class BookList extends Component {
                       </Grid>
                       <Grid item xs={9}>
                         <Typography
-                          variant="body1"
+                          variant="body2"
                           component="span"
                           className={classes.description}
                         >
