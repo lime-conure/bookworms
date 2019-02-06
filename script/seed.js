@@ -168,10 +168,16 @@ async function seed() {
   // make a poll for our club
   const polls = await Promise.all([
     Poll.create({
-      title: 'February 2019 Meeting',
-      notes:
-        'A poll to decide our next book and meeting time for club Lime Conure',
-      dueDate: new Date(),
+      title: 'January 2019 Meeting',
+      notes: 'A poll in the past',
+      dueDate: new Date('01-01-2019'),
+      clubId: 1,
+      creatorId: 1
+    }),
+    Poll.create({
+      title: 'Figuring out next meeting',
+      notes: 'A poll in the future',
+      dueDate: new Date('03-07-2019'),
       clubId: 1,
       creatorId: 1
     })
@@ -200,17 +206,17 @@ async function seed() {
     Option.create({
       type: 'location',
       location: 'Sweetgreen',
-      pollId: 1
+      pollId: 2
     }),
     Option.create({
       type: 'location',
       location: 'Killarney Rose',
-      pollId: 1
+      pollId: 2
     }),
     Option.create({
       type: 'location',
       location: 'Grace Hopper Campus',
-      pollId: 1
+      pollId: 2
     })
   ])
 
@@ -226,14 +232,21 @@ async function seed() {
     })
   ])
 
-  // add a meeting
+  // add meetings
   const meetings = await Promise.all([
     Meeting.create({
       name: 'February Meeting',
       location: 'Killarney Rose',
-      date: new Date(),
-      creatorId: 2,
-      clubId: 1
+      date: new Date('02-01-2019'),
+      clubId: 1,
+      creatorId: 1
+    }),
+    Meeting.create({
+      name: 'April Meeting',
+      location: 'Niu Noodle House',
+      date: new Date('04-20-2019'),
+      clubId: 1,
+      creatorId: 1
     })
   ])
 
