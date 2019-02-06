@@ -34,9 +34,11 @@ const removeUserBook = book => ({
 /**
  * THUNK CREATORS
  */
-export const me = () => async dispatch => {
+export const me = socket => async dispatch => {
   try {
     const res = await axios.get('/auth/me')
+    // After login through Google Auth, join all associated clubRooms
+    if (res.data.id) socket.emit('LOGIN', res.data.id)
     dispatch(getUser(res.data || defaultUser))
   } catch (err) {
     console.error(err)
@@ -59,7 +61,7 @@ export const auth = (
 
   try {
     dispatch(getUser(res.data))
-    socket.emit('LOGIN', res.data.id) //user should join all existing clubRooms
+    socket.emit('LOGIN', res.data.id) //user should join all associated clubRooms
   } catch (dispatchOrHistoryErr) {
     console.error(dispatchOrHistoryErr)
   }
@@ -68,7 +70,7 @@ export const auth = (
 export const logout = (userId, socket) => async dispatch => {
   try {
     await axios.post('/auth/logout')
-    socket && socket.emit('LOGOUT', userId) //user should be removed from all clubRooms
+    socket && socket.emit('LOGOUT', userId) //user should leave all associated clubRooms
     dispatch(removeUser())
     history.push('/login')
   } catch (err) {
