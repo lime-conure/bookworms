@@ -53,13 +53,13 @@ export const makeBookObject = async bookResult => {
 export const renderBookRating = rating => {
   const stars = Array(Math.floor(rating / 100)).fill(0)
   return (
-    <span style={{verticalAlign: 'top'}}>
+    <span style={{display: 'flex', alignItems: 'center'}}>
       {stars.map((star, idx) => (
         <Icon key={idx} fontSize="small">
           star
         </Icon>
-      ))}{' '}
-      {rating / 100}
+      ))}
+      <span style={{paddingLeft: '5px'}}>{rating / 100}</span>
     </span>
   )
 }
