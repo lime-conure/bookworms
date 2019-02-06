@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const {Book, ClubBook, Club, Author} = require('../db/models')
+const sequelize = require('sequelize')
 const Op = require('sequelize').Op
 module.exports = router
 
@@ -19,7 +20,8 @@ router.get('/:clubId/books', async (req, res, next) => {
           const rowsWithClubId = await ClubBook.findAll({
             where: {
               clubId
-            }
+            },
+            order: [['startTime', 'DESC'], ['endTime', 'ASC']]
           })
 
           let books = await Promise.all(
