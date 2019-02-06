@@ -546,7 +546,10 @@ router.get('/:clubId/meetings', async (req, res, next) => {
           .status(403)
           .send('You are not authorized to see the meetings for this club')
       else {
-        const meetings = await Meeting.findAll({where: {clubId: club.id}})
+        const meetings = await Meeting.findAll({
+          where: {clubId: club.id},
+          include: [{model: Book}]
+        })
         res.json(meetings)
       }
     }
@@ -578,9 +581,9 @@ router.post('/:clubId/meetings', async (req, res, next) => {
           location,
           date: new Date(date),
           creatorId: req.user.id,
-          clubId,
-          bookId: book ? existingBook.id : null
+          clubId
         })
+        await newMeeting.setBook(existingBook)
         res.json(newMeeting)
       } else {
         res.status(403).send('Not authorized to create a meeting for this club')

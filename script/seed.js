@@ -250,6 +250,8 @@ async function seed() {
     })
   ])
 
+  await meetings[0].setBook(books[0])
+
   console.log(`seeded ${users.length} users`)
   console.log(`seeded ${books.length} books`)
   console.log(`seeded ${clubs.length} club`)
