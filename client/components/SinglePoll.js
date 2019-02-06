@@ -208,7 +208,8 @@ export class SinglePoll extends Component {
           {poll.dueDate ? (
             <Typography variant="subtitle2" gutterBottom color="secondary">
               Voting {new Date(poll.dueDate) < new Date() ? 'ended' : 'ends'} on{' '}
-              {poll.dueDate.slice(0, 10)}
+              {formatDateDisplay(poll.dueDate)}
+              {/* {poll.dueDate.slice(0, 10)} */}
             </Typography>
           ) : (
             ''
