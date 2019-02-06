@@ -439,16 +439,7 @@ async function seed() {
     })
   ])
 
-  // past meetings
-  await Meeting.create({
-    name: 'January 2019 Meeting',
-    location: 'Numero 28 Pizzeria',
-    date: new Date('01-02-2019'),
-    bookId: 1,
-    clubId: 1,
-    creatorId: 1
-  })
-
+  // past meeting
   await Meeting.create({
     name: 'November Meeting',
     location: 'Old Tbilisi Garden',
