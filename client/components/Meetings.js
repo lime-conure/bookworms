@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {fetchMeetings, deleteMeeting} from '../store'
+import {formatDateDisplay} from '../utils'
 import {Link} from 'react-router-dom'
 
 // Material UI
@@ -79,7 +80,8 @@ class Meetings extends Component {
                     component="span"
                     className={classes.meetingMetadata}
                   >
-                    {meeting.date.slice(0, 10)} at {meeting.location}
+                    {formatDateDisplay(meeting.date)} at {meeting.location}
+                    {/* {meeting.date.slice(0, 10)} at {meeting.location} */}
                   </Typography>
                 ) : (
                   ''
