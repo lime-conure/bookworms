@@ -112,7 +112,10 @@ router.get('/:clubId/polls', async (req, res, next) => {
         const check = await club.hasUser(req.user.id)
         if (!check) res.status(403).send(`Not authorized`)
         else {
-          const polls = await Poll.findAll({where: {clubId}})
+          const polls = await Poll.findAll({
+            where: {clubId},
+            order: [['dueDate']]
+          })
           res.send(polls)
         }
       }
@@ -548,7 +551,8 @@ router.get('/:clubId/meetings', async (req, res, next) => {
       else {
         const meetings = await Meeting.findAll({
           where: {clubId: club.id},
-          include: [{model: Book}]
+          include: [{model: Book}],
+          order: [['date']]
         })
         res.json(meetings)
       }
