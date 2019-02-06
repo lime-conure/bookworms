@@ -28,7 +28,7 @@ const styles = theme => ({
     paddingLeft: theme.spacing.unit * 2
   },
   pastPolls: {
-    opacity: 0.8
+    opacity: 0.5
   },
   pastPollsHeader: {
     lineHeight: '4.5rem'
