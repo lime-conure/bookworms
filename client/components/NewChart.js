@@ -120,8 +120,6 @@ class NewChart extends Component {
   async componentDidMount() {
     const clubId = Number(this.props.match.params.clubId)
     await this.props.fetchClubBooks(clubId)
-    console.log('in component did mount', this.props.results)
-    console.log(this.state, 'state')
   }
   // functions
   sort(criteria) {

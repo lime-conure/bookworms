@@ -10,14 +10,3 @@ nav a {
   display: inline-block;
   margin: 1em;
 }
-
-/* invisible scrollbars */
-.element::-webkit-scrollbar {
-  width: 0 !important;
-}
-.element {
-  overflow: -moz-scrollbars-none;
-}
-.element {
-  -ms-overflow-style: none;
-}
