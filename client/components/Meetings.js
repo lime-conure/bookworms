@@ -11,6 +11,7 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import Icon from '@material-ui/core/Icon'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
@@ -35,6 +36,10 @@ const styles = theme => ({
   },
   pastMeetingsHeader: {
     lineHeight: '4.5rem'
+  },
+  bookImage: {
+    maxHeight: 70,
+    marginLeft: theme.spacing.unit * 2
   }
 })
 
@@ -55,7 +60,16 @@ class Meetings extends Component {
               >
                 event
               </Icon>
-            </ListItemIcon>
+            </ListItemIcon>{' '}
+            {meeting.book && (
+              <ListItemAvatar>
+                <img
+                  className={classes.bookImage}
+                  src={meeting.book.imageUrl}
+                  alt={meeting.book.title}
+                />
+              </ListItemAvatar>
+            )}
             <ListItemText component="div">
               <Typography variant="h5">
                 {meeting.name}

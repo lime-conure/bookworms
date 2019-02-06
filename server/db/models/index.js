@@ -72,7 +72,6 @@ Club.belongsToMany(User, {through: UserClub})
 
 // votes association table columns: userId, optionId
 // each row in this table represents a vote
-
 User.belongsToMany(Option, {through: Vote})
 Option.belongsToMany(User, {through: Vote})
 
