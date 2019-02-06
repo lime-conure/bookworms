@@ -1,6 +1,5 @@
 const router = require('express').Router()
 const {Book, ClubBook, Club, Author} = require('../db/models')
-const sequelize = require('sequelize')
 const Op = require('sequelize').Op
 module.exports = router
 
