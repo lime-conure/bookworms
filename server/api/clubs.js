@@ -628,7 +628,7 @@ router.get('/:clubId/meetings', async (req, res, next) => {
 
           //generate a meeting
           const newMeeting = await Meeting.create({
-            name: `meeting for ${poll.title}`,
+            name: `${poll.title}`,
             location: winningLocation,
             date: new Date(winningDate),
             creatorId: poll.creatorId,
