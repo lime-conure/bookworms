@@ -1,5 +1,9 @@
 import React, {Component} from 'react'
-import {getBookDescription, renderBookRating} from '../../utils'
+import {
+  getBookDescription,
+  renderBookRating,
+  formatDateDisplay
+} from '../../utils'
 import DropDownBookOptions from './DropDownBookOptions'
 
 // Material UI
@@ -25,7 +29,8 @@ const styles = theme => ({
     maxHeight: 375,
     overflow: 'scroll',
     backgroundColor: theme.palette.grey[800],
-    borderRadius: '5px'
+    borderRadius: '5px',
+    color: '#fff'
   },
   avatar: {
     width: 'auto',
@@ -48,7 +53,6 @@ const styles = theme => ({
     margin: theme.spacing.unit * 2
   },
   rating: {
-    color: '#fff',
     fontSize: '1rem',
     lineHeight: '1.5rem',
     opacity: 0.9
@@ -65,6 +69,9 @@ const styles = theme => ({
   description: {
     marginTop: theme.spacing.unit * 1.5,
     lineHeight: '1.614em'
+  },
+  bookProgress: {
+    fontWeight: 300
   }
 })
 
@@ -171,78 +178,99 @@ class BookList extends Component {
     )
   }
 
+  renderBookProgress(book, type, isUserBook) {
+    const keyName = isUserBook ? 'users_books' : 'clubs_books'
+    switch (type) {
+      case 'now':
+        return `Started on ${formatDateDisplay(book[keyName].startTime)}`
+      case 'past':
+        return `Finished on ${formatDateDisplay(book[keyName].endTime)}`
+      default:
+        return '' //future books dont have progress yet, so make them default case
+    }
+  }
+
+  renderBook(book, idx) {
+    const {type, removeBook, addBook, hideBookActions, classes} = this.props
+    return (
+      <ListItem button>
+        <Tooltip
+          placement="left-start"
+          title="Click to view more about this book"
+        >
+          <Avatar
+            onClick={e => this.handleDialogOpen(e, book)}
+            className={classes.avatar}
+          >
+            <img
+              className={classes.avatarImg}
+              src={book.imageUrl}
+              alt={book.title}
+            />
+          </Avatar>
+        </Tooltip>
+
+        <ListItemText onClick={e => this.handleDialogOpen(e, book)}>
+          <Typography variant="h6" component="h6">
+            {book.title}{' '}
+            <span className={classes.author}>
+              {book.authors && book.authors.length
+                ? `by ${book.authors[0].name}`
+                : ''}
+            </span>
+          </Typography>
+
+          <Typography
+            variant="body1"
+            component="span"
+            className={classes.rating}
+            gutterBottom
+          >
+            {book.rating > 0 && renderBookRating(book.rating)}
+          </Typography>
+          {book.clubs_books && (
+            <span className={classes.bookProgress}>
+              {this.renderBookProgress(book, book.clubs_books.type)}
+            </span>
+          )}
+          {book.users_books && (
+            <span className={classes.bookProgress}>
+              {this.renderBookProgress(book, book.users_books.type, true)}
+              {/* isUserBook = true */}
+            </span>
+          )}
+        </ListItemText>
+
+        {/* create poll form doesn't have book actions dropdown */}
+        {hideBookActions ? (
+          <IconButton
+            className={classes.removeIcon}
+            onClick={e => removeBook(e, idx, book.id)}
+          >
+            <Icon>cancel</Icon>
+          </IconButton>
+        ) : (
+          <DropDownBookOptions
+            type={type}
+            book={book}
+            removeBook={removeBook}
+            addBook={addBook}
+          />
+        )}
+      </ListItem>
+    )
+  }
+
   render() {
-    const {
-      type,
-      bookList,
-      removeBook,
-      addBook,
-      hideBookActions,
-      classes
-    } = this.props
+    const {bookList, classes} = this.props
     if (bookList.length) {
       return (
         <div>
           {this.state.loadingDialog ? <LinearProgress color="primary" /> : ''}
           <List className={classes.root}>
             {bookList.map((book, idx) => (
-              <div key={idx}>
-                <ListItem button>
-                  <Tooltip
-                    placement="left-start"
-                    title="Click to view more about this book"
-                  >
-                    <Avatar
-                      onClick={e => this.handleDialogOpen(e, book)}
-                      className={classes.avatar}
-                    >
-                      <img
-                        className={classes.avatarImg}
-                        src={book.imageUrl}
-                        alt={book.title}
-                      />
-                    </Avatar>
-                  </Tooltip>
-
-                  <ListItemText onClick={e => this.handleDialogOpen(e, book)}>
-                    <Typography variant="h6" component="h6">
-                      {book.title}{' '}
-                      <span className={classes.author}>
-                        {book.authors && book.authors.length
-                          ? `by ${book.authors[0].name}`
-                          : ''}
-                      </span>
-                    </Typography>
-
-                    <Typography
-                      variant="body1"
-                      component="span"
-                      inline
-                      className={classes.rating}
-                    >
-                      {book.rating > 0 && renderBookRating(book.rating)}
-                      {book.clubs_books && <span />}
-                      {book.users_books && <span />}
-                    </Typography>
-                  </ListItemText>
-
-                  {/* create poll form doesn't have book actions dropdown */}
-                  {hideBookActions ? (
-                    <IconButton
-                      className={classes.removeIcon}
-                      onClick={e => removeBook(e, idx, book.id)}
-                    >
-                      <Icon>cancel</Icon>
-                    </IconButton>
-                  ) : (
-                    <DropDownBookOptions
-                      type={type}
-                      book={book}
-                      removeBook={removeBook}
-                      addBook={addBook}
-                    />
-                  )}
-                </ListItem>
+              <div key={book.title}>
+                {this.renderBook(book, idx)}
                 {this.renderDialog(classes)}
               </div>
             ))}
