@@ -36,6 +36,14 @@ class Polls extends Component {
   render() {
     const {classes} = this.props
     const polls = this.props.polls
+    const now = new Date()
+    if (polls.length) {
+      const pastPolls = polls.filter(poll => new Date(poll.dueDate) < now)
+      console.log('polls: ', polls)
+      console.log('now: ', now)
+      console.log('past polls: ', pastPolls)
+    }
+
     return (
       <div>
         <Typography variant="h3" component="h3">
@@ -92,7 +100,8 @@ class Polls extends Component {
 const StyledPolls = withStyles(styles)(Polls)
 
 const mapState = state => ({
-  polls: state.polls
+  polls: state.polls,
+  pastPolls: state.polls.filter(poll => new Date(poll.dueDate) < new Date())
 })
 
 const mapDispatch = dispatch => ({

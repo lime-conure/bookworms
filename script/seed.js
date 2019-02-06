@@ -166,10 +166,9 @@ async function seed() {
   // make a poll for our club
   const polls = await Promise.all([
     Poll.create({
-      title: 'February 2019 Meeting',
-      notes:
-        'A poll to decide our next book and meeting time for club Lime Conure',
-      dueDate: new Date(),
+      title: 'January 2019 Meeting',
+      notes: 'A poll in the past',
+      dueDate: new Date('01-01-2019'),
       clubId: 1
     })
   ])
