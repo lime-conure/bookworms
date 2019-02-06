@@ -563,22 +563,73 @@ router.get('/:clubId/meetings', async (req, res, next) => {
           }
         })
 
-        // load poll options for each poll
-        const pollOptionsForAllPolls = null
-        const options = await poll.getOptions({include: [{model: Book}]})
+        polls.forEach(async poll => {
+          // find winning book
+          const bookOptions = poll.getOptions({
+            where: {type: 'book'},
+            include: [{model: Book}]
+          })
 
-        // count votes for each option
-        const allOptions = await Promise.all(
-          options.map(async option => {
+          const bookOptionsAndVoteCount = bookOptions.map(async option => {
             const votes = await Vote.findAll({
               where: {optionId: option.id},
               attributes: ['userId']
             })
-            return {option, votes, numVotes: votes.length}
+            return {option, voteCount: votes.length}
           })
-        )
 
-        //generate a meeting for each poll
+          const winningBookId = bookOptionsAndVoteCount.length
+            ? bookOptionsAndVoteCount.sort(
+                (a, b) => b.voteCount - a.voteCount
+              )[0].option.books[0].id
+            : null
+
+          // finding winning date
+          const dateOptions = poll.getOptions({
+            where: {type: 'date'}
+          })
+
+          const dateOptionsAndVoteCount = dateOptions.map(async option => {
+            const votes = await Vote.findAll({
+              where: {optionId: option.id},
+              attributes: ['userId']
+            })
+            return {option, voteCount: votes.length}
+          })
+
+          const winningDate = dateOptionsAndVoteCount.sort(
+            (a, b) => b.voteCount - a.voteCount
+          )[0].option.dateTime
+
+          // finding winning location
+          const locationOptions = poll.getOptions({
+            where: {type: 'date'}
+          })
+
+          const locationOptionsAndVoteCount = locationOptions.map(
+            async option => {
+              const votes = await Vote.findAll({
+                where: {optionId: option.id},
+                attributes: ['userId']
+              })
+              return {option, voteCount: votes.length}
+            }
+          )
+
+          const winningLocation = locationOptionsAndVoteCount.sort(
+            (a, b) => b.voteCount - a.voteCount
+          )[0].option.location
+
+          //generate a meeting for each poll
+          const newMeeting = await Meeting.create({
+            name: `meeting for ${poll.title}`,
+            location: winningLocation,
+            date: new Date(winningDate),
+            creatorId: poll.creatorId,
+            clubId: club.id
+          })
+          if (winningBookId) await newMeeting.setBook(winningBookId)
+        })
 
         const meetings = await Meeting.findAll({
           where: {clubId: club.id},
