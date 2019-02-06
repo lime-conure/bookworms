@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {postMeeting} from '../store'
-import axios from 'axios'
-import {formatDateString, formatDate} from '../utils'
+import BookSearch from './BookSearch'
+import {formatDateString, formatDate, makeBookObject} from '../utils'
 
 import {withStyles} from '@material-ui/core/styles'
 import Divider from '@material-ui/core/Divider'
@@ -113,6 +113,20 @@ export class CreateMeeting extends Component {
               variant="filled"
               fullWidth
               required
+            />
+          </div>
+          {/* select book */}
+          <div className={classes.formSection}>
+            <Typography variant="h5" gutterBottom>
+              Add Book
+            </Typography>
+            <BookSearch
+              bookList={this.state.selectedBooks}
+              results={this.state.searchResults}
+              setResults={this.setResults}
+              addBook={(e, book) => this.addBook(e, book)}
+              removeBook={(e, idx) => this.deleteOption(e, idx, 'book')}
+              hideBookActions={true}
             />
           </div>
 
