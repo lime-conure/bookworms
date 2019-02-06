@@ -51,7 +51,7 @@ const styles = theme => ({
     color: '#fff',
     fontSize: '1rem',
     lineHeight: '1.5rem',
-    opacity: 0.8
+    opacity: 0.9
   },
   dialogImage: {
     width: '100%'
@@ -64,7 +64,7 @@ const styles = theme => ({
   },
   description: {
     marginTop: theme.spacing.unit * 1.5,
-    lineHeight: '1.61429em'
+    lineHeight: '1.614em'
   }
 })
 
