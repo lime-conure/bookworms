@@ -11,16 +11,17 @@ const Poll = db.define('poll', {
   },
   dueDate: {
     type: Sequelize.DATE,
-    allowNull: true,
     get() {
       if (this.getDataValue('dueDate')) {
-        return new Date(this.getDataValue('dueDate')).toLocaleDateString()
+        return new Date(this.getDataValue('dueDate')).toISOString()
       }
     }
   },
   notes: {
-    type: Sequelize.TEXT,
-    allowNull: true
+    type: Sequelize.TEXT
+  },
+  creatorId: {
+    type: Sequelize.INTEGER
   }
 })
 

@@ -32,7 +32,14 @@ router.get('/:clubId/books', async (req, res, next) => {
           )
 
           const newBooks = books.map((book, idx) => {
-            return {book, clubs_books: {type: rowsWithClubId[idx].type}}
+            return {
+              book,
+              clubs_books: {
+                type: rowsWithClubId[idx].type,
+                startTime: rowsWithClubId[idx].startTime,
+                endTime: rowsWithClubId[idx].endTime
+              }
+            }
           })
 
           res.send(newBooks)
@@ -87,12 +94,38 @@ router.post('/:clubId/books/add', async (req, res, next) => {
 
             if (existingRow) res.json({})
             else {
-              ClubBook.create({type, clubId: club.id, bookId: existingBook.id})
-              res.json(existingBook)
+              ClubBook.create({
+                type,
+                clubId: club.id,
+                bookId: existingBook.id,
+                startTime: book.startTime,
+                endTime: book.endTime
+              })
+              res.json({
+                book: existingBook,
+                clubs_books: {
+                  type,
+                  startTime: book.startTime,
+                  endTIme: book.endTime
+                }
+              })
             }
           } else {
-            ClubBook.create({type, clubId: club.id, bookId: existingBook.id})
-            res.json(existingBook)
+            ClubBook.create({
+              type,
+              clubId: club.id,
+              bookId: existingBook.id,
+              startTime: book.startTime,
+              endTime: book.endTime
+            })
+            res.json({
+              book: existingBook,
+              clubs_books: {
+                type,
+                starttime: book.startTime,
+                endTime: book.endTime
+              }
+            })
           }
         }
       }
@@ -114,14 +147,33 @@ router.put('/:clubId/books/delete', async (req, res, next) => {
         const isUser = await club.hasUser(req.user.id)
         if (!isUser) res.status(403).send(`Not authorized`)
         else {
-          const {bookId, type} = req.body
+          const {book} = req.body
           // make sure our club has this book before we remove it
-          const book = await ClubBook.findOne({where: {clubId, bookId, type}})
-          if (!book) {
+          let bookToDel
+          if (book.clubs_books.type === 'past') {
+            bookToDel = await ClubBook.findOne({
+              where: {
+                clubId,
+                bookId: book.id,
+                type: 'past',
+                endTime: book.clubs_books.endTime
+              }
+            })
+          } else {
+            bookToDel = await ClubBook.findOne({
+              where: {
+                clubId,
+                bookId: book.id,
+                type: book.clubs_books.type
+              }
+            })
+          }
+
+          if (!bookToDel) {
             res.send(`${club.name} does not have that book`)
           } else {
-            await book.destroy()
-            res.status(200).send()
+            await bookToDel.destroy()
+            res.status(200).json()
           }
         }
       }

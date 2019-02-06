@@ -155,12 +155,13 @@ async function seed() {
     ClubBook.create({
       clubId: 1,
       bookId: 1,
+      startTime: new Date(),
       type: 'now'
     }),
     ClubBook.create({
       clubId: 1,
       bookId: 2,
-      type: 'past'
+      type: 'future'
     })
   ])
 
@@ -170,13 +171,15 @@ async function seed() {
       title: 'January 2019 Meeting',
       notes: 'A poll in the past',
       dueDate: new Date('01-01-2019'),
-      clubId: 1
+      clubId: 1,
+      creatorId: 1
     }),
     Poll.create({
       title: 'Figuring out next meeting',
       notes: 'A poll in the future',
       dueDate: new Date('03-07-2019'),
-      clubId: 1
+      clubId: 1,
+      creatorId: 1
     })
   ])
 
@@ -235,13 +238,15 @@ async function seed() {
       name: 'February Meeting',
       location: 'Killarney Rose',
       date: new Date('02-01-2019'),
-      clubId: 1
+      clubId: 1,
+      creatorId: 1
     }),
     Meeting.create({
       name: 'April Meeting',
       location: 'Niu Noodle House',
       date: new Date('04-20-2019'),
-      clubId: 1
+      clubId: 1,
+      creatorId: 1
     })
   ])
 
@@ -252,7 +257,7 @@ async function seed() {
   console.log(`seeded ${polls.length} poll`)
   console.log(`seeded ${options.length} options`)
   console.log(`seeded ${votes.length} votes`)
-  console.log(`seeded ${meetings.length} votes`)
+  console.log(`seeded ${meetings.length} meetings`)
   console.log(`seeded successfully`)
 }
 

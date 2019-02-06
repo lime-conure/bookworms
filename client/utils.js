@@ -33,8 +33,8 @@ export const getBookDescription = async bookId => {
 }
 
 // constructs book object with needed fields from goodreads api
-export const makeBookObject = bookResult => {
-  if (bookResult.description)
+export const makeBookObject = async bookResult => {
+  if (!bookResult.best_book)
     //this book is already added, now is being moved
     return bookResult
   return {
@@ -43,6 +43,8 @@ export const makeBookObject = bookResult => {
     title: bookResult.best_book.title,
     imageUrl: bookResult.best_book.image_url,
     smallImageUrl: bookResult.best_book.small_image_url,
+    startTime: bookResult.startTime,
+    endTime: bookResult.endTime,
     pubDate:
       bookResult.original_publication_month +
       '-' +
@@ -56,13 +58,13 @@ export const makeBookObject = bookResult => {
 export const renderBookRating = rating => {
   const stars = Array(Math.floor(rating / 100)).fill(0)
   return (
-    <span style={{verticalAlign: 'top'}}>
+    <span style={{display: 'flex', alignItems: 'center'}}>
       {stars.map((star, idx) => (
         <Icon key={idx} fontSize="small">
           star
         </Icon>
-      ))}{' '}
-      {rating / 100}
+      ))}
+      <span style={{paddingLeft: '5px'}}>{rating / 100}</span>
     </span>
   )
 }

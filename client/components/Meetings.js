@@ -1,9 +1,10 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {fetchMeetings} from '../store'
+import {fetchMeetings, deleteMeeting} from '../store'
 import {formatDateDisplay} from '../utils'
 import {Link} from 'react-router-dom'
 
+// Material UI
 import {withStyles} from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Divider from '@material-ui/core/Divider'
@@ -14,6 +15,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import Icon from '@material-ui/core/Icon'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
+import Tooltip from '@material-ui/core/Tooltip'
 
 const styles = theme => ({
   root: {
@@ -72,6 +74,17 @@ class Meetings extends Component {
                 )}
               </Typography>
             </ListItemText>
+            {this.props.userId === meeting.creatorId && (
+              <Tooltip placement="left" title="Delete this Meeting">
+                <ListItemIcon
+                  onClick={() =>
+                    this.props.deleteMeeting(this.props.clubId, meeting.id)
+                  }
+                >
+                  <Icon className={classes.icon}>cancel</Icon>
+                </ListItemIcon>
+              </Tooltip>
+            )}
           </ListItem>
         ))}
       </List>
@@ -92,7 +105,7 @@ class Meetings extends Component {
           {upcomingMeetings.length
             ? this.renderMeetingList(upcomingMeetings, classes, false)
             : ''}
-          <Link to={`/clubs/${this.props.match.params.clubId}/createmeeting`}>
+          <Link to={`/clubs/${this.props.clubId}/createmeeting`}>
             <Button
               type="button"
               variant="contained"
@@ -126,6 +139,7 @@ class Meetings extends Component {
 }
 
 const StyledMeetings = withStyles(styles)(Meetings)
+
 const mapState = state => ({
   meetings: state.meetings,
   upcomingMeetings: state.meetings.filter(
@@ -134,11 +148,14 @@ const mapState = state => ({
   pastMeetings: state.meetings.filter(
     meeting => new Date(meeting.date) < new Date()
   ),
-  userId: state.user.id
+  userId: state.user.id,
+  clubId: state.singleClub.id
 })
 
 const mapDispatch = dispatch => ({
-  fetchMeetings: clubId => dispatch(fetchMeetings(clubId))
+  fetchMeetings: clubId => dispatch(fetchMeetings(clubId)),
+  deleteMeeting: (clubId, meetingId) =>
+    dispatch(deleteMeeting(clubId, meetingId))
 })
 
 export default connect(mapState, mapDispatch)(StyledMeetings)

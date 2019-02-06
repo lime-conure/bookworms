@@ -27,10 +27,9 @@ const removeUser = () => ({type: REMOVE_USER})
 export const inviteUser = inviteLink => ({type: INVITE_USER, inviteLink})
 const getUserBooks = books => ({type: GET_USER_BOOKS, books})
 const addUserBook = book => ({type: ADD_USER_BOOK, book})
-const removeUserBook = (bookId, bookType) => ({
+const removeUserBook = book => ({
   type: REMOVE_USER_BOOK,
-  bookId,
-  bookType
+  book
 })
 /**
  * THUNK CREATORS
@@ -96,11 +95,11 @@ export const postUserBook = (book, type) => async dispatch => {
       book,
       type
     })
-    if (data.id) {
+    if (data.book) {
       dispatch(
         addUserBook({
-          ...data,
-          users_books: {type},
+          ...data.book,
+          users_books: data.users_books,
           authors: book.authors || [book.author]
         })
       )
@@ -110,13 +109,12 @@ export const postUserBook = (book, type) => async dispatch => {
   }
 }
 
-export const deleteUserBook = (bookId, type) => async dispatch => {
+export const deleteUserBook = book => async dispatch => {
   try {
     await axios.put(`/api/user/books/delete`, {
-      bookId,
-      type
+      book
     })
-    dispatch(removeUserBook(bookId, type))
+    dispatch(removeUserBook(book))
   } catch (err) {
     console.log(err)
   }
@@ -144,8 +142,11 @@ export default function(state = defaultUser, action) {
           books: state.books.filter(
             book =>
               !(
-                book.id === action.bookId &&
-                book.users_books.type === action.bookType
+                book.id === action.book.id &&
+                book.users_books.type === action.book.users_books.type &&
+                (book.users_books.type === 'past'
+                  ? book.users_books.endTime === action.book.users_books.endTime
+                  : true)
               )
           )
         }

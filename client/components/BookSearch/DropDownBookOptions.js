@@ -5,7 +5,6 @@ import Menu from '@material-ui/core/Menu'
 import Divider from '@material-ui/core/Divider'
 import MenuItem from '@material-ui/core/MenuItem'
 import Icon from '@material-ui/core/Icon'
-import {Link} from 'react-router-dom'
 
 class DropDownBookOptions extends React.Component {
   state = {
@@ -23,14 +22,46 @@ class DropDownBookOptions extends React.Component {
   }
 
   handleMenuClick = async (e, idx) => {
-    const moveTo = this.options[this.props.type][idx]
+    const {removeBook, addBook, type, book} = this.props
+    const moveTo = this.options[type][idx]
     if (moveTo === 'remove') {
-      this.props.removeBook(e, idx, this.props.book.id, this.props.type)
-    } else {
-      if (this.props.type === 'now' || this.props.type === 'future') {
-        await this.props.removeBook(e, idx, this.props.book.id, this.props.type)
+      removeBook(e, idx, book)
+    } else if (type === 'now') {
+      await removeBook(e, idx, book) // remove the 'now' book
+      let updatedBook // update startTime and endTime before adding
+      if (moveTo === 'past') {
+        updatedBook = {
+          ...book,
+          startTime: book.clubs_books
+            ? book.clubs_books.startTime
+            : book.users_books.startTime,
+          endTime: new Date()
+        }
+      } else {
+        //moveto === 'future'
+        updatedBook = {...book, startTime: null, endTime: null}
       }
-      await this.props.addBook(e, this.props.book, moveTo)
+      await addBook(e, updatedBook, moveTo)
+    } else if (type === 'future') {
+      await removeBook(e, idx, book) // remove the 'future' book
+      let updatedBook // update startTime and endTime before adding
+      if (moveTo === 'past') {
+        updatedBook = {...book, startTime: null, endTime: new Date()}
+      } else {
+        //moveto === 'now'
+        updatedBook = {...book, startTime: new Date(), endTime: null}
+      }
+      await addBook(e, updatedBook, moveTo)
+    } else {
+      // type === 'past'
+      let updatedBook // update startTime and endTime before adding
+      if (moveTo === 'future') {
+        updatedBook = {...book, startTime: null, endTime: null}
+      } else {
+        //moveto === 'now'
+        updatedBook = {...book, startTime: new Date(), endTime: null}
+      }
+      await addBook(e, updatedBook, moveTo)
     }
     this.setState({anchorEl: null})
   }
@@ -68,11 +99,15 @@ class DropDownBookOptions extends React.Component {
           anchorEl={anchorEl}
           open={Boolean(anchorEl)}
           onClose={this.handleClose}
+          disableAutoFocusItem
         >
           {this.options[this.props.type].map((moveTo, idx) => (
-            <MenuItem key={moveTo} onClick={e => this.handleMenuClick(e, idx)}>
-              {this.renderActionText(moveTo)}
-            </MenuItem>
+            <span key={moveTo}>
+              {moveTo === 'remove' && <Divider />}
+              <MenuItem onClick={e => this.handleMenuClick(e, idx)}>
+                {this.renderActionText(moveTo)}
+              </MenuItem>
+            </span>
           ))}
         </Menu>
       </div>

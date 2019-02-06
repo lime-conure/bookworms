@@ -20,8 +20,11 @@ const Meeting = db.define('meeting', {
       notEmpty: true
     },
     get() {
-      return new Date(this.getDataValue('date')).toLocaleDateString()
+      return new Date(this.getDataValue('date')).toISOString()
     }
+  },
+  creatorId: {
+    type: Sequelize.INTEGER
   }
 })
 

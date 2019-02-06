@@ -40,7 +40,19 @@ class BookResults extends Component {
                 key={bookResult.best_book.id}
                 className={classes.gridListTile}
                 onClick={e => {
-                  this.props.addBook(e, bookResult, type)
+                  const updatedBook = {...bookResult}
+                  if (type === 'now') {
+                    updatedBook.startTime = new Date()
+                    updatedBook.endTime = null
+                  } else if (type === 'future') {
+                    updatedBook.startTime = null
+                    updatedBook.endTime = null
+                  } else {
+                    updatedBook.startTime = null
+                    updatedBook.endTime = new Date()
+                  }
+
+                  this.props.addBook(e, updatedBook, type)
                   // set search results to a empty after adding book
                   this.props.setResults([])
                 }}

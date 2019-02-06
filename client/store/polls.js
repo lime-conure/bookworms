@@ -1,9 +1,11 @@
 import axios from 'axios'
+import history from '../history'
 
 /**
  * ACTION TYPES
  */
 const GET_POLLS = 'GET_POLLS'
+const REMOVE_POLL = 'REMOVE_POLL'
 
 /**
  * INITIAL STATE
@@ -18,6 +20,11 @@ const getPolls = polls => ({
   polls
 })
 
+const removePoll = pollId => ({
+  type: REMOVE_POLL,
+  pollId
+})
+
 /**
  * THUNK CREATORS
  */
@@ -30,6 +37,18 @@ export const fetchPolls = clubId => async dispatch => {
   }
 }
 
+export const deletePoll = (e, clubId, pollId) => async dispatch => {
+  try {
+    e.preventDefault()
+    await axios.put(`/api/clubs/${clubId}/polls`, {
+      pollId
+    })
+    dispatch(removePoll(pollId))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
 /**
  * REDUCER
  */
@@ -37,6 +56,8 @@ export default function(state = defaultPolls, action) {
   switch (action.type) {
     case GET_POLLS:
       return action.polls
+    case REMOVE_POLL:
+      return state.filter(poll => poll.id !== action.pollId)
     default:
       return state
   }
