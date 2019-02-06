@@ -14,6 +14,8 @@ const {
 } = require('../db/models')
 module.exports = router
 
+const Op = require('sequelize').Op
+
 router.use('/', require('./books'))
 
 //****** ROUTES FOR CLUBS ******//
@@ -549,6 +551,97 @@ router.get('/:clubId/meetings', async (req, res, next) => {
           .status(403)
           .send('You are not authorized to see the meetings for this club')
       else {
+        //generate meetings for past polls with autoGenerateMeeting === true
+        //fetch past polls with autoGenerateMeeting === true
+        const polls = await Poll.findAll({
+          where: {
+            clubId: club.id,
+            autoGenerateMeeting: true,
+            dueDate: {
+              [Op.lt]: new Date()
+            }
+          }
+        })
+
+        for (i = 0; i < polls.length; i++) {
+          const poll = polls[i]
+
+          // find winning book
+          const bookOptions = await poll.getOptions({
+            where: {type: 'book'},
+            include: [{model: Book}]
+          })
+
+          const bookOptionsAndVoteCount = await Promise.all(
+            bookOptions.map(async option => {
+              const votes = await Vote.findAll({
+                where: {optionId: option.id},
+                attributes: ['userId']
+              })
+              return {option, voteCount: votes.length}
+            })
+          )
+
+          const winningBookId = bookOptionsAndVoteCount.length
+            ? bookOptionsAndVoteCount.sort(
+                (a, b) => b.voteCount - a.voteCount
+              )[0].option.book.id
+            : null
+
+          // finding winning date
+          const dateOptions = await poll.getOptions({
+            where: {type: 'time'}
+          })
+
+          const dateOptionsAndVoteCount = await Promise.all(
+            dateOptions.map(async option => {
+              const votes = await Vote.findAll({
+                where: {optionId: option.id},
+                attributes: ['userId']
+              })
+              return {option, voteCount: votes.length}
+            })
+          )
+
+          const winningDate = dateOptionsAndVoteCount.sort(
+            (a, b) => b.voteCount - a.voteCount
+          )[0].option.dateTime
+
+          // finding winning location
+          const locationOptions = await poll.getOptions({
+            where: {type: 'location'}
+          })
+
+          const locationOptionsAndVoteCount = await Promise.all(
+            locationOptions.map(async option => {
+              const votes = await Vote.findAll({
+                where: {optionId: option.id},
+                attributes: ['userId']
+              })
+              return {option, voteCount: votes.length}
+            })
+          )
+
+          const winningLocation = locationOptionsAndVoteCount.sort(
+            (a, b) => b.voteCount - a.voteCount
+          )[0].option.location
+
+          //generate a meeting
+          const newMeeting = await Meeting.create({
+            name: `${poll.title}`,
+            location: winningLocation,
+            date: new Date(winningDate),
+            creatorId: poll.creatorId,
+            clubId: club.id
+          })
+          if (winningBookId) await newMeeting.setBook(winningBookId)
+
+          // set autoGenerateMeeting to false
+          poll.update({
+            autoGenerateMeeting: false
+          })
+        }
+
         const meetings = await Meeting.findAll({
           where: {clubId: club.id},
           include: [{model: Book}],
