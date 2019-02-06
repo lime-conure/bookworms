@@ -567,13 +567,19 @@ router.post('/:clubId/meetings', async (req, res, next) => {
       if (check) {
         const {clubId} = req.params
         const {name, location, date, book} = req.body
+        let existingBook = await Book.findOne({
+          where: {goodReadsId: book.goodReadsId}
+        })
+        if (!existingBook) {
+          existingBook = await Book.create(book)
+        }
         const newMeeting = await Meeting.create({
           name,
           location,
           date: new Date(date),
           creatorId: req.user.id,
           clubId,
-          bookId: book ? book.id : null
+          bookId: book ? existingBook.id : null
         })
         res.json(newMeeting)
       } else {
