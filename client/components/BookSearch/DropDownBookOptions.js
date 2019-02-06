@@ -28,42 +28,42 @@ class DropDownBookOptions extends React.Component {
     if (moveTo === 'remove') {
       removeBook(e, idx, book)
     } else if (type === 'now') {
-        await removeBook(e, idx, book) // remove the 'now' book
-        let updatedBook // update startTime and endTime before adding
-        if (moveTo === 'past') {
-          updatedBook = {
-            ...book,
-            startTime: book.clubs_books
-              ? book.clubs_books.startTime
-              : book.users_books.startTime,
-            endTime: new Date()
-          }
-        } else {
-          //moveto === 'future'
-          updatedBook = {...book, startTime: null, endTime: null}
+      await removeBook(e, idx, book) // remove the 'now' book
+      let updatedBook // update startTime and endTime before adding
+      if (moveTo === 'past') {
+        updatedBook = {
+          ...book,
+          startTime: book.clubs_books
+            ? book.clubs_books.startTime
+            : book.users_books.startTime,
+          endTime: new Date()
         }
-        await addBook(e, updatedBook, moveTo)
-      } else if (type === 'future') {
-        await removeBook(e, idx, book) // remove the 'future' book
-        let updatedBook // update startTime and endTime before adding
-        if (moveTo === 'past') {
-          updatedBook = {...book, startTime: null, endTime: new Date()}
-        } else {
-          //moveto === 'now'
-          updatedBook = {...book, startTime: new Date(), endTime: null}
-        }
-        await addBook(e, updatedBook, moveTo)
       } else {
-        // type === 'past'
-        let updatedBook // update startTime and endTime before adding
-        if (moveTo === 'future') {
-          updatedBook = {...book, startTime: null, endTime: null}
-        } else {
-          //moveto === 'now'
-          updatedBook = {...book, startTime: new Date(), endTime: null}
-        }
-        await addBook(e, updatedBook, moveTo)
+        //moveto === 'future'
+        updatedBook = {...book, startTime: null, endTime: null}
       }
+      await addBook(e, updatedBook, moveTo)
+    } else if (type === 'future') {
+      await removeBook(e, idx, book) // remove the 'future' book
+      let updatedBook // update startTime and endTime before adding
+      if (moveTo === 'past') {
+        updatedBook = {...book, startTime: null, endTime: new Date()}
+      } else {
+        //moveto === 'now'
+        updatedBook = {...book, startTime: new Date(), endTime: null}
+      }
+      await addBook(e, updatedBook, moveTo)
+    } else {
+      // type === 'past'
+      let updatedBook // update startTime and endTime before adding
+      if (moveTo === 'future') {
+        updatedBook = {...book, startTime: null, endTime: null}
+      } else {
+        //moveto === 'now'
+        updatedBook = {...book, startTime: new Date(), endTime: null}
+      }
+      await addBook(e, updatedBook, moveTo)
+    }
     this.setState({anchorEl: null})
   }
 
