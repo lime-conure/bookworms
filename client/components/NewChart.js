@@ -8,7 +8,11 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend
+  Legend,
+  PieChart,
+  Pie,
+  Sector,
+  Cell
 } from 'recharts'
 import Typography from '@material-ui/core/Typography'
 
@@ -142,19 +146,132 @@ function final() {
   return result
 }
 
+function sortPie(criteria, value) {
+  return results
+    .sort((a, b) => {
+      return new Date(a.clubBooks[criteria]) - new Date(b.clubBooks[criteria])
+    })
+    .reduce((accum, val) => {
+      if (val.clubBooks[criteria]) {
+        // let date = val.clubBooks[criteria].slice(0,7)
+        let date = val.clubBooks[criteria]
+        if (date.startsWith(value)) {
+          accum = accum + 1
+          console.log('accum', accum)
+          // accum[date] = (accum[date] + 1) || 1
+        }
+      }
+
+      return accum
+    }, 0)
+}
+
+function pie(year) {
+  let started = sortPie('startTime', year)
+  let finished = sortPie('finishTime', year)
+  return [
+    {name: 'In progress', value: started},
+    {name: 'Finished', value: finished}
+  ]
+}
+
+const renderActiveShape = props => {
+  const RADIAN = Math.PI / 180
+  const {
+    cx,
+    cy,
+    midAngle,
+    innerRadius,
+    outerRadius,
+    startAngle,
+    endAngle,
+    fill,
+    payload,
+    percent,
+    value
+  } = props
+  const sin = Math.sin(-RADIAN * midAngle)
+  const cos = Math.cos(-RADIAN * midAngle)
+  const sx = cx + (outerRadius + 10) * cos
+  const sy = cy + (outerRadius + 10) * sin
+  const mx = cx + (outerRadius + 30) * cos
+  const my = cy + (outerRadius + 30) * sin
+  const ex = mx + (cos >= 0 ? 1 : -1) * 22
+  const ey = my
+  const textAnchor = cos >= 0 ? 'start' : 'end'
+
+  return (
+    <g>
+      <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>
+        {payload.name}
+      </text>
+      <Sector
+        cx={cx}
+        cy={cy}
+        innerRadius={innerRadius}
+        outerRadius={outerRadius}
+        startAngle={startAngle}
+        endAngle={endAngle}
+        fill={fill}
+      />
+      <Sector
+        cx={cx}
+        cy={cy}
+        startAngle={startAngle}
+        endAngle={endAngle}
+        innerRadius={outerRadius + 6}
+        outerRadius={outerRadius + 10}
+        fill={fill}
+      />
+      <path
+        d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`}
+        stroke={fill}
+        fill="none"
+      />
+      <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
+      <text
+        x={ex + (cos >= 0 ? 1 : -1) * 12}
+        y={ey}
+        textAnchor={textAnchor}
+        fill="#999"
+      >{`Books: ${value}`}</text>
+      <text
+        x={ex + (cos >= 0 ? 1 : -1) * 12}
+        y={ey}
+        dy={18}
+        textAnchor={textAnchor}
+        fill="#999"
+      >
+        {` ${(percent * 100).toFixed(0)}%`}
+      </text>
+    </g>
+  )
+}
+
 export default class NewChart extends Component {
   constructor() {
     super()
-    this.state = final()
+    this.state = {
+      all: final(),
+      year: pie('2018'),
+      activeIndex: 0
+    }
+    this.onPieEnter = this.onPieEnter.bind(this)
   }
+  onPieEnter(data, index) {
+    this.setState({
+      activeIndex: index
+    })
+  }
+
   render() {
     return (
       <div>
-        <Typography variant="h4">BarChart</Typography>
+        <Typography variant="h4"> Overall progress</Typography>
         <BarChart
           width={600}
           height={300}
-          data={this.state}
+          data={this.state.all}
           margin={{top: 5, right: 30, left: 20, bottom: 5}}
         >
           <CartesianGrid strokeDasharray="3 3" />
@@ -171,7 +288,7 @@ export default class NewChart extends Component {
         <LineChart
           width={600}
           height={300}
-          data={this.state}
+          data={this.state.all}
           margin={{top: 5, right: 30, left: 20, bottom: 5}}
         >
           <XAxis dataKey="name" />
@@ -187,6 +304,22 @@ export default class NewChart extends Component {
           />
           <Line type="monotone" dataKey="finished" stroke="#82ca9d" />
         </LineChart>
+
+        <Typography variant="h4">Progress in 2018</Typography>
+
+        <PieChart width={800} height={400}>
+          <Pie
+            activeIndex={this.state.activeIndex}
+            activeShape={renderActiveShape}
+            data={this.state.year}
+            cx={300}
+            cy={200}
+            innerRadius={60}
+            outerRadius={80}
+            fill="#8884d8"
+            onMouseEnter={this.onPieEnter}
+          />
+        </PieChart>
       </div>
     )
   }
