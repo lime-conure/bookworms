@@ -24,8 +24,8 @@ const styles = theme => ({
     color: '#fff'
   },
   dueDate: {
-    display: 'inline',
-    paddingLeft: theme.spacing.unit * 2
+    // display: 'inline',
+    // paddingLeft: theme.spacing.unit * 2
   },
   pastPolls: {
     opacity: 0.5
@@ -51,7 +51,12 @@ class Polls extends Component {
             to={`/clubs/${this.props.match.params.clubId}/polls/${poll.id}`}
           >
             <ListItemIcon>
-              <Icon className={classes.icon}>poll</Icon>
+              <Icon
+                fontSize={isActive ? 'large' : 'medium'}
+                className={classes.icon}
+              >
+                poll
+              </Icon>
             </ListItemIcon>
             <ListItemText component="div">
               <Typography variant="h5">

@@ -170,6 +170,12 @@ async function seed() {
       notes: 'A poll in the past',
       dueDate: new Date('01-01-2019'),
       clubId: 1
+    }),
+    Poll.create({
+      title: 'Figuring out next meeting',
+      notes: 'A poll in the future',
+      dueDate: new Date('03-07-2019'),
+      clubId: 1
     })
   ])
 
@@ -196,17 +202,17 @@ async function seed() {
     Option.create({
       type: 'location',
       location: 'Sweetgreen',
-      pollId: 1
+      pollId: 2
     }),
     Option.create({
       type: 'location',
       location: 'Killarney Rose',
-      pollId: 1
+      pollId: 2
     }),
     Option.create({
       type: 'location',
       location: 'Grace Hopper Campus',
-      pollId: 1
+      pollId: 2
     })
   ])
 
