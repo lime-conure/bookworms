@@ -40,6 +40,42 @@ class Polls extends Component {
     this.props.fetchPolls(this.props.match.params.clubId)
   }
 
+  renderPollList(polls, classes, isActive) {
+    return (
+      <List>
+        {polls.map(poll => (
+          <ListItem
+            button
+            component={Link}
+            key={poll.id}
+            to={`/clubs/${this.props.match.params.clubId}/polls/${poll.id}`}
+          >
+            <ListItemIcon>
+              <Icon className={classes.icon}>poll</Icon>
+            </ListItemIcon>
+            <ListItemText component="div">
+              <Typography variant="h5">
+                {poll.title}
+                {poll.dueDate ? (
+                  <Typography
+                    variant="subtitle1"
+                    component="span"
+                    className={classes.dueDate}
+                  >
+                    Voting {isActive ? 'ends' : 'ended'} on{' '}
+                    {formatDateDisplay(poll.dueDate, false)}
+                  </Typography>
+                ) : (
+                  ''
+                )}
+              </Typography>
+            </ListItemText>
+          </ListItem>
+        ))}
+      </List>
+    )
+  }
+
   render() {
     const {classes} = this.props
     const activePolls = this.props.activePolls
@@ -52,37 +88,7 @@ class Polls extends Component {
             Active Polls
           </Typography>
           <Divider />
-
-          <List>
-            {activePolls.map(poll => (
-              <ListItem
-                button
-                component={Link}
-                key={poll.id}
-                to={`/clubs/${this.props.match.params.clubId}/polls/${poll.id}`}
-              >
-                <ListItemIcon>
-                  <Icon className={classes.icon}>poll</Icon>
-                </ListItemIcon>
-                <ListItemText component="div">
-                  <Typography variant="h5">
-                    {poll.title}
-                    {poll.dueDate ? (
-                      <Typography
-                        variant="subtitle1"
-                        component="span"
-                        className={classes.dueDate}
-                      >
-                        Voting ends on {formatDateDisplay(poll.dueDate, false)}
-                      </Typography>
-                    ) : (
-                      ''
-                    )}
-                  </Typography>
-                </ListItemText>
-              </ListItem>
-            ))}
-          </List>
+          {this.renderPollList(activePolls, classes, true)}
           <Link to={`/clubs/${this.props.match.params.clubId}/createpoll`}>
             <Button
               type="button"
@@ -104,36 +110,7 @@ class Polls extends Component {
             Past Polls
           </Typography>
           <Divider />
-          <List>
-            {pastPolls.map(poll => (
-              <ListItem
-                button
-                component={Link}
-                key={poll.id}
-                to={`/clubs/${this.props.match.params.clubId}/polls/${poll.id}`}
-              >
-                <ListItemIcon>
-                  <Icon className={classes.icon}>poll</Icon>
-                </ListItemIcon>
-                <ListItemText component="div">
-                  <Typography variant="h5">
-                    {poll.title}
-                    {poll.dueDate ? (
-                      <Typography
-                        variant="subtitle1"
-                        component="span"
-                        className={classes.dueDate}
-                      >
-                        Voting ended on {formatDateDisplay(poll.dueDate, false)}
-                      </Typography>
-                    ) : (
-                      ''
-                    )}
-                  </Typography>
-                </ListItemText>
-              </ListItem>
-            ))}
-          </List>
+          {this.renderPollList(pastPolls, classes, false)}
         </Grid>
       </Grid>
     )
