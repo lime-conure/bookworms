@@ -29,10 +29,6 @@ const styles = theme => ({
   icon: {
     color: '#fff'
   },
-  meetingMetadata: {
-    display: 'inline',
-    paddingLeft: theme.spacing.unit * 2
-  },
   pastMeetings: {
     opacity: 0.5
   },
@@ -53,7 +49,7 @@ class Meetings extends Component {
           <ListItem button key={meeting.id}>
             <ListItemIcon>
               <Icon
-                fontSize={isPast ? 'medium' : 'large'}
+                fontSize={isPast ? 'default' : 'large'}
                 className={classes.icon}
               >
                 event

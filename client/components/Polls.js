@@ -23,10 +23,6 @@ const styles = theme => ({
   icon: {
     color: '#fff'
   },
-  dueDate: {
-    // display: 'inline',
-    // paddingLeft: theme.spacing.unit * 2
-  },
   pastPolls: {
     opacity: 0.5
   },
@@ -52,7 +48,7 @@ class Polls extends Component {
           >
             <ListItemIcon>
               <Icon
-                fontSize={isPast ? 'medium' : 'large'}
+                fontSize={isPast ? 'default' : 'large'}
                 className={classes.icon}
               >
                 poll
