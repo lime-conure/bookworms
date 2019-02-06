@@ -42,7 +42,6 @@ class Polls extends Component {
 
   render() {
     const {classes} = this.props
-    const polls = this.props.polls
     const activePolls = this.props.activePolls
     const pastPolls = this.props.pastPolls
 

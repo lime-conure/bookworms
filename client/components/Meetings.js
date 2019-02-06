@@ -13,6 +13,7 @@ import ListItemText from '@material-ui/core/ListItemText'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import Icon from '@material-ui/core/Icon'
 import Button from '@material-ui/core/Button'
+import Grid from '@material-ui/core/Grid'
 
 const styles = theme => ({
   root: {
@@ -31,6 +32,12 @@ const styles = theme => ({
   meetingMetadata: {
     display: 'inline',
     paddingLeft: theme.spacing.unit * 2
+  },
+  pastMeetings: {
+    opacity: 0.5
+  },
+  pastMeetingsHeader: {
+    lineHeight: '4.5rem'
   }
 })
 
@@ -39,53 +46,80 @@ class Meetings extends Component {
     const clubId = this.props.match.params.clubId
     this.props.fetchMeetings(clubId)
   }
+  renderMeetingList(meetings, classes) {
+    return (
+      <List>
+        {meetings.map(meeting => (
+          <ListItem button key={meeting.id}>
+            <ListItemIcon>
+              <Icon className={classes.icon}>event</Icon>
+            </ListItemIcon>
+            <ListItemText component="div">
+              <Typography variant="h5">
+                {meeting.name}
+                {meeting.date ? (
+                  <Typography
+                    variant="subtitle1"
+                    component="span"
+                    className={classes.meetingMetadata}
+                  >
+                    {formatDateDisplay(meeting.date.slice(0, 10), false)} at{' '}
+                    {meeting.location}
+                  </Typography>
+                ) : (
+                  ''
+                )}
+              </Typography>
+            </ListItemText>
+          </ListItem>
+        ))}
+      </List>
+    )
+  }
+
   render() {
     const {classes} = this.props
-    const meetings = this.props.meetings
+    const upcomingMeetings = this.props.upcomingMeetings
+    const pastMeetings = this.props.pastMeetings
     return (
-      <div>
-        <Typography variant="h3" component="h3">
-          Meetings
-        </Typography>
-        <Divider />
-        <List>
-          {meetings.map(meeting => (
-            <ListItem button key={meeting.id}>
-              <ListItemIcon>
-                <Icon className={classes.icon}>event</Icon>
-              </ListItemIcon>
-              <ListItemText component="div">
-                <Typography variant="h5">
-                  {meeting.name}
-                  {meeting.date ? (
-                    <Typography
-                      variant="subtitle1"
-                      component="span"
-                      className={classes.meetingMetadata}
-                    >
-                      {formatDateDisplay(meeting.date.slice(0, 10), false)} at{' '}
-                      {meeting.location}
-                    </Typography>
-                  ) : (
-                    ''
-                  )}
-                </Typography>
-              </ListItemText>
-            </ListItem>
-          ))}
-        </List>
-        <Link to={`/clubs/${this.props.match.params.clubId}/createmeeting`}>
-          <Button
-            type="button"
-            variant="contained"
-            color="primary"
-            size="large"
-            className={classes.button}
-          >
-            Create a New Meeting
-          </Button>
-        </Link>
-      </div>
+      <Grid container spacing={40}>
+        <Grid item xs={6}>
+          <Typography variant="h3" component="h3">
+            Upcoming Meetings
+          </Typography>
+          <Divider />
+          {upcomingMeetings.length
+            ? this.renderMeetingList(upcomingMeetings, classes)
+            : ''}
+          <Link to={`/clubs/${this.props.match.params.clubId}/createmeeting`}>
+            <Button
+              type="button"
+              variant="contained"
+              color="primary"
+              size="large"
+              className={classes.button}
+            >
+              Create a New Meeting
+            </Button>
+          </Link>
+        </Grid>
+
+        {pastMeetings.length ? (
+          <Grid item xs={6} className={classes.pastMeetings}>
+            <Typography
+              variant="h4"
+              component="h4"
+              className={classes.pastMeetingsHeader}
+            >
+              Past Meetings
+            </Typography>
+            <Divider />
+            {this.renderMeetingList(pastMeetings, classes)}
+          </Grid>
+        ) : (
+          ''
+        )}
+      </Grid>
     )
   }
 }
@@ -93,6 +127,12 @@ class Meetings extends Component {
 const StyledMeetings = withStyles(styles)(Meetings)
 const mapState = state => ({
   meetings: state.meetings,
+  upcomingMeetings: state.meetings.filter(
+    meeting => new Date(meeting.date) >= new Date()
+  ),
+  pastMeetings: state.meetings.filter(
+    meeting => new Date(meeting.date) < new Date()
+  ),
   userId: state.user.id
 })
 
