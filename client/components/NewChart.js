@@ -15,165 +15,102 @@ import {
   Cell
 } from 'recharts'
 import Typography from '@material-ui/core/Typography'
+import {connect} from 'react-redux'
+import {fetchClubBooks} from '../store'
 
-const results = [
-  {
-    id: 1,
-    goodReadsId: 2,
-    title: 2,
-    description: 'description',
-    imageUrl: 'http/someadderss',
-    pages: 30,
+// const results = [
+//   {
+//     id: 1,
+//     goodReadsId: 2,
+//     title: 2,
+//     description: 'description',
+//     imageUrl: 'http/someadderss',
+//     pages: 30,
 
-    clubBooks: {
-      type: 'past',
-      clubId: 1,
-      startTime: '2019-02-04 12:10:39.15-05',
-      finishTime: '2019-02-05 12:10:39.15-05'
-    }
-  },
-  {
-    id: 1,
-    goodReadsId: 2,
-    title: 2,
-    description: 'description',
-    imageUrl: 'http/someadderss',
-    pages: 30,
+//     clubBooks: {
+//       type: 'past',
+//       clubId: 1,
+//       startTime: '2019-02-04 12:10:39.15-05',
+//       finishTime: '2019-02-05 12:10:39.15-05'
+//     }
+//   },
+//   {
+//     id: 1,
+//     goodReadsId: 2,
+//     title: 2,
+//     description: 'description',
+//     imageUrl: 'http/someadderss',
+//     pages: 30,
 
-    clubBooks: {
-      type: 'past',
-      clubId: 1,
-      startTime: '2019-01-05 12:10:39.15-05',
-      finishTime: '2019-02-05 12:10:39.15-05'
-    }
-  },
-  {
-    id: 1,
-    goodReadsId: 2,
-    title: 2,
-    description: 'description',
-    imageUrl: 'http/someadderss',
-    pages: 30,
+//     clubBooks: {
+//       type: 'past',
+//       clubId: 1,
+//       startTime: '2019-01-05 12:10:39.15-05',
+//       finishTime: '2019-02-05 12:10:39.15-05'
+//     }
+//   },
+//   {
+//     id: 1,
+//     goodReadsId: 2,
+//     title: 2,
+//     description: 'description',
+//     imageUrl: 'http/someadderss',
+//     pages: 30,
 
-    clubBooks: {
-      type: 'past',
-      clubId: 1,
-      startTime: '2019-01-05 12:10:39.15-05',
-      finishTime: '2019-02-05 12:10:39.15-05'
-    }
-  },
-  {
-    id: 2,
-    goodReadsId: 2,
-    title: 1,
-    description: 'description',
-    imageUrl: 'http/someadderss',
-    pages: 30,
+//     clubBooks: {
+//       type: 'past',
+//       clubId: 1,
+//       startTime: '2019-01-05 12:10:39.15-05',
+//       finishTime: '2019-02-05 12:10:39.15-05'
+//     }
+//   },
+//   {
+//     id: 2,
+//     goodReadsId: 2,
+//     title: 1,
+//     description: 'description',
+//     imageUrl: 'http/someadderss',
+//     pages: 30,
 
-    clubBooks: {
-      type: 'now',
-      clubId: 1,
-      startTime: '2018-01-05 12:10:39.15-05',
-      finishTime: '2018-02-05 12:10:39.15-05'
-    }
-  },
-  {
-    id: 3,
-    goodReadsId: 2,
-    title: 3,
-    description: 'description',
-    imageUrl: 'http/someadderss',
-    pages: 30,
+//     clubBooks: {
+//       type: 'now',
+//       clubId: 1,
+//       startTime: '2018-01-05 12:10:39.15-05',
+//       finishTime: '2018-02-05 12:10:39.15-05'
+//     }
+//   },
+//   {
+//     id: 3,
+//     goodReadsId: 2,
+//     title: 3,
+//     description: 'description',
+//     imageUrl: 'http/someadderss',
+//     pages: 30,
 
-    clubBooks: {
-      type: 'future',
-      clubId: 1,
-      startTime: '2018-12-05 12:10:39.15-05',
-      finishTime: '2017-02-05 12:10:39.15-05'
-    }
-  },
-  {
-    id: 4,
-    goodReadsId: 2,
-    title: 4,
-    description: 'description',
-    imageUrl: 'http/someadderss',
-    pages: 30,
+//     clubBooks: {
+//       type: 'future',
+//       clubId: 1,
+//       startTime: '2018-12-05 12:10:39.15-05',
+//       finishTime: '2017-02-05 12:10:39.15-05'
+//     }
+//   },
+//   {
+//     id: 4,
+//     goodReadsId: 2,
+//     title: 4,
+//     description: 'description',
+//     imageUrl: 'http/someadderss',
+//     pages: 30,
 
-    clubBooks: {
-      id: 2,
-      type: 'past',
-      clubId: 1,
-      startTime: '2018-07-05 12:10:39.15-05',
-      finishTime: '2019-02-05 12:10:39.15-05'
-    }
-  }
-]
-
-function sort(criteria) {
-  return results
-    .sort((a, b) => {
-      return new Date(a.clubBooks[criteria]) - new Date(b.clubBooks[criteria])
-    })
-    .reduce((accum, val) => {
-      if (val.clubBooks[criteria]) {
-        let date = val.clubBooks[criteria]
-        accum[date] = accum[date] + 1 || 1
-      }
-      return accum
-    }, {})
-}
-
-function final() {
-  let started = sort('startTime')
-  let finished = sort('finishTime')
-  let startedArr = Object.keys(started)
-  let finishedArr = Object.keys(finished)
-  let finalArr = [...startedArr, ...finishedArr].sort(
-    (a, b) => new Date(a) - new Date(b)
-  )
-  let result = []
-  finalArr.forEach((el, idx) => {
-    let created = {
-      name: el.slice(0, 7),
-      started: started[el] || 0,
-      finished: finished[el] || 0
-    }
-    if (idx > 0 && created.name === result[idx - 1].name) {
-      result[idx - 1].finished = created.finished
-    } else result.push(created)
-  })
-  return result
-}
-
-function sortPie(criteria, value) {
-  return results
-    .sort((a, b) => {
-      return new Date(a.clubBooks[criteria]) - new Date(b.clubBooks[criteria])
-    })
-    .reduce((accum, val) => {
-      if (val.clubBooks[criteria]) {
-        // let date = val.clubBooks[criteria].slice(0,7)
-        let date = val.clubBooks[criteria]
-        if (date.startsWith(value)) {
-          accum = accum + 1
-          console.log('accum', accum)
-          // accum[date] = (accum[date] + 1) || 1
-        }
-      }
-
-      return accum
-    }, 0)
-}
-
-function pie(year) {
-  let started = sortPie('startTime', year)
-  let finished = sortPie('finishTime', year)
-  return [
-    {name: 'In progress', value: started},
-    {name: 'Finished', value: finished}
-  ]
-}
+//     clubBooks: {
+//       id: 2,
+//       type: 'past',
+//       clubId: 1,
+//       startTime: '2018-07-05 12:10:39.15-05',
+//       finishTime: '2019-02-05 12:10:39.15-05'
+//     }
+//   }
+// ]
 
 const renderActiveShape = props => {
   const RADIAN = Math.PI / 180
@@ -248,16 +185,123 @@ const renderActiveShape = props => {
   )
 }
 
-export default class NewChart extends Component {
-  constructor() {
-    super()
+class NewChart extends Component {
+  constructor(props) {
+    super(props)
     this.state = {
-      all: final(),
-      year: pie('2018'),
+      all: this.final(),
+      year: this.pie('2019'),
       activeIndex: 0
     }
     this.onPieEnter = this.onPieEnter.bind(this)
+    this.sort = this.sort.bind(this)
+    this.final = this.final.bind(this)
+    this.sortPie = this.sortPie.bind(this)
+    this.pie = this.pie.bind(this)
   }
+
+  async componentDidMount() {
+    const clubId = Number(this.props.match.params.clubId)
+    await this.props.fetchClubBooks(clubId)
+    console.log('in component did mount', this.props.results)
+    console.log(this.state, 'state')
+  }
+  // functions
+  sort(criteria) {
+    console.log(this.props, 'props')
+    return this.props.results
+      .sort((a, b) => {
+        //added line 207
+        // if (a.club_books[criteria]){
+        return (
+          new Date(a.clubs_books[criteria]) - new Date(b.clubs_books[criteria])
+        )
+        // }
+      })
+      .reduce((accum, val) => {
+        if (val.clubs_books[criteria]) {
+          let date = val.clubs_books[criteria]
+          accum[date] = accum[date] + 1 || 1
+        }
+        return accum
+      }, {})
+  }
+
+  final() {
+    let started = this.sort('startTime')
+    console.log('started', started)
+    let finished = this.sort('endTime')
+    console.log('finished', finished)
+    let startedArr = Object.keys(started)
+    let finishedArr = Object.keys(finished)
+    let finalArr = [...startedArr, ...finishedArr].sort(
+      (a, b) => new Date(a) - new Date(b)
+    )
+    console.log(finalArr, 'finalArr')
+    let result = []
+    finalArr.forEach((el, idx) => {
+      console.log('element', el)
+      let created = {
+        name: el.slice(0, 7),
+        started: started[el] || 0,
+        finished: finished[el] || 0
+      }
+      console.log('created', created)
+      console.log(result, 'result')
+      if (
+        idx > 0 &&
+        result.length &&
+        created.name === result[result.length - 1].name
+      ) {
+        // result[idx - 1].finished = created.finished
+        console.log('inside if ')
+        if (created.started)
+          result[result.length - 1].started =
+            result[result.length - 1].started + 1
+        if (created.finished)
+          result[result.length - 1].finished =
+            result[result.length - 1].finished + 1
+      } else {
+        console.log('results', result)
+        result.push(created)
+      }
+    })
+    return result
+  }
+
+  sortPie(criteria, value) {
+    return this.props.results
+      .sort((a, b) => {
+        return (
+          new Date(a.clubs_books[criteria]) - new Date(b.clubs_books[criteria])
+        )
+      })
+      .reduce((accum, val) => {
+        if (val.clubs_books[criteria]) {
+          // let date = val.clubBooks[criteria].slice(0,7)
+          let date = val.clubs_books[criteria]
+          if (date.startsWith(value)) {
+            accum = accum + 1
+
+            // accum[date] = (accum[date] + 1) || 1
+          }
+        }
+
+        return accum
+      }, 0)
+  }
+
+  pie(year) {
+    let started = this.sortPie('startTime', year)
+    let finished = this.sortPie('endTime', year)
+    return [
+      {name: 'In progress', value: started},
+      {name: 'Finished', value: finished}
+    ]
+  }
+
+  //=======================================
+
   onPieEnter(data, index) {
     this.setState({
       activeIndex: index
@@ -265,6 +309,7 @@ export default class NewChart extends Component {
   }
 
   render() {
+    console.log('props', this.props)
     return (
       <div>
         <Typography variant="h4"> Overall progress</Typography>
@@ -324,3 +369,12 @@ export default class NewChart extends Component {
     )
   }
 }
+
+const mapState = state => ({
+  results: state.clubBooks
+})
+const mapDispatch = dispatch => ({
+  fetchClubBooks: clubId => dispatch(fetchClubBooks(clubId))
+})
+
+export default connect(mapState, mapDispatch)(NewChart)
