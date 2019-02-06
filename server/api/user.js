@@ -26,7 +26,14 @@ router.get('/books', async (req, res, next) => {
       )
 
       const newBooks = books.map((book, idx) => {
-        return {book, users_books: {type: rowsWithUserId[idx].type}}
+        return {
+          book,
+          users_books: {
+            type: rowsWithUserId[idx].type,
+            startTime: rowsWithUserId[idx].startTime,
+            endTime: rowsWithUserId[idx].endTime
+          }
+        }
       })
 
       res.send(newBooks)
@@ -72,12 +79,38 @@ router.post('/books/add', async (req, res, next) => {
 
         if (existingRow) res.json({})
         else {
-          UserBook.create({type, userId: req.user.id, bookId: existingBook.id})
-          res.json(existingBook)
+          UserBook.create({
+            type,
+            userId: req.user.id,
+            bookId: existingBook.id,
+            startTime: book.startTime,
+            endTime: book.endTime
+          })
+          res.json({
+            book: existingBook,
+            users_books: {
+              type,
+              startTime: book.startTime,
+              endTIme: book.endTime
+            }
+          })
         }
       } else {
-        UserBook.create({type, userId: req.user.id, bookId: existingBook.id})
-        res.json(existingBook)
+        UserBook.create({
+          type,
+          userId: req.user.id,
+          bookId: existingBook.id,
+          startTime: book.startTime,
+          endTime: book.endTime
+        })
+        res.json({
+          book: existingBook,
+          users_books: {
+            type,
+            starttime: book.startTime,
+            endTime: book.endTime
+          }
+        })
       }
     }
   } catch (err) {
@@ -90,16 +123,32 @@ router.put('/books/delete', async (req, res, next) => {
   try {
     if (!req.user) res.status(403).send(`Not authorized`)
     else {
-      const {bookId, type} = req.body
+      const {book} = req.body
       // make sure user has this book before we remove it
-      const book = await UserBook.findOne({
-        where: {bookId, type, userId: req.user.id}
-      })
-      if (!book) {
+      let bookToDel
+      if (book.users_books.type === 'past') {
+        bookToDel = await UserBook.findOne({
+          where: {
+            userId: req.user.id,
+            bookId: book.id,
+            type: 'past',
+            endTime: book.users_books.endTime
+          }
+        })
+      } else {
+        bookToDel = await UserBook.findOne({
+          where: {
+            userId: req.user.id,
+            bookId: book.id,
+            type: book.users_books.type
+          }
+        })
+      }
+      if (!bookToDel) {
         res.send(`${req.user.fullName} does not have that book`)
       } else {
-        await book.destroy()
-        res.status(200).send()
+        await bookToDel.destroy()
+        res.status(200).json()
       }
     }
   } catch (err) {

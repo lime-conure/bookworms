@@ -6,6 +6,14 @@ const ClubBook = db.define('clubs_books', {
     type: Sequelize.ENUM('past', 'now', 'future'),
     allowNull: false
   },
+  startTime: {
+    type: Sequelize.DATE,
+    allowNull: true
+  },
+  endTime: {
+    type: Sequelize.DATE,
+    allowNull: true
+  },
   clubId: {
     type: Sequelize.INTEGER,
     allowNull: false

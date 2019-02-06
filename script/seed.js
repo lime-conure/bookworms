@@ -155,12 +155,13 @@ async function seed() {
     ClubBook.create({
       clubId: 1,
       bookId: 1,
+      startTime: new Date(),
       type: 'now'
     }),
     ClubBook.create({
       clubId: 1,
       bookId: 2,
-      type: 'past'
+      type: 'future'
     })
   ])
 

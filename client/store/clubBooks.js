@@ -24,10 +24,9 @@ const addClubBook = book => ({
   book
 })
 
-const removeClubBook = (bookId, bookType) => ({
+const removeClubBook = book => ({
   type: REMOVE_CLUB_BOOK,
-  bookId,
-  bookType
+  book
 })
 
 /**
@@ -53,11 +52,11 @@ export const postClubBook = (book, type, clubId) => async dispatch => {
       book,
       type
     })
-    if (data.id) {
+    if (data.book) {
       dispatch(
         addClubBook({
-          ...data,
-          clubs_books: {type},
+          ...data.book,
+          clubs_books: data.clubs_books,
           authors: book.authors || [book.author]
         })
       )
@@ -67,13 +66,12 @@ export const postClubBook = (book, type, clubId) => async dispatch => {
   }
 }
 
-export const deleteClubBook = (bookId, type, clubId) => async dispatch => {
+export const deleteClubBook = (book, clubId) => async dispatch => {
   try {
     await axios.put(`/api/clubs/${clubId}/books/delete`, {
-      bookId,
-      type
+      book
     })
-    dispatch(removeClubBook(bookId, type))
+    dispatch(removeClubBook(book))
   } catch (err) {
     console.log(err)
   }
@@ -86,13 +84,15 @@ export default function(state = clubBooks, action) {
     case ADD_CLUB_BOOK:
       return [action.book, ...state]
     case REMOVE_CLUB_BOOK:
-      return state.filter(
-        book =>
-          !(
-            book.id === action.bookId &&
-            book.clubs_books.type === action.bookType
-          )
-      )
+      return state.filter((book, idx) => {
+        return !(
+          book.id === action.book.id &&
+          book.clubs_books.type === action.book.clubs_books.type &&
+          (book.clubs_books.type === 'past'
+            ? book.clubs_books.endTime === action.book.clubs_books.endTime
+            : true)
+        )
+      })
 
     default:
       return state

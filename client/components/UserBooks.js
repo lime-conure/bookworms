@@ -50,9 +50,9 @@ class UserBooks extends Component {
     })
   }
 
-  handleRemoveBook(e, idx, bookId, type) {
+  handleRemoveBook(e, idx, book) {
     e.preventDefault()
-    this.props.deleteUserBook(bookId, type)
+    this.props.deleteUserBook(book)
   }
 
   renderBookSection(books, type, classes) {
@@ -102,7 +102,7 @@ const mapState = state => ({
 const mapDispatch = dispatch => ({
   fetchUserBooks: () => dispatch(fetchUserBooks()),
   postUserBook: (book, type) => dispatch(postUserBook(book, type)),
-  deleteUserBook: (bookId, type) => dispatch(deleteUserBook(bookId, type))
+  deleteUserBook: book => dispatch(deleteUserBook(book))
 })
 
 export default connect(mapState, mapDispatch)(StyledUserBooks)
