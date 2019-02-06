@@ -100,6 +100,11 @@ class Search extends Component {
             value={this.state.searchText}
             variant="filled"
             fullWidth
+            onKeyPress={e => {
+              if (e.key === 'Enter') {
+                this.onButtonClick(e) // search on enter
+              }
+            }}
           />
         </Grid>
         <Grid item xs={4}>
