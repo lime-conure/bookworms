@@ -140,7 +140,6 @@ export class CreateMeeting extends Component {
             <BookSearch
               bookList={this.state.selectedBooks} // array of one book object
               results={this.state.searchResults}
-              setResults={this.setResults}
               addBook={(e, book) => this.addBook(e, book)}
               removeBook={e => this.removeBook(e)}
               hideBookActions={true}
@@ -155,7 +154,8 @@ export class CreateMeeting extends Component {
               this.props.postMeeting(this.props.clubId, {
                 name: this.state.name,
                 location: this.state.location,
-                date: this.state.date
+                date: this.state.date,
+                book: this.state.selectedBooks[0]
               })
             }
             disabled={!this.state.name || !this.state.location}
