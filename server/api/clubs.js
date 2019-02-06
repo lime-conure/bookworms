@@ -561,7 +561,7 @@ router.get('/:clubId/meetings', async (req, res, next) => {
         })
 
         // load poll options for each poll
-        const pollOptions = null
+        const pollOptionsForAllPolls = null
         const options = await poll.getOptions({include: [{model: Book}]})
 
         // count votes for each option
