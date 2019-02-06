@@ -66,7 +66,6 @@ class Polls extends Component {
                   >
                     Voting {isPast ? 'ended' : 'ends'} on{' '}
                     {poll.dueDate.slice(0, 10)}
-                    {/* {formatDateDisplay(poll.dueDate)} */}
                   </Typography>
                 ) : (
                   ''
