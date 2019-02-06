@@ -45,7 +45,15 @@ const renderActiveShape = props => {
 
   return (
     <g>
-      <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>
+      <text
+        x={cx}
+        y={cy}
+        dy={8}
+        textAnchor="middle"
+        fontSize={30}
+        fill="#999"
+        fontFamily="Lato"
+      >
         {payload.name}
       </text>
       <Sector
@@ -55,7 +63,7 @@ const renderActiveShape = props => {
         outerRadius={outerRadius}
         startAngle={startAngle}
         endAngle={endAngle}
-        fill={fill}
+        fill="#e98fa3"
       />
       <Sector
         cx={cx}
@@ -64,7 +72,7 @@ const renderActiveShape = props => {
         endAngle={endAngle}
         innerRadius={outerRadius + 6}
         outerRadius={outerRadius + 10}
-        fill={fill}
+        fill="#e98fa3"
       />
       <path
         d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`}
@@ -76,14 +84,18 @@ const renderActiveShape = props => {
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}
         textAnchor={textAnchor}
-        fill="#e98fa3"
-      >{`Books: ${value}`}</text>
+        fill="#999"
+        fontSize={20}
+        fontFamily="Lato"
+      >{`books: ${value}`}</text>
       <text
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}
         dy={18}
+        fontSize={20}
         textAnchor={textAnchor}
-        fill="#e98fa3"
+        fill="#999"
+        fontFamily="Lato"
       >
         {` ${(percent * 100).toFixed(0)}%`}
       </text>
@@ -207,8 +219,7 @@ class NewChart extends Component {
     return (
       <div>
         <Typography variant="h4" style={{marginBottom: 60}}>
-          {' '}
-          Book progress
+          Monthly book totals
         </Typography>
         <BarChart
           width={1000}
@@ -217,23 +228,36 @@ class NewChart extends Component {
           margin={{top: 5, right: 30, left: 20, bottom: 5}}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis type="number" domain={[0, 'dataMax + 1']} />
-          <Tooltip />
+          <XAxis dataKey="name" tick={{fontFamily: 'Lato'}} />
+          <YAxis
+            type="number"
+            tick={{fontFamily: 'Lato'}}
+            domain={[0, 'dataMax + 1']}
+          />
+          <Tooltip
+            cursor={{fill: '#444', opacity: 0.6}}
+            contentStyle={{
+              fontFamily: 'Lato',
+              color: '#fff',
+              backgroundColor: '#222'
+            }}
+          />
           <Legend
             width={100}
             wrapperStyle={{
               top: 40,
               right: 20,
-              backgroundColor: '#f5f5f5',
+              color: '#fff',
+              backgroundColor: '#333',
               border: '1px solid #d5d5d5',
               borderRadius: 3,
-              lineHeight: '40px'
+              lineHeight: '40px',
+              fontFamily: 'Lato'
             }}
           />
           {/* "#8cb81d" */}
-          <Bar dataKey="Started" fill="#e98fa3" barSize={30} />
-          <Bar dataKey="Finished" fill="#6f75aa" barSize={30} />
+          <Bar dataKey="Started" fill="#e98fa3" barSize={25} />
+          <Bar dataKey="Finished" fill="#6f75aa" barSize={25} />
         </BarChart>
 
         <Typography variant="h4">Progress in 2018</Typography>
