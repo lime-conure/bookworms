@@ -444,7 +444,7 @@ async function seed() {
     name: 'November Meeting',
     location: 'Old Tbilisi Garden',
     date: new Date('11-14-2018'),
-    bookId: 4,
+    bookId: 1,
     clubId: 1,
     creatorId: 1
   })
