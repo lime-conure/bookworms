@@ -157,37 +157,166 @@ async function seed() {
   })
   await book7.setAuthors([author7])
 
-  await ClubBook.create({
-    clubId: 1,
-    bookId: 1,
-    startTime: new Date('12-20-2018'),
-    endTime: new Date('1-02-2019'),
-    type: 'past'
+  // BOOK & AUTHOR 8
+  const author8 = await Author.create({
+    name: 'Haruki Murakami',
+    goodReadsId: 3354,
+    bio: `Since childhood, Murakami has been heavily influenced by Western culture, particularly Western music and literature. He grew up reading a range of works by American writers, such as Kurt Vonnegut and Richard Brautigan, and he is often distinguished from other Japanese writers by his Western influences.`
   })
-  await ClubBook.create({
-    clubId: 1,
-    bookId: 4,
-    startTime: new Date('10-11-2018'),
-    endTime: new Date('11-14-2018'),
-    type: 'past'
+  const book8 = await Book.create({
+    goodReadsId: 38820047,
+    title: 'Killing Commendatore',
+    imageUrl: 'https://images.gr-assets.com/books/1527854255l/38820047.jpg',
+    description:
+      'In Killing Commendatore, a thirty-something portrait painter in Tokyo is abandoned by his wife and finds himself holed up in the mountain home of a famous artist, Tomohiko Amada. When he discovers a previously unseen painting in the attic, he unintentionally opens a circle of mysterious circumstances. To close it, he must complete a journey that involves a mysterious ringing bell, a two-foot-high physical manifestation of an Idea, a dapper businessman who lives across the valley, a precocious thirteen-year-old girl, a Nazi assassination attempt during World War II in Vienna, a pit in the woods behind the artist’s home, and an underworld haunted by Double Metaphors. A tour de force of love and loneliness, war and art—as well as a loving homage to The Great Gatsby—Killing Commendatore is a stunning work of imagination from one of our greatest writers.',
+    pubDate: 'September 5 2017',
+    rating: 392
   })
-  await ClubBook.create({
-    clubId: 1,
-    bookId: 7,
-    startTime: new Date('04-14-2018'),
-    endTime: new Date('04-18-2018'),
-    type: 'past'
+  await book8.setAuthors([author8])
+
+  // BOOK & AUTHOR 7
+  const author9 = await Author.create({
+    name: 'Kamila Shamsie',
+    goodReadsId: 168076,
+    bio: `Kamila Shamsie was born in 1973 in Karachi, where she grew up. She has a BA in Creative Writing from Hamilton College in Clinton, NY and an MFA from the University of Massachusetts, Amherst. While at the University of Massachusetts she wrote In The City By The Sea , published by Granta Books UK in 1998. This first novel was shortlisted for the John Llewelyn Rhys Award in the UK, and Shamsie received the Prime Minister’s Award for Literature in Pakistan in 1999. Her 2000 novel Salt and Saffron led to Shamsie’s selection as one of Orange’s “21 Writers of the 21st Century.” With her third novel, Kartography , Shamsie was again shortlisted for the John Llewelyn Rhys award in the UK. Both Kartography and her next novel, Broken Verses , won the Patras Bokhari Award from the Academy of Letters in Pakistan. Burnt Shadows, Shamsie’s fifth novel, has been longlisted for the Orange Prize for Fiction. Her books have been translated into a number of languages.`
   })
-  await ClubBook.create({
-    clubId: 1,
-    bookId: 2,
-    type: 'future'
+  const book9 = await Book.create({
+    goodReadsId: 33621427,
+    title: 'Home Fire',
+    imageUrl: 'https://images.gr-assets.com/books/1534180768l/33621427.jpg',
+    description:
+      'Isma is free. After years of watching out for her younger siblings in the wake of their mother’s death, she’s accepted an invitation from a mentor in America that allows her to resume a dream long deferred. But she can’t stop worrying about Aneeka, her beautiful, headstrong sister back in London, or their brother, Parvaiz, who’s disappeared in pursuit of his own dream, to prove himself to the dark legacy of the jihadist father he never knew. When he resurfaces half a globe away, Isma’s worst fears are confirmed.',
+    pubDate: 'September 5 2017',
+    rating: 409
   })
-  await ClubBook.create({
-    clubId: 1,
-    bookId: 3,
-    type: 'future'
+  await book9.setAuthors([author9])
+
+  // BOOK & AUTHOR 10
+  const author10 = await Author.create({
+    name: 'George Saunders',
+    goodReadsId: 8885,
+    bio: `George Saunders was born December 2, 1958 and raised on the south side of Chicago. In 1981 he received a B.S. in Geophysical Engineering from Colorado School of Mines in Golden, Colorado. He worked at Radian International, an environmental engineering firm in Rochester, NY as a technical writer and geophysical engineer from 1989 to 1996. He has also worked in Sumatra on an oil exploration geophysics crew, as a doorman in Beverly Hills, a roofer in Chicago, a convenience store clerk, a guitarist in a Texas country-and-western band, and a knuckle-puller in a West Texas slaughterhouse. `
   })
+  const book10 = await Book.create({
+    goodReadsId: 29906980,
+    title: 'Lincoln in the Bardo',
+    imageUrl: 'https://images.gr-assets.com/books/1492130850l/29906980.jpg',
+    description:
+      'n his long-awaited first novel, American master George Saunders delivers his most original, transcendent, and moving work yet. Unfolding in a graveyard over the course of a single night, narrated by a dazzling chorus of voices, Lincoln in the Bardo is a literary experience unlike any other—for no one but Saunders could conceive it.',
+    pubDate: 'September 5 2017',
+    rating: 378
+  })
+  await book10.setAuthors([author10])
+
+  // BOOK & AUTHOR 11
+  const author11 = await Author.create({
+    name: 'Yaa Gyasi',
+    goodReadsId: 14493315,
+    bio: `Yaa Gyasi was born in Ghana and raised in Huntsville, Alabama. She is a graduate of the Iowa Writers’ Workshop where she held a Dean’s Graduate Research Fellowship. Her short stories have appeared in African American Review and Callaloo. Her debut novel, is Homegoing (Knopf, June 2016).`
+  })
+  const book11 = await Book.create({
+    goodReadsId: 27071490,
+    title: 'Homegoing',
+    imageUrl: 'https://images.gr-assets.com/books/1448108591l/27071490.jpg',
+    description:
+      'A novel of breathtaking sweep and emotional power that traces three hundred years in Ghana and along the way also becomes a truly great American novel. Extraordinary for its exquisite language, its implacable sorrow, its soaring beauty, and for its monumental portrait of the forces that shape families and nations, Homegoing heralds the arrival of a major new voice in contemporary fiction.',
+    rating: 442
+  })
+  await book11.setAuthors([author11])
+
+  // BOOK & AUTHOR 12
+  const author12 = await Author.create({
+    name: 'Carlo Rovelli',
+    goodReadsId: 108952,
+    bio: `Carlo Rovelli is an Italian theoretical physicist and writer who has worked in Italy and the USA, and currently works in France. His work is mainly in the field of quantum gravity, where he is among the founders of the loop quantum gravity theory. He has also worked in the history and philosophy of science. He collaborates regularly with several Italian newspapers, in particular the cultural supplements of Il Sole 24 Ore and La Repubblica.`
+  })
+  const book12 = await Book.create({
+    goodReadsId: 41150906,
+    title: 'The Order of Time',
+    imageUrl: 'https://images.gr-assets.com/books/1534824772l/41150906.jpg',
+    description: `Time is a mystery that does not cease to puzzle us. Philosophers, artists and poets have long explored its meaning while scientists have found that its structure is different from the simple intuition we have of it. From Boltzmann to quantum theory, from Einstein to loop quantum gravity, our understanding of time has been undergoing radical transformations. Time flows at a different speed in different places, the past and the future differ far less than we might think, and the very notion of the present evaporates in the vast universe.
+        `,
+    rating: 409
+  })
+  await book12.setAuthors([author12])
+
+  await Promise.all([
+    ClubBook.create({
+      clubId: 1,
+      bookId: 1,
+      startTime: new Date('12-20-2018'),
+      endTime: new Date('1-02-2019'),
+      type: 'past'
+    }),
+    ClubBook.create({
+      type: 'past',
+      startTime: '2018-04-01 14:55:19.718-05',
+      endTime: '2018-06-03 14:55:19.718-05',
+      clubId: 1,
+      bookId: 2
+    }),
+    ClubBook.create({
+      type: 'past',
+      startTime: '2018-06-01 14:55:19.718-05',
+      endTime: '2018-07-03 11:55:19.718-05',
+      clubId: 1,
+      bookId: 3
+    }),
+    ClubBook.create({
+      type: 'past',
+      startTime: '2018-06-01 14:55:19.718-05',
+      endTime: '2018-07-20 18:55:19.718-05',
+      clubId: 1,
+      bookId: 4
+    }),
+    ClubBook.create({
+      type: 'past',
+      startTime: '2018-08-03 02:55:19.718-05',
+      endTime: '2018-11-20 16:55:19.718-05',
+      clubId: 1,
+      bookId: 5
+    }),
+    ClubBook.create({
+      type: 'past',
+      startTime: '2018-08-03 16:55:19.718-05',
+      endTime: '2019-02-05 16:55:19.718-05',
+      clubId: 1,
+      bookId: 6
+    }),
+    ClubBook.create({
+      type: 'past',
+      startTime: '2018-08-05 16:55:19.718-05',
+      endTime: '2019-02-03 16:55:19.718-05',
+      clubId: 1,
+      bookId: 7
+    }),
+    ClubBook.create({
+      type: 'now',
+      startTime: '2019-02-01 12:55:19.718-05',
+      endTime: null,
+      clubId: 1,
+      bookId: 8
+    }),
+    ClubBook.create({
+      type: 'now',
+      startTime: '2019-02-03 16:55:19.718-05',
+      endTime: null,
+      clubId: 1,
+      bookId: 9
+    }),
+    ClubBook.create({
+      type: 'now',
+      startTime: '2019-02-03 16:55:19.718-05',
+      endTime: null,
+      clubId: 1,
+      bookId: 10
+    }),
+    ClubBook.create({
+      clubId: 1,
+      bookId: 11,
+      type: 'future'
+    })
+  ])
 
   await UserBook.create({
     userId: 1,
@@ -201,6 +330,12 @@ async function seed() {
     startTime: new Date('07-14-2017'),
     endTime: new Date('07-21-2017'),
     type: 'past'
+  })
+  await UserBook.create({
+    userId: 1,
+    bookId: 12,
+    startTime: new Date('01-19-2019'),
+    type: 'now'
   })
 
   // past poll
@@ -218,6 +353,18 @@ async function seed() {
       type: 'book',
       bookName: 'There There',
       bookId: 1,
+      pollId: 1
+    }),
+    Option.create({
+      type: 'book',
+      bookName: 'Sing, Unburied, Sing',
+      bookId: 7,
+      pollId: 1
+    }),
+    Option.create({
+      type: 'book',
+      bookName: 'A Gentleman in Moscow',
+      bookId: 4,
       pollId: 1
     }),
     Option.create({
@@ -266,8 +413,8 @@ async function seed() {
     }),
     Option.create({
       type: 'book',
-      bookName: 'The Immortalists',
-      bookId: 3,
+      bookName: 'Homegoing',
+      bookId: 11,
       pollId: 2
     }),
     Option.create({
@@ -312,18 +459,18 @@ async function seed() {
   })
 
   // votes for poll1 (past)
-  const votes = await Promise.all([
+  await Promise.all([
     Vote.create({
       userId: 1,
       optionId: 1
     }),
     Vote.create({
       userId: 1,
-      optionId: 2
+      optionId: 4
     }),
     Vote.create({
       userId: 1,
-      optionId: 5
+      optionId: 7
     })
   ])
 
