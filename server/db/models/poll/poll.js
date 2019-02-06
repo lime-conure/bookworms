@@ -20,7 +20,7 @@ const Poll = db.define('poll', {
   },
   autoGenerateMeeting: {
     type: Sequelize.BOOLEAN,
-    defaultValue: false
+    defaultValue: true
   }
 })
 
