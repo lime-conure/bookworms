@@ -18,100 +18,6 @@ import Typography from '@material-ui/core/Typography'
 import {connect} from 'react-redux'
 import {fetchClubBooks} from '../store'
 
-// const results = [
-//   {
-//     id: 1,
-//     goodReadsId: 2,
-//     title: 2,
-//     description: 'description',
-//     imageUrl: 'http/someadderss',
-//     pages: 30,
-
-//     clubBooks: {
-//       type: 'past',
-//       clubId: 1,
-//       startTime: '2019-02-04 12:10:39.15-05',
-//       finishTime: '2019-02-05 12:10:39.15-05'
-//     }
-//   },
-//   {
-//     id: 1,
-//     goodReadsId: 2,
-//     title: 2,
-//     description: 'description',
-//     imageUrl: 'http/someadderss',
-//     pages: 30,
-
-//     clubBooks: {
-//       type: 'past',
-//       clubId: 1,
-//       startTime: '2019-01-05 12:10:39.15-05',
-//       finishTime: '2019-02-05 12:10:39.15-05'
-//     }
-//   },
-//   {
-//     id: 1,
-//     goodReadsId: 2,
-//     title: 2,
-//     description: 'description',
-//     imageUrl: 'http/someadderss',
-//     pages: 30,
-
-//     clubBooks: {
-//       type: 'past',
-//       clubId: 1,
-//       startTime: '2019-01-05 12:10:39.15-05',
-//       finishTime: '2019-02-05 12:10:39.15-05'
-//     }
-//   },
-//   {
-//     id: 2,
-//     goodReadsId: 2,
-//     title: 1,
-//     description: 'description',
-//     imageUrl: 'http/someadderss',
-//     pages: 30,
-
-//     clubBooks: {
-//       type: 'now',
-//       clubId: 1,
-//       startTime: '2018-01-05 12:10:39.15-05',
-//       finishTime: '2018-02-05 12:10:39.15-05'
-//     }
-//   },
-//   {
-//     id: 3,
-//     goodReadsId: 2,
-//     title: 3,
-//     description: 'description',
-//     imageUrl: 'http/someadderss',
-//     pages: 30,
-
-//     clubBooks: {
-//       type: 'future',
-//       clubId: 1,
-//       startTime: '2018-12-05 12:10:39.15-05',
-//       finishTime: '2017-02-05 12:10:39.15-05'
-//     }
-//   },
-//   {
-//     id: 4,
-//     goodReadsId: 2,
-//     title: 4,
-//     description: 'description',
-//     imageUrl: 'http/someadderss',
-//     pages: 30,
-
-//     clubBooks: {
-//       id: 2,
-//       type: 'past',
-//       clubId: 1,
-//       startTime: '2018-07-05 12:10:39.15-05',
-//       finishTime: '2019-02-05 12:10:39.15-05'
-//     }
-//   }
-// ]
-
 const renderActiveShape = props => {
   const RADIAN = Math.PI / 180
   const {
@@ -189,7 +95,6 @@ class NewChart extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      all: this.final(),
       year: this.pie('2019'),
       activeIndex: 0
     }
@@ -208,15 +113,11 @@ class NewChart extends Component {
   }
   // functions
   sort(criteria) {
-    console.log(this.props, 'props')
     return this.props.results
       .sort((a, b) => {
-        //added line 207
-        // if (a.club_books[criteria]){
         return (
           new Date(a.clubs_books[criteria]) - new Date(b.clubs_books[criteria])
         )
-        // }
       })
       .reduce((accum, val) => {
         if (val.clubs_books[criteria]) {
@@ -229,32 +130,28 @@ class NewChart extends Component {
 
   final() {
     let started = this.sort('startTime')
-    console.log('started', started)
+
     let finished = this.sort('endTime')
-    console.log('finished', finished)
+
     let startedArr = Object.keys(started)
     let finishedArr = Object.keys(finished)
     let finalArr = [...startedArr, ...finishedArr].sort(
       (a, b) => new Date(a) - new Date(b)
     )
-    console.log(finalArr, 'finalArr')
+
     let result = []
     finalArr.forEach((el, idx) => {
-      console.log('element', el)
       let created = {
         name: el.slice(0, 7),
         started: started[el] || 0,
         finished: finished[el] || 0
       }
-      console.log('created', created)
-      console.log(result, 'result')
+
       if (
         idx > 0 &&
         result.length &&
         created.name === result[result.length - 1].name
       ) {
-        // result[idx - 1].finished = created.finished
-        console.log('inside if ')
         if (created.started)
           result[result.length - 1].started =
             result[result.length - 1].started + 1
@@ -262,7 +159,6 @@ class NewChart extends Component {
           result[result.length - 1].finished =
             result[result.length - 1].finished + 1
       } else {
-        console.log('results', result)
         result.push(created)
       }
     })
@@ -278,12 +174,9 @@ class NewChart extends Component {
       })
       .reduce((accum, val) => {
         if (val.clubs_books[criteria]) {
-          // let date = val.clubBooks[criteria].slice(0,7)
           let date = val.clubs_books[criteria]
           if (date.startsWith(value)) {
             accum = accum + 1
-
-            // accum[date] = (accum[date] + 1) || 1
           }
         }
 
@@ -309,14 +202,15 @@ class NewChart extends Component {
   }
 
   render() {
-    console.log('props', this.props)
+    const all = this.final()
+
     return (
       <div>
         <Typography variant="h4"> Overall progress</Typography>
         <BarChart
           width={600}
           height={300}
-          data={this.state.all}
+          data={all}
           margin={{top: 5, right: 30, left: 20, bottom: 5}}
         >
           <CartesianGrid strokeDasharray="3 3" />
@@ -329,26 +223,6 @@ class NewChart extends Component {
         </BarChart>
 
         <Typography variant="h4">LineChart</Typography>
-
-        <LineChart
-          width={600}
-          height={300}
-          data={this.state.all}
-          margin={{top: 5, right: 30, left: 20, bottom: 5}}
-        >
-          <XAxis dataKey="name" />
-          <YAxis />
-          <CartesianGrid strokeDasharray="3 3" />
-          <Tooltip />
-          <Legend />
-          <Line
-            type="monotone"
-            dataKey="started"
-            stroke="#8884d8"
-            activeDot={{r: 8}}
-          />
-          <Line type="monotone" dataKey="finished" stroke="#82ca9d" />
-        </LineChart>
 
         <Typography variant="h4">Progress in 2018</Typography>
 
