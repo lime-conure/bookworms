@@ -139,7 +139,7 @@ export class SinglePoll extends Component {
                       )}
 
                       {type === 'Date & Time' &&
-                        formatDateDisplay(optionObj.option[columnName])}
+                        formatDateDisplay(optionObj.option[columnName], true)}
                       {type === 'Location' && optionObj.option[columnName]}
                     </strong>
                   </TableCell>

@@ -140,7 +140,7 @@ class CreatePoll extends Component {
       this.setState({
         selectedDates: [
           ...this.state.selectedDates,
-          formatDateDisplay(dateTime)
+          formatDateDisplay(dateTime, true)
         ],
         dateTime: '',
         dateTimeMessage: ''
