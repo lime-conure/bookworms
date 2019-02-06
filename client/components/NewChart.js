@@ -76,14 +76,14 @@ const renderActiveShape = props => {
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}
         textAnchor={textAnchor}
-        fill="#999"
+        fill="#e98fa3"
       >{`Books: ${value}`}</text>
       <text
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}
         dy={18}
         textAnchor={textAnchor}
-        fill="#999"
+        fill="#e98fa3"
       >
         {` ${(percent * 100).toFixed(0)}%`}
       </text>
@@ -143,8 +143,8 @@ class NewChart extends Component {
     finalArr.forEach((el, idx) => {
       let created = {
         name: el.slice(0, 7),
-        started: started[el] || 0,
-        finished: finished[el] || 0
+        Started: started[el] || 0,
+        Finished: finished[el] || 0
       }
 
       if (
@@ -152,12 +152,12 @@ class NewChart extends Component {
         result.length &&
         created.name === result[result.length - 1].name
       ) {
-        if (created.started)
-          result[result.length - 1].started =
-            result[result.length - 1].started + 1
-        if (created.finished)
-          result[result.length - 1].finished =
-            result[result.length - 1].finished + 1
+        if (created.Started)
+          result[result.length - 1].Started =
+            result[result.length - 1].Started + 1
+        if (created.Finished)
+          result[result.length - 1].Finished =
+            result[result.length - 1].Finished + 1
       } else {
         result.push(created)
       }
@@ -206,36 +206,48 @@ class NewChart extends Component {
 
     return (
       <div>
-        <Typography variant="h4"> Overall progress</Typography>
+        <Typography variant="h4" style={{marginBottom: 60}}>
+          {' '}
+          Book progress
+        </Typography>
         <BarChart
-          width={600}
-          height={300}
+          width={1000}
+          height={500}
           data={all}
           margin={{top: 5, right: 30, left: 20, bottom: 5}}
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
-          <YAxis />
+          <YAxis type="number" domain={[0, 'dataMax + 1']} />
           <Tooltip />
-          <Legend />
-          <Bar dataKey="started" fill="#8cb81d" />
-          <Bar dataKey="finished" fill="#d6eaa4" />
+          <Legend
+            width={100}
+            wrapperStyle={{
+              top: 40,
+              right: 20,
+              backgroundColor: '#f5f5f5',
+              border: '1px solid #d5d5d5',
+              borderRadius: 3,
+              lineHeight: '40px'
+            }}
+          />
+          {/* "#8cb81d" */}
+          <Bar dataKey="Started" fill="#e98fa3" barSize={30} />
+          <Bar dataKey="Finished" fill="#6f75aa" barSize={30} />
         </BarChart>
-
-        <Typography variant="h4">LineChart</Typography>
 
         <Typography variant="h4">Progress in 2018</Typography>
 
-        <PieChart width={800} height={400}>
+        <PieChart width={1000} height={500}>
           <Pie
             activeIndex={this.state.activeIndex}
             activeShape={renderActiveShape}
             data={this.state.year}
-            cx={300}
+            cx={500}
             cy={200}
-            innerRadius={60}
-            outerRadius={80}
-            fill="#8884d8"
+            innerRadius={80}
+            outerRadius={150}
+            fill="#6f75aa"
             onMouseEnter={this.onPieEnter}
           />
         </PieChart>
