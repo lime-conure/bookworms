@@ -178,9 +178,10 @@ class BookList extends Component {
     )
   }
 
-  renderBookProgress(book, type, isUserBook) {
+  renderBookProgress(book, isUserBook) {
     const keyName = isUserBook ? 'users_books' : 'clubs_books'
     const hasStartTime = book[keyName].startTime
+    const type = book[keyName].type
     switch (type) {
       case 'now':
         return `Started on ${formatDateDisplay(book[keyName].startTime)}`
@@ -239,7 +240,7 @@ class BookList extends Component {
               component="span"
               className={classes.bookProgress}
             >
-              {this.renderBookProgress(book, book.clubs_books.type)}
+              {this.renderBookProgress(book)}
             </Typography>
           )}
           {book.users_books && (
@@ -248,7 +249,7 @@ class BookList extends Component {
               component="span"
               className={classes.bookProgress}
             >
-              {this.renderBookProgress(book, book.users_books.type, true)}
+              {this.renderBookProgress(book, true)}
               {/* isUserBook = true */}
             </Typography>
           )}
