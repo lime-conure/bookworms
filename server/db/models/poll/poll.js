@@ -10,18 +10,17 @@ const Poll = db.define('poll', {
     }
   },
   dueDate: {
-    type: Sequelize.DATE,
-    get() {
-      if (this.getDataValue('dueDate')) {
-        return new Date(this.getDataValue('dueDate')).toISOString()
-      }
-    }
+    type: Sequelize.DATE
   },
   notes: {
     type: Sequelize.TEXT
   },
   creatorId: {
     type: Sequelize.INTEGER
+  },
+  autoGenerateMeeting: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
   }
 })
 

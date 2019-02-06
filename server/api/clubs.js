@@ -12,7 +12,9 @@ const {
   Message,
   Meeting
 } = require('../db/models')
-module.exports = router
+module.exports = routera
+
+const Op = require('sequelize').Op
 
 router.use('/', require('./books'))
 
@@ -546,6 +548,35 @@ router.get('/:clubId/meetings', async (req, res, next) => {
           .status(403)
           .send('You are not authorized to see the meetings for this club')
       else {
+        //generate meetings for past polls with autoGenerateMeeting === true
+        //fetch past polls with autoGenerateMeeting === true
+        const polls = await Poll.findAll({
+          where: {
+            clubId: req.params.clubId,
+            autoGenerateMeeting: true,
+            dueDate: {
+              [Op.lt]: new Date()
+            }
+          }
+        })
+
+				// load poll options for each poll
+				const pollOptions
+        const options = await poll.getOptions({include: [{model: Book}]})
+
+        // count votes for each option
+        const allOptions = await Promise.all(
+          options.map(async option => {
+            const votes = await Vote.findAll({
+              where: {optionId: option.id},
+              attributes: ['userId']
+            })
+            return {option, votes, numVotes: votes.length}
+          })
+        )
+
+        //generate a meeting for each poll
+
         const meetings = await Meeting.findAll({where: {clubId: club.id}})
         res.json(meetings)
       }
