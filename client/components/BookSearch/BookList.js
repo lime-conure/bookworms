@@ -183,7 +183,7 @@ class BookList extends Component {
                   >
                     <Icon>cancel</Icon>
                   </IconButton>
-                  <DialogTitle id="book-modal" className={classes.bookModal}>
+                  <DialogTitle id="book-modal">
                     <Typography variant="h6" component="h6">
                       {this.state.dialogBook.title}
                       <span className={classes.author}>
@@ -202,7 +202,7 @@ class BookList extends Component {
                       {book.rating > 0 && renderBookRating(book.rating)}
                     </Typography>
                   </DialogTitle>
-                  <DialogContent className={classes.bookModal}>
+                  <DialogContent>
                     <Grid
                       container
                       spacing={16}
