@@ -135,7 +135,7 @@ export class CreateMeeting extends Component {
           {/* select book */}
           <div className={classes.formSection}>
             <Typography variant="h5" gutterBottom>
-              Add a Book
+              Book
             </Typography>
             <BookSearch
               bookList={this.state.selectedBooks} // array of one book object
