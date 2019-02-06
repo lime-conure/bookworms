@@ -19,18 +19,21 @@ export const getBookDescription = async bookId => {
     const XMLResponse = parser.parseFromString(data, 'application/xml')
     description = XMLResponse.getElementsByTagName('description')[0].textContent
     if (!description) {
-      return 'No description found.'
+      return 'No description found'
     }
     // remove html tags
-    const descWithoutHTML = description.replace(/<\/?[^>]+(>|$)/g, '')
-    return descWithoutHTML.slice(0, 480)
+    const descWithoutHTML = description
+      .replace(/<\/?[^>](>|$)/g, '')
+      // replace <br /><br /> with a space, to maintain space between periods
+      .replace(/<\/?[^>]+(>|$)/g, '  ')
+    return `${descWithoutHTML.slice(0, 580).trim()}...`
   } catch (err) {
     console.error(err)
   }
 }
 
 // constructs book object with needed fields from goodreads api
-export const makeBookObject = async bookResult => {
+export const makeBookObject = bookResult => {
   if (bookResult.description)
     //this book is already added, now is being moved
     return bookResult

@@ -218,7 +218,7 @@ class BookList extends Component {
                           component="span"
                           className={classes.description}
                         >
-                          {this.state.dialogBook.description}...
+                          {this.state.dialogBook.description}
                         </Typography>
                       </Grid>
                     </Grid>
