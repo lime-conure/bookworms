@@ -180,13 +180,18 @@ class BookList extends Component {
 
   renderBookProgress(book, type, isUserBook) {
     const keyName = isUserBook ? 'users_books' : 'clubs_books'
+    const hasStartTime = book[keyName].startTime
     switch (type) {
       case 'now':
         return `Started on ${formatDateDisplay(book[keyName].startTime)}`
       case 'past':
-        return `Finished on ${formatDateDisplay(book[keyName].endTime)}`
+        return (
+          (hasStartTime
+            ? `Started on ${formatDateDisplay(book[keyName].startTime)} · `
+            : '') + `Finished on ${formatDateDisplay(book[keyName].endTime)}`
+        )
       default:
-        return '' //future books dont have progress yet, so make them default case
+        return '' // future books don't have times yet, so make them default case
     }
   }
 
@@ -229,15 +234,23 @@ class BookList extends Component {
             {book.rating > 0 && renderBookRating(book.rating)}
           </Typography>
           {book.clubs_books && (
-            <span className={classes.bookProgress}>
+            <Typography
+              variant="body2"
+              component="span"
+              className={classes.bookProgress}
+            >
               {this.renderBookProgress(book, book.clubs_books.type)}
-            </span>
+            </Typography>
           )}
           {book.users_books && (
-            <span className={classes.bookProgress}>
+            <Typography
+              variant="body2"
+              component="span"
+              className={classes.bookProgress}
+            >
               {this.renderBookProgress(book, book.users_books.type, true)}
               {/* isUserBook = true */}
-            </span>
+            </Typography>
           )}
         </ListItemText>
 
