@@ -180,7 +180,7 @@ class BookList extends Component {
                     <Icon>cancel</Icon>
                   </IconButton>
                   <DialogTitle id="book-modal">
-                    <Typography variant="h6" component="h6" gutterBottom>
+                    <Typography variant="h6" component="h6">
                       {this.state.dialogBook.title}
                       <span className={classes.author}>
                         {this.state.dialogBook.authors &&
@@ -188,6 +188,14 @@ class BookList extends Component {
                           ? ` by ${this.state.dialogBook.authors[0].name}`
                           : ''}
                       </span>
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      component="p"
+                      inline
+                      className={classes.rating}
+                    >
+                      {book.rating > 0 && renderBookRating(book.rating)}
                     </Typography>
                   </DialogTitle>
                   <DialogContent>
