@@ -18,9 +18,6 @@ const Meeting = db.define('meeting', {
     allowNull: false,
     validate: {
       notEmpty: true
-    },
-    get() {
-      return new Date(this.getDataValue('date')).toISOString()
     }
   },
   creatorId: {
