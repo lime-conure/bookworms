@@ -20,6 +20,8 @@ import {
   Meetings,
   CreateMeeting
 } from './components'
+// import Chart from './components/Chart'
+import NewChart from './components/NewChart'
 
 import {me} from './store'
 import socket from './socket'
@@ -113,6 +115,11 @@ class Routes extends Component {
                     exact
                     path="/clubs/:clubId/createmeeting"
                     component={CreateMeeting}
+                  />
+                  <Route
+                    exact
+                    path="/clubs/:clubId/chart"
+                    component={NewChart}
                   />
                 </main>
               </Switch>
