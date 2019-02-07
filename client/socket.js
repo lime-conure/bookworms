@@ -15,7 +15,7 @@ socket.on('NEW_MESSAGE', message => {
       message.message.messages[0].user.fullName
     } posted a message in Club ${message.clubName}`,
     icon: '',
-    timeout: 4000,
+    timeout: 10000,
     onClick: () => {
       window.focus()
       this.close()
