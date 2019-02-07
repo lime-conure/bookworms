@@ -283,7 +283,7 @@ class BookList extends Component {
           {this.state.loadingDialog ? <LinearProgress color="primary" /> : ''}
           <List className={classes.root}>
             {bookList.map((book, idx) => (
-              <div key={book.title}>
+              <div key={idx}>
                 {this.renderBook(book, idx)}
                 {this.renderDialog(classes)}
               </div>
