@@ -1,14 +1,17 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {fetchClubBooks} from '../store'
+
 // Material UI
+import {withStyles} from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Divider from '@material-ui/core/Divider'
-import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
-import {withStyles} from '@material-ui/core/styles'
+import Grid from '@material-ui/core/Grid'
+import FilledInput from '@material-ui/core/FilledInput'
+
 // Recharts
 import {
   BarChart,
@@ -24,9 +27,8 @@ import {
 } from 'recharts'
 
 const styles = theme => ({
-  formControl: {
-    margin: theme.spacing.unit,
-    minWidth: 120
+  yearSelector: {
+    paddingTop: 20
   }
 })
 
@@ -282,32 +284,43 @@ class NewChart extends Component {
           <Bar dataKey="Finished" fill="#6f75aa" barSize={25} />
         </BarChart>
 
-        <Typography variant="h4" gutterBottom inline>
-          Progress in
-          <form autoComplete="off">
-            <FormControl className={classes.formControl} inline>
-              <InputLabel htmlFor="demo-controlled-open-select">
-                Year
-              </InputLabel>
-              <Select
-                open={this.state.open}
-                onClose={this.handleClose}
-                onOpen={this.handleOpen}
-                value={this.state.year}
-                onChange={this.handleChange}
-                inputProps={{
-                  name: 'year',
-                  id: 'demo-controlled-open-select'
-                }}
-              >
-                <MenuItem value="2019">2019</MenuItem>
-                <MenuItem value="2018">2018</MenuItem>
-              </Select>
+        <Grid container spacing={16} alignItems="flex-end">
+          <Grid item>
+            <Typography variant="h4">Progress in</Typography>
+          </Grid>
+          <Grid item xs={8}>
+            <FormControl>
+              <form autoComplete="off">
+                <Select
+                  open={this.state.open}
+                  onClose={this.handleClose}
+                  onOpen={this.handleOpen}
+                  value={this.state.year}
+                  onChange={this.handleChange}
+                  style={{
+                    fontFamily: 'Cutive',
+                    fontSize: 22,
+                    minWidth: 180
+                  }}
+                  input={
+                    <FilledInput
+                      classes={{
+                        input: classes.yearSelector
+                      }}
+                      name="year"
+                      id="demo-controlled-open-select"
+                    />
+                  }
+                >
+                  <MenuItem value="2019">2019</MenuItem>
+                  <MenuItem value="2018">2018</MenuItem>
+                </Select>
+              </form>
             </FormControl>
-          </form>
-        </Typography>
+          </Grid>
+        </Grid>
 
-        <Divider />
+        <Divider style={{marginTop: 20}} />
         <PieChart width={1000} height={500} margin={{top: 50}}>
           <Pie
             activeIndex={this.state.activeIndex}
