@@ -144,7 +144,7 @@ class Sidebar extends Component {
             <ListItemIcon>
               <Icon>poll</Icon>
             </ListItemIcon>
-            <ListItemText>Polls</ListItemText>
+            <ListItemText>Meeting Polls</ListItemText>
           </ListItem>
           <ListItem
             button

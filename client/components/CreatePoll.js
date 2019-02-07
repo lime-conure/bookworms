@@ -25,7 +25,7 @@ import Checkbox from '@material-ui/core/Checkbox'
 
 const styles = theme => ({
   form: {
-    maxWidth: 660
+    maxWidth: 720
   },
   formSection: {
     marginTop: theme.spacing.unit * 4,
@@ -43,6 +43,9 @@ const styles = theme => ({
   },
   optionText: {
     color: '#fff'
+  },
+  checkboxLabel: {
+    fontSize: 16
   }
 })
 
@@ -383,6 +386,9 @@ class CreatePoll extends Component {
                 />
               }
               label="When voting ends, automatically generate a meeting with the winning options from this poll"
+              classes={{
+                label: classes.checkboxLabel
+              }}
             />
           </div>
 

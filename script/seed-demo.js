@@ -291,9 +291,9 @@ async function seed() {
       bookId: 7
     }),
     ClubBook.create({
-      type: 'now',
-      startTime: '2019-02-01 12:55:19.718-05',
-      endTime: null,
+      type: 'past',
+      startTime: '2018-02-01 12:55:19.718-05',
+      endTime: '2018-02-07 12:55:19.718-05',
       clubId: 1,
       bookId: 8
     }),
