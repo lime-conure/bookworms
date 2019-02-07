@@ -28,7 +28,7 @@ import {
 
 const styles = theme => ({
   yearSelector: {
-    paddingTop: 20
+    paddingTop: 22
   }
 })
 
@@ -65,7 +65,8 @@ const renderActiveShape = props => {
         dy={8}
         textAnchor="middle"
         fontSize={30}
-        fill="#999"
+        fontWeight={300}
+        fill="#fff"
         fontFamily="Lato"
       >
         {payload.name}
@@ -98,17 +99,17 @@ const renderActiveShape = props => {
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}
         textAnchor={textAnchor}
-        fill="#999"
-        fontSize={20}
+        fill="#aaa"
+        fontSize={18}
         fontFamily="Lato"
-      >{`books: ${value}`}</text>
+      >{`Books: ${value}`}</text>
       <text
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}
-        dy={18}
-        fontSize={20}
+        dy={25}
+        fontSize={22}
         textAnchor={textAnchor}
-        fill="#999"
+        fill="#fff"
         fontFamily="Lato"
       >
         {` ${(percent * 100).toFixed(0)}%`}
@@ -212,7 +213,7 @@ class NewChart extends Component {
     let started = this.sortPie('startTime', year)
     let finished = this.sortPie('endTime', year)
     return [
-      {name: 'In progress', value: started},
+      {name: 'In Progress', value: started},
       {name: 'Finished', value: finished}
     ]
   }
@@ -264,20 +265,22 @@ class NewChart extends Component {
             contentStyle={{
               fontFamily: 'Lato',
               color: '#fff',
-              backgroundColor: '#222'
+              backgroundColor: '#222',
+              borderRadius: 3
             }}
           />
           <Legend
-            width={100}
+            width={120}
+            align="left"
             wrapperStyle={{
-              top: 40,
-              right: 20,
+              top: 20,
+              right: 0,
+              padding: 10,
               color: '#fff',
-              backgroundColor: '#333',
+              backgroundColor: '#222',
               border: '1px solid #d5d5d5',
-              borderRadius: 3,
-              lineHeight: '40px',
-              fontFamily: 'Lato'
+              fontFamily: 'Lato',
+              lineHeight: '30px'
             }}
           />
           <Bar dataKey="Started" fill="#e98fa3" barSize={25} />
@@ -286,7 +289,7 @@ class NewChart extends Component {
 
         <Grid container spacing={16} alignItems="flex-end">
           <Grid item>
-            <Typography variant="h4">Progress in</Typography>
+            <Typography variant="h4">Reading Progress in</Typography>
           </Grid>
           <Grid item xs={8}>
             <FormControl>
@@ -328,8 +331,8 @@ class NewChart extends Component {
             data={pieYear}
             cx={500}
             cy={200}
-            innerRadius={80}
-            outerRadius={150}
+            innerRadius={110}
+            outerRadius={180}
             fill="#6f75aa"
             onMouseEnter={this.onPieEnter}
           />
