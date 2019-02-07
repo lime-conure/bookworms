@@ -123,7 +123,7 @@ router.post('/:clubId/books/add', async (req, res, next) => {
               book: existingBook,
               clubs_books: {
                 type,
-                starttime: book.startTime,
+                startTime: book.startTime,
                 endTime: book.endTime
               }
             })

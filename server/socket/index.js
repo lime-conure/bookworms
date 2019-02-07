@@ -3,6 +3,7 @@
 module.exports = io => {
   io.on('connection', socket => {
     const {UserClub} = require('../db/models')
+    const {Club} = require('../db/models')
     console.log(`A socket connection to the server has been made: ${socket.id}`)
 
     socket.on('disconnect', () => {
@@ -28,14 +29,18 @@ module.exports = io => {
       socket.join(`${clubId}`)
     })
 
-    socket.on('NEW_MESSAGE', message => {
-      console.log('NEW_MESSAGE')
-      socket.broadcast.in(`${message.clubId}`).emit('NEW_MESSAGE', message)
+    socket.on('NEW_MESSAGE', async message => {
+      const club = await Club.findById(message.clubId)
+      socket.broadcast
+        .in(`${message.clubId}`)
+        .emit('NEW_MESSAGE', {message, clubName: club.name})
     })
 
-    socket.on('NEW_THREAD', message => {
-      console.log('NEW_THREAD')
-      socket.broadcast.in(`${message.data.clubId}`).emit('NEW_THREAD', message)
+    socket.on('NEW_THREAD', async message => {
+      const club = await Club.findById(message.data.clubId)
+      socket.broadcast
+        .in(`${message.data.clubId}`)
+        .emit('NEW_THREAD', {...message, clubName: club.name})
     })
   })
 }
