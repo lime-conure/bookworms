@@ -158,7 +158,18 @@ class Sidebar extends Component {
             </ListItemIcon>
             <ListItemText>Messages</ListItemText>
           </ListItem>
-
+          <ListItem
+            button
+            component={Link}
+            key="progress"
+            to={`/clubs/${club.id}/progress`}
+            className={classes.navItem}
+          >
+            <ListItemIcon>
+              <Icon>bar_chart</Icon>
+            </ListItemIcon>
+            <ListItemText>Progress</ListItemText>
+          </ListItem>
           <ListItem
             button
             component={Link}
@@ -170,18 +181,6 @@ class Sidebar extends Component {
               <Icon>group</Icon>
             </ListItemIcon>
             <ListItemText>Members</ListItemText>
-          </ListItem>
-          <ListItem
-            button
-            component={Link}
-            key="progress"
-            to={`/clubs/${club.id}/chart`}
-            className={classes.navItem}
-          >
-            <ListItemIcon>
-              <Icon>bar_chart</Icon>
-            </ListItemIcon>
-            <ListItemText>Progress</ListItemText>
           </ListItem>
 
           <ListItem
