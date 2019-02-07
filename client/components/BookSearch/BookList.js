@@ -27,7 +27,7 @@ const styles = theme => ({
   root: {
     marginBottom: theme.spacing.unit * 4,
     maxHeight: 375,
-    overflow: 'scroll',
+    overflowY: 'scroll',
     backgroundColor: theme.palette.grey[800],
     borderRadius: '5px',
     color: '#fff'

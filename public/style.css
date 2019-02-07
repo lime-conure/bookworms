@@ -13,5 +13,10 @@ nav a {
 
 /* invisible scrollbars */
 ::-webkit-scrollbar {
-  width: 0 !important;
+  display: none; /* Chrome & Safari */
+}
+* {
+  overflow: -moz-scrollbars-none; /* Firefox */
+  scrollbar-width: none; /* Firefox 64 */
+  -ms-overflow-style: none; /* IE 10+ */
 }
