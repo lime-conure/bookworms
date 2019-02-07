@@ -9,12 +9,11 @@ socket.on('connect', () => {
 })
 
 socket.on('NEW_MESSAGE', message => {
-  console.log('Received NEW_MESSGE', message)
-  store.dispatch(writeMessage(message))
+  store.dispatch(writeMessage(message.message))
   push.create('New Message!', {
-    body: `You have a new message from ${message.userId} in Club ${
-      message.clubId
-    }`,
+    body: `${
+      message.message.messages[0].user.fullName
+    } posted a message in Club ${message.clubName}`,
     icon: '',
     timeout: 4000,
     onClick: () => {
@@ -24,14 +23,13 @@ socket.on('NEW_MESSAGE', message => {
   })
 })
 socket.on('NEW_THREAD', message => {
-  console.log('Received NEW_THREAD', message)
   store.dispatch(addMessageToThread(message.data, message.threadId))
-  push.create('New Message!', {
-    body: `You have a new message from ${message.data.userId} in Club ${
-      message.data.clubId
+  push.create('🐛🐛', {
+    body: `${message.data.user.fullName} posted a reply in Club ${
+      message.clubName
     }`,
     icon: '',
-    timeout: 4000,
+    timeout: 10000,
     onClick: () => {
       window.focus()
       this.close()
