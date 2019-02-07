@@ -1,7 +1,5 @@
 import React, {Component} from 'react'
 import {
-  LineChart,
-  Line,
   BarChart,
   Bar,
   XAxis,
@@ -11,8 +9,7 @@ import {
   Legend,
   PieChart,
   Pie,
-  Sector,
-  Cell
+  Sector
 } from 'recharts'
 import Typography from '@material-ui/core/Typography'
 import {connect} from 'react-redux'
@@ -140,7 +137,6 @@ class NewChart extends Component {
 
   final() {
     let started = this.sort('startTime')
-
     let finished = this.sort('endTime')
 
     let startedArr = Object.keys(started)
@@ -203,8 +199,6 @@ class NewChart extends Component {
     ]
   }
 
-  //=======================================
-
   onPieEnter(data, index) {
     this.setState({
       activeIndex: index
@@ -253,13 +247,11 @@ class NewChart extends Component {
               fontFamily: 'Lato'
             }}
           />
-          {/* "#8cb81d" */}
           <Bar dataKey="Started" fill="#e98fa3" barSize={25} />
           <Bar dataKey="Finished" fill="#6f75aa" barSize={25} />
         </BarChart>
 
         <Typography variant="h4">Progress in 2018</Typography>
-
         <PieChart width={1000} height={500}>
           <Pie
             activeIndex={this.state.activeIndex}
