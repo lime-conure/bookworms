@@ -10,7 +10,7 @@ socket.on('connect', () => {
 
 socket.on('NEW_MESSAGE', message => {
   store.dispatch(writeMessage(message.message))
-  push.create('New Message!', {
+  push.create('🐛🐛', {
     body: `${
       message.message.messages[0].user.fullName
     } posted a message in Club ${message.clubName}`,
