@@ -1,4 +1,8 @@
 import React, {Component} from 'react'
+import {connect} from 'react-redux'
+import {fetchClubBooks} from '../store'
+
+// Recharts
 import {
   BarChart,
   Bar,
@@ -11,9 +15,10 @@ import {
   Pie,
   Sector
 } from 'recharts'
+
+// Material UI
 import Typography from '@material-ui/core/Typography'
-import {connect} from 'react-redux'
-import {fetchClubBooks} from '../store'
+import Divider from '@material-ui/core/Divider'
 
 const renderActiveShape = props => {
   const RADIAN = Math.PI / 180
@@ -210,14 +215,15 @@ class NewChart extends Component {
 
     return (
       <div>
-        <Typography variant="h4" style={{marginBottom: 60}}>
-          Monthly book totals
+        <Typography variant="h4" gutterBottom>
+          Monthly Book Totals
         </Typography>
+        <Divider />
         <BarChart
           width={1000}
           height={500}
           data={all}
-          margin={{top: 5, right: 30, left: 20, bottom: 5}}
+          margin={{top: 50, right: 30, left: 20, bottom: 5}}
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" tick={{fontFamily: 'Lato'}} />
@@ -250,9 +256,11 @@ class NewChart extends Component {
           <Bar dataKey="Started" fill="#e98fa3" barSize={25} />
           <Bar dataKey="Finished" fill="#6f75aa" barSize={25} />
         </BarChart>
-
-        <Typography variant="h4">Progress in 2018</Typography>
-        <PieChart width={1000} height={500}>
+        <Typography variant="h4" gutterBottom>
+          Progress in 2018
+        </Typography>
+        <Divider />
+        <PieChart width={1000} height={500} margin={{top: 50}}>
           <Pie
             activeIndex={this.state.activeIndex}
             activeShape={renderActiveShape}
