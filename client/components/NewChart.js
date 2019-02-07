@@ -1,7 +1,14 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {fetchClubBooks} from '../store'
-
+// Material UI
+import Typography from '@material-ui/core/Typography'
+import Divider from '@material-ui/core/Divider'
+import InputLabel from '@material-ui/core/InputLabel'
+import MenuItem from '@material-ui/core/MenuItem'
+import FormControl from '@material-ui/core/FormControl'
+import Select from '@material-ui/core/Select'
+import {withStyles} from '@material-ui/core/styles'
 // Recharts
 import {
   BarChart,
@@ -16,9 +23,12 @@ import {
   Sector
 } from 'recharts'
 
-// Material UI
-import Typography from '@material-ui/core/Typography'
-import Divider from '@material-ui/core/Divider'
+const styles = theme => ({
+  formControl: {
+    margin: theme.spacing.unit,
+    minWidth: 120
+  }
+})
 
 const renderActiveShape = props => {
   const RADIAN = Math.PI / 180
@@ -109,8 +119,9 @@ class NewChart extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      year: this.pie('2019'),
-      activeIndex: 0
+      year: '2019',
+      activeIndex: 0,
+      open: false
     }
     this.onPieEnter = this.onPieEnter.bind(this)
     this.sort = this.sort.bind(this)
@@ -210,8 +221,22 @@ class NewChart extends Component {
     })
   }
 
+  handleChange = event => {
+    this.setState({[event.target.name]: event.target.value})
+  }
+
+  handleClose = () => {
+    this.setState({open: false})
+  }
+
+  handleOpen = () => {
+    this.setState({open: true})
+  }
+
   render() {
     const all = this.final()
+    const pieYear = this.pie(this.state.year)
+    const {classes} = this.props
 
     return (
       <div>
@@ -256,15 +281,38 @@ class NewChart extends Component {
           <Bar dataKey="Started" fill="#e98fa3" barSize={25} />
           <Bar dataKey="Finished" fill="#6f75aa" barSize={25} />
         </BarChart>
-        <Typography variant="h4" gutterBottom>
-          Progress in 2018
+
+        <Typography variant="h4" gutterBottom inline>
+          Progress in
+          <form autoComplete="off">
+            <FormControl className={classes.formControl} inline>
+              <InputLabel htmlFor="demo-controlled-open-select">
+                Year
+              </InputLabel>
+              <Select
+                open={this.state.open}
+                onClose={this.handleClose}
+                onOpen={this.handleOpen}
+                value={this.state.year}
+                onChange={this.handleChange}
+                inputProps={{
+                  name: 'year',
+                  id: 'demo-controlled-open-select'
+                }}
+              >
+                <MenuItem value="2019">2019</MenuItem>
+                <MenuItem value="2018">2018</MenuItem>
+              </Select>
+            </FormControl>
+          </form>
         </Typography>
+
         <Divider />
         <PieChart width={1000} height={500} margin={{top: 50}}>
           <Pie
             activeIndex={this.state.activeIndex}
             activeShape={renderActiveShape}
-            data={this.state.year}
+            data={pieYear}
             cx={500}
             cy={200}
             innerRadius={80}
@@ -285,4 +333,4 @@ const mapDispatch = dispatch => ({
   fetchClubBooks: clubId => dispatch(fetchClubBooks(clubId))
 })
 
-export default connect(mapState, mapDispatch)(NewChart)
+export default withStyles(styles)(connect(mapState, mapDispatch)(NewChart))
