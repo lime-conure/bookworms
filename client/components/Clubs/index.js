@@ -17,7 +17,6 @@ import Icon from '@material-ui/core/Icon'
 const styles = theme => ({
   root: {
     padding: theme.spacing.unit * 4,
-    paddingTop: theme.spacing.unit * 8,
     marginTop: theme.spacing.unit * 16,
     marginLeft: 'auto',
     marginRight: 'auto',
