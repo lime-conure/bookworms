@@ -25,7 +25,8 @@ const theme = createMuiTheme({
     },
     h3: {
       fontFamily: 'Cutive',
-      lineHeight: '4.5rem' // fontSize is 3rem
+      fontSize: '2.75rem',
+      lineHeight: '4.125rem'
     },
     h4: {
       fontFamily: 'Cutive',
