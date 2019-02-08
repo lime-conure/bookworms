@@ -2,6 +2,8 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import UserBooks from './UserBooks'
 import UserProgress from './UserProgress'
+
+// Material UI
 import {withStyles} from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
@@ -10,19 +12,25 @@ import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 const styles = theme => ({
   root: {
-    ...theme.mixins.gutters(),
     flexGrow: 1,
     padding: theme.spacing.unit * 4,
     marginTop: theme.spacing.unit * 16,
-    marginLeft: theme.spacing.unit * 24,
-    marginRight: theme.spacing.unit * 24
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    width: '95%',
+    // md = 960px or larger
+    [theme.breakpoints.up('md')]: {
+      width: '70%'
+    }
   },
   userInfo: {
     textAlign: 'center'
   },
   bigAvatar: {
-    width: 200,
-    height: 200,
+    width: '100%',
+    height: '100%',
+    maxWidth: 200,
+    maxHeight: 200,
     marginTop: theme.spacing.unit * 4,
     marginBottom: theme.spacing.unit * 4,
     marginRight: 'auto',
@@ -58,7 +66,7 @@ class Profile extends Component {
           justify="space-between"
           alignItems="flex-start"
         >
-          <Grid item xs={3} className={classes.userInfo}>
+          <Grid item md={3} className={classes.userInfo}>
             <Avatar
               alt={user.fullName}
               src={user.imageUrl}
@@ -71,6 +79,7 @@ class Profile extends Component {
             <Typography
               variant="subtitle1"
               component="p"
+              noWrap
               className={classes.userEmail}
             >
               {user.email}
@@ -85,7 +94,7 @@ class Profile extends Component {
               {this.state.progress ? 'Hide progress' : 'Show progress'}
             </Button>
           </Grid>
-          <Grid item xs={9}>
+          <Grid item md={9}>
             <UserBooks />
             {this.state.progress ? <UserProgress /> : ''}
           </Grid>

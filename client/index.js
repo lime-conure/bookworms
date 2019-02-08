@@ -13,6 +13,7 @@ const theme = createMuiTheme({
     secondary: lime
   },
   typography: {
+    useNextVariants: true,
     fontFamily: ['Lato', 'Arial', 'sans-serif'].join(','),
     button: {
       fontWeight: 700,

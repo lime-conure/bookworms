@@ -22,9 +22,33 @@ async function seed() {
   console.log('db synced!')
 
   const user = await User.create({
-    firstName: 'Book',
-    lastName: 'Worm',
-    email: 'book@worm.com',
+    firstName: 'Sabira',
+    lastName: 'Davletshina',
+    imageUrl: 'https://avatars1.githubusercontent.com/u/34147944?s=460&v=4',
+    email: 'sabira@gmail.com',
+    password: '123'
+  })
+  const jing = await User.create({
+    firstName: 'Jing',
+    lastName: 'Lu',
+    imageUrl:
+      'https://media.licdn.com/dms/image/C4E03AQF7pJHzVlq_CQ/profile-displayphoto-shrink_800_800/0?e=1554940800&v=beta&t=7J0A5QUaDvYkoLoLRW52nDqkPNB5GLwwnMzMeRVSDUQ',
+    email: 'jing@gmail.com',
+    password: '123'
+  })
+  const norka = await User.create({
+    firstName: 'Norka',
+    lastName: 'Avalos',
+    imageUrl:
+      'https://media.licdn.com/dms/image/C5603AQF17N4ov1UHfQ/profile-displayphoto-shrink_800_800/0?e=1554940800&v=beta&t=QTVsJiX1_27N-1vF8pF6TBCb4_H7QFQDTNpwLfTyiUQ',
+    email: 'norka@gmail.com',
+    password: '123'
+  })
+  const brynn = await User.create({
+    firstName: 'Brynn',
+    lastName: 'Shepherd',
+    imageUrl: 'https://avatars3.githubusercontent.com/u/1870471?s=460&v=4',
+    email: 'brynn@gmail.com',
     password: '123'
   })
 

@@ -96,7 +96,7 @@ class Polls extends Component {
 
     return (
       <Grid container spacing={40}>
-        <Grid item xs={6}>
+        <Grid item md={6}>
           <Typography variant="h3" component="h3">
             Active Polls
           </Typography>
@@ -114,7 +114,7 @@ class Polls extends Component {
             </Button>
           </Link>
         </Grid>
-        <Grid item xs={6} className={classes.pastPolls}>
+        <Grid item md={6} className={classes.pastPolls}>
           <Typography
             variant="h4"
             component="h4"
