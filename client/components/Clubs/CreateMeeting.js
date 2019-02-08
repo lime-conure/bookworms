@@ -50,25 +50,6 @@ export class CreateMeeting extends Component {
     this.setState({
       [e.target.name]: e.target.value
     })
-    if (e.target.name === 'date') {
-      // prevent users from selecting due dates in the past
-      const selectedDate = formatDate(e.target.value)
-      const today = new Date()
-      if (selectedDate < today) {
-        const todayString = formatDateString(today).slice(0, 10)
-        this.setState({
-          date: todayString
-        })
-      } else {
-        this.setState({
-          date: e.target.value
-        })
-      }
-    } else {
-      this.setState({
-        [e.target.name]: e.target.value
-      })
-    }
   }
 
   addBook(e, book) {
@@ -125,6 +106,10 @@ export class CreateMeeting extends Component {
               margin="normal"
               InputLabelProps={{
                 shrink: true
+              }}
+              inputProps={{
+                // prevent users from selecting past dates
+                min: new Date().toISOString().slice(0, 16)
               }}
               variant="filled"
               fullWidth

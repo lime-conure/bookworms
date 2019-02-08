@@ -68,7 +68,6 @@ class CreatePoll extends Component {
       notes: '',
       dueDate: defaultDueDateString,
       dateTime: formatDateString(defaultDateTime),
-      dateTimeMessage: '',
       place: '',
       autoGenerateMeeting: true
     }
@@ -143,20 +142,13 @@ class CreatePoll extends Component {
   addDateTime(e) {
     e.preventDefault()
     const dateTime = formatDate(this.state.dateTime)
-    if (dateTime < new Date()) {
-      this.setState({
-        dateTimeMessage: 'Please select a date & time in the future'
-      })
-    } else {
-      this.setState({
-        selectedDates: [
-          ...this.state.selectedDates,
-          formatDateDisplay(dateTime, true)
-        ],
-        dateTime: '',
-        dateTimeMessage: ''
-      })
-    }
+    this.setState({
+      selectedDates: [
+        ...this.state.selectedDates,
+        formatDateDisplay(dateTime, true)
+      ],
+      dateTime: ''
+    })
   }
 
   addPlaces(e) {
@@ -290,6 +282,10 @@ class CreatePoll extends Component {
                   InputLabelProps={{
                     shrink: true
                   }}
+                  inputProps={{
+                    // prevent users from selecting past dates
+                    min: new Date().toISOString().slice(0, 16)
+                  }}
                 />
               </Grid>
               <Grid item xs={4}>
@@ -304,10 +300,6 @@ class CreatePoll extends Component {
                 </Button>
               </Grid>
             </Grid>
-
-            <Typography variant="body2" component="p">
-              {this.state.dateTimeMessage}
-            </Typography>
             <List>
               {this.state.selectedDates.length
                 ? this.state.selectedDates.map((date, idx) => (
