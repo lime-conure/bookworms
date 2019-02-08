@@ -30,7 +30,7 @@ const styles = theme => ({
   root: {
     paddingTop: 128, // Navbar height (80) + 48
     paddingBottom: theme.spacing.unit * 4,
-    paddingLeft: 322, // Sidebar width + 32,
+    paddingLeft: 322, // Sidebar width + 32
     paddingRight: theme.spacing.unit * 4
   }
 })
