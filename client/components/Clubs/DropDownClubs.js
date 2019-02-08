@@ -6,7 +6,7 @@ import Divider from '@material-ui/core/Divider'
 import MenuItem from '@material-ui/core/MenuItem'
 import Icon from '@material-ui/core/Icon'
 import {Link} from 'react-router-dom'
-import {fetchClubs} from '../store'
+import {fetchClubs} from '../../store'
 
 class DropDownClubs extends React.Component {
   state = {

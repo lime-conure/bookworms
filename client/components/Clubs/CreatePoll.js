@@ -1,12 +1,12 @@
 import React, {Component} from 'react'
 import axios from 'axios'
-import BookSearch from './BookSearch'
+import BookSearch from '../../components/BookSearch'
 import {
   formatDate,
   formatDateString,
   formatDateDisplay,
   makeBookObject
-} from '../utils'
+} from '../../utils'
 
 // Material UI
 import {withStyles} from '@material-ui/core/styles'

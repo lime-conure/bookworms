@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
-import {fetchClubMembers} from '../store'
+import {fetchClubMembers} from '../../store'
 
 import Typography from '@material-ui/core/Typography'
 import Divider from '@material-ui/core/Divider'

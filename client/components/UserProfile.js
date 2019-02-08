@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {Link} from 'react-router-dom'
 import UserBooks from './UserBooks'
 import UserProgress from './UserProgress'
 import {withStyles} from '@material-ui/core/styles'

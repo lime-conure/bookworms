@@ -3,8 +3,8 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 
 import Axios from 'axios'
-import {inviteUser, fetchClubs} from '../store'
-import socket from '../socket'
+import {inviteUser, fetchClubs} from '../../store'
+import socket from '../../socket'
 
 import {withStyles} from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
