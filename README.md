@@ -4,7 +4,7 @@ Bookworms is an app for readers to create, manage, and communicate with their bo
 
 ## Setup
 
-### MacOSX/Linus
+### MacOS/Linux
 * `npm install`
 * `npm run start-dev`
 * Open another terminal window: `npm run seed-demo` to seed the database
