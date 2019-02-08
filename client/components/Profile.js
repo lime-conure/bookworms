@@ -2,13 +2,13 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import UserBooks from './UserBooks'
-
+import UserProgress from './UserProgress'
 import {withStyles} from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 import Avatar from '@material-ui/core/Avatar'
-
+import Button from '@material-ui/core/Button'
 const styles = theme => ({
   root: {
     ...theme.mixins.gutters(),
@@ -36,6 +36,18 @@ const styles = theme => ({
 })
 
 class Profile extends Component {
+  constructor() {
+    super()
+    this.state = {
+      progress: false
+    }
+    this.toggleProgress = this.toggleProgress.bind(this)
+  }
+
+  toggleProgress() {
+    this.setState({progress: !this.state.progress})
+  }
+
   render() {
     const {classes} = this.props
     const user = this.props.user
@@ -64,9 +76,19 @@ class Profile extends Component {
             >
               {user.email}
             </Typography>
+            <Button
+              style={{marginTop: 20}}
+              variant="outlined"
+              size="small"
+              color="secondary"
+              onClick={this.toggleProgress}
+            >
+              {this.state.progress ? 'Hide progress' : 'Show progress'}
+            </Button>
           </Grid>
           <Grid item xs={9}>
             <UserBooks />
+            {this.state.progress ? <UserProgress /> : ''}
           </Grid>
         </Grid>
       </Paper>
