@@ -19,7 +19,8 @@ import {
   Profile,
   Meetings,
   CreateMeeting,
-  ClubProgress
+  ClubProgress,
+  AboutUs
 } from './components'
 
 import {me} from './store'
@@ -60,6 +61,7 @@ class Routes extends Component {
           </Switch>
         ) : (
           <Switch>
+            <Route exact path="/about" component={AboutUs} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/signup" component={Signup} />
             <Route
