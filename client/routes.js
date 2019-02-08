@@ -30,12 +30,13 @@ const styles = theme => ({
   root: {
     paddingTop: 450, // Navbar height (80) + Sidebar height (370)
     paddingBottom: theme.spacing.unit * 4,
-    paddingRight: theme.spacing.unit * 4,
-    paddingLeft: theme.spacing.unit * 4,
+    paddingRight: theme.spacing.unit * 2,
+    paddingLeft: theme.spacing.unit * 2,
     // 600px or larger
     [theme.breakpoints.up('sm')]: {
       paddingLeft: 322, // Sidebar width + 32
-      paddingTop: 128 // Navbar height (80) + 48
+      paddingTop: 128, // Navbar height (80) + 48,
+      paddingRight: theme.spacing.unit * 4
     }
   }
 })
