@@ -1,4 +1,4 @@
-# Bookworms :book: 🐛🐛🐛🐛
+# 🐛Bookworms 🐛
 
 Bookworms is an app for readers to create, manage, and communicate with their book clubs.
 
