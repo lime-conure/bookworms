@@ -19,7 +19,7 @@ import {
   Profile,
   Meetings,
   CreateMeeting,
-  NewChart
+  ClubProgress
 } from './components'
 
 import {me} from './store'
@@ -118,7 +118,7 @@ class Routes extends Component {
                   <Route
                     exact
                     path="/clubs/:clubId/progress"
-                    component={NewChart}
+                    component={ClubProgress}
                   />
                 </main>
               </Switch>

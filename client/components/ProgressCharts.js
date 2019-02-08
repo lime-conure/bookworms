@@ -122,7 +122,8 @@ class ProgressCharts extends Component {
     this.state = {
       year: '2019',
       activeIndex: 0,
-      open: false
+      open: false,
+      tableKeyName: 'clubs_books'
     }
     this.onPieEnter = this.onPieEnter.bind(this)
     this.sort = this.sort.bind(this)
@@ -132,20 +133,25 @@ class ProgressCharts extends Component {
   }
 
   async componentDidMount() {
-    const clubId = Number(this.props.match.params.clubId)
-    await this.props.fetchClubBooks(clubId)
+    if (this.props.scope === 'club') {
+      const clubId = Number(this.props.match.params.clubId)
+      await this.props.fetchClubBooks(clubId)
+    } else {
+      this.setState({tableKeyName: 'users_books'})
+    }
   }
   // functions
   sort(criteria) {
     return this.props.results
       .sort((a, b) => {
         return (
-          new Date(a.clubs_books[criteria]) - new Date(b.clubs_books[criteria])
+          new Date(a[this.state.tableKeyName][criteria]) -
+          new Date(b[this.state.tableKeyName][criteria])
         )
       })
       .reduce((accum, val) => {
-        if (val.clubs_books[criteria]) {
-          let date = val.clubs_books[criteria]
+        if (val[this.state.tableKeyName][criteria]) {
+          let date = val[this.state.tableKeyName][criteria]
           accum[date] = accum[date] + 1 || 1
         }
         return accum
@@ -192,12 +198,13 @@ class ProgressCharts extends Component {
     return this.props.results
       .sort((a, b) => {
         return (
-          new Date(a.clubs_books[criteria]) - new Date(b.clubs_books[criteria])
+          new Date(a[this.state.tableKeyName][criteria]) -
+          new Date(b[this.state.tableKeyName][criteria])
         )
       })
       .reduce((accum, val) => {
-        if (val.clubs_books[criteria]) {
-          let date = val.clubs_books[criteria]
+        if (val[this.state.tableKeyName][criteria]) {
+          let date = val[this.state.tableKeyName][criteria]
           if (date.startsWith(value)) {
             accum = accum + 1
           }
