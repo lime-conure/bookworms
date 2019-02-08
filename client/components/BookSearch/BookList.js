@@ -147,14 +147,14 @@ class BookList extends Component {
             justify="flex-start"
             alignItems="flex-start"
           >
-            <Grid item xs={3}>
+            <Grid item md={3}>
               <img
                 className={classes.dialogImage}
                 src={book.imageUrl}
                 alt={book.title}
               />
             </Grid>
-            <Grid item xs={9}>
+            <Grid item md={9}>
               <Typography
                 variant="body2"
                 component="span"

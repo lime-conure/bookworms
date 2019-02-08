@@ -26,10 +26,20 @@ const styles = theme => ({
     display: 'flex'
   },
   drawerPaper: {
-    width: drawerWidth,
-    top: 80 // Navbar height
+    width: '100%',
+    top: 80, // 80 = Navbar height
+    height: 'auto',
+    // 600px or larger
+    [theme.breakpoints.up('sm')]: {
+      width: drawerWidth,
+      height: '100%'
+    }
   },
   drawerHeader: {
+    // 600px or smaller
+    [theme.breakpoints.down('sm')]: {
+      display: 'none'
+    },
     padding: theme.spacing.unit * 2,
     marginTop: theme.spacing.unit * 4,
     textTransform: 'uppercase',

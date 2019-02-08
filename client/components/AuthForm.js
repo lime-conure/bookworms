@@ -17,10 +17,16 @@ import red from '@material-ui/core/colors/red'
 
 const styles = theme => ({
   root: {
-    padding: theme.spacing.unit * 8,
+    padding: theme.spacing.unit * 4,
     marginTop: theme.spacing.unit * 16,
-    marginLeft: theme.spacing.unit * 36,
-    marginRight: theme.spacing.unit * 36
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    width: '95%',
+    // md = 960px or larger
+    [theme.breakpoints.up('md')]: {
+      width: '70%',
+      padding: theme.spacing.unit * 8
+    }
   },
   form: {
     marginTop: theme.spacing.unit * 4

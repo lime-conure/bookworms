@@ -110,7 +110,7 @@ class Meetings extends Component {
     const pastMeetings = this.props.pastMeetings
     return (
       <Grid container spacing={40}>
-        <Grid item xs={6}>
+        <Grid item md={6}>
           <Typography variant="h3" component="h3">
             Upcoming Meetings
           </Typography>
@@ -132,7 +132,7 @@ class Meetings extends Component {
         </Grid>
 
         {pastMeetings.length ? (
-          <Grid item xs={6} className={classes.pastMeetings}>
+          <Grid item md={6} className={classes.pastMeetings}>
             <Typography
               variant="h4"
               component="h4"
