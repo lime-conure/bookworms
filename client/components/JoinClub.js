@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 
 import Axios from 'axios'
-import {inviteUser} from '../store'
+import {inviteUser, fetchClubs} from '../store'
 import socket from '../socket'
 
 import {withStyles} from '@material-ui/core/styles'
@@ -44,13 +44,14 @@ class JoinClub extends Component {
         this.props.match.params.hash
       }`
     )
+    this.props.fetchClubs()
     socket.emit('JOIN', this.props.match.params.clubId)
     this.props.inviteUser('')
     this.props.history.push(`/clubs/${this.props.match.params.clubId}`)
   }
 
   async componentDidMount() {
-    const inviteLink = `/clubs/${this.props.match.params.clubId}/join/${
+    const inviteLink = `clubs/${this.props.match.params.clubId}/join/${
       this.props.match.params.hash
     }`
     const {data} = await Axios.get(`/api/${inviteLink}`)
@@ -121,7 +122,8 @@ const mapState = state => ({
   inviteLink: state.user.inviteLink
 })
 const mapDispatch = {
-  inviteUser
+  inviteUser,
+  fetchClubs
 }
 
 export default connect(mapState, mapDispatch)(StyledJoinClub)
