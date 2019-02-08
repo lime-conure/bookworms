@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {createNewClub, fetchClubs} from '../store/clubs'
+import {createNewClub, fetchClubs} from '../../store/clubs'
 import axios from 'axios'
-import socket from '../socket'
+import socket from '../../socket'
 
 import {withStyles} from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'

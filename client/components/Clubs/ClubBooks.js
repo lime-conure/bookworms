@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {fetchClubBooks, postClubBook, deleteClubBook} from '../store'
-import {makeBookObject, renderBookSearch} from '../utils'
+import {fetchClubBooks, postClubBook, deleteClubBook} from '../../store'
+import {makeBookObject, renderBookSearch} from '../../utils'
 
 // Material UI
 import {withStyles} from '@material-ui/core/styles'

@@ -6,7 +6,7 @@ import {logout} from '../store'
 import {withStyles} from '@material-ui/core/styles'
 import {AppBar, Toolbar, Typography, Button} from '@material-ui/core'
 import {white} from '@material-ui/core/colors'
-import DropDownClubs from './DropDownClubs'
+import DropDownClubs from './Clubs/DropDownClubs'
 import socket from '../socket'
 
 const styles = theme => ({
