@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {fetchSinglePoll, sendVotes} from '../store'
-import {formatDateDisplay} from '../utils'
+import {fetchSinglePoll, sendVotes} from '../../store'
+import {formatDateDisplay} from '../../utils'
 
 // Material UI
 import {withStyles} from '@material-ui/core/styles'

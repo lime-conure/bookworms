@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {fetchPolls, deletePoll} from '../store'
+import {fetchPolls, deletePoll} from '../../store'
 import {Link} from 'react-router-dom'
-import {formatDateDisplay} from '../utils'
+import {formatDateDisplay} from '../../utils'
 
 // Material UI
 import {withStyles} from '@material-ui/core/styles'

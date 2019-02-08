@@ -8,9 +8,10 @@ import {
   toggleOpen,
   postToThread,
   writeThreadMessage
-} from '../store'
+} from '../../store'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
+import socket from '../../socket'
 
 // Material UI
 import {withStyles} from '@material-ui/core/styles'
@@ -28,11 +29,11 @@ import Button from '@material-ui/core/Button'
 import Send from '@material-ui/icons/Send'
 import Mood from '@material-ui/icons/Mood'
 import Chat from '@material-ui/icons/Chat'
-import socket from '../socket'
 import InputAdornment from '@material-ui/core/InputAdornment'
+
+//emoji set up
 import EmojiPicker from 'emoji-picker-react'
 import JSEMOJI from 'emoji-js'
-//emoji set up
 let jsemoji = new JSEMOJI()
 // set the style to emojione (default - apple)
 jsemoji.img_set = 'emojione'

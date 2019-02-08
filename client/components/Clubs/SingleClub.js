@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {fetchSingleClub, leaveClub} from '../store/'
+import {fetchSingleClub, leaveClub} from '../../store'
 
 // Material UI
 import {withStyles} from '@material-ui/core/styles'
