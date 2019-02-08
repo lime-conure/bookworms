@@ -46,7 +46,7 @@ class JoinClub extends Component {
     )
     socket.emit('JOIN', this.props.match.params.clubId)
     this.props.inviteUser('')
-    this.props.history.push(`/clubs/${this.props.match.params.clubId}`)
+    this.props.history.push(`/clubs/${this.props.match.params.clubId}/books`)
   }
 
   async componentDidMount() {
