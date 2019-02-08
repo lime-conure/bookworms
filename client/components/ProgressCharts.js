@@ -290,8 +290,8 @@ class ProgressCharts extends Component {
         </div>
 
         <Grid container spacing={16} alignItems="flex-end">
-          <Grid item xs={3}>
-            <Typography variant="h4">Reading Progress in</Typography>
+          <Grid item xs={6}>
+            <Typography variant="h4">Reading Progress</Typography>
           </Grid>
           <Grid item>
             <FormControl>
@@ -326,12 +326,12 @@ class ProgressCharts extends Component {
         </Grid>
 
         <Divider style={{marginTop: 20}} />
-        <PieChart width={500} height={500} margin={{top: 50}}>
+        <PieChart width={700} height={500} margin={{top: 50}}>
           <Pie
             activeIndex={this.state.activeIndex}
             activeShape={renderActiveShape}
             data={pieYear}
-            cx={250}
+            cx={350}
             cy={200}
             innerRadius={110}
             outerRadius={180}
