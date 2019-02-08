@@ -80,7 +80,7 @@ class Meetings extends Component {
                     component="span"
                     className={classes.meetingMetadata}
                   >
-                    {meeting.date.slice(0, 10)} at {meeting.location}
+                    {formatDateDisplay(meeting.date)} at {meeting.location}
                   </Typography>
                 ) : (
                   ''

@@ -239,7 +239,7 @@ class CreatePoll extends Component {
             {/* select dueDate */}
             <TextField
               label="When should voting end for this poll?"
-              type="date"
+              type="datetime-local"
               name="dueDate"
               value={this.state.dueDate}
               onChange={this.handleChange}

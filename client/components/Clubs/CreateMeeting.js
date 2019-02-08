@@ -34,8 +34,7 @@ export class CreateMeeting extends Component {
     // default date option is next week at the same time
     const today = new Date()
     const defaultDate = new Date(today.setDate(today.getDate() + 7))
-    // don't include the time
-    const defaultDateString = formatDateString(defaultDate).slice(0, 10)
+    const defaultDateString = formatDateString(defaultDate)
     this.state = {
       name: '',
       location: '',
@@ -119,7 +118,7 @@ export class CreateMeeting extends Component {
             <br />
             <Textfield
               label="Choose a date"
-              type="date"
+              type="datetime-local"
               name="date"
               value={this.state.date}
               onChange={this.handleChange}
