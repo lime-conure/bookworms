@@ -34,8 +34,7 @@ export class CreateMeeting extends Component {
     // default date option is next week at the same time
     const today = new Date()
     const defaultDate = new Date(today.setDate(today.getDate() + 7))
-    // don't include the time
-    const defaultDateString = formatDateString(defaultDate).slice(0, 10)
+    const defaultDateString = formatDateString(defaultDate)
     this.state = {
       name: '',
       location: '',
@@ -51,25 +50,6 @@ export class CreateMeeting extends Component {
     this.setState({
       [e.target.name]: e.target.value
     })
-    if (e.target.name === 'date') {
-      // prevent users from selecting due dates in the past
-      const selectedDate = formatDate(e.target.value)
-      const today = new Date()
-      if (selectedDate < today) {
-        const todayString = formatDateString(today).slice(0, 10)
-        this.setState({
-          date: todayString
-        })
-      } else {
-        this.setState({
-          date: e.target.value
-        })
-      }
-    } else {
-      this.setState({
-        [e.target.name]: e.target.value
-      })
-    }
   }
 
   addBook(e, book) {
@@ -119,13 +99,17 @@ export class CreateMeeting extends Component {
             <br />
             <Textfield
               label="Choose a date"
-              type="date"
+              type="datetime-local"
               name="date"
               value={this.state.date}
               onChange={this.handleChange}
               margin="normal"
               InputLabelProps={{
                 shrink: true
+              }}
+              inputProps={{
+                // prevent users from selecting past dates
+                min: new Date().toISOString().slice(0, 16)
               }}
               variant="filled"
               fullWidth

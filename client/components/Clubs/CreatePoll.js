@@ -58,7 +58,7 @@ class CreatePoll extends Component {
 
     // default dueDate option is next month
     const defaultDueDate = new Date(today.setDate(today.getDate() + 30))
-    const defaultDueDateString = formatDateString(defaultDueDate).slice(0, 10)
+    const defaultDueDateString = formatDateString(defaultDueDate)
     this.state = {
       searchResults: [],
       selectedBooks: [],
@@ -68,7 +68,6 @@ class CreatePoll extends Component {
       notes: '',
       dueDate: defaultDueDateString,
       dateTime: formatDateString(defaultDateTime),
-      dateTimeMessage: '',
       place: '',
       autoGenerateMeeting: true
     }
@@ -82,25 +81,9 @@ class CreatePoll extends Component {
   }
 
   handleChange(e) {
-    if (e.target.name === 'dueDate') {
-      // prevent users from selecting due dates in the past
-      const selectedDate = formatDate(e.target.value)
-      const today = new Date()
-      if (selectedDate < today) {
-        const todayString = formatDateString(today).slice(0, 10)
-        this.setState({
-          dueDate: todayString
-        })
-      } else {
-        this.setState({
-          dueDate: e.target.value
-        })
-      }
-    } else {
-      this.setState({
-        [e.target.name]: e.target.value
-      })
-    }
+    this.setState({
+      [e.target.name]: e.target.value
+    })
   }
 
   handleCheck(e) {
@@ -143,20 +126,13 @@ class CreatePoll extends Component {
   addDateTime(e) {
     e.preventDefault()
     const dateTime = formatDate(this.state.dateTime)
-    if (dateTime < new Date()) {
-      this.setState({
-        dateTimeMessage: 'Please select a date & time in the future'
-      })
-    } else {
-      this.setState({
-        selectedDates: [
-          ...this.state.selectedDates,
-          formatDateDisplay(dateTime, true)
-        ],
-        dateTime: '',
-        dateTimeMessage: ''
-      })
-    }
+    this.setState({
+      selectedDates: [
+        ...this.state.selectedDates,
+        formatDateDisplay(dateTime, true)
+      ],
+      dateTime: ''
+    })
   }
 
   addPlaces(e) {
@@ -239,13 +215,17 @@ class CreatePoll extends Component {
             {/* select dueDate */}
             <TextField
               label="When should voting end for this poll?"
-              type="date"
+              type="datetime-local"
               name="dueDate"
               value={this.state.dueDate}
               onChange={this.handleChange}
               margin="normal"
               InputLabelProps={{
                 shrink: true
+              }}
+              inputProps={{
+                // prevent users from selecting past dates
+                min: new Date().toISOString().slice(0, 16)
               }}
               variant="filled"
               fullWidth
@@ -290,6 +270,10 @@ class CreatePoll extends Component {
                   InputLabelProps={{
                     shrink: true
                   }}
+                  inputProps={{
+                    // prevent users from selecting past dates
+                    min: new Date().toISOString().slice(0, 16)
+                  }}
                 />
               </Grid>
               <Grid item xs={4}>
@@ -304,10 +288,6 @@ class CreatePoll extends Component {
                 </Button>
               </Grid>
             </Grid>
-
-            <Typography variant="body2" component="p">
-              {this.state.dateTimeMessage}
-            </Typography>
             <List>
               {this.state.selectedDates.length
                 ? this.state.selectedDates.map((date, idx) => (
