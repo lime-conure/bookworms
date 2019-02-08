@@ -23,8 +23,7 @@ const styles = theme => ({
   poll: {
     padding: theme.spacing.unit * 3,
     marginTop: theme.spacing.unit * 3,
-    marginBottom: theme.spacing.unit * 3,
-    marginRight: theme.spacing.unit * 3
+    marginBottom: theme.spacing.unit * 3
   },
   headerIcon: {
     marginRight: theme.spacing.unit
