@@ -12,7 +12,10 @@ const styles = theme => ({
   bookSection: {
     marginTop: theme.spacing.unit * 4,
     marginBottom: theme.spacing.unit * 4,
-    width: '65%'
+    // 1280px or larger
+    [theme.breakpoints.up('lg')]: {
+      width: '70%'
+    }
   },
   sectionHeader: {
     marginBottom: theme.spacing.unit * 3

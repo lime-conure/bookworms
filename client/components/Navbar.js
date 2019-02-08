@@ -20,7 +20,11 @@ const styles = theme => ({
   logo: {
     color: '#fff',
     paddingLeft: theme.spacing.unit,
-    paddingRight: theme.spacing.unit
+    paddingRight: theme.spacing.unit,
+    // 960px or smaller
+    [theme.breakpoints.down('md')]: {
+      fontSize: '1.5rem'
+    }
   },
   grow: {
     flexGrow: 1,

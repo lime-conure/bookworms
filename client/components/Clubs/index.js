@@ -17,6 +17,7 @@ import Icon from '@material-ui/core/Icon'
 const styles = theme => ({
   root: {
     padding: theme.spacing.unit * 4,
+    paddingTop: theme.spacing.unit * 8,
     marginTop: theme.spacing.unit * 16,
     marginLeft: 'auto',
     marginRight: 'auto',
@@ -32,6 +33,13 @@ const styles = theme => ({
   },
   icon: {
     color: '#fff'
+  },
+  clubsHeader: {
+    // 960px or smaller
+    [theme.breakpoints.down('md')]: {
+      fontSize: '2.5rem',
+      lineHeight: '3.75rem'
+    }
   }
 })
 
@@ -54,7 +62,12 @@ class Clubs extends Component {
     return (
       <Paper className={classes.root} elevation={2}>
         <div>
-          <Typography variant="h2" component="h2" gutterBottom>
+          <Typography
+            variant="h2"
+            component="h2"
+            gutterBottom
+            className={classes.clubsHeader}
+          >
             Your Book Clubs
           </Typography>
 
