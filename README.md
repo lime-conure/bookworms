@@ -9,7 +9,7 @@ Bookworms is an app for readers to create, manage, and communicate with their bo
 * `npm run start-dev`
 * Open another terminal window: `npm run seed-demo` to seed the database
 
-## [Team Lime Conure](https://github.com/lime-conure)
+## Developed by [Team Lime Conure](https://github.com/lime-conure)
 * [Brynn Shepherd](https://github.com/brynn)
 * [Sabira Davletshina](https://github.com/Sdavletshina)
 * [Jing Lu](https://github.com/Jl201835)
