@@ -166,7 +166,7 @@ class Sidebar extends Component {
             className={classes.navItem}
           >
             <ListItemIcon>
-              <Icon>bar_chart</Icon>
+              <Icon>timeline</Icon>
             </ListItemIcon>
             <ListItemText>Progress</ListItemText>
           </ListItem>
