@@ -15,7 +15,7 @@ Bookworms is an app for readers to create, manage, and communicate with their bo
 * [Jing Lu](https://github.com/Jl201835)
 * [Norka Avalos](https://github.com/norkavalos)
 
-## More Information About Bookworms
+## Features
 Bookworms is an app that helps you organize your reading life. With Bookworms, you can keep track of books you've read and want to read, visualize your reading history and progress, schedule meetings for book clubs you're in, chat with other book club members, and create polls for your book clubs to decide on what to read next, when to meet, and where to meet.
 
 ## Technologies
