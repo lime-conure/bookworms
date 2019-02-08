@@ -58,7 +58,7 @@ class CreatePoll extends Component {
 
     // default dueDate option is next month
     const defaultDueDate = new Date(today.setDate(today.getDate() + 30))
-    const defaultDueDateString = formatDateString(defaultDueDate).slice(0, 10)
+    const defaultDueDateString = formatDateString(defaultDueDate)
     this.state = {
       searchResults: [],
       selectedBooks: [],
@@ -81,25 +81,9 @@ class CreatePoll extends Component {
   }
 
   handleChange(e) {
-    if (e.target.name === 'dueDate') {
-      // prevent users from selecting due dates in the past
-      const selectedDate = formatDate(e.target.value)
-      const today = new Date()
-      if (selectedDate < today) {
-        const todayString = formatDateString(today).slice(0, 10)
-        this.setState({
-          dueDate: todayString
-        })
-      } else {
-        this.setState({
-          dueDate: e.target.value
-        })
-      }
-    } else {
-      this.setState({
-        [e.target.name]: e.target.value
-      })
-    }
+    this.setState({
+      [e.target.name]: e.target.value
+    })
   }
 
   handleCheck(e) {
@@ -238,6 +222,10 @@ class CreatePoll extends Component {
               margin="normal"
               InputLabelProps={{
                 shrink: true
+              }}
+              inputProps={{
+                // prevent users from selecting past dates
+                min: new Date().toISOString().slice(0, 16)
               }}
               variant="filled"
               fullWidth
