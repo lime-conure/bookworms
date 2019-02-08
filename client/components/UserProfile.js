@@ -58,6 +58,12 @@ class Profile extends Component {
   render() {
     const {classes} = this.props
     const user = this.props.user
+    const userBooks = this.props.books.map(book => book.users_books)
+
+    // show progress toggle if user has books on now or past shelves
+    const showProgressToggle = !!userBooks.filter(
+      book => book.type !== 'future'
+    ).length
     return (
       <Paper className={classes.root} elevation={2}>
         <Grid
@@ -84,15 +90,19 @@ class Profile extends Component {
             >
               {user.email}
             </Typography>
-            <Button
-              style={{marginTop: 20}}
-              variant="outlined"
-              size="small"
-              color="secondary"
-              onClick={this.toggleProgress}
-            >
-              {this.state.progress ? 'Hide progress' : 'Show progress'}
-            </Button>
+            {showProgressToggle ? (
+              <Button
+                style={{marginTop: 20}}
+                variant="outlined"
+                size="small"
+                color="secondary"
+                onClick={this.toggleProgress}
+              >
+                {this.state.progress ? 'Hide progress' : 'Show progress'}
+              </Button>
+            ) : (
+              ''
+            )}
           </Grid>
           <Grid item md={9}>
             <UserBooks />
@@ -107,7 +117,8 @@ class Profile extends Component {
 const StyledProfile = withStyles(styles)(Profile)
 
 const mapState = state => ({
-  user: state.user
+  user: state.user,
+  books: state.user.books
 })
 
 export default connect(mapState)(StyledProfile)
