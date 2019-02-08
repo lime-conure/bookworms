@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {fetchMeetings, deleteMeeting} from '../store'
-import {formatDateDisplay} from '../utils'
+import {fetchMeetings, deleteMeeting} from '../../store'
+import {formatDateDisplay} from '../../utils'
 import {Link} from 'react-router-dom'
 
 // Material UI

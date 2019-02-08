@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {fetchClubBooks} from '../store'
-import ProgressCharts from './ProgressCharts'
+import {fetchClubBooks} from '../../store'
+import ProgressCharts from '../../components/ProgressCharts'
 
 class ClubProgress extends Component {
   async componentDidMount() {

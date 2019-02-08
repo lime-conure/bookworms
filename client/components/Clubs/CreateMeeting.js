@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {postMeeting} from '../store'
-import BookSearch from './BookSearch'
-import {formatDateString, formatDate, makeBookObject} from '../utils'
+import {postMeeting} from '../../store'
+import BookSearch from '../../components/BookSearch'
+import {formatDateString, formatDate, makeBookObject} from '../../utils'
 
 // Material UI
 import {withStyles} from '@material-ui/core/styles'
