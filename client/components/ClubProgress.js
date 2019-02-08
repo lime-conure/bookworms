@@ -10,7 +10,11 @@ class ClubProgress extends Component {
   }
 
   render() {
-    return <ProgressCharts results={this.props.results} scope="club" />
+    return this.props.results ? (
+      <ProgressCharts results={this.props.results} scope="club" />
+    ) : (
+      <div>Loading charts...</div>
+    )
   }
 }
 

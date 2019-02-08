@@ -21,7 +21,8 @@ import {
   Legend,
   PieChart,
   Pie,
-  Sector
+  Sector,
+  ResponsiveContainer
 } from 'recharts'
 
 const styles = theme => ({
@@ -123,7 +124,7 @@ class ProgressCharts extends Component {
       year: '2019',
       activeIndex: 0,
       open: false,
-      tableKeyName: 'clubs_books'
+      tableKeyName: `${this.props.scope}s_books` // scope is club or user
     }
     this.onPieEnter = this.onPieEnter.bind(this)
     this.sort = this.sort.bind(this)
@@ -132,14 +133,6 @@ class ProgressCharts extends Component {
     this.pie = this.pie.bind(this)
   }
 
-  async componentDidMount() {
-    if (this.props.scope === 'club') {
-      const clubId = Number(this.props.match.params.clubId)
-      await this.props.fetchClubBooks(clubId)
-    } else {
-      this.setState({tableKeyName: 'users_books'})
-    }
-  }
   // functions
   sort(criteria) {
     return this.props.results
@@ -247,50 +240,52 @@ class ProgressCharts extends Component {
     const {classes} = this.props
 
     return (
-      <div>
+      <div style={{width: '100%'}}>
         <Typography variant="h4" gutterBottom>
           Monthly Book Totals
         </Typography>
         <Divider />
-        <BarChart
-          width={1000}
-          height={500}
-          data={all}
-          margin={{top: 50, right: 30, left: 20, bottom: 5}}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" tick={{fontFamily: 'Lato'}} />
-          <YAxis
-            type="number"
-            tick={{fontFamily: 'Lato'}}
-            domain={[0, 'dataMax + 1']}
-          />
-          <Tooltip
-            cursor={{fill: '#444', opacity: 0.6}}
-            contentStyle={{
-              fontFamily: 'Lato',
-              color: '#fff',
-              backgroundColor: '#222',
-              borderRadius: 3
-            }}
-          />
-          <Legend
-            width={120}
-            align="left"
-            wrapperStyle={{
-              top: 20,
-              right: 0,
-              padding: 10,
-              color: '#fff',
-              backgroundColor: '#222',
-              border: '1px solid #d5d5d5',
-              fontFamily: 'Lato',
-              lineHeight: '30px'
-            }}
-          />
-          <Bar dataKey="Started" fill="#e98fa3" barSize={25} />
-          <Bar dataKey="Finished" fill="#6f75aa" barSize={25} />
-        </BarChart>
+        <ResponsiveContainer width="100%">
+          <BarChart
+            width={500}
+            height={500}
+            data={all}
+            margin={{top: 50, right: 30, left: 20, bottom: 5}}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" tick={{fontFamily: 'Lato'}} />
+            <YAxis
+              type="number"
+              tick={{fontFamily: 'Lato'}}
+              domain={[0, 'dataMax + 1']}
+            />
+            <Tooltip
+              cursor={{fill: '#444', opacity: 0.6}}
+              contentStyle={{
+                fontFamily: 'Lato',
+                color: '#fff',
+                backgroundColor: '#222',
+                borderRadius: 3
+              }}
+            />
+            <Legend
+              width={120}
+              align="left"
+              wrapperStyle={{
+                top: 20,
+                right: 0,
+                padding: 10,
+                color: '#fff',
+                backgroundColor: '#222',
+                border: '1px solid #d5d5d5',
+                fontFamily: 'Lato',
+                lineHeight: '30px'
+              }}
+            />
+            <Bar dataKey="Started" fill="#e98fa3" barSize={25} />
+            <Bar dataKey="Finished" fill="#6f75aa" barSize={25} />
+          </BarChart>
+        </ResponsiveContainer>
 
         <Grid container spacing={16} alignItems="flex-end">
           <Grid item>

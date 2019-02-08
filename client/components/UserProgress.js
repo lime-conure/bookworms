@@ -4,10 +4,10 @@ import ProgressCharts from './ProgressCharts'
 
 class UserProgress extends Component {
   render() {
-    return this.props.results.length ? (
+    return this.props.results ? (
       <ProgressCharts results={this.props.results} scope="user" />
     ) : (
-      <div>Loading progress...</div>
+      <div>Loading charts...</div>
     )
   }
 }
