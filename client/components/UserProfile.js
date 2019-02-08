@@ -12,7 +12,6 @@ import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 const styles = theme => ({
   root: {
-    // ...theme.mixins.gutters(),
     flexGrow: 1,
     padding: theme.spacing.unit * 4,
     marginTop: theme.spacing.unit * 16,
