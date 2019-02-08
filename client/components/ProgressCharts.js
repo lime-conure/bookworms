@@ -240,58 +240,60 @@ class ProgressCharts extends Component {
     const {classes} = this.props
 
     return (
-      <div style={{width: '100%'}}>
+      <div style={{width: '100%', height: '100%'}}>
         <Typography variant="h4" gutterBottom>
           Monthly Book Totals
         </Typography>
         <Divider />
-        <ResponsiveContainer width="100%">
-          <BarChart
-            width={500}
-            height={500}
-            data={all}
-            margin={{top: 50, right: 30, left: 20, bottom: 5}}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" tick={{fontFamily: 'Lato'}} />
-            <YAxis
-              type="number"
-              tick={{fontFamily: 'Lato'}}
-              domain={[0, 'dataMax + 1']}
-            />
-            <Tooltip
-              cursor={{fill: '#444', opacity: 0.6}}
-              contentStyle={{
-                fontFamily: 'Lato',
-                color: '#fff',
-                backgroundColor: '#222',
-                borderRadius: 3
-              }}
-            />
-            <Legend
-              width={120}
-              align="left"
-              wrapperStyle={{
-                top: 20,
-                right: 0,
-                padding: 10,
-                color: '#fff',
-                backgroundColor: '#222',
-                border: '1px solid #d5d5d5',
-                fontFamily: 'Lato',
-                lineHeight: '30px'
-              }}
-            />
-            <Bar dataKey="Started" fill="#e98fa3" barSize={25} />
-            <Bar dataKey="Finished" fill="#6f75aa" barSize={25} />
-          </BarChart>
-        </ResponsiveContainer>
+        <div style={{position: 'relative', width: '100%', height: '500px'}}>
+          <div style={{position: 'absolute', width: '100%', height: '100%'}}>
+            <BarChart
+              width={700}
+              height={500}
+              data={all}
+              margin={{top: 50, right: 30, left: 20, bottom: 5}}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" tick={{fontFamily: 'Lato'}} />
+              <YAxis
+                type="number"
+                tick={{fontFamily: 'Lato'}}
+                domain={[0, 'dataMax + 1']}
+              />
+              <Tooltip
+                cursor={{fill: '#444', opacity: 0.6}}
+                contentStyle={{
+                  fontFamily: 'Lato',
+                  color: '#fff',
+                  backgroundColor: '#222',
+                  borderRadius: 3
+                }}
+              />
+              <Legend
+                width={120}
+                align="left"
+                wrapperStyle={{
+                  top: 20,
+                  right: 0,
+                  padding: 10,
+                  color: '#fff',
+                  backgroundColor: '#222',
+                  border: '1px solid #d5d5d5',
+                  fontFamily: 'Lato',
+                  lineHeight: '30px'
+                }}
+              />
+              <Bar dataKey="Started" fill="#e98fa3" barSize={25} />
+              <Bar dataKey="Finished" fill="#6f75aa" barSize={25} />
+            </BarChart>
+          </div>
+        </div>
 
         <Grid container spacing={16} alignItems="flex-end">
-          <Grid item>
+          <Grid item xs={3}>
             <Typography variant="h4">Reading Progress in</Typography>
           </Grid>
-          <Grid item xs={8}>
+          <Grid item>
             <FormControl>
               <form autoComplete="off">
                 <Select
@@ -324,12 +326,12 @@ class ProgressCharts extends Component {
         </Grid>
 
         <Divider style={{marginTop: 20}} />
-        <PieChart width={1000} height={500} margin={{top: 50}}>
+        <PieChart width={500} height={500} margin={{top: 50}}>
           <Pie
             activeIndex={this.state.activeIndex}
             activeShape={renderActiveShape}
             data={pieYear}
-            cx={500}
+            cx={250}
             cy={200}
             innerRadius={110}
             outerRadius={180}

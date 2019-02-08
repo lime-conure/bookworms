@@ -5,7 +5,9 @@ import ProgressCharts from './ProgressCharts'
 class UserProgress extends Component {
   render() {
     return this.props.results ? (
-      <ProgressCharts results={this.props.results} scope="user" />
+      <div style={{marginTop: '80px'}}>
+        <ProgressCharts results={this.props.results} scope="user" />
+      </div>
     ) : (
       <div>Loading charts...</div>
     )
