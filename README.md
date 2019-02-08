@@ -2,7 +2,7 @@
 
 Bookworms is an app for readers to create, manage, and communicate with their book clubs.
 
-## [Team Lime Conure] (https://github.com/lime-conure)
+## Team Lime Conure
 * [Brynn Shepherd](https://github.com/brynn)
 * [Sabira Davletshina] (https://github.com/Sdavletshina)
 * [Jing Lu] (https://github.com/Jl201835)
