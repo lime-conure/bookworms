@@ -30,7 +30,7 @@ async function seed() {
 
   const club = await Club.create({
     name: 'Worms Unite!',
-    inviteLink: `/clubs/1/join/12345678`
+    inviteLink: `/clubs/1/join/52049673`
   })
 
   await user.setClubs([club])
