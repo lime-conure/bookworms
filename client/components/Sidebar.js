@@ -29,7 +29,6 @@ const styles = theme => ({
     width: '100%',
     top: 80, // 80 = Navbar height
     height: 'auto',
-    // 600px or larger
     [theme.breakpoints.up('sm')]: {
       width: drawerWidth,
       height: '100%'
@@ -37,7 +36,7 @@ const styles = theme => ({
   },
   drawerHeader: {
     // 600px or smaller
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('xs')]: {
       display: 'none'
     },
     padding: theme.spacing.unit * 2,
