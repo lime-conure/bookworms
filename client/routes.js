@@ -19,7 +19,8 @@ import {
   UserProfile,
   Meetings,
   CreateMeeting,
-  ClubProgress
+  ClubProgress,
+  AboutUs
 } from './components'
 
 import {me} from './store'
@@ -56,6 +57,7 @@ class Routes extends Component {
       <div>
         {isLoggedIn ? (
           <Switch>
+            <Route exact path="/about" component={AboutUs} />
             <Route exact path="/createclub" component={CreateClub} />
             <Route exact path="/profile" component={UserProfile} />
             <Route exact path="/clubs" component={Clubs} />
@@ -71,6 +73,7 @@ class Routes extends Component {
           </Switch>
         ) : (
           <Switch>
+            <Route exact path="/about" component={AboutUs} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/signup" component={Signup} />
             <Route

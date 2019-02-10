@@ -56,11 +56,17 @@ function Navbar({handleClick, isLoggedIn, userId, classes}) {
               <Button component={Link} to="/profile">
                 Profile
               </Button>
+              <Button component={Link} to="/about">
+                About
+              </Button>
               <Button onClick={() => handleClick(userId)}>Logout</Button>
             </div>
           ) : (
             <div>
               {/* The navbar will show these links before you log in */}
+              <Button component={Link} to="/about">
+                About
+              </Button>
               <Button component={Link} to="/login">
                 Log In
               </Button>
