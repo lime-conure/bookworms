@@ -50,11 +50,10 @@ class Routes extends Component {
   }
 
   render() {
-    const {isLoggedIn, invitePending, classes} = this.props
+    const {isLoggedIn, classes} = this.props
 
     return (
       <div>
-        {/* {isLoggedIn && !invitePending ? ( */}
         {isLoggedIn ? (
           <Switch>
             <Route exact path="/createclub" component={CreateClub} />
@@ -151,8 +150,7 @@ const mapState = state => {
   return {
     // Being 'logged in' for our purposes will be defined has having a state.user that has a truthy id.
     // Otherwise, state.user will be an empty object, and state.user.id will be falsey
-    isLoggedIn: !!state.user.id,
-    invitePending: !!state.user.inviteLink
+    isLoggedIn: !!state.user.id
   }
 }
 

@@ -492,7 +492,7 @@ router.get('/join/:clubId/:hash', async (req, res, next) => {
 })
 
 //POST /api/clubs/join/:clubId - join confirmation
-router.post('/:clubId/join/:hash', async (req, res, next) => {
+router.post('/join/:clubId/:hash', async (req, res, next) => {
   try {
     if (req.user && req.user.id) {
       const inviteLink = `${req.params.clubId}/${req.params.hash}`
