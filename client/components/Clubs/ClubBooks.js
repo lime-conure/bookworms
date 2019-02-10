@@ -69,8 +69,10 @@ export class ClubBooks extends Component {
           className={classes.sectionHeader}
         >
           {type === 'now'
-            ? `Books We're Reading`
-            : type === 'future' ? `Books We Want To Read` : `Books We've Read`}
+            ? `\u{1F4D6} Books We're Reading`
+            : type === 'future'
+              ? `\u{1F4D8} Books We Want To Read`
+              : `\u{1F4DA} Books We've Read`}
         </Typography>
         {renderBookSearch(books, type, this)}
       </div>

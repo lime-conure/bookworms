@@ -40,7 +40,7 @@ class JoinClub extends Component {
   async handleClick(e) {
     e.preventDefault()
     await Axios.post(
-      `/api/clubs/${this.props.match.params.clubId}/join/${
+      `/api/clubs/join/${this.props.match.params.clubId}/${
         this.props.match.params.hash
       }`
     )
@@ -51,10 +51,10 @@ class JoinClub extends Component {
   }
 
   async componentDidMount() {
-    const inviteLink = `clubs/${this.props.match.params.clubId}/join/${
+    const inviteLink = `${this.props.match.params.clubId}/${
       this.props.match.params.hash
     }`
-    const {data} = await Axios.get(`/api/${inviteLink}`)
+    const {data} = await Axios.get(`/api/clubs/join/${inviteLink}`)
     this.setState({
       clubName: data
     })

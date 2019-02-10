@@ -40,7 +40,7 @@ class AboutUs extends Component {
     return (
       <Paper className={classes.root} elevation={2}>
         <Typography variant="h6" component="h6">
-          "Our goal is to help you organize your reading life"
+          Our goal is to help you organize your reading life
         </Typography>
         <br />
         <Typography variant="h4" component="h4">
@@ -56,7 +56,7 @@ class AboutUs extends Component {
           <Grid item md={3} className={classes.userInfo}>
             <Avatar
               alt="Brynn Shepherd"
-              src="public/teamPictures/Brynn_Shepherd.jpg"
+              src="Brynn_Shepherd.jpg"
               className={classes.bigAvatar}
             />
           </Grid>
@@ -64,7 +64,7 @@ class AboutUs extends Component {
           <Grid item md={3} className={classes.userInfo}>
             <Avatar
               alt="Jing Lu"
-              src="/public/teamPictures/Jing_Lu.jpg"
+              src="Jing_Lu.jpg"
               className={classes.bigAvatar}
             />
           </Grid>
@@ -72,7 +72,7 @@ class AboutUs extends Component {
           <Grid item md={3} className={classes.userInfo}>
             <Avatar
               alt="Norka Avalos"
-              src="/public/teamPictures/Norka_Avalos.jpg"
+              src="Norka_Avalos.jpg"
               className={classes.bigAvatar}
             />
           </Grid>
@@ -80,7 +80,7 @@ class AboutUs extends Component {
           <Grid item md={3} className={classes.userInfo}>
             <Avatar
               alt="Sabira Davletshina"
-              src="https://www.linkedin.com/in/sabira-davletshina-77a104179/detail/photo/"
+              src="Sabira_Davletshina.jpg"
               className={classes.bigAvatar}
             />
           </Grid>

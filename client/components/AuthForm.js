@@ -194,7 +194,8 @@ const mapDispatch = dispatch => {
       }
 
       dispatch(auth(email, password, fullName, formName, socket))
-      if (props.inviteLink) props.history.push(props.inviteLink)
+      if (props.inviteLink)
+        props.history.push(`/clubs/join/${props.inviteLink}`)
       else props.history.push('/clubs')
     }
   }
