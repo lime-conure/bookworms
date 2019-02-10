@@ -33,6 +33,9 @@ const styles = theme => ({
   menuButton: {
     marginLeft: -12,
     marginRight: 20
+  },
+  desktopNav: {
+    display: 'flex'
   }
 })
 
@@ -48,22 +51,19 @@ function Navbar({handleClick, isLoggedIn, userId, classes}) {
             </Link>
             🐛
           </Typography>
-
-          {isLoggedIn && <DropDownClubs />}
           {isLoggedIn ? (
-            <div>
-              {/* The navbar will show these links after you log in */}
-              <Button component={Link} to="/profile">
-                Profile
-              </Button>
+            <div className={classes.desktopNav}>
               <Button component={Link} to="/about">
                 About
               </Button>
+              <Button component={Link} to="/profile">
+                Profile
+              </Button>
+              <DropDownClubs />
               <Button onClick={() => handleClick(userId)}>Logout</Button>
             </div>
           ) : (
             <div>
-              {/* The navbar will show these links before you log in */}
               <Button component={Link} to="/about">
                 About
               </Button>
