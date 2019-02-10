@@ -65,8 +65,10 @@ class UserBooks extends Component {
           className={classes.sectionHeader}
         >
           {type === 'now'
-            ? `Books I'm Reading`
-            : type === 'future' ? `Books I Want To Read` : `Books I've Read`}
+            ? `\u{1F4D6}Books I'm Reading`
+            : type === 'future'
+              ? `\u{1F4D8} Books I Want To Read`
+              : `\u{1F4DA} Books I've Read`}
         </Typography>
 
         {renderBookSearch(books, type, this)}

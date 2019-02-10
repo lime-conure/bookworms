@@ -44,7 +44,7 @@ router.post('/create', async (req, res, next) => {
       const clubId = club.id
       await club.addUser(req.user.id)
       const hash = Math.floor(Math.random() * 100000000)
-      const inviteLink = `/clubs/${clubId}/join/${hash}`
+      const inviteLink = `${clubId}/${hash}`
       const newClub = await club.update({inviteLink})
       res.json(newClub)
     }
@@ -90,7 +90,7 @@ router.get('/:clubId', async (req, res, next) => {
         if (!check) res.status(403).send(`Not authorized`)
         else {
           const hostName = process.env.HOST_NAME || 'http://localhost:8080'
-          const inviteLink = hostName + club.inviteLink
+          const inviteLink = hostName + '/clubs/join/' + club.inviteLink
           club.inviteLink = inviteLink
           res.json(club)
         }
@@ -476,12 +476,12 @@ router.post('/:clubId/threads/:threadId', async (req, res, next) => {
   }
 })
 
-//GET /api/clubs/:clubId/join - join request
-router.get('/:clubId/join/:hash', async (req, res, next) => {
+//GET /api/clubs/join/:clubId - join request
+router.get('/join/:clubId/:hash', async (req, res, next) => {
   try {
     const club = await Club.findOne({
       where: {
-        inviteLink: `/clubs/${req.params.clubId}/join/${req.params.hash}`
+        inviteLink: `${req.params.clubId}/${req.params.hash}`
       }
     })
     if (!club) res.status(403).send('Invalid link')
@@ -491,11 +491,11 @@ router.get('/:clubId/join/:hash', async (req, res, next) => {
   }
 })
 
-//POST /api/clubs/:clubId/join - join confirmation
+//POST /api/clubs/join/:clubId - join confirmation
 router.post('/:clubId/join/:hash', async (req, res, next) => {
   try {
     if (req.user && req.user.id) {
-      const inviteLink = `/clubs/${req.params.clubId}/join/${req.params.hash}`
+      const inviteLink = `${req.params.clubId}/${req.params.hash}`
       const club = await Club.findOne({
         where: {
           inviteLink

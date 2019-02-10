@@ -54,11 +54,17 @@ class Routes extends Component {
 
     return (
       <div>
-        {isLoggedIn && !invitePending ? (
+        {/* {isLoggedIn && !invitePending ? ( */}
+        {isLoggedIn ? (
           <Switch>
             <Route exact path="/createclub" component={CreateClub} />
             <Route exact path="/profile" component={UserProfile} />
             <Route exact path="/clubs" component={Clubs} />
+            <Route
+              exact
+              path="/clubs/join/:clubId/:hash"
+              component={JoinClub}
+            />
             {/* Sidebar is scoped to a single club */}
             <Route path="/clubs/:clubId" component={Sidebar} />
             {/* Display Clubs component as a fallback for any other logged in routes*/}
@@ -70,7 +76,7 @@ class Routes extends Component {
             <Route exact path="/signup" component={Signup} />
             <Route
               exact
-              path="/clubs/:clubId/join/:hash"
+              path="/clubs/join/:clubId/:hash"
               component={JoinClub}
             />
             {/* Display Login component as a fallback for any other looged out routes */}
