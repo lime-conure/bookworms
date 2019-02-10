@@ -64,11 +64,13 @@ class UserBooks extends Component {
           gutterBottom
           className={classes.sectionHeader}
         >
-          {type === 'now'
-            ? `\u{1F4D6}Books I'm Reading`
-            : type === 'future'
-              ? `\u{1F4D8} Books I Want To Read`
-              : `\u{1F4DA} Books I've Read`}
+          {type === 'now' ? (
+            <span>Books I'm Reading &nbsp;&nbsp;📖</span>
+          ) : type === 'future' ? (
+            <span>Books I Want To Read &nbsp;&nbsp;📘</span>
+          ) : (
+            <span>Books I've Read &nbsp;&nbsp;📚</span>
+          )}
         </Typography>
 
         {renderBookSearch(books, type, this)}
