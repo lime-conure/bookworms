@@ -58,6 +58,9 @@ async function seed() {
   })
 
   await user.setClubs([club])
+  await brynn.setClubs([club])
+  await jing.setClubs([club])
+  await norka.setClubs([club])
 
   // BOOK & AUTHOR 1
   const author1 = await Author.create({

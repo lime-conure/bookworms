@@ -44,7 +44,7 @@ class DropDownClubs extends React.Component {
           onClose={this.handleClose}
         >
           <MenuItem onClick={this.handleClose} component={Link} to="/clubs">
-            All Book Clubs
+            All Clubs
           </MenuItem>
           {this.props.clubs.map(club => (
             <MenuItem
@@ -62,7 +62,7 @@ class DropDownClubs extends React.Component {
             component={Link}
             to="/createclub"
           >
-            Create a new club
+            Create a New Club
           </MenuItem>
         </Menu>
       </div>
