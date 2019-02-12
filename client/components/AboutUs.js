@@ -113,84 +113,84 @@ class AboutUs extends Component {
           className={classes.team}
         >
           <Grid item md={3} className={classes.userInfo}>
-            <Avatar
-              alt="Brynn Shepherd"
-              src="Brynn_Shepherd.jpg"
-              className={classes.bigAvatar}
-            />
-            <Typography variant="h6" component="h6">
-              <a
-                href="http://github.com/brynn"
-                rel="noopener noreferrer"
-                target="_blank"
-                className={classes.link}
-              >
+            <a
+              href="http://github.com/brynn"
+              rel="noopener noreferrer"
+              target="_blank"
+              className={classes.link}
+            >
+              <Avatar
+                alt="Brynn Shepherd"
+                src="Brynn_Shepherd.jpg"
+                className={classes.bigAvatar}
+              />
+              <Typography variant="h6" component="h6">
                 Brynn Shepherd
-              </a>
-            </Typography>
+              </Typography>
+            </a>
             <Typography variant="subtitle1" component="p">
               brynn.shepherd@gmail.com
             </Typography>
           </Grid>
 
           <Grid item md={3} className={classes.userInfo}>
-            <Avatar
-              alt="Sabira Davletshina"
-              src="Sabira_Davletshina.jpg"
-              className={classes.bigAvatar}
-            />
-            <Typography variant="h6" component="h6">
-              <a
-                href="http://github.com/Sdavletshina"
-                rel="noopener noreferrer"
-                target="_blank"
-                className={classes.link}
-              >
+            <a
+              href="http://github.com/Sdavletshina"
+              rel="noopener noreferrer"
+              target="_blank"
+              className={classes.link}
+            >
+              <Avatar
+                alt="Sabira Davletshina"
+                src="Sabira_Davletshina.jpg"
+                className={classes.bigAvatar}
+              />
+              <Typography variant="h6" component="h6">
                 Sabira Davletshina
-              </a>
-            </Typography>
+              </Typography>
+            </a>
             <Typography variant="subtitle1" component="p">
               sabira.davletshina@gmail.com
             </Typography>
           </Grid>
 
           <Grid item md={3} className={classes.userInfo}>
-            <Avatar
-              alt="Jing Lu"
-              src="Jing_Lu.jpg"
-              className={classes.bigAvatar}
-            />
-            <Typography variant="h6" component="h6">
-              <a
-                href="http://github.com/Jl201835"
-                rel="noopener noreferrer"
-                target="_blank"
-                className={classes.link}
-              >
+            <a
+              href="http://github.com/Jl201835"
+              rel="noopener noreferrer"
+              target="_blank"
+              className={classes.link}
+            >
+              <Avatar
+                alt="Jing Lu"
+                src="Jing_Lu.jpg"
+                className={classes.bigAvatar}
+              />
+              <Typography variant="h6" component="h6">
                 Jing Lu
-              </a>
-            </Typography>
+              </Typography>
+            </a>
             <Typography variant="subtitle1" component="p">
               jl201835@gmail.com
             </Typography>
           </Grid>
 
           <Grid item md={3} className={classes.userInfo}>
-            <Avatar
-              alt="Norka Avalos"
-              src="Norka_Avalos.jpg"
-              className={classes.bigAvatar}
-            />
-            <Typography variant="h6" component="h6">
-              <a
-                href="http://github.com/norkavalos"
-                rel="noopener noreferrer"
-                target="_blank"
-                className={classes.link}
-              >
+            <a
+              href="http://github.com/norkavalos"
+              rel="noopener noreferrer"
+              target="_blank"
+              className={classes.link}
+            >
+              <Avatar
+                alt="Norka Avalos"
+                src="Norka_Avalos.jpg"
+                className={classes.bigAvatar}
+              />
+              <Typography variant="h6" component="h6">
                 Norka Avalos
-              </a>
-            </Typography>
+              </Typography>
+            </a>
             <Typography variant="subtitle1" component="p">
               norkaavalos11@gmail.com
             </Typography>
