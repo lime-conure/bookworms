@@ -1,5 +1,11 @@
 a {
   text-decoration: none;
+  color: #c6ff00;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: #fff;
 }
 
 label {

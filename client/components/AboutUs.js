@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import {Link} from 'react-router-dom'
 
 //Material UI
 import {withStyles} from '@material-ui/core/styles'
@@ -20,12 +19,13 @@ const styles = theme => ({
     flexGrow: 1,
     padding: theme.spacing.unit * 4,
     marginTop: theme.spacing.unit * 16,
+    marginBottom: theme.spacing.unit * 16,
     marginLeft: 'auto',
     marginRight: 'auto',
     width: '95%',
     // md = 960px or larger
     [theme.breakpoints.up('md')]: {
-      width: '70%',
+      width: '75%',
       padding: theme.spacing.unit * 8
     },
     color: '#fff'
@@ -43,21 +43,20 @@ const styles = theme => ({
     marginRight: 'auto',
     marginLeft: 'auto'
   },
-  link: {
-    color: '#fff',
-    '&:hover': {
-      color: '#C6FF00'
-    }
-  },
   about: {
     marginTop: theme.spacing.unit * 3,
-    marginBottom: theme.spacing.unit * 6,
+    marginBottom: theme.spacing.unit * 8,
     fontSize: '1.25rem',
     lineHeight: '1.875rem'
   },
   team: {
-    marginTop: theme.spacing.unit * 2,
     marginBottom: theme.spacing.unit * 6
+  },
+  credits: {
+    marginTop: theme.spacing.unit * 3,
+    marginBottom: theme.spacing.unit * 2,
+    fontSize: '1.25rem',
+    lineHeight: '1.875rem'
   }
 })
 
@@ -96,7 +95,7 @@ class AboutUs extends Component {
             color="primary"
             size="large"
           >
-            Github repo
+            View Our Code on Github
           </Button>
         </div>
 
@@ -117,7 +116,6 @@ class AboutUs extends Component {
               href="http://github.com/brynn"
               rel="noopener noreferrer"
               target="_blank"
-              className={classes.link}
             >
               <Avatar
                 alt="Brynn Shepherd"
@@ -138,7 +136,6 @@ class AboutUs extends Component {
               href="http://github.com/Sdavletshina"
               rel="noopener noreferrer"
               target="_blank"
-              className={classes.link}
             >
               <Avatar
                 alt="Sabira Davletshina"
@@ -159,7 +156,6 @@ class AboutUs extends Component {
               href="http://github.com/Jl201835"
               rel="noopener noreferrer"
               target="_blank"
-              className={classes.link}
             >
               <Avatar
                 alt="Jing Lu"
@@ -180,7 +176,6 @@ class AboutUs extends Component {
               href="http://github.com/norkavalos"
               rel="noopener noreferrer"
               target="_blank"
-              className={classes.link}
             >
               <Avatar
                 alt="Norka Avalos"
@@ -200,18 +195,30 @@ class AboutUs extends Component {
           Technologies Used
         </Typography>
         <Divider />
-        <Typography
-          variant="body1"
-          component="p"
-          className={classes.about}
-          style={{marginBottom: '10px'}}
-        >
-          Bookworms runs on Heroku using Node.js, PostgreSQL/Sequelize,
-          Express.js, React, and Redux. We also integrated the following
-          libraries and APIs:
+        <Typography variant="body1" component="p" className={classes.credits}>
+          We built Bookworms as our senior capstone project while enrolled at
+          the{' '}
+          <a
+            href="https://gracehopper.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Grace Hopper Program
+          </a>{' '}
+          at{' '}
+          <a
+            href="https://fullstackacademy.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Fullstack Academy
+          </a>{' '}
+          in February 2019. It runs on Heroku using Node.js,
+          PostgreSQL/Sequelize, Express.js, React, and Redux. We also integrated
+          the following libraries and APIs:
         </Typography>
         <List>
-          <ListItem className={classes.link}>
+          <ListItem>
             <ListItemIcon>
               <Icon>collections_bookmarks</Icon>
             </ListItemIcon>
@@ -221,13 +228,11 @@ class AboutUs extends Component {
                 target="_blank"
                 href="https://www.goodreads.com/api"
               >
-                <Typography variant="body1" className={classes.link}>
-                  Goodreads API
-                </Typography>
+                <Typography variant="body1">Goodreads API</Typography>
               </a>
             </ListItemText>
           </ListItem>
-          <ListItem className={classes.link}>
+          <ListItem>
             <ListItemIcon>
               <Icon>timeline</Icon>
             </ListItemIcon>
@@ -237,13 +242,11 @@ class AboutUs extends Component {
                 target="_blank"
                 href="http://recharts.org"
               >
-                <Typography variant="body1" className={classes.link}>
-                  Recharts
-                </Typography>
+                <Typography variant="body1">Recharts</Typography>
               </a>
             </ListItemText>
           </ListItem>
-          <ListItem className={classes.link}>
+          <ListItem>
             <ListItemIcon>
               <Icon>notification_important</Icon>
             </ListItemIcon>
@@ -253,13 +256,11 @@ class AboutUs extends Component {
                 target="_blank"
                 href="https://pushjs.org"
               >
-                <Typography variant="body1" className={classes.link}>
-                  Push.js
-                </Typography>
+                <Typography variant="body1">Push.js</Typography>
               </a>
             </ListItemText>
           </ListItem>
-          <ListItem className={classes.link}>
+          <ListItem>
             <ListItemIcon>
               <Icon>chat</Icon>
             </ListItemIcon>
@@ -269,13 +270,11 @@ class AboutUs extends Component {
                 target="_blank"
                 href="https://socket.io/"
               >
-                <Typography variant="body1" className={classes.link}>
-                  Socket.io
-                </Typography>
+                <Typography variant="body1">Socket.io</Typography>
               </a>
             </ListItemText>
           </ListItem>
-          <ListItem className={classes.link}>
+          <ListItem>
             <ListItemIcon>
               <Icon>dashboard</Icon>
             </ListItemIcon>
@@ -285,9 +284,7 @@ class AboutUs extends Component {
                 target="_blank"
                 href="https://material-ui.com"
               >
-                <Typography variant="body1" className={classes.link}>
-                  Material UI
-                </Typography>
+                <Typography variant="body1">Material UI</Typography>
               </a>
             </ListItemText>
           </ListItem>

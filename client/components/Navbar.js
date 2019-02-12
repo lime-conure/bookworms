@@ -24,6 +24,9 @@ const styles = theme => ({
     // 960px or smaller
     [theme.breakpoints.down('md')]: {
       fontSize: '1.5rem'
+    },
+    '&:hover': {
+      textDecoration: 'none'
     }
   },
   grow: {
